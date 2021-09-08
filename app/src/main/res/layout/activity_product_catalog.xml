@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.webkul.mobikul.odoo.constant.ApplicationConstant" />
+
+        <import type="com.webkul.mobikul.odoo.helper.AppSharedPref" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse" />
+
+        <variable
+            name="title"
+            type="String" />
+
+    </data>
+
+    <!--<FrameLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:fitsSystemWindows="true">-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                android:elevation="@dimen/toolbar_elevation_generic"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:title=" "
+                tools:ignore="HardcodedText"
+                tools:targetApi="lollipop">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    app:htmlText="@{title}"
+                    tools:text="Toolbar title" />
+            </androidx.appcompat.widget.Toolbar>
+
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.webkul.mobikulhyperlocal.activity.CatalogProductActivity">
+
+                <com.google.android.material.appbar.AppBarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?android:attr/actionBarSize"
+                    android:background="?attr/background"
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/product_count_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="?android:attr/actionBarSize"
+                        android:gravity="center"
+                        android:text="@{@string/x_results_found(data.totalCount)}"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textStyle="bold"
+                        android:visibility="@{data.products.size() == 0 ? View.GONE : View.VISIBLE}"
+                        app:layout_scrollFlags="scroll|enterAlways|snap"
+                        tools:text="150+ Result found" />
+
+
+                </com.google.android.material.appbar.AppBarLayout>
+
+
+                <FrameLayout
+                    android:id="@+id/container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/product_catalog_rv"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@color/activityBackground"
+                            tools:targetApi="lollipop" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/footer_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="?attr/background"
+                            android:gravity="center"
+                            android:padding="@dimen/spacing_normal"
+                            android:text="@string/that_s_all_folks"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textStyle="italic"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="37dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/custom_progress_drawable"
+                        android:indeterminate="true"
+                        android:visibility="@{data.lazyLoading ? View.VISIBLE :View.GONE}" />
+
+                </FrameLayout>
+
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating_button"
+            android:layout_width="@dimen/contextual_icon_dimens"
+            android:layout_height="@dimen/contextual_icon_dimens"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="24dp"
+            android:onClick="onClickViewSwitcher"
+            android:visibility="gone"
+            app:fabCustomSize="@dimen/contextual_icon_dimens"
+            app:srcCompat="@{AppSharedPref.isGridview(context) ? @drawable/ic_vector_list: @drawable/ic_vector_grid}" />
+
+
+        <com.webkul.mobikul.odoo.custom.MaterialSearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <!--</FrameLayout>-->
+
+</layout>

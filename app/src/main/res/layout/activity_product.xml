@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.bumptech.glide.load.engine.DiskCacheStrategy" />
+
+        <import type="com.webkul.mobikul.odoo.helper.ImageHelper.ImageType" />
+
+        <import
+            alias="View"
+            type="android.view.View" />
+
+        <import
+            alias="appSharedPref"
+            type="com.webkul.mobikul.odoo.helper.AppSharedPref" />
+
+        <import type="com.webkul.mobikul.odoo.helper.FontHelper" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.generic.ProductData" />
+
+        <variable
+            name="title"
+            type="String" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.product.ProductActivityHandler" />
+
+        <variable
+            name="reviewHandler"
+            type="com.webkul.mobikul.odoo.handler.product.ProductReviewHandler" />
+    </data>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            tools:context="com.webkul.mobikulhyperlocal.activity.CatalogProductActivity">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?android:attr/actionBarSize"
+                    android:background="@android:color/transparent"
+                    android:elevation="@dimen/toolbar_elevation_generic"
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                    app:navigationIcon="@drawable/ic_vector_chevron_left_white_24dp"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:title=" "
+                    tools:ignore="HardcodedText"
+                    tools:targetApi="lollipop">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        app:htmlText="@{title}"
+                        tools:text="16GB Memory Card" />
+                </androidx.appcompat.widget.Toolbar>
+
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+
+            <FrameLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/button_height_generic"
+                    android:scrollbars="none"
+                    android:visibility="visible">
+
+                    <!--                    @{data == null ? View.GONE : View.VISIBLE}-->
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/activity_product"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+
+                            <com.webkul.mobikul.odoo.custom.WrapContentViewPager
+                                android:id="@+id/product_slider_view_pager"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/product_image_large"
+                                android:background="@color/bottomNavigationBackground"
+                                android:clickable="true"
+                                android:nestedScrollingEnabled="false"
+                                android:paddingTop="@dimen/spacing_generic"
+                                android:scaleType="fitCenter"
+                                tools:ignore="UnusedAttribute" />
+
+                            <ImageButton
+                                android:id="@+id/wishlist_icon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginTop="@dimen/activity_vertical_margin"
+                                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                                android:background="@android:color/transparent"
+                                android:onClick="@{(view)->handler.onClickWishlistIcon(view)}"
+                                android:visibility="@{appSharedPref.isLoggedIn(context) &amp;&amp; appSharedPref.isAllowedWishlist(context) ? View.VISIBLE : View.GONE}"
+                                app:srcCompat="@{data.addedToWishlist ? @drawable/ic_vector_wishlist_red_24dp : @drawable/ic_vector_wishlist_grey_24dp}"
+                                tools:ignore="ContentDescription" />
+
+                            <ImageButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/wishlist_icon"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginTop="@dimen/spacing_generic"
+                                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                                android:background="@android:color/transparent"
+                                android:onClick="@{()->handler.shareProduct()}"
+                                app:srcCompat="@drawable/ic_vector_share"
+                                tools:ignore="ContentDescription" />
+                        </RelativeLayout>
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/product_slider_dots_tab_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/tab_dot_switcher_height"
+                            android:visibility="@{data.images.size() &lt; 2 ? View.INVISIBLE: View.VISIBLE}"
+                            app:tabBackground="@drawable/selector_dots_tab_layout"
+                            app:tabGravity="center"
+                            app:tabIndicatorHeight="0dp" />
+
+
+                        <!--MAIN LAYOUT CONTAINER-->
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                            android:background="@color/activityBackground"
+                            android:orientation="vertical"
+                            android:padding="@dimen/activity_horizontal_margin"
+                            tools:visibility="visible">
+
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/product_name_tv"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="@dimen/spacing_generic"
+                                    android:layout_marginRight="@dimen/spacing_generic"
+                                    android:layout_marginBottom="@dimen/spacing_generic"
+                                    android:layout_weight="1"
+                                    android:text="@{data.name}"
+                                    android:textAllCaps="true"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="bold"
+                                    tools:text="LAFAYETTE CONVERTIBLE HEELS" />
+
+                                <Button
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/blue_a200"
+                                    android:drawableEnd="@drawable/ic_vector_star_white_18dp_wrapper"
+                                    android:drawableRight="@drawable/ic_vector_star_white_18dp_wrapper"
+                                    android:onClick="@{() -> handler.getAllReviews()}"
+                                    android:paddingTop="0dp"
+                                    android:paddingBottom="0dp"
+                                    android:text="@{@string/average_rating_out_of_5(data.productAvgRating)}"
+                                    android:textColor="@color/tw__solid_white"
+                                    android:textSize="12sp"
+                                    android:visibility="@{appSharedPref.isAllowedReview(context) &amp;&amp; data.totalreviewsAvailable &gt; 0 ? View.VISIBLE : View.GONE}"
+                                    tools:text="3.5 / 5" />
+
+
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/unit_price_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="@dimen/spacing_generic"
+                                    android:layout_marginRight="@dimen/spacing_generic"
+                                    android:layout_marginBottom="@dimen/spacing_generic"
+                                    android:background="@{data.priceReduce.empty ?  null : @drawable/bg_strikethrough}"
+                                    android:gravity="center"
+                                    android:maxLines="1"
+                                    android:text="@{data.priceUnit}"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    app:textStyle="@{data.priceReduce.empty ? &quot;bold&quot; : &quot;normal&quot;}"
+                                    tools:text="$210.00" />
+
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/reduce_price_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="@dimen/spacing_generic"
+                                    android:gravity="center"
+                                    android:maxLines="1"
+                                    android:text="@{data.priceReduce}"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="bold"
+                                    app:visibility="@{!data.priceReduce.empty}"
+                                    tools:text="$200.00" />
+
+
+                            </LinearLayout>
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/qty_btn"
+                                android:layout_width="130dp"
+                                android:layout_height="wrap_content"
+                                android:background="@color/grey_300"
+                                android:drawableEnd="@drawable/ic_vector_arrow_down_grey600_18dp_wrapper"
+                                android:drawableRight="@drawable/ic_vector_arrow_down_grey600_18dp_wrapper"
+                                android:drawablePadding="@dimen/spacing_normal"
+                                android:gravity="center"
+                                android:minWidth="@dimen/min_qty_width"
+                                android:onClick="@{()->handler.changeQty()}"
+                                android:paddingStart="@dimen/spacing_generic"
+                                android:paddingLeft="@dimen/spacing_generic"
+                                android:paddingEnd="@dimen/spacing_normal"
+                                android:paddingRight="@dimen/spacing_generic"
+                                android:text="@{@string/qty_x_int(data.quantity)}"
+                                android:textColor="@android:color/black"
+
+                                tools:text="Qty: 1" />
+
+                            <!--android:text="@{@string/qty_x_int(data.quantity)}"-->
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/spacing_generic"
+                                android:layout_marginBottom="@dimen/spacing_generic"
+                                android:gravity="center"
+                                android:maxLines="1"
+                                android:text="@{data.inStock? @string/forecast_quantity_x(data.getForecastQuantityInt()) : @string/out_of_stock}"
+                                android:textColor="@{data.inStock ? (data.getForecastQuantityInt() &lt; 10 ? @color/yellow_800 : @color/green_400) : @color/red_600}"
+                                android:visibility="@{data.forecastQuantity == null ? View.GONE : View.VISIBLE}"
+                                tools:text="In Stock" />
+
+                            <!-- PRODUCT ATTRIBUTES CONTAINER-->
+
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:id="@+id/attributes_container"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:visibility="@{data.seller!=null ? View.VISIBLE : View.GONE}"
+                            app:contentPadding="10dp">
+
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <androidx.appcompat.widget.LinearLayoutCompat
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="8dp"
+                                    android:orientation="horizontal">
+
+                                    <de.hdodenhof.circleimageview.CircleImageView
+                                        android:id="@+id/customer_profile_image"
+                                        android:layout_width="@dimen/profile_pic_small"
+                                        android:layout_height="@dimen/profile_pic_small"
+                                        android:fitsSystemWindows="true"
+                                        app:civ_border_color="?attr/background"
+                                        app:civ_border_width="1px"
+                                        app:diskCacheStrategy="@{DiskCacheStrategy.NONE}"
+                                        app:imageType="@{ImageType.PROFILE_PIC_SMALL}"
+                                        app:imageUrl="@{data.seller.sellerProfileImage}"
+                                        app:layout_collapseMode="parallax"
+                                        app:placeholder="@{@drawable/ic_men_avatar}"
+                                        app:skipMemoryCache="@{true}"
+                                        tools:src="@drawable/ic_men_avatar" />
+
+
+                                    <androidx.appcompat.widget.LinearLayoutCompat
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center_vertical"
+                                        android:orientation="vertical">
+
+                                        <androidx.appcompat.widget.AppCompatTextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:drawablePadding="5dp"
+                                            android:gravity="center_vertical"
+                                            android:text="@string/sold_by"
+                                            android:textSize="@dimen/text_size_min" />
+
+                                        <androidx.appcompat.widget.AppCompatTextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:onClick="@{()->handler.onClickSellerName(data.seller.marketplaceSellerId)}"
+                                            android:text="@{data.seller.sellerName}"
+                                            android:textColor="@color/colorAccent" />
+                                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/colorAccent"
+                                    android:padding="5dp"
+                                    android:text="@{@string/average_rating_out_of_5(data.seller.averageRating)}"
+                                    android:textColor="@color/tw__solid_white" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="8dp"
+                                    android:text="@{data.seller.message}" />
+
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_normal"
+                            android:background="@color/activityBackground"
+                            android:padding="@dimen/spacing_normal"
+                            android:text="@{data.description}"
+                            app:visibility="@{!data.description.empty}"
+                            tools:text="Short Description" />
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/shape_rectangular_white_bg_gray300_border_1dp"
+                            android:gravity="center_vertical|start"
+                            android:onClick="@{() -> handler.getAllReviews()}"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/spacing_normal"
+                            android:visibility="@{appSharedPref.isAllowedReview(context) &amp;&amp;  data.totalreviewsAvailable &gt; 0 ? View.VISIBLE : View.GONE}">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/spacing_tiny"
+                                android:layout_weight="1"
+                                android:background="@color/activityBackground"
+                                android:text="@{@string/x_customer_reviews(data.totalreviewsAvailable)}"
+                                android:textStyle="bold"
+                                tools:text="5 customer reviews" />
+
+                            <androidx.appcompat.widget.AppCompatRatingBar
+                                style="@style/Base.Widget.AppCompat.RatingBar.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:isIndicator="true"
+                                android:rating="@{data.productAvgRating}"
+                                tools:rating="4" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/shape_rectangular_white_bg_gray300_border_1dp"
+                            android:drawableEnd="@drawable/ic_vector_arrow_right_grey600_18dp_wrapper"
+                            android:drawableRight="@drawable/ic_vector_arrow_right_grey600_18dp_wrapper"
+                            android:gravity="center_vertical|start"
+                            android:onClick="@{() -> reviewHandler.onClickAddReview()}"
+                            android:padding="@dimen/spacing_normal"
+                            android:text="@string/be_the_first_to_write_a_review"
+                            android:textColor="@color/text_color_primary"
+                            android:visibility="@{appSharedPref.isAllowedReview(context) &amp;&amp;  data.totalreviewsAvailable == 0 ? View.VISIBLE : View.GONE}" />
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/activityBackground"
+                            android:padding="@dimen/spacing_normal"
+                            android:text="@string/alternative_products"
+                            android:visibility="@{data.alternativeProducts.size() > 0 ? View.VISIBLE : View.GONE}"
+                            tools:text="Alternative Products:" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvAlternativeProduct"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                </ScrollView>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/add_to_cart_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height_generic"
+                    android:layout_gravity="bottom"
+                    android:background="@color/colorAccent"
+                    android:orientation="horizontal"
+                    android:visibility="@{data == null ? View.GONE : (data.inStock ? View.VISIBLE : View.GONE)}">
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/add_to_cart_button"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_rounded_corners_accent_bg"
+                        android:drawableStart="@drawable/ic_vector_bag_wrapper"
+                        android:drawableLeft="@drawable/ic_vector_bag_wrapper"
+                        android:gravity="center"
+                        android:onClick="@{() -> handler.addToCart(false)}"
+                        android:text="@string/add_to_bag"
+                        android:textColor="#FFFFFF" />
+
+                    <!--<androidx.appcompat.widget.AppCompatButton-->
+                    <!--android:id="@+id/buy_now_button"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:onClick="@{() -> handler.addToCart(true)}"-->
+                    <!--android:text="@string/buy_now" />-->
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/product_not_available_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/activityBackground"
+                        android:gravity="center"
+                        android:text="@string/product_not_available_in_this_combination"
+                        android:textColor="@android:color/holo_red_light"
+                        android:visibility="gone" />
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                <ProgressBar
+                    visibility="@{data == null ? View.VISIBLE : View.GONE}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/custom_progress_drawable" />
+            </FrameLayout>
+
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+        <com.webkul.mobikul.odoo.custom.MaterialSearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/custom_progress_drawable"
+            android:fitsSystemWindows="true"
+            android:visibility="gone"
+            tools:visibility="gone" />
+    </FrameLayout>
+</layout>

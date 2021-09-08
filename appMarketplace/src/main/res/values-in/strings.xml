@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">Semaai_Application</string>
+    <string name="mobikul" translatable="false">Semaai</string>
+    <string name="deeplinking_host" translatable="false">mpdemo.webkul.com</string>
+
+    <string name="about_store">Deskripsi Toko</string>
+    <string name="read_more">Lain lainnya</string>
+    <string name="recently_added_products">Pembaharuan Terakhir</string>
+    <string name="view_all_title">Lihat Semua</string>
+    <string name="store_rating">Peringkat Toko</string>
+    <string name="average_rating">Peringkat Rata - rata</string>
+    <string name="make_a_review">Tulis Ulasan</string>
+    <string name="please_login_to_write_reviews">Silahkan login untuk menulis ulasan.</string>
+    <string name="title_fragment_policies">Kebijakan</string>
+    <string name="product_reviews">Ulasan Barang</string>
+    <string name="recent_feedbacks">Balasan Terbaru</string>
+    <string name="contact_us">Hubungi Kami</string>
+    <string name="view_large_map">Lihat Lokasi Lebih Luas</string>
+    <string name="empty_about_store">Tidak ada Informasi Tersedia.</string>
+    <string name="read_less">Sembunyikan</string>
+    <string name="view_all_x_reviews">Lihat Semua %1$d Ulasan.</string>
+    <string name="no_policies_added_by_seller">Tidak ada Tambahan Kebijakan dari Penjual.</string>
+    <string name="return_policy">Kebijakan Pengembalian</string>
+    <string name="shipping_policy">Kebijakan Pengiriman</string>
+    <string name="seller_have_no_review_yet">Penjual Belum Memiliki Ulasan.</string>
+    <string name="top_sellers">Penjual Terbaik</string>
+    <string name="x_products">%1$d Produk - produk.</string>
+    <string name="products">Produk</string>
+
+
+    <string name="seller_reviews">Ulasan Penjual</string>
+
+    <string name="x_pending_products"><b>%1$d</b> Tertunda</string>
+    <string name="x_approved_products"><b>%1$d</b> Disetujui</string>
+    <string name="x_rejected_products"><b>%1$d</b> Ditolak</string>
+    <string name="x_new_order"><b>%1$d</b> Pesanan Baru</string>
+    <string name="x_approved_orders"><b>%1$d</b> Pesanan Disetujui</string>
+    <string name="x_shipped_orders"><b>%1$d</b> Pesanan Terkirim</string>
+    <string name="orders">Pesanan</string>
+    <string name="seller_orders">Pesanan Penjual</string>
+    <string name="seller_products">Produk Penjual</string>
+    <string name="title">Judul</string>
+    <string name="description">Rincian Produk</string>
+    <string name="add_review">Tambah Ulasan</string>
+    <string name="product">Produk</string>
+    <string name="send">Kirim</string>
+    <string name="open_a_new_shop">Buka Toko Baru</string>
+    <string name="no_products_still_added_by_the_seller">Belum ada Produk yang Ditambahkan Penjual</string>
+    <string name="payments">Pembayaran</string>
+    <string name="x_requested_payments"><b>%1$d</b> Permintaan</string>
+    <string name="x_to_be_approved_payments"><b>%1$d</b> Menunggu disetujui</string>
+    <string name="x_approved_payments"><b>%1$d</b> Disetujui</string>
+
+</resources>
+

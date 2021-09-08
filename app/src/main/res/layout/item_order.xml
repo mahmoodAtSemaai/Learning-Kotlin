@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+LAYOUT USED FOR THE NEW DESIGN OF WEBKUL STORE APPLICATION
+-->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import
+            alias="View"
+            type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.customer.order.OrderData" />
+
+        <variable
+            name="position"
+            type="int" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.customer.OrderItemHandler" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackground"
+        android:onClick="@{()->handler.viewOrderDetail()}"
+        app:cardUseCompatPadding="true">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/spacing_tiny"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_generic">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:paddingEnd="@dimen/spacing_generic"
+                    android:paddingRight="@dimen/spacing_generic"
+                    android:text="@string/order_no"
+                    tools:ignore="RtlSymmetry" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:paddingEnd="@dimen/spacing_generic"
+                    android:paddingLeft="@dimen/spacing_generic"
+                    android:paddingRight="@dimen/spacing_generic"
+                    android:paddingStart="@dimen/spacing_generic"
+                    android:text="@{data.name}"
+                    tools:text="123456789" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:paddingEnd="@dimen/spacing_generic"
+                    android:paddingRight="@dimen/spacing_generic"
+                    android:text="@string/date"
+                    tools:ignore="RtlSymmetry" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:paddingEnd="@dimen/spacing_generic"
+                    android:paddingLeft="@dimen/spacing_generic"
+                    android:paddingRight="@dimen/spacing_generic"
+                    android:paddingStart="@dimen/spacing_generic"
+                    android:text="@{data.createDate}"
+                    tools:text="10 March 2017" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:paddingEnd="@dimen/spacing_generic"
+                    android:paddingRight="@dimen/spacing_generic"
+                    android:text="@string/order_total"
+                    tools:ignore="RtlSymmetry" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:paddingEnd="@dimen/spacing_generic"
+                    android:paddingLeft="@dimen/spacing_generic"
+                    android:paddingRight="@dimen/spacing_generic"
+                    android:paddingStart="@dimen/spacing_generic"
+                    android:text="@{data.amountTotal}"
+                    tools:text="$500.00" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:paddingEnd="@dimen/spacing_generic"
+                    android:paddingRight="@dimen/spacing_generic"
+                    android:text="@string/status"
+                    tools:ignore="RtlSymmetry" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:paddingEnd="@dimen/spacing_generic"
+                    android:paddingLeft="@dimen/spacing_generic"
+                    android:paddingRight="@dimen/spacing_generic"
+                    android:paddingStart="@dimen/spacing_generic"
+                    android:text="@{data.status}"
+                    android:textStyle="italic"
+                    tools:text="Pending" />
+
+
+            </TableRow>
+
+
+        </TableLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+</layout>
+

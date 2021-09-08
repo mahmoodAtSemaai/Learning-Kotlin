@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="title"
+            type="String" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?android:attr/actionBarSize"
+                    android:background="@android:color/transparent"
+                    android:elevation="@dimen/toolbar_elevation_generic"
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                    app:navigationIcon="@drawable/ic_vector_chevron_left_white_24dp"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:title="@{title}"
+                    app:titleTextAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+                    app:titleTextColor="@color/white_50"
+                    tools:targetApi="lollipop"
+                    tools:title="Fashion Store" />
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/sub_category_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="LinearLayoutManager"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <com.webkul.mobikul.odoo.custom.MaterialSearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/custom_progress_drawable"
+            android:fitsSystemWindows="true"
+            android:visibility="gone"
+            tools:visibility="gone" />
+
+    </FrameLayout>
+</layout>

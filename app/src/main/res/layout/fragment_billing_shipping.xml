@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import
+            alias="View"
+            type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.customer.address.MyAddressesResponse" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.checkout.BillingShippingFragmentHandler" />
+    </data>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/background">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_marginBottom="@{@dimen/button_height_generic + @dimen/spacing_generic}"
+            tools:layout_marginBottom="56dp">
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_generic">
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_generic"
+                    android:text="@string/billing_and_shipping_address"
+                    android:textAllCaps="true"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_generic"
+                    android:text="@string/checkout_subheading_address"
+                    android:textColor="?android:attr/textColorSecondary" />
+
+                <!--BILLING ADDRESS-->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_generic">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_generic">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/appCompatTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/billing_address"
+                            android:textStyle="bold" />
+
+                        <View
+                            style="@style/DividerHorizontal"
+                            android:layout_marginBottom="@dimen/spacing_generic"
+                            android:layout_marginTop="@dimen/spacing_generic" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/appCompatTextView2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_generic"
+                            android:text="@{data.addresses.get(0).displayName}"
+                            tools:text="@string/dummy_address" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{()->handler.editBillingAddress()}"
+                            android:paddingBottom="@dimen/spacing_generic"
+                            android:paddingTop="@dimen/spacing_generic"
+                            android:text="@string/edit_billing_address"
+                            android:textColor="?colorAccent"
+                            app:underline="@{true}" />
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.cardview.widget.CardView>
+
+                <!--SHIPPING ADDRESS-->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_generic">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_generic">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ship_to_this_address"
+                            android:textStyle="bold" />
+
+                        <View
+                            style="@style/DividerHorizontal"
+                            android:layout_marginBottom="@dimen/spacing_generic"
+                            android:layout_marginTop="@dimen/spacing_generic" />
+
+                        <!--android:selectedItemPosition="@={data.selectedAddressPosition}"-->
+                        <!--suppress AndroidUnknownAttribute -->
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/shipping_address_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_generic" />
+
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/spacing_generic"
+                                android:layout_marginRight="@dimen/spacing_generic"
+                                android:onClick="@{()->handler.editShippingAddress()}"
+                                android:paddingBottom="@dimen/spacing_generic"
+                                android:paddingTop="@dimen/spacing_generic"
+                                android:text="@string/edit_shipping_address"
+                                android:textColor="?colorAccent"
+                                app:underline="@{true}" />
+
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/spacing_generic"
+                                android:layout_marginStart="@dimen/spacing_generic"
+                                android:onClick="@{()->handler.addNewAddress()}"
+                                android:paddingBottom="@dimen/spacing_generic"
+                                android:paddingTop="@dimen/spacing_generic"
+                                android:text="@string/add_new_address"
+                                android:textColor="?colorAccent"
+                                app:underline="@{true}" />
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.cardview.widget.CardView>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/custom_progress_drawable"
+            android:indeterminate="true"
+            app:visibility="@{data == null}" />
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@android:color/white"
+            app:contentPadding="@dimen/spacing_generic">
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height_generic"
+                android:onClick="@{() -> handler.loadShippingOrPaymentMethods()}"
+                android:text="@string/continue_"
+                android:textAllCaps="true" />
+
+        </androidx.cardview.widget.CardView>
+
+    </FrameLayout>
+
+
+</layout>

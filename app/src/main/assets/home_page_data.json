@@ -1,0 +1,481 @@
+{
+  "TermsAndConditions": true,
+  "categories": [
+    {
+      "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/1/banner?unique=20190711105943",
+      "children": [],
+      "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/1/icon?unique=20190711105943",
+      "category_id": 1,
+      "name": "Laptops"
+    },
+    {
+      "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/2/banner?unique=20190711105943",
+      "children": [
+        {
+          "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/3/banner?unique=20190711105943",
+          "children": [],
+          "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/3/icon?unique=20190711105943",
+          "category_id": 3,
+          "name": "Computer all-in-one"
+        }
+      ],
+      "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/2/icon?unique=20190711105943",
+      "category_id": 2,
+      "name": "Computers"
+    },
+    {
+      "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/5/banner?unique=20190711105943",
+      "children": [
+        {
+          "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/6/banner?unique=20190711105943",
+          "children": [],
+          "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/6/icon?unique=20190711105943",
+          "category_id": 6,
+          "name": "External Hard Drive"
+        },
+        {
+          "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/7/banner?unique=20190711105943",
+          "children": [],
+          "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/7/icon?unique=20190711105943",
+          "category_id": 7,
+          "name": "Headset"
+        },
+        {
+          "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/8/banner?unique=20190711105943",
+          "children": [],
+          "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/8/icon?unique=20190711105943",
+          "category_id": 8,
+          "name": "Keyboard / Mouse"
+        },
+        {
+          "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/11/banner?unique=20190711105943",
+          "children": [],
+          "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/11/icon?unique=20190711105943",
+          "category_id": 11,
+          "name": "Screen"
+        },
+        {
+          "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/12/banner?unique=20190711105943",
+          "children": [],
+          "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/12/icon?unique=20190711105943",
+          "category_id": 12,
+          "name": "Software"
+        },
+        {
+          "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/13/banner?unique=20190711105943",
+          "children": [],
+          "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/13/icon?unique=20190711105943",
+          "category_id": 13,
+          "name": "Speakers"
+        },
+        {
+          "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/21/banner?unique=20190711105943",
+          "children": [],
+          "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/21/icon?unique=20190711105943",
+          "category_id": 21,
+          "name": "Cameras"
+        },
+        {
+          "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/24/banner?unique=20190711105943",
+          "children": [],
+          "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/24/icon?unique=20190711105943",
+          "category_id": 24,
+          "name": "Headphones"
+        },
+        {
+          "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/25/banner?unique=20190711105943",
+          "children": [],
+          "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/25/icon?unique=20190711105943",
+          "category_id": 25,
+          "name": "Phones"
+        }
+      ],
+      "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/5/icon?unique=20190711105943",
+      "category_id": 5,
+      "name": "Devices"
+    },
+    {
+      "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/29/banner?unique=20190104132810",
+      "children": [
+        {
+          "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/35/banner?unique=20180913110936",
+          "children": [
+            {
+              "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/23/banner?unique=20180913111037",
+              "children": [],
+              "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/23/icon?unique=20180913111037",
+              "category_id": 23,
+              "name": "Glasses"
+            }
+          ],
+          "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/35/icon?unique=20180913110936",
+          "category_id": 35,
+          "name": "Eye Wear"
+        },
+        {
+          "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/36/banner?unique=20180913111349",
+          "children": [
+            {
+              "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/18/banner?unique=20180913111458",
+              "children": [],
+              "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/18/icon?unique=20180913111458",
+              "category_id": 18,
+              "name": "Necklace"
+            }
+          ],
+          "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/36/icon?unique=20180913111349",
+          "category_id": 36,
+          "name": "jewellery"
+        }
+      ],
+      "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/29/icon?unique=20190104132810",
+      "category_id": 29,
+      "name": "Accessories"
+    },
+    {
+      "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/30/banner?unique=20190104132816",
+      "children": [],
+      "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/30/icon?unique=20190104132816",
+      "category_id": 30,
+      "name": "Electronics"
+    },
+    {
+      "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/31/banner?unique=20180911061027",
+      "children": [
+        {
+          "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/19/banner?unique=20180913112141",
+          "children": [],
+          "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/19/icon?unique=20180913112141",
+          "category_id": 19,
+          "name": "Books"
+        },
+        {
+          "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/22/banner?unique=20180913112157",
+          "children": [],
+          "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/22/icon?unique=20180913112157",
+          "category_id": 22,
+          "name": "Furnitures"
+        }
+      ],
+      "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/31/icon?unique=20180911061027",
+      "category_id": 31,
+      "name": "Home & Decor"
+    },
+    {
+      "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/32/banner?unique=20190104132818",
+      "children": [
+        {
+          "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/39/banner?unique=20180913112321",
+          "children": [],
+          "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/39/icon?unique=20180913112321",
+          "category_id": 39,
+          "name": "Blazers"
+        },
+        {
+          "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/41/banner?unique=20180913112357",
+          "children": [],
+          "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/41/icon?unique=20180913112357",
+          "category_id": 41,
+          "name": "Winter"
+        }
+      ],
+      "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/32/icon?unique=20190104132818",
+      "category_id": 32,
+      "name": "Men"
+    },
+    {
+      "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/46/banner?unique=20190104132822",
+      "children": [],
+      "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/46/icon?unique=20190104132822",
+      "category_id": 46,
+      "name": "Sale"
+    },
+    {
+      "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/34/banner?unique=20180911060923",
+      "children": [],
+      "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/34/icon?unique=20180911060923",
+      "category_id": 34,
+      "name": "VIP"
+    },
+    {
+      "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/33/banner?unique=20190104132827",
+      "children": [
+        {
+          "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/42/banner?unique=20180913112709",
+          "children": [],
+          "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/42/icon?unique=20180913112709",
+          "category_id": 42,
+          "name": "Dresses & Skirts"
+        },
+        {
+          "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/43/banner?unique=20180913112902",
+          "children": [],
+          "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/43/icon?unique=20180913112902",
+          "category_id": 43,
+          "name": "Tops & blouses"
+        },
+        {
+          "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/17/banner?unique=20180913112933",
+          "children": [],
+          "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/17/icon?unique=20180913112933",
+          "category_id": 17,
+          "name": "Bags"
+        }
+      ],
+      "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/33/icon?unique=20190104132827",
+      "category_id": 33,
+      "name": "Women"
+    },
+    {
+      "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/15/banner?unique=20190711105943",
+      "children": [],
+      "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/15/icon?unique=20190711105943",
+      "category_id": 15,
+      "name": "Components"
+    },
+    {
+      "banner": "http://demo.webkul.com:8069/web/image/mobikul.category/16/banner?unique=20190711105943",
+      "children": [],
+      "icon": "http://demo.webkul.com:8069/web/image/mobikul.category/16/icon?unique=20190711105943",
+      "category_id": 16,
+      "name": "Services"
+    }
+  ],
+  "itemsPerPage": 10,
+  "pricelist": 4,
+  "featuredCategories": [
+    {
+      "categoryName": "Accessories",
+      "url": "http://demo.webkul.com:8069/web/image/mobikul.category/29/icon?unique=20190104132810",
+      "categoryId": 29
+    },
+    {
+      "categoryName": "Electronics",
+      "url": "http://demo.webkul.com:8069/web/image/mobikul.category/30/icon?unique=20190104132816",
+      "categoryId": 30
+    },
+    {
+      "categoryName": "Men",
+      "url": "http://demo.webkul.com:8069/web/image/mobikul.category/32/icon?unique=20190104132818",
+      "categoryId": 32
+    },
+    {
+      "categoryName": "Sale",
+      "url": "http://demo.webkul.com:8069/web/image/mobikul.category/46/icon?unique=20190104132822",
+      "categoryId": 46
+    },
+    {
+      "categoryName": "Women",
+      "url": "http://demo.webkul.com:8069/web/image/mobikul.category/33/icon?unique=20190104132827",
+      "categoryId": 33
+    }
+  ],
+  "message": "Login successfully.",
+  "allLanguages": [
+    [
+      "ar_SY",
+      "Arabic / \u0627\u0644\u0652\u0639\u064e\u0631\u064e\u0628\u064a\u0651\u0629"
+    ],
+    [
+      "en_US",
+      "English"
+    ],
+    [
+      "fr_FR",
+      "French / Fran\u00e7ais"
+    ]
+  ],
+  "productSliders": [
+    {
+      "slider_mode": "fixed",
+      "url": "/mobikul/sliderProducts/2",
+      "title": "Deal of the day",
+      "product_img_position": "center",
+      "products": [
+        {
+          "templateId": 107,
+          "productId": 111,
+          "thumbNail": "http://demo.webkul.com:8069/web/image/product.template/107/image?unique=20190729093841",
+          "productCount": 1,
+          "priceUnit": "39.24\u20ac",
+          "description": "",
+          "priceReduce": "",
+          "name": "Bluetooth Speakers"
+        },
+        {
+          "templateId": 106,
+          "productId": 110,
+          "thumbNail": "http://demo.webkul.com:8069/web/image/product.template/106/image?unique=20190729093951",
+          "productCount": 1,
+          "priceUnit": "653.41\u20ac",
+          "description": "",
+          "priceReduce": "",
+          "name": "iPhone X"
+        },
+        {
+          "templateId": 10,
+          "productId": 10,
+          "thumbNail": "http://demo.webkul.com:8069/web/image/product.template/10/image?unique=20190711105932",
+          "productCount": 3,
+          "priceUnit": "490.55\u20ac",
+          "description": "7.9\u2011inch (diagonal) LED-backlit, 128Gb\nDual-core A5 with quad-core graphics\nFaceTime HD Camera, 1.2 MP Photos",
+          "priceReduce": "",
+          "name": "iPad Retina Display"
+        }
+      ],
+      "item_display_limit": 5
+    },
+    {
+      "slider_mode": "fixed",
+      "url": "/mobikul/sliderProducts/3",
+      "title": "New ",
+      "product_img_position": "center",
+      "products": [
+        {
+          "templateId": 17,
+          "productId": 20,
+          "thumbNail": "http://demo.webkul.com:8069/web/image/product.template/17/image?unique=20190711105932",
+          "productCount": 1,
+          "priceUnit": "1,176.66\u20ac",
+          "description": "2.7GHz quad-core Intel Core i5\n                Turbo Boost up to 3.2GHz\n                8GB (two 4GB) memory\n                1TB hard drive\n                Intel Iris Pro graphics\n            ",
+          "priceReduce": "",
+          "name": "iMac"
+        },
+        {
+          "templateId": 20,
+          "productId": 23,
+          "thumbNail": "http://demo.webkul.com:8069/web/image/product.template/20/image?unique=20190711105932",
+          "productCount": 2,
+          "priceUnit": "10.79\u20ac",
+          "description": "Height: 76.5 mm\nWidth:  39.6 mm\nDepth:  5.4 mm\nWeight: 31 grams",
+          "priceReduce": "",
+          "name": "iPod"
+        },
+        {
+          "templateId": 10,
+          "productId": 10,
+          "thumbNail": "http://demo.webkul.com:8069/web/image/product.template/10/image?unique=20190711105932",
+          "productCount": 3,
+          "priceUnit": "490.55\u20ac",
+          "description": "7.9\u2011inch (diagonal) LED-backlit, 128Gb\nDual-core A5 with quad-core graphics\nFaceTime HD Camera, 1.2 MP Photos",
+          "priceReduce": "",
+          "name": "iPad Retina Display"
+        }
+      ],
+      "item_display_limit": 5
+    },
+    {
+      "slider_mode": "default",
+      "url": "/mobikul/sliderProducts/1",
+      "title": "Discount for You",
+      "product_img_position": "center",
+      "products": [
+        {
+          "templateId": 117,
+          "productId": 117,
+          "thumbNail": "http://demo.webkul.com:8069/web/image/product.template/117/image?unique=20190729095432",
+          "productCount": 1,
+          "priceUnit": "267.51\u20ac",
+          "description": "",
+          "priceReduce": "",
+          "name": "Cadet Blue Girls T-Shirt"
+        },
+        {
+          "templateId": 114,
+          "productId": 114,
+          "thumbNail": "http://demo.webkul.com:8069/web/image/product.template/114/image?unique=20190711075504",
+          "productCount": 1,
+          "priceUnit": "0.65\u20ac",
+          "description": "",
+          "priceReduce": "",
+          "name": "bengal gold 22 carat"
+        },
+        {
+          "templateId": 108,
+          "productId": 112,
+          "thumbNail": "http://demo.webkul.com:8069/web/image/product.template/108/image?unique=20180913111627",
+          "productCount": 1,
+          "priceUnit": "784.88\u20ac",
+          "description": "",
+          "priceReduce": "",
+          "name": "Pearl Necklace"
+        },
+        {
+          "templateId": 107,
+          "productId": 111,
+          "thumbNail": "http://demo.webkul.com:8069/web/image/product.template/107/image?unique=20190729093841",
+          "productCount": 1,
+          "priceUnit": "39.24\u20ac",
+          "description": "",
+          "priceReduce": "",
+          "name": "Bluetooth Speakers"
+        },
+        {
+          "templateId": 106,
+          "productId": 110,
+          "thumbNail": "http://demo.webkul.com:8069/web/image/product.template/106/image?unique=20190729093951",
+          "productCount": 1,
+          "priceUnit": "653.41\u20ac",
+          "description": "",
+          "priceReduce": "",
+          "name": "iPhone X"
+        }
+      ],
+      "item_display_limit": 5
+    }
+  ],
+  "bannerImages": [
+    {
+      "url": "http://demo.webkul.com:8069/web/image/mobikul.banners/3/image?unique=20190711104632",
+      "bannerName": "Home & Decor offers",
+      "bannerType": "product",
+      "id": 114
+    },
+    {
+      "url": "http://demo.webkul.com:8069/web/image/mobikul.banners/2/image?unique=20190104132420",
+      "bannerName": "Hot Deals",
+      "bannerType": "none",
+      "id": ""
+    },
+    {
+      "url": "http://demo.webkul.com:8069/web/image/mobikul.banners/6/image?unique=20190112113618",
+      "bannerName": "Kids ClothesTest",
+      "bannerType": "category",
+      "id": 8
+    },
+    {
+      "url": "http://demo.webkul.com:8069/web/image/mobikul.banners/4/image?unique=20190104132424",
+      "bannerName": "New Arrivals-Men",
+      "bannerType": "category",
+      "id": 32
+    },
+    {
+      "url": "http://demo.webkul.com:8069/web/image/mobikul.banners/5/image?unique=20190104132426",
+      "bannerName": "New Arrival- Women",
+      "bannerType": "category",
+      "id": 33
+    },
+    {
+      "url": "http://demo.webkul.com:8069/web/image/mobikul.banners/1/image?unique=20190104132429",
+      "bannerName": "Product Collection",
+      "bannerType": "category",
+      "id": 30
+    }
+  ],
+  "responseCode": 2,
+  "success": true,
+  "lang": "en_US",
+  "addons": {
+    "website_sale_stock": true,
+    "website_sale_delivery": true,
+    "odoo_marketplace": false,
+    "review": true,
+    "wishlist": true,
+    "email_verification": true,
+    "odoo_gdpr": true
+  },
+  "defaultLanguage": [
+    "en_US",
+    "English"
+  ]
+}

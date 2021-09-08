@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import
+            alias="View"
+            type="android.view.View" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.generic.EmptyFragmentHandler" />
+
+        <variable
+            name="emptyImage"
+            type="int" />
+
+        <variable
+            name="title"
+            type="String" />
+
+        <variable
+            name="subtitle"
+            type="String" />
+
+        <variable
+            name="hideContinueShoppingBtn"
+            type="boolean" />
+
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/activityBackground"
+        android:clickable="true"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            app:srcCompat="@{emptyImage}"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_vector_empty_bag" />
+
+        <!--        <com.airbnb.lottie.LottieAnimationView-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="350dp"-->
+        <!--            app:lottie_autoPlay="true"-->
+        <!--            app:lottie_fileName="lottie_loading.json"-->
+        <!--            app:lottie_loop="true" />-->
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{title}"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/text_color_primary"
+            android:textStyle="bold"
+            tools:text="@string/empty_bag" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/spacing_generic"
+            android:text="@{subtitle}"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/text_color_primary"
+            tools:text="@string/add_item_to_your_bag_now" />
+
+        <androidx.legacy.widget.Space
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_generic"
+            android:onClick="@{()->handler.continueShopping()}"
+            android:padding="@dimen/spacing_normal"
+            android:text="@string/start_shopping"
+            android:textAllCaps="true"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold"
+            android:visibility="@{hideContinueShoppingBtn ? View.GONE : View.VISIBLE}" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</layout>
+

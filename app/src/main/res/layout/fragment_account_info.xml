@@ -1,0 +1,381 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import
+            alias="pref"
+            type="com.webkul.mobikul.odoo.helper.AppSharedPref" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.customer.account.AccountInforData" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.customer.AccountInfoFragmentHandler" />
+    </data>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nested_scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            app:layout_marginBottom="@{@dimen/button_height_generic + @dimen/spacing_generic}">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardUseCompatPadding="true">
+
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/activity_horizontal_margin">
+                        <!--name-->
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_tiny"
+                            android:text="@string/your_name" />
+
+
+                        <com.webkul.mobikul.odoo.custom.NoChangingBackgroundTextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_tiny"
+                            android:gravity="center"
+                            app:error="@{data.nameError}"
+                            app:errorEnabled="@{!data.nameError.empty}"
+                            app:hintEnabled="false">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/name_et"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/selector_edit_text_form_field_bg"
+                                android:hint="@string/enter_your_name"
+                                android:inputType="textPersonName"
+                                android:maxLines="1"
+                                android:padding="@dimen/spacing_generic"
+                                android:text="@={data.name}" />
+
+                        </com.webkul.mobikul.odoo.custom.NoChangingBackgroundTextInputLayout>
+
+                        <!--Change Password-->
+
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_tiny"
+                            android:gravity="center_vertical">
+
+                            <androidx.appcompat.widget.SwitchCompat
+                                android:id="@+id/change_password"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/spacing_generic"
+                                android:checked="@={data.changePassword}" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/change_password" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:visibility="@{data.changePassword}">
+
+
+                            <!--NEW PASSWORD-->
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/spacing_tiny"
+                                android:text="@string/new_password" />
+
+
+                            <com.webkul.mobikul.odoo.custom.NoChangingBackgroundTextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/spacing_tiny"
+                                android:gravity="center"
+                                app:error="@{data.newPasswordError}"
+                                app:errorEnabled="@{!data.newPasswordError.empty}"
+                                app:hintEnabled="false"
+                                app:passwordToggleEnabled="true">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/new_password_et"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/selector_edit_text_form_field_bg"
+                                    android:hint="@string/enter_your_password"
+                                    android:inputType="textPassword"
+                                    android:maxLines="1"
+                                    android:padding="@dimen/spacing_generic"
+                                    android:text="@={data.newPassword}" />
+
+                            </com.webkul.mobikul.odoo.custom.NoChangingBackgroundTextInputLayout>
+
+
+                            <!--CONFIRM NEW PASSWORD-->
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/spacing_tiny"
+                                android:text="@string/confirm_password" />
+
+
+                            <com.webkul.mobikul.odoo.custom.NoChangingBackgroundTextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/spacing_tiny"
+                                android:gravity="center"
+                                app:error="@{data.confirmNewPasswordError}"
+                                app:errorEnabled="@{!data.confirmNewPasswordError.empty}"
+                                app:hintEnabled="false"
+                                app:passwordToggleEnabled="true">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/confirmpassword_et"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/selector_edit_text_form_field_bg"
+                                    android:hint="@string/enter_confirm_password"
+                                    android:inputType="textPassword"
+                                    android:maxLines="1"
+                                    android:padding="@dimen/spacing_generic"
+                                    android:text="@={data.confirmNewPassword}" />
+
+                            </com.webkul.mobikul.odoo.custom.NoChangingBackgroundTextInputLayout>
+
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{pref.isEmailVerified(context) &amp;&amp; pref.isGdprEnable(context)? View.VISIBLE : View.GONE}"
+                    app:cardUseCompatPadding="true">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/activity_horizontal_margin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/deactivate_account" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_generic"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:padding="@dimen/spacing_tiny"
+                                android:text="@string/deactivate_temporary" />
+
+                            <Button
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{() -> handler.onClickDeactivate(data.temorary)}"
+                                android:text="@string/deactivate" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_tiny"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:padding="@dimen/spacing_tiny"
+                                android:text="@string/deactivate_permanent" />
+
+                            <Button
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{() -> handler.onClickDeactivate(data.permanent)}"
+                                android:text="@string/deactivate" />
+
+                        </LinearLayout>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{pref.isEmailVerified(context) &amp;&amp; pref.isGdprEnable(context)? View.VISIBLE : View.GONE}"
+                    app:cardUseCompatPadding="true">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/activity_horizontal_margin">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_generic"
+                            android:onClick="@{() -> handler.onClickDownload()}"
+                            android:text="@string/download_data" />
+
+
+                        <TextView
+                            android:id="@+id/downloadStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_generic"
+                            android:maxLines="3"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/download"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_generic"
+                            android:drawableRight="@drawable/ic_vector_download_grey_24dp"
+                            android:onClick="@{() -> handler.onClickDownloadData()}"
+                            android:text="@string/download"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/downloadRequest"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_generic"
+                            android:drawableRight="@drawable/ic_vector_download_grey_24dp"
+                            android:onClick="@{() -> handler.onClickDownloadRequest()}"
+                            android:text="@string/download_request"
+                            android:visibility="gone" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.cardview.widget.CardView>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.core.widget.NestedScrollView>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/email_verification_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nested_scroll_view"
+            android:background="@color/com_facebook_button_background_color"
+            android:orientation="vertical"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:visibility="@{pref.isEmailVerified(context) ? View.GONE : View.VISIBLE}">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_tiny"
+                android:text="@string/email_activation_text"
+                android:textColor="@android:color/white" />
+
+            <!--<androidx.appcompat.widget.AppCompatTextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:layout_marginBottom="@dimen/spacing_tiny"-->
+            <!--android:text="@string/your_email"/>-->
+
+
+            <com.webkul.mobikul.odoo.custom.NoChangingBackgroundTextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:gravity="center">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/selector_edit_text_form_field_bg"
+                    android:clickable="false"
+                    android:enabled="false"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:padding="@dimen/spacing_generic"
+                    android:text="@{pref.getCustomerEmail(context)}" />
+
+            </com.webkul.mobikul.odoo.custom.NoChangingBackgroundTextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height_generic"
+                android:layout_gravity="bottom"
+                android:onClick="@{() -> handler.emailVerification()}"
+                android:text="@string/resend_verification_link"
+                android:textAllCaps="true"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/save_button_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/white"
+            app:contentPadding="@dimen/spacing_generic">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height_generic"
+                android:layout_gravity="bottom"
+                android:onClick="@{() -> handler.saveAccountInfo()}"
+                android:text="@string/save"
+                android:textAllCaps="true"
+                android:textStyle="bold" />
+
+
+        </androidx.cardview.widget.CardView>
+
+
+    </RelativeLayout>
+
+
+</layout>

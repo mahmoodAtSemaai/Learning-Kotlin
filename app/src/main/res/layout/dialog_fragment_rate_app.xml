@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+
+        <import type="com.webkul.mobikul.odoo.helper.FontHelper" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.generic.RateAppDialogFragmHandler" />
+
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/activityBackground"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_normal"
+            app:srcCompat="@drawable/ic_vector_rate_app_180dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:gravity="center"
+            android:padding="@dimen/spacing_normal"
+            android:text="@string/how_was_your_experience_with_us"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            app:font="@{FontHelper.FONT_PATH_1}" />
+
+
+        <View style="@style/DividerHorizontal" />
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{()->handler.reviewLater()}"
+                android:padding="@dimen/spacing_normal"
+                android:text="@string/later"
+                android:textAllCaps="true"
+                android:textColor="?colorAccent"
+                android:textStyle="bold" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{()->handler.reviewNow()}"
+                android:padding="@dimen/spacing_normal"
+                android:text="@string/rate_app"
+                android:textAllCaps="true"
+                android:textColor="?colorAccent"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</layout>

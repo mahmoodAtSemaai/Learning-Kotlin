@@ -1,0 +1,29 @@
+POST https://www.shoppingbrasaqui.com.br/mobikulhttp/checkout/placeorder
+
+storeId:27
+customerToken:lg2q1b29h7bowp62zy43mbb28bd4cpvu
+quoteId:0
+paymentMethod:mppagsegurocc
+billingData:{"addressId":"383","newAddress":{},"sameAsShipping":"1"}
+method:customer
+token:dTrPvQIBQh68P4lzerlWUd:APA91bGhhiVPuc-YJeV_mbYLQU9dZWAQTa9rAFuG_MIBzMbE4NfJxm91rycyM05tf6vXoQSVlvtiTbiGFYWzGMbtQnOZDDJvZ1mthjF6uu2Ep4LgU8TyoMvz0goWXBi9HQfoqsDpHWkJ
+purchasePoint:android
+os:android
+multi_customship:0.0
+selected_shipping:[]
+cc_owner_name:simple card
+cc_owner_cpf:05989318642
+cc_area_code:99
+cc_phone_number:999999999
+cc_owner_birthdate:03/06/1994
+cc_cid:123
+cc_number:4111111111111111
+cc_type:visa
+cc_exp_month:12
+cc_exp_year:2030
+sender_hash:e8d30b03fa7944fc867513ce75dfba4e36544419d1fa689b027d5215ed702c22
+pagSessionId:3e35e2540315413b871dcf5b38e5b9c6
+installmentjson:{"formattedInstallmentAmount":"R$200,00","formattedTotalAmount":"R$200,00","installmentAmount":"200","interestFree":"true","quantity":"1","totalAmount":"200","translatedInterestFree":"sim"}
+
+Response -
+{"success":false,"message":"Could not resolve host: ws.pagseguro.uol.com.br","cartCount":2}

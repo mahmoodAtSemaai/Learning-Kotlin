@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <!--=============================================================================================================================================================
+                                                        Global/General/Base dimensions
+    =============================================================================================================================================================-->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="contextual_icon_dimens">48dp</dimen>
+
+    <!--=============================================================================================================================================================
+                                                        text dimensions
+    =============================================================================================================================================================-->
+    <dimen name="text_size_min_nucleus">10sp</dimen><!--SMALLEST TEXT SIZE-->
+    <dimen name="text_size_min">12sp</dimen>
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_nav_bar">16sp</dimen>
+    <dimen name="text_size_medium">18sp</dimen>
+    <dimen name="text_size_large">22sp</dimen>
+    <!--overriding twitter login btn text size-->
+    <dimen name="tw__login_btn_text_size">18sp</dimen>
+    <dimen name="badge_text_size">13sp</dimen>
+
+    <!--=============================================================================================================================================================
+                                                        Spacings/margin/padding/elevation dimensions
+    =============================================================================================================================================================-->
+
+
+    <!-- typical spacing between two views -->
+    <dimen name="spacing_normal">16dp</dimen>
+    <dimen name="spacing_generic">8dp</dimen>
+    <dimen name="spacing_tiny">4dp</dimen>
+
+    <!--GENERIC DIMENSIONS FOR THE TOOLBAR ELEVATION-->
+    <dimen name="toolbar_elevation_generic">4dp</dimen>
+
+
+    <!--=============================================================================================================================================================
+                                                    Background dimensions
+    =============================================================================================================================================================-->
+
+    <!--Product image size-->
+    <dimen name="product_image_tiny">50dp</dimen>
+    <dimen name="product_image_small">100dp</dimen>
+    <dimen name="product_image_generic">150dp</dimen>
+    <dimen name="product_image_large">300dp</dimen>
+
+    <!--Product Container size-->
+    <dimen name="product_container_small">150dp</dimen>
+    <dimen name="product_container_max">500dp</dimen>
+
+    <!--GENERIC BUTTON HEIGHT-->
+    <dimen name="button_height_small">40dp</dimen>
+    <dimen name="button_height_generic">48dp</dimen>
+
+    <!--Profile Pic related dimenstion-->
+    <dimen name="profile_pic_small">64dp</dimen>
+    <dimen name="profile_pic_generic">96dp</dimen>
+
+    <!--Banner related dimensions-->
+    <dimen name="banner_size_small">160dp</dimen>
+    <dimen name="banner_size_generic">200dp</dimen>
+    <dimen name="banner_size_large">256dp</dimen>
+
+    <!--Splash logo-->
+    <dimen name="splash_logo_dimens">150dp</dimen>
+
+    <!--dimens for material search view-->
+    <dimen name="search_icon_padding">12dp</dimen>
+    <dimen name="search_view_text_padding">8dp</dimen>
+
+    <!--=============================================================================================================================================================
+                                                    Height/Width dimensions
+    =============================================================================================================================================================-->
+
+    <!--DIMENSION OF TAB LAYOUT USED FOR REPRESENTING DOTS SWITCHER..-->
+    <dimen name="tab_dot_switcher_height">20dp</dimen>
+
+    <dimen name="dialog_min_width">300dp</dimen>
+    <dimen name="dialog_min_height">300dp</dimen>
+
+    <dimen name="spinner_min_height">36dp</dimen>
+
+
+    <dimen name="min_qty_width">60dp</dimen>
+
+    <dimen name="max_qty_dialog_height">200dp</dimen>
+    <dimen name="button_margin">16dp</dimen>
+
+</resources>

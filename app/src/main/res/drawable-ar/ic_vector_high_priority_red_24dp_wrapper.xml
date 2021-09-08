@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_vector_account_info_grey_24dp" />
+    <item
+        android:bottom="16dp"
+        android:drawable="@drawable/ic_vector_high_priority_red_24dp"
+        android:left="0dp"
+        android:start="0dp"
+        android:right="16dp"
+        android:end="16dp"
+        android:top="0dp"
+
+        />
+</layer-list>

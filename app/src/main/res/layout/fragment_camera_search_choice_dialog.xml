@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Webkul Software.
+  ~
+  ~ Kotlin
+  ~
+  ~ @author Webkul <support@webkul.com>
+  ~ @category Webkul
+  ~ @package com.webkul.mobikul
+  ~ @copyright 2010-2018 Webkul Software Private Limited (https://webkul.com)
+  ~ @license https://store.webkul.com/license.html ASL Licence
+  ~ @link https://store.webkul.com/license.html
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.extra.search.CameraSearchHandler" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardBackgroundColor="@color/activityBackground"
+        app:cardCornerRadius="8dp">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_normal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                fontPath="fonts/Montserrat-SemiBold.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/search_by_scanning"
+                android:textColor="@color/text_color_Secondary"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold"
+                tools:text="Search By Scanning" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                fontPath="fonts/Montserrat-SemiBold.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_normal"
+                android:layout_marginTop="@dimen/spacing_generic"
+                android:drawablePadding="@dimen/spacing_normal"
+                android:drawableStart="@drawable/ic_scan_as_text_wrapper"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:onClick="@{()->handler.onClickScanAsText()}"
+                android:paddingBottom="@dimen/spacing_normal"
+                android:paddingTop="@dimen/spacing_normal"
+                android:text="@string/scan_as_text"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                fontPath="fonts/Montserrat-SemiBold.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/spacing_normal"
+                android:drawableStart="@drawable/ic_scan_as_product_wrapper"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:onClick="@{()->handler.onClickScanAsProduct()}"
+                android:paddingBottom="@dimen/spacing_normal"
+                android:paddingTop="@dimen/spacing_normal"
+                android:text="@string/scan_as_image"
+                android:textColor="@color/text_color_primary"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold"
+                />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.cardview.widget.CardView>
+</layout>

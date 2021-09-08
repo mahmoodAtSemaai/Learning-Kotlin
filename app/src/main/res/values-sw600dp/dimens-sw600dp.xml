@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Splash logo-->
+    <dimen name="splash_logo_dimens">250dp</dimen>
+    <dimen name="profile_pic_generic">120dp</dimen>
+    <dimen name="banner_size_generic">300dp</dimen>
+    <dimen name="product_image_large">380dp</dimen>
+
+</resources>

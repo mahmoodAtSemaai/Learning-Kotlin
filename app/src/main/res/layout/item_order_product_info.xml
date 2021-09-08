@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <data>
+
+        <import type="com.webkul.mobikul.odoo.helper.ImageHelper.ImageType" />
+
+        <import
+            alias="View"
+            type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.customer.order.OrderItem" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.customer.OrderProductInfoItemHandler" />
+
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:onClick="@{()->handler.viewProduct()}"
+        android:padding="@dimen/spacing_generic">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/product_image_small"
+            android:layout_height="@dimen/product_image_small"
+            android:layout_margin="@dimen/spacing_generic"
+            android:scaleType="centerInside"
+            app:imageType="@{ImageType.PRODUCT_SMALL}"
+            app:imageUrl="@{data.thumbNail}"
+            app:placeholder="@{@drawable/ic_vector_odoo_placeholder_grey400_48dp}"
+            app:srcCompat="@drawable/ic_vector_odoo_placeholder_grey400_48dp"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_generic">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{data.productName}"
+                tools:text="[E-COM12] iPod (16 GB)\nHeight: 76.5 mm\nWidth:  39.6 mm\nDepth:  5.4 mm\nWeight: 31 grams" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/state_x(data.state)}"
+                tools:text="State: draft" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/unit_price_x(data.priceUnit)}"
+                tools:text="price_unit : 16.5" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/qty_x(data.qty)}"
+                tools:text="quantity : 1.0 Unit(s)" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/discount_x(data.discount)}"
+                app:visibility="@{!data.discount.empty}"
+                tools:text="discount : 0" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/tax_x(data.priceTax)}"
+                tools:text="price_tax : 0" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/price_total_x(data.priceTotal)}"
+                tools:text="price_total : 16.5" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

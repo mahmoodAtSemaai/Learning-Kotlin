@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        icon="@drawable/ic_vector_home_black_24dp"
+        id="@+id/navigation_home"
+        title="@string/home" />
+    <tab
+        icon="@drawable/ic_vector_notification_grey600_24dp"
+        id="@+id/navigation_notification"
+        title="@string/notification" />
+    <tab
+        icon="@drawable/ic_vector_search_white_24dp"
+        id="@+id/navigation_search"
+        title="@string/search" />
+
+    <tab
+        icon="@drawable/trythis"
+        id="@+id/navigation_account"
+        title="@string/account" />
+
+</tabs>

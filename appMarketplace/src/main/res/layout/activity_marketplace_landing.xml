@@ -1,0 +1,1927 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import
+            alias="View"
+            type="android.view.View" />
+
+        <import type="com.bumptech.glide.load.engine.DiskCacheStrategy" />
+
+        <variable
+            name="title"
+            type="String"/>
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.marketplace.odoo.model.MarketplaceLandingPageData" />
+
+        <variable
+            name="showSellerLoginButton"
+            type="Boolean" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.marketplace.odoo.handler.MarketplaceLandingActivityHandler" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.webkul.mobikulmp.activity.MarketplaceLandingActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?android:attr/actionBarSize"
+                    android:background="@android:color/transparent"
+                    android:elevation="@dimen/toolbar_elevation_generic"
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                    app:navigationIcon="@drawable/ic_vector_chevron_left_white_24dp"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:title="@{title}"
+                    app:titleTextAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+                    app:titleTextColor="@color/tw__solid_white"
+                    tools:targetApi="lollipop"
+                    tools:title="Fashion Store" />
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="@{data == null? View.GONE : View.VISIBLE}">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <!--<com.facebook.shimmer.ShimmerFrameLayout-->
+                        <!--android:id="@+id/shimmer_container"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center">-->
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/banner_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/banner_size_generic"
+                            android:alpha="0.8"
+                            app:diskCacheStrategy="@{DiskCacheStrategy.NONE}"
+                            app:imageUrl="@{data.banner}"
+                            app:skipMemoryCache="@{true}" />
+
+                        <!--<ImageView-->
+                        <!--android:id="@+id/banner_image"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="@dimen/banner_size_generic"-->
+                        <!--android:scaleType="fitXY"-->
+                        <!--app:imageUrl="@{}"-->
+                        <!--tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />-->
+
+                        <!--</com.facebook.shimmer.ShimmerFrameLayout>-->
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:background="@color/black_alpha_20"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1.5"
+                                android:gravity="center"
+                                android:padding="@dimen/activity_vertical_margin"
+                                android:text="@{data.heading}"
+                                android:textColor="@android:color/white"
+                                tools:text="Lorem ipsum dolor sit amet, consectetur" />
+
+                            <Button
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_margin="@dimen/spacing_generic"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:onClick="@{()->handler.onClickOpenAShop()}"
+                                android:text="@string/open_a_new_shop"
+                                android:textColor="@android:color/white"
+                                android:visibility="@{showSellerLoginButton ? View.VISIBLE : View.GONE}" />
+
+                            <!--<LinearLayout-->
+                            <!--android:layout_width="0dp"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:layout_weight="1"-->
+                            <!--android:background="@color/black_alpha_20"-->
+                            <!--android:gravity="center"-->
+                            <!--android:orientation="vertical"-->
+                            <!--android:padding="@dimen/activity_vertical_margin">-->
+
+
+                            <!--<TextView-->
+                            <!--android:id="@+id/textView2"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:clickable="true"-->
+                            <!--android:gravity="center"-->
+                            <!--android:onClick="@{()->handler.onClickOpenYourShop()}"-->
+                            <!--android:text="@{data.layout1.buttonLabel}"-->
+                            <!--android:textAllCaps="true"-->
+                            <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+                            <!--android:textColor="@android:color/white"-->
+                            <!--android:textStyle="bold"-->
+                            <!--app:underline="@{true}"-->
+                            <!--tools:text="Register Now" />-->
+
+                            <!--</LinearLayout>-->
+
+
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+
+                        <!--<androidx.cardview.widget.CardView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--app:cardBackgroundColor="@android:color/white"-->
+                        <!--app:cardUseCompatPadding="true">-->
+
+                        <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:orientation="vertical">-->
+
+                        <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:background="?attr/colorAccent"-->
+                        <!--android:orientation="vertical"-->
+                        <!--android:visibility="@{data.layout1.heading1.empty ? View.GONE : View.VISIBLE}">-->
+
+                        <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:layout_marginLeft="@dimen/spacing_generic"-->
+                        <!--android:layout_marginStart="@dimen/spacing_generic"-->
+                        <!--android:background="@android:color/white"-->
+                        <!--android:padding="@dimen/activity_horizontal_margin"-->
+                        <!--android:text="@{data.layout1.heading1}"-->
+                        <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+                        <!--android:visibility="@{data.layout1.heading1.empty ? View.GONE : View.VISIBLE}"-->
+                        <!--tools:text="Turn Your Passion Into a Business" />-->
+
+                        <!--</LinearLayout>-->
+
+                        <!--&lt;!&ndash;icons layout&ndash;&gt;-->
+
+                        <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginBottom="@dimen/spacing_generic"-->
+                        <!--android:background="@android:color/white"-->
+                        <!--android:orientation="vertical"-->
+                        <!--android:visibility="@{data.layout1.showIcon ? View.VISIBLE : View.GONE}">-->
+
+                        <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:padding="@dimen/spacing_generic">-->
+
+
+                        <!--<de.hdodenhof.circleimageview.CircleImageView-->
+                        <!--android:layout_width="@dimen/profile_pic_small"-->
+                        <!--android:layout_height="@dimen/profile_pic_small"-->
+                        <!--android:layout_gravity="center_vertical"-->
+                        <!--app:civ_border_color="#00000000"-->
+                        <!--app:civ_border_width="1dp"-->
+                        <!--app:imageUrl="@{data.layout1.icon1}"-->
+                        <!--app:placeholder="@{@drawable/place_holder}"-->
+                        <!--tools:ignore="TooDeepLayout"-->
+                        <!--tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />-->
+
+                        <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:layout_marginLeft="@dimen/spacing_generic"-->
+                        <!--android:layout_marginStart="@dimen/spacing_generic"-->
+                        <!--android:gravity="center|start"-->
+                        <!--android:padding="@dimen/activity_horizontal_margin"-->
+                        <!--android:text="@{data.layout1.iconLabel1}"-->
+                        <!--tools:text="Register Yourself" />-->
+
+
+                        <!--</LinearLayout>-->
+
+                        <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:padding="@dimen/spacing_generic">-->
+
+
+                        <!--<de.hdodenhof.circleimageview.CircleImageView-->
+                        <!--android:layout_width="@dimen/profile_pic_small"-->
+                        <!--android:layout_height="@dimen/profile_pic_small"-->
+                        <!--android:layout_gravity="center_vertical"-->
+                        <!--app:civ_border_color="#00000000"-->
+                        <!--app:civ_border_width="1dp"-->
+                        <!--app:imageUrl="@{data.layout1.icon2}"-->
+                        <!--app:placeholder="@{@drawable/place_holder}"-->
+                        <!--tools:src="@drawable/place_holder" />-->
+
+                        <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:layout_marginLeft="@dimen/spacing_generic"-->
+                        <!--android:layout_marginStart="@dimen/spacing_generic"-->
+                        <!--android:gravity="center|start"-->
+                        <!--android:padding="@dimen/activity_horizontal_margin"-->
+                        <!--android:text="@{data.layout1.iconLabel2}"-->
+                        <!--tools:text="Register Yourself" />-->
+
+
+                        <!--</LinearLayout>-->
+
+                        <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:padding="@dimen/spacing_generic">-->
+
+
+                        <!--<de.hdodenhof.circleimageview.CircleImageView-->
+                        <!--android:layout_width="@dimen/profile_pic_small"-->
+                        <!--android:layout_height="@dimen/profile_pic_small"-->
+                        <!--android:layout_gravity="center_vertical"-->
+                        <!--app:civ_border_color="#00000000"-->
+                        <!--app:civ_border_width="1dp"-->
+                        <!--app:imageUrl="@{data.layout1.icon3}"-->
+                        <!--app:placeholder="@{@drawable/place_holder}"-->
+                        <!--tools:src="@drawable/place_holder" />-->
+
+                        <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:layout_marginLeft="@dimen/spacing_generic"-->
+                        <!--android:layout_marginStart="@dimen/spacing_generic"-->
+                        <!--android:gravity="center|start"-->
+                        <!--android:padding="@dimen/activity_horizontal_margin"-->
+                        <!--android:text="@{data.layout1.iconLabel3}"-->
+                        <!--tools:text="Register Yourself" />-->
+
+
+                        <!--</LinearLayout>-->
+
+                        <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:padding="@dimen/spacing_generic">-->
+
+
+                        <!--<de.hdodenhof.circleimageview.CircleImageView-->
+                        <!--android:layout_width="@dimen/profile_pic_small"-->
+                        <!--android:layout_height="@dimen/profile_pic_small"-->
+                        <!--android:layout_gravity="center_vertical"-->
+                        <!--app:civ_border_color="#00000000"-->
+                        <!--app:civ_border_width="1dp"-->
+                        <!--app:imageUrl="@{data.layout1.icon4}"-->
+                        <!--app:placeholder="@{@drawable/place_holder}"-->
+                        <!--tools:src="@drawable/place_holder" />-->
+
+                        <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:layout_marginLeft="@dimen/spacing_generic"-->
+                        <!--android:layout_marginStart="@dimen/spacing_generic"-->
+                        <!--android:gravity="center|start"-->
+                        <!--android:padding="@dimen/activity_horizontal_margin"-->
+                        <!--android:text="@{data.layout1.iconLabel4}"-->
+                        <!--tools:text="Register Yourself" />-->
+
+
+                        <!--</LinearLayout>-->
+
+                        <!--</LinearLayout>-->
+
+                        <!--</LinearLayout>-->
+
+
+                        <!--</androidx.cardview.widget.CardView>-->
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="@dimen/activity_horizontal_margin"
+                            android:text="@string/top_sellers"
+                            android:textAllCaps="true"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textStyle="bold"
+                            android:visibility="@{data.sellersDetail.size() == 0 ? View.GONE : View.VISIBLE}"
+                            tools:text="TOP SELLERS" />
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/best_seller_list_rv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:visibility="@{data.sellersDetail.size() > 0 ? View.VISIBLE : View.GONE}"
+                            app:layoutManager="LinearLayoutManager"
+                            tools:ignore="UnusedAttribute" />
+
+
+                        <!--<androidx.cardview.widget.CardView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--app:cardUseCompatPadding="true">-->
+
+                        <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:background="?attr/colorAccent"-->
+                        <!--android:orientation="vertical"-->
+                        <!--android:padding="@dimen/activity_horizontal_margin">-->
+
+                        <!--<TextView-->
+                        <!--android:id="@+id/textView3"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:gravity="center"-->
+                        <!--android:padding="@dimen/activity_horizontal_margin"-->
+                        <!--android:text="@{data.layout1.heading3}"-->
+                        <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+                        <!--android:textColor="@android:color/white"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:visibility="@{data.layout1.heading3.empty ? View.GONE : View.VISIBLE}"-->
+                        <!--tools:text="More than 500 shop owners have joined us last month" />-->
+
+                        <!--<Button-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:layout_margin="@dimen/spacing_generic"-->
+                        <!--android:background="@drawable/shape_rounded_corners_white_bg_accent_border_1dp"-->
+                        <!--android:onClick="@{()->handler.onClickViewAllSeller()}"-->
+                        <!--android:padding="@dimen/activity_horizontal_margin"-->
+                        <!--android:text="@string/view_all_title"-->
+                        <!--android:textColor="@color/colorAccent"-->
+                        <!--android:textStyle="bold" />-->
+                        <!--</LinearLayout>-->
+
+                        <!--</androidx.cardview.widget.CardView>-->
+
+
+                        <!--underline me-->
+                        <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:gravity="center"-->
+                        <!--android:padding="@dimen/activity_horizontal_margin"-->
+                        <!--android:text="@{data.layout1.heading4}"-->
+                        <!--android:textAllCaps="true"-->
+                        <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:visibility="@{data.layout1.heading4.empty ? View.GONE :View.VISIBLE}"-->
+                        <!--app:underline="@{true}"-->
+                        <!--tools:text="Why to sell with us" />-->
+
+
+                        <!--<androidx.cardview.widget.CardView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:visibility="@{data.layout1.cmsContent.empty ? View.GONE : View.VISIBLE}"-->
+                        <!--app:cardUseCompatPadding="true">-->
+
+                        <!--<WebView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--app:loadData="@{data.layout1.cmsContent}" />-->
+
+                        <!--</androidx.cardview.widget.CardView>-->
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+            <!--<androidx.core.widget.NestedScrollView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:visibility="@{data.pageLayout== 2  ? View.VISIBLE :View.GONE}"-->
+            <!--tools:visibility="gone">-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical"-->
+            <!--android:visibility="@{data.requestSuccessful ? View.VISIBLE :View.GONE}">-->
+
+            <!--<FrameLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:visibility="@{data.layout2.showBanner ? View.VISIBLE : View.GONE}">-->
+
+            <!--<com.facebook.shimmer.ShimmerFrameLayout-->
+            <!--android:id="@+id/shimmer_container_2"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center">-->
+
+            <!--<ImageView-->
+            <!--android:id="@+id/banner_image2"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/banner_size_generic"-->
+            <!--android:scaleType="fitXY"-->
+            <!--app:imageUrl="@{data.layout2.banner}"-->
+            <!--tools:src="@drawable/place_holder"/>-->
+            <!--</com.facebook.shimmer.ShimmerFrameLayout>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_vertical">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1.5"-->
+            <!--android:background="@color/black_alpha_20"-->
+            <!--android:gravity="center"-->
+            <!--android:padding="@dimen/activity_vertical_margin"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--app:loadHtmlText="@{data.layout2.cmsContent}"-->
+            <!--tools:text="Lorem ipsum dolor sit amet, consectetur"/>-->
+
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:background="@color/black_alpha_20"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="vertical"-->
+            <!--android:padding="@dimen/activity_vertical_margin">-->
+
+
+            <!--<TextView-->
+            <!--android:id="@+id/layput2_textView2"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:clickable="true"-->
+            <!--android:gravity="center"-->
+            <!--android:onClick="@{()->handler.onClickOpenYourShop()}"-->
+            <!--android:text="@{data.layout2.buttonLabel}"-->
+            <!--android:textAllCaps="true"-->
+            <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:textStyle="bold"-->
+            <!--app:underline="@{true}"-->
+            <!--tools:text="Register Now"/>-->
+
+            <!--</LinearLayout>-->
+
+
+            <!--</LinearLayout>-->
+
+
+            <!--</FrameLayout>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@drawable/shape_rectangular_white_bg_gray_border_1dp"-->
+            <!--android:layout_margin="1dp"-->
+            <!--&gt;-->
+
+            <!--<LinearLayout-->
+            <!--android:id="@+id/layout2_middle_layout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="vertical"-->
+            <!--android:padding="@dimen/spacing_generic">-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="match_parent"-->
+            <!--app:srcCompat="@drawable/marketplace_landingpage_layout2_icon1"/>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_headinglabel1"-->
+            <!--android:textColor="@color/blue_a200"-->
+            <!--android:textSize="@dimen/text_size_large"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_label1"-->
+            <!--android:textSize="@dimen/text_size_medium"/>-->
+
+
+            <!--</LinearLayout>-->
+
+
+            <!--</LinearLayout>-->
+
+            <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:layout_margin="@dimen/spacing_tiny"-->
+            <!--android:background="@color/background_color"/>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="match_parent"-->
+            <!--app:srcCompat="@drawable/marketplace_landingpage_layout2_icon2"/>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_headinglabel2"-->
+            <!--android:textColor="@color/blue_a200"-->
+            <!--android:textSize="@dimen/text_size_large"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_label2"-->
+            <!--android:textSize="@dimen/text_size_medium"/>-->
+
+
+            <!--</LinearLayout>-->
+
+
+            <!--</LinearLayout>-->
+
+            <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:layout_margin="@dimen/spacing_tiny"-->
+            <!--android:background="@color/background_color"/>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="match_parent"-->
+            <!--app:srcCompat="@drawable/marketplace_landingpage_layout2_icon3"/>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_headinglabel3"-->
+            <!--android:textColor="@color/blue_a200"-->
+            <!--android:textSize="@dimen/text_size_large"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_label3"-->
+            <!--android:textSize="@dimen/text_size_medium"/>-->
+
+
+            <!--</LinearLayout>-->
+
+
+            <!--</LinearLayout>-->
+
+            <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:layout_margin="@dimen/spacing_tiny"-->
+            <!--android:background="@color/background_color"/>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="match_parent"-->
+            <!--app:srcCompat="@drawable/marketplace_landingpage_layout2_icon4"/>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_headinglabel4"-->
+            <!--android:textColor="@color/blue_a200"-->
+            <!--android:textSize="@dimen/text_size_large"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_label4"-->
+            <!--android:textSize="@dimen/text_size_medium"/>-->
+
+
+            <!--</LinearLayout>-->
+
+
+            <!--</LinearLayout>-->
+
+            <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:layout_margin="@dimen/spacing_tiny"-->
+            <!--android:background="@color/background_color"/>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="match_parent"-->
+            <!--app:srcCompat="@drawable/marketplace_landingpage_layout2_icon5"/>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_headinglabel5"-->
+            <!--android:textColor="@color/blue_a200"-->
+            <!--android:textSize="@dimen/text_size_large"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_label5"-->
+            <!--android:textSize="@dimen/text_size_medium"/>-->
+
+
+            <!--</LinearLayout>-->
+
+
+            <!--</LinearLayout>-->
+
+            <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:layout_margin="@dimen/spacing_tiny"-->
+            <!--android:background="@color/background_color"/>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="match_parent"-->
+            <!--app:srcCompat="@drawable/marketplace_landingpage_layout2_icon6"/>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_headinglabel6"-->
+            <!--android:textColor="@color/blue_a200"-->
+            <!--android:textSize="@dimen/text_size_large"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_label6"-->
+            <!--android:textSize="@dimen/text_size_medium"/>-->
+
+
+            <!--</LinearLayout>-->
+
+
+            <!--</LinearLayout>-->
+
+            <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:layout_margin="@dimen/spacing_tiny"-->
+            <!--android:background="@color/background_color"/>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="match_parent"-->
+            <!--app:srcCompat="@drawable/marketplace_landingpage_layout2_icon7"/>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_headinglabel7"-->
+            <!--android:textColor="@color/blue_a200"-->
+            <!--android:textSize="@dimen/text_size_large"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_label7"-->
+            <!--android:textSize="@dimen/text_size_medium"/>-->
+
+
+            <!--</LinearLayout>-->
+
+
+            <!--</LinearLayout>-->
+
+            <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:layout_margin="@dimen/spacing_tiny"-->
+            <!--android:background="@color/background_color"/>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="match_parent"-->
+            <!--app:srcCompat="@drawable/marketplace_landingpage_layout2_icon8"/>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_headinglabel8"-->
+            <!--android:textColor="@color/blue_a200"-->
+            <!--android:textSize="@dimen/text_size_large"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_label8"-->
+            <!--android:textSize="@dimen/text_size_medium"/>-->
+
+
+            <!--</LinearLayout>-->
+
+
+            <!--</LinearLayout>-->
+
+            <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:layout_margin="@dimen/spacing_tiny"-->
+            <!--android:background="@color/background_color"/>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="match_parent"-->
+            <!--app:srcCompat="@drawable/marketplace_landingpage_layout2_icon9"/>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_headinglabel9"-->
+            <!--android:textColor="@color/blue_a200"-->
+            <!--android:textSize="@dimen/text_size_large"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_label9"-->
+            <!--android:textSize="@dimen/text_size_medium"/>-->
+
+
+            <!--</LinearLayout>-->
+
+
+            <!--</LinearLayout>-->
+
+            <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:layout_margin="@dimen/spacing_tiny"-->
+            <!--android:background="@color/background_color"/>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="match_parent"-->
+            <!--app:srcCompat="@drawable/marketplace_landingpage_layout2_icon10"/>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_headinglabel10"-->
+            <!--android:textColor="@color/blue_a200"-->
+            <!--android:textSize="@dimen/text_size_large"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_label10"-->
+            <!--android:textSize="@dimen/text_size_medium"/>-->
+
+
+            <!--</LinearLayout>-->
+
+
+            <!--</LinearLayout>-->
+
+            <!--</LinearLayout>-->
+
+            <!--</LinearLayout>-->
+
+            <!--<androidx.cardview.widget.CardView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:cardCornerRadius="2dp"-->
+            <!--app:cardElevation="2dp"-->
+            <!--app:cardUseCompatPadding="true">-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="vertical"-->
+            <!--android:padding="@dimen/spacing_generic">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_heading2"-->
+            <!--android:textAllCaps="true"-->
+            <!--android:textSize="@dimen/text_size_large"/>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/nav_icon_dimens"-->
+            <!--android:layout_height="@dimen/nav_icon_dimens"-->
+            <!--android:padding="@dimen/spacing_tiny"-->
+            <!--android:src="@drawable/ic_layout2_check_circle_wrapper"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_create_account_label"/>-->
+
+
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/nav_icon_dimens"-->
+            <!--android:layout_height="@dimen/nav_icon_dimens"-->
+            <!--android:padding="@dimen/spacing_tiny"-->
+            <!--android:src="@drawable/ic_layout2_check_circle_wrapper"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_create_profile_label"/>-->
+
+
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/nav_icon_dimens"-->
+            <!--android:layout_height="@dimen/nav_icon_dimens"-->
+            <!--android:padding="@dimen/spacing_tiny"-->
+            <!--android:src="@drawable/ic_layout2_check_circle_wrapper"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_create_add_details_label"/>-->
+
+
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/nav_icon_dimens"-->
+            <!--android:layout_height="@dimen/nav_icon_dimens"-->
+            <!--android:padding="@dimen/spacing_tiny"-->
+            <!--android:src="@drawable/ic_layout2_check_circle_wrapper"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_create_add_product_listing_label"/>-->
+
+
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/nav_icon_dimens"-->
+            <!--android:layout_height="@dimen/nav_icon_dimens"-->
+            <!--android:padding="@dimen/spacing_tiny"-->
+            <!--android:src="@drawable/ic_layout2_check_circle_wrapper"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_create_sell_and_earn_label"/>-->
+
+
+            <!--</LinearLayout>-->
+
+
+            <!--</LinearLayout>-->
+            <!--</androidx.cardview.widget.CardView>-->
+
+            <!--<androidx.cardview.widget.CardView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:cardUseCompatPadding="true">-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="?attr/colorAccent"-->
+            <!--android:orientation="vertical"-->
+            <!--android:padding="@dimen/activity_horizontal_margin">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:padding="@dimen/activity_horizontal_margin"-->
+            <!--android:text="@string/landing_page_layout2_dummy_text"-->
+            <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:visibility="@{data.requestSuccessful ? View.VISIBLE : View.GONE}"-->
+            <!--tools:text="Open your own online shop &amp; explore a new world of marketplace with more and millions of shopers"/>-->
+
+            <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_margin="@dimen/spacing_generic"-->
+            <!--android:background="@drawable/shape_rounded_corners_white_bg_accent_border_1dp"-->
+            <!--android:onClick="@{()->handler.onClickOpenYourShop()}"-->
+            <!--android:padding="@dimen/activity_horizontal_margin"-->
+            <!--android:text="@string/open_your_shop_title"-->
+            <!--android:textColor="@color/colorAccent"-->
+            <!--android:textStyle="bold"-->
+            <!--android:visibility="@{data.requestSuccessful ? View.VISIBLE : View.GONE}"-->
+            <!--tools:text="Open Your Shop"/>-->
+            <!--</LinearLayout>-->
+
+            <!--</androidx.cardview.widget.CardView>-->
+
+            <!--</LinearLayout>-->
+
+            <!--</androidx.core.widget.NestedScrollView>-->
+
+            <!--<androidx.core.widget.NestedScrollView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:visibility="@{data.pageLayout == 3  ? View.VISIBLE : View.GONE}"-->
+            <!--tools:visibility="visible">-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical"-->
+            <!--android:visibility="@{data.requestSuccessful ? View.VISIBLE :View.GONE}">-->
+
+            <!--<FrameLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:visibility="@{data.layout3.showBanner ? View.VISIBLE : View.GONE}">-->
+
+            <!--<com.facebook.shimmer.ShimmerFrameLayout-->
+            <!--android:id="@+id/shimmer_container_3"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center">-->
+
+            <!--<ImageView-->
+            <!--android:id="@+id/banner_image3"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/banner_size_generic"-->
+            <!--android:scaleType="fitXY"-->
+            <!--app:imageUrl="@{data.layout3.banner}"-->
+            <!--tools:src="@drawable/place_holder"/>-->
+
+            <!--</com.facebook.shimmer.ShimmerFrameLayout>-->
+
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_vertical">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1.5"-->
+            <!--android:background="@color/black_alpha_20"-->
+            <!--android:gravity="center"-->
+            <!--android:padding="@dimen/activity_vertical_margin"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--app:loadHtmlText="@{data.layout3.cmsContent}"-->
+            <!--tools:text="Lorem ipsum dolor sit amet, consectetur"/>-->
+
+
+            <!--</LinearLayout>-->
+
+            <!--</FrameLayout>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical">-->
+
+
+            <!--<androidx.cardview.widget.CardView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:cardBackgroundColor="@android:color/white"-->
+            <!--app:cardUseCompatPadding="true"-->
+            <!--tools:visibility="visible">-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="?attr/colorAccent"-->
+            <!--android:orientation="vertical"-->
+            <!--android:visibility="@{data.layout3.heading1.empty ? View.GONE : View.VISIBLE}">-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginLeft="@dimen/spacing_generic"-->
+            <!--android:layout_marginStart="@dimen/spacing_generic"-->
+            <!--android:background="@android:color/white"-->
+            <!--android:padding="@dimen/activity_horizontal_margin"-->
+            <!--android:text="@{data.layout3.heading1}"-->
+            <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+            <!--android:visibility="@{data.layout3.heading1.empty ? View.GONE : View.VISIBLE}"-->
+            <!--tools:text="Turn Your Passion Into a Business"/>-->
+
+            <!--</LinearLayout>-->
+
+            <!--&lt;!&ndash;icons layout&ndash;&gt;-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginBottom="@dimen/spacing_generic"-->
+            <!--android:background="@android:color/white"-->
+            <!--android:orientation="vertical"-->
+            <!--android:visibility="@{data.layout3.showIcon ? View.VISIBLE : View.GONE}">-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:padding="@dimen/spacing_generic">-->
+
+
+            <!--<de.hdodenhof.circleimageview.CircleImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="@dimen/profile_pic_small"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--app:civ_border_color="#00000000"-->
+            <!--app:civ_border_width="1dp"-->
+            <!--app:imageUrl="@{data.layout3.icon1}"-->
+            <!--app:placeholder="@{@drawable/place_holder}"-->
+            <!--tools:ignore="TooDeepLayout"-->
+            <!--tools:src="@drawable/place_holder"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginLeft="@dimen/spacing_generic"-->
+            <!--android:layout_marginStart="@dimen/spacing_generic"-->
+            <!--android:gravity="center|start"-->
+            <!--android:padding="@dimen/activity_horizontal_margin"-->
+            <!--android:text="@{data.layout3.iconLabel1}"-->
+            <!--tools:text="Register Yourself"/>-->
+
+
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:padding="@dimen/spacing_generic">-->
+
+
+            <!--<de.hdodenhof.circleimageview.CircleImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="@dimen/profile_pic_small"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--app:civ_border_color="#00000000"-->
+            <!--app:civ_border_width="1dp"-->
+            <!--app:imageUrl="@{data.layout3.icon2}"-->
+            <!--app:placeholder="@{@drawable/place_holder}"-->
+            <!--tools:src="@drawable/place_holder"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginLeft="@dimen/spacing_generic"-->
+            <!--android:layout_marginStart="@dimen/spacing_generic"-->
+            <!--android:gravity="center|start"-->
+            <!--android:padding="@dimen/activity_horizontal_margin"-->
+            <!--android:text="@{data.layout3.iconLabel2}"-->
+            <!--tools:text="Register Yourself"/>-->
+
+
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:padding="@dimen/spacing_generic">-->
+
+
+            <!--<de.hdodenhof.circleimageview.CircleImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="@dimen/profile_pic_small"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--app:civ_border_color="#00000000"-->
+            <!--app:civ_border_width="1dp"-->
+            <!--app:imageUrl="@{data.layout3.icon3}"-->
+            <!--app:placeholder="@{@drawable/place_holder}"-->
+            <!--tools:src="@drawable/place_holder"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginLeft="@dimen/spacing_generic"-->
+            <!--android:layout_marginStart="@dimen/spacing_generic"-->
+            <!--android:gravity="center|start"-->
+            <!--android:padding="@dimen/activity_horizontal_margin"-->
+            <!--android:text="@{data.layout3.iconLabel3}"-->
+            <!--tools:text="Register Yourself"/>-->
+
+
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:padding="@dimen/spacing_generic">-->
+
+
+            <!--<de.hdodenhof.circleimageview.CircleImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="@dimen/profile_pic_small"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--app:civ_border_color="#00000000"-->
+            <!--app:civ_border_width="1dp"-->
+            <!--app:imageUrl="@{data.layout3.icon4}"-->
+            <!--app:placeholder="@{@drawable/place_holder}"-->
+            <!--tools:src="@drawable/place_holder"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginLeft="@dimen/spacing_generic"-->
+            <!--android:layout_marginStart="@dimen/spacing_generic"-->
+            <!--android:gravity="center|start"-->
+            <!--android:padding="@dimen/activity_horizontal_margin"-->
+            <!--android:text="@{data.layout3.iconLabel4}"-->
+            <!--tools:text="Register Yourself"/>-->
+
+
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:padding="@dimen/spacing_generic">-->
+
+
+            <!--<de.hdodenhof.circleimageview.CircleImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="@dimen/profile_pic_small"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--app:civ_border_color="#00000000"-->
+            <!--app:civ_border_width="1dp"-->
+            <!--app:imageUrl="@{data.layout3.icon5}"-->
+            <!--app:placeholder="@{@drawable/place_holder}"-->
+            <!--tools:src="@drawable/place_holder"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginLeft="@dimen/spacing_generic"-->
+            <!--android:layout_marginStart="@dimen/spacing_generic"-->
+            <!--android:gravity="center|start"-->
+            <!--android:padding="@dimen/activity_horizontal_margin"-->
+            <!--android:text="@{data.layout3.iconLabel5}"-->
+            <!--tools:text="Register Yourself"/>-->
+
+
+            <!--</LinearLayout>-->
+
+            <!--</LinearLayout>-->
+
+            <!--</LinearLayout>-->
+
+
+            <!--</androidx.cardview.widget.CardView>-->
+
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:padding="@dimen/activity_horizontal_margin"-->
+            <!--android:text="@{data.layout3.heading2}"-->
+            <!--android:textAllCaps="true"-->
+            <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+            <!--android:textStyle="bold"-->
+            <!--android:visibility="@{data.layout3.heading2.empty ? View.GONE : View.VISIBLE}"-->
+            <!--tools:text="Why to sell with us"/>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<androidx.cardview.widget.CardView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginLeft="@dimen/spacing_tiny"-->
+            <!--android:layout_marginStart="@dimen/spacing_tiny"-->
+            <!--android:layout_weight="1"-->
+            <!--app:cardBackgroundColor="@color/marketplace_landing_page_layout3_card_bg_color"-->
+            <!--app:cardCornerRadius="2dp"-->
+            <!--app:cardElevation="2dp"-->
+            <!--app:cardUseCompatPadding="true">-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical"-->
+            <!--android:padding="@dimen/spacing_tiny"-->
+            <!--&gt;-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="@dimen/spacing_generic"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_headinglabel1"-->
+            <!--android:textColor="@color/blue_a200"-->
+            <!--android:textSize="@dimen/text_size_large"/>-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="@dimen/profile_pic_small"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:src="@drawable/marketplace_landingpage_layout2_icon1_wrapper"/>-->
+
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_label1"-->
+            <!--android:textSize="@dimen/text_size_medium"/>-->
+
+
+            <!--</LinearLayout>-->
+            <!--</androidx.cardview.widget.CardView>-->
+
+
+            <!--<Space-->
+            <!--android:layout_width="@dimen/spacing_tiny"-->
+            <!--android:layout_height="match_parent"/>-->
+
+            <!--<androidx.cardview.widget.CardView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginEnd="@dimen/spacing_tiny"-->
+            <!--android:layout_marginRight="@dimen/spacing_tiny"-->
+            <!--android:layout_weight="1"-->
+            <!--app:cardBackgroundColor="@color/marketplace_landing_page_layout3_card_bg_color"-->
+            <!--app:cardCornerRadius="2dp"-->
+            <!--app:cardElevation="2dp"-->
+            <!--app:cardUseCompatPadding="true">-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical"-->
+            <!--android:padding="@dimen/spacing_generic"-->
+            <!--&gt;-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_headinglabel2"-->
+            <!--android:textColor="@color/blue_a200"-->
+            <!--android:textSize="@dimen/text_size_large"/>-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="@dimen/profile_pic_small"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:src="@drawable/marketplace_landingpage_layout2_icon2_wrapper"/>-->
+
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_label2"-->
+            <!--android:textSize="@dimen/text_size_medium"/>-->
+
+
+            <!--</LinearLayout>-->
+            <!--</androidx.cardview.widget.CardView>-->
+
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal"-->
+            <!--tools:visibility="gone">-->
+
+            <!--<androidx.cardview.widget.CardView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginLeft="@dimen/spacing_tiny"-->
+            <!--android:layout_marginStart="@dimen/spacing_tiny"-->
+            <!--android:layout_weight="1"-->
+            <!--app:cardBackgroundColor="@color/marketplace_landing_page_layout3_card_bg_color"-->
+            <!--app:cardCornerRadius="2dp"-->
+            <!--app:cardElevation="2dp"-->
+            <!--app:cardUseCompatPadding="true">-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical"-->
+            <!--android:padding="@dimen/spacing_tiny"-->
+            <!--&gt;-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="@dimen/spacing_generic"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_headinglabel3"-->
+            <!--android:textColor="@color/blue_a200"-->
+            <!--android:textSize="@dimen/text_size_large"/>-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="@dimen/profile_pic_small"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:src="@drawable/marketplace_landingpage_layout2_icon3_wrapper"/>-->
+
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_label3"-->
+            <!--android:textSize="@dimen/text_size_medium"/>-->
+
+
+            <!--</LinearLayout>-->
+            <!--</androidx.cardview.widget.CardView>-->
+
+
+            <!--<Space-->
+            <!--android:layout_width="@dimen/spacing_tiny"-->
+            <!--android:layout_height="match_parent"/>-->
+
+            <!--<androidx.cardview.widget.CardView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginEnd="@dimen/spacing_tiny"-->
+            <!--android:layout_marginRight="@dimen/spacing_tiny"-->
+            <!--android:layout_weight="1"-->
+            <!--app:cardBackgroundColor="@color/marketplace_landing_page_layout3_card_bg_color"-->
+            <!--app:cardCornerRadius="2dp"-->
+            <!--app:cardElevation="2dp"-->
+            <!--app:cardUseCompatPadding="true">-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical"-->
+            <!--android:padding="@dimen/spacing_generic"-->
+            <!--&gt;-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_headinglabel4"-->
+            <!--android:textColor="@color/blue_a200"-->
+            <!--android:textSize="@dimen/text_size_large"/>-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="@dimen/profile_pic_small"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:src="@drawable/marketplace_landingpage_layout2_icon4_wrapper"/>-->
+
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_label4"-->
+            <!--android:textSize="@dimen/text_size_medium"/>-->
+
+
+            <!--</LinearLayout>-->
+            <!--</androidx.cardview.widget.CardView>-->
+
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal"-->
+            <!--tools:visibility="gone">-->
+
+            <!--<androidx.cardview.widget.CardView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginLeft="@dimen/spacing_tiny"-->
+            <!--android:layout_marginStart="@dimen/spacing_tiny"-->
+            <!--android:layout_weight="1"-->
+            <!--app:cardBackgroundColor="@color/marketplace_landing_page_layout3_card_bg_color"-->
+            <!--app:cardCornerRadius="2dp"-->
+            <!--app:cardElevation="2dp"-->
+            <!--app:cardUseCompatPadding="true">-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical"-->
+            <!--android:padding="@dimen/spacing_tiny"-->
+            <!--&gt;-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="@dimen/spacing_generic"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_headinglabel5"-->
+            <!--android:textColor="@color/blue_a200"-->
+            <!--android:textSize="@dimen/text_size_large"/>-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="@dimen/profile_pic_small"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:src="@drawable/marketplace_landingpage_layout2_icon5_wrapper"/>-->
+
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_label5"-->
+            <!--android:textSize="@dimen/text_size_medium"/>-->
+
+
+            <!--</LinearLayout>-->
+            <!--</androidx.cardview.widget.CardView>-->
+
+
+            <!--<Space-->
+            <!--android:layout_width="@dimen/spacing_tiny"-->
+            <!--android:layout_height="match_parent"/>-->
+
+            <!--<androidx.cardview.widget.CardView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginEnd="@dimen/spacing_tiny"-->
+            <!--android:layout_marginRight="@dimen/spacing_tiny"-->
+            <!--android:layout_weight="1"-->
+            <!--app:cardBackgroundColor="@color/marketplace_landing_page_layout3_card_bg_color"-->
+            <!--app:cardCornerRadius="2dp"-->
+            <!--app:cardElevation="2dp"-->
+            <!--app:cardUseCompatPadding="true">-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical"-->
+            <!--android:padding="@dimen/spacing_generic"-->
+            <!--&gt;-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_headinglabel6"-->
+            <!--android:textColor="@color/blue_a200"-->
+            <!--android:textSize="@dimen/text_size_large"/>-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="@dimen/profile_pic_small"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:src="@drawable/marketplace_landingpage_layout2_icon6_wrapper"/>-->
+
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_label6"-->
+            <!--android:textSize="@dimen/text_size_medium"/>-->
+
+
+            <!--</LinearLayout>-->
+            <!--</androidx.cardview.widget.CardView>-->
+
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal"-->
+            <!--tools:visibility="gone">-->
+
+            <!--<androidx.cardview.widget.CardView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginLeft="@dimen/spacing_tiny"-->
+            <!--android:layout_marginStart="@dimen/spacing_tiny"-->
+            <!--android:layout_weight="1"-->
+            <!--app:cardBackgroundColor="@color/marketplace_landing_page_layout3_card_bg_color"-->
+            <!--app:cardCornerRadius="2dp"-->
+            <!--app:cardElevation="2dp"-->
+            <!--app:cardUseCompatPadding="true">-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical"-->
+            <!--android:padding="@dimen/spacing_tiny"-->
+            <!--&gt;-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="@dimen/spacing_generic"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_headinglabel7"-->
+            <!--android:textColor="@color/blue_a200"-->
+            <!--android:textSize="@dimen/text_size_large"/>-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="@dimen/profile_pic_small"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:src="@drawable/marketplace_landingpage_layout2_icon7_wrapper"/>-->
+
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_label7"-->
+            <!--android:textSize="@dimen/text_size_medium"/>-->
+
+
+            <!--</LinearLayout>-->
+            <!--</androidx.cardview.widget.CardView>-->
+
+
+            <!--<Space-->
+            <!--android:layout_width="@dimen/spacing_tiny"-->
+            <!--android:layout_height="match_parent"/>-->
+
+            <!--<androidx.cardview.widget.CardView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginEnd="@dimen/spacing_tiny"-->
+            <!--android:layout_marginRight="@dimen/spacing_tiny"-->
+            <!--android:layout_weight="1"-->
+            <!--app:cardBackgroundColor="@color/marketplace_landing_page_layout3_card_bg_color"-->
+            <!--app:cardCornerRadius="2dp"-->
+            <!--app:cardElevation="2dp"-->
+            <!--app:cardUseCompatPadding="true">-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical"-->
+            <!--android:padding="@dimen/spacing_generic"-->
+            <!--&gt;-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_headinglabel8"-->
+            <!--android:textColor="@color/blue_a200"-->
+            <!--android:textSize="@dimen/text_size_large"/>-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="@dimen/profile_pic_small"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:src="@drawable/marketplace_landingpage_layout2_icon8_wrapper"/>-->
+
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_label8"-->
+            <!--android:textSize="@dimen/text_size_medium"/>-->
+
+
+            <!--</LinearLayout>-->
+            <!--</androidx.cardview.widget.CardView>-->
+
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<androidx.cardview.widget.CardView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginLeft="@dimen/spacing_tiny"-->
+            <!--android:layout_marginStart="@dimen/spacing_tiny"-->
+            <!--android:layout_weight="1"-->
+            <!--app:cardBackgroundColor="@color/marketplace_landing_page_layout3_card_bg_color"-->
+            <!--app:cardCornerRadius="2dp"-->
+            <!--app:cardElevation="2dp"-->
+            <!--app:cardUseCompatPadding="true">-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical"-->
+            <!--android:padding="@dimen/spacing_tiny"-->
+            <!--&gt;-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="@dimen/spacing_generic"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_headinglabel9"-->
+            <!--android:textColor="@color/blue_a200"-->
+            <!--android:textSize="@dimen/text_size_large"/>-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="@dimen/profile_pic_small"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:src="@drawable/marketplace_landingpage_layout2_icon9_wrapper"/>-->
+
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_label9"-->
+            <!--android:textSize="@dimen/text_size_medium"/>-->
+
+
+            <!--</LinearLayout>-->
+            <!--</androidx.cardview.widget.CardView>-->
+
+
+            <!--<Space-->
+            <!--android:layout_width="@dimen/spacing_tiny"-->
+            <!--android:layout_height="match_parent"/>-->
+
+            <!--<androidx.cardview.widget.CardView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginEnd="@dimen/spacing_tiny"-->
+            <!--android:layout_marginRight="@dimen/spacing_tiny"-->
+            <!--android:layout_weight="1"-->
+            <!--app:cardBackgroundColor="@color/marketplace_landing_page_layout3_card_bg_color"-->
+            <!--app:cardCornerRadius="2dp"-->
+            <!--app:cardElevation="2dp"-->
+            <!--app:cardUseCompatPadding="true">-->
+
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical"-->
+            <!--android:padding="@dimen/spacing_generic"-->
+            <!--&gt;-->
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_headinglabel10"-->
+            <!--android:textColor="@color/blue_a200"-->
+            <!--android:textSize="@dimen/text_size_large"/>-->
+
+            <!--<ImageView-->
+            <!--android:layout_width="@dimen/profile_pic_small"-->
+            <!--android:layout_height="@dimen/profile_pic_small"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:src="@drawable/marketplace_landingpage_layout2_icon10_wrapper"/>-->
+
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/marketplace_landingpage_layout2_label10"-->
+            <!--android:textSize="@dimen/text_size_medium"/>-->
+
+
+            <!--</LinearLayout>-->
+            <!--</androidx.cardview.widget.CardView>-->
+
+            <!--</LinearLayout>-->
+
+
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:padding="@dimen/activity_horizontal_margin"-->
+            <!--android:text="@{data.layout3.heading3}"-->
+            <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+            <!--android:textStyle="bold"-->
+            <!--android:visibility="@{data.layout3.heading3.empty ? View.GONE : View.VISIBLE}"-->
+            <!--tools:text="Open your online shop &amp; Explore a new world of market with more then millions of shoppers"/>-->
+
+            <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_margin="@dimen/spacing_generic"-->
+            <!--android:onClick="@{()->handler.onClickOpenYourShop()}"-->
+            <!--android:padding="@dimen/activity_horizontal_margin"-->
+            <!--android:text="@string/open_your_shop_title"-->
+            <!--android:textStyle="bold"/>-->
+
+
+            <!--</LinearLayout>-->
+
+            <!--</LinearLayout>-->
+
+            <!--</androidx.core.widget.NestedScrollView>-->
+
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:visibility="@{data != null ? View.GONE :View.VISIBLE}" />
+
+        </LinearLayout>
+    </FrameLayout>
+
+
+</layout>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.marketplace.odoo.model.SellerInfo" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.marketplace.odoo.handler.MarketplaceLandingActivityHandler" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->handler.onClickViewSellerProfile(data.sellerId)}"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_seller_list_item"
+                android:orientation="horizontal"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="@dimen/profile_pic_generic"
+                    android:layout_height="@dimen/profile_pic_generic"
+                    android:layout_gravity="center"
+                    app:civ_border_color="@color/grey_500"
+                    app:civ_border_width="1dp"
+                    app:imageUrl="@{data.sellerProfileImage}"
+                    app:placeholder="@{@drawable/ic_vector_person_grey600_24dp}"
+                    tools:src="@drawable/ic_vector_person_grey600_24dp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:padding="@dimen/activity_horizontal_margin">
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="2"
+                        android:text="@{data.name}"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        tools:text="FOOTWEAR STORE" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="@{@string/x_products(data.productCount)}"
+                        tools:text="1 Product" />
+
+                    <RatingBar
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:rating="@{data.averageRating}" />
+
+                </LinearLayout>
+
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/shape_rounded_corners_white_bg_accent_border_1dp"
+                    android:onClick="@{()->handler.onClickViewSellerCollection(data.sellerId)}"
+                    android:padding="@dimen/spacing_generic"
+                    android:text="@string/view_all_title"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?attr/colorAccent" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/seller_product_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingEnd="@dimen/spacing_generic"
+            android:paddingLeft="@dimen/spacing_generic"
+            android:paddingRight="@dimen/spacing_generic"
+            android:paddingStart="@dimen/spacing_generic"
+            app:layoutManager="LinearLayoutManager" />
+    </LinearLayout>
+
+
+</layout>

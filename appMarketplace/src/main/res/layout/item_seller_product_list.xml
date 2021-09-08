@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.marketplace.odoo.model.SellerProductListItem" />
+
+        <import type="com.webkul.mobikul.odoo.helper.ImageHelper.ImageType" />
+
+        <import type="android.view.View" />
+
+        <import type="android.view.ViewGroup" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        app:contentPadding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/product_image"
+                    android:layout_width="@dimen/product_image_generic"
+                    android:layout_height="@dimen/product_image_generic"
+                    android:scaleType="centerInside"
+                    app:imageType="@{ImageType.PRODUCT_GENERIC}"
+                    app:imageUrl="@{data.thumbNail}"
+                    app:placeholder="@{@drawable/ic_vector_odoo_placeholder_grey400_48dp}"
+                    tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
+
+            </RelativeLayout>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_tiny">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_tiny"
+                    android:layout_marginEnd="@dimen/spacing_tiny"
+                    android:layout_marginRight="@dimen/spacing_tiny"
+                    android:maxLines="1"
+                    android:text="@string/product"
+                    android:textAllCaps="true"
+                    android:textColor="@color/grey_500"
+                    android:textSize="@dimen/text_size_small" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/product_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="2"
+                    android:minLines="2"
+                    android:text="@{data.name}"
+                    android:textSize="@dimen/text_size_small"
+                    android:textStyle="bold"
+                    tools:text="Mobikul" />
+
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_tiny">
+
+                    <!--Normal Price-->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_tiny"
+                        android:layout_marginRight="@dimen/spacing_tiny"
+                        android:maxLines="1"
+                        android:text="@string/qty"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/grey_500"
+                        android:textSize="@dimen/text_size_min" />
+
+                    <!--SPECIAL/REDUCED PRICE-->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:padding="2dp"
+                        android:text="@{data.qty}"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textSize="@dimen/text_size_min"
+                        android:textStyle="bold"
+                        tools:text="310" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_tiny">
+
+                    <!--Normal Price-->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_tiny"
+                        android:layout_marginRight="@dimen/spacing_tiny"
+                        android:maxLines="1"
+                        android:text="@string/unit_price"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/grey_500"
+                        android:textSize="@dimen/text_size_min" />
+
+                    <!--SPECIAL/REDUCED PRICE-->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:padding="2dp"
+                        android:text="@{data.priceUnit}"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textSize="@dimen/text_size_min"
+                        android:textStyle="bold"
+                        tools:text="310" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_tiny">
+
+                    <!--Normal Price-->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_tiny"
+                        android:layout_marginRight="@dimen/spacing_tiny"
+                        android:maxLines="1"
+                        android:text="@string/status"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/grey_500"
+                        android:textSize="@dimen/text_size_min" />
+
+                    <!--SPECIAL/REDUCED PRICE-->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:padding="2dp"
+                        android:text="@{data.state}"
+                        android:textAllCaps="true"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textSize="@dimen/text_size_min"
+                        android:textStyle="bold"
+                        tools:text="approved" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

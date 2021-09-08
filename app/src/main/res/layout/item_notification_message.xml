@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.webkul.mobikul.odoo.helper.ImageHelper.ImageType" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.notification.NotificationMessageData" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_generic"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_normal">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical">
+
+                        <ImageButton
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_margin="8dp"
+                            android:background="@android:color/transparent"
+                            android:visibility="@{data.icon.equals(&quot;&quot;) ? View.GONE : View.VISIBLE}"
+                            app:imageUrl="@{data.icon}" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@{data.title}"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textStyle="bold"
+                            tools:text="Make your own Summer Style" />
+
+                        <ToggleButton
+                            android:id="@+id/notification_bell_toggle"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginBottom="@dimen/spacing_generic"
+                            android:layout_marginLeft="@dimen/spacing_generic"
+                            android:layout_marginStart="@dimen/spacing_generic"
+                            android:layout_marginTop="@dimen/spacing_generic"
+                            android:background="@drawable/selector_notification_bell"
+                            android:checked="@{data.read}"
+                            android:text=""
+                            android:textOff=""
+                            android:textOn=""
+                            tools:ignore="ContentDescription" />
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{data.body}"
+                        tools:text="Love the Shine ? Shop From Vip Chart.. What are you waiting for Hurry Up !" />
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/banner_size_small"
+                    app:imageType="@{ImageType.BANNER_SIZE_GENERIC}"
+                    app:imageUrl="@{data.banner}"
+                    app:visibility="@{!data.banner.empty}"
+                    tools:src="@drawable/dummy_banner" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginBottom="@dimen/spacing_generic"
+            android:layout_marginEnd="@dimen/spacing_generic"
+            android:layout_marginRight="@dimen/spacing_generic"
+            android:drawableLeft="@drawable/shape_dot_default"
+            android:drawablePadding="8dp"
+            android:drawableStart="@drawable/shape_dot_default"
+            android:text="@{data.period}"
+            android:textColor="@color/grey_600"
+            tools:text="an hour ago" />
+    </LinearLayout>
+</layout>

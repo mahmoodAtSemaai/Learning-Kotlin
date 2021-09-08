@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.generic.EnterQtyDialogFragmentData" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.generic.EnterQtyDialogFragmentHandler" />
+
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_normal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_generic"
+                android:text="@string/enter_quantity"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:error="@{data.qtyError}"
+                app:errorEnabled="true"
+                app:hintEnabled="false">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/appCompatEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/quantity"
+                    android:inputType="number"
+                    android:text="@={data.qty}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <View style="@style/DividerHorizontal" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="@{()->handler.dismissDialog()}"
+                android:text="@android:string/cancel"
+                android:textColor="?android:attr/textColorPrimary" />
+
+
+            <View style="@style/DividerVertical" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="@{()->handler.saveQty()}"
+                android:text="@string/save"
+                android:textColor="?colorAccent" />
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</layout>

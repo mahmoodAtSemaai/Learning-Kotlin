@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+
+        <import type="com.webkul.mobikul.odoo.helper.IntentHelper" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.cart.BagResponse" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.bag.BagActivityHandler" />
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:background="@color/activityBackground"
+        tools:context=".activity.BagActivity">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                android:elevation="@dimen/toolbar_elevation_generic"
+                app:title="@string/bag"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:navigationIcon="@drawable/ic_vector_chevron_left_white_24dp"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:titleTextColor="?android:attr/textColorPrimary"
+                tools:ignore="HardcodedText"
+                tools:targetApi="lollipop">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    />
+            </androidx.appcompat.widget.Toolbar>
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:visibility="@{data == null || data.items.empty ? View.GONE :View.VISIBLE}"
+                app:layout_marginBottom="@{@dimen/button_height_generic+ @dimen/spacing_generic}"
+                tools:layout_marginBottom="60dp">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    tools:context="com.webkul.mobikulhyperlocal.activity.CartActivity">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="8dp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{@string/items+&quot;(&quot;+data.items.size()+&quot;)&quot;}"
+                            android:textAllCaps="true"
+                            android:textColor="?android:attr/textColorPrimary"
+                            android:textStyle="bold"
+                            tools:text="ITEMS(5)" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:text="@{@string/total+ &quot;: &quot; +data.grandTotal.value}"
+                            android:textAllCaps="true"
+                            android:textColor="?android:attr/textColorPrimary"
+                            android:textStyle="bold"
+                            tools:text="Total: $1080.00" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/products_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_generic"
+                        android:nestedScrollingEnabled="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:ignore="UnusedAttribute" />
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginBottom="0.5dp"
+                        app:contentPadding="@dimen/spacing_generic">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:drawableEnd="@drawable/ic_vector_arrow_forward_accent_24dp_wrapper"
+                            android:drawableRight="@drawable/ic_vector_arrow_forward_accent_24dp_wrapper"
+                            android:onClick="@{() -> IntentHelper.continueShopping(context)}"
+                            android:text="@string/continue_shopping"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="?attr/colorAccent"
+                            android:textStyle="bold" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginBottom="@dimen/spacing_generic"
+                        app:contentPadding="@dimen/spacing_generic">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:drawableEnd="@drawable/ic_vector_delete_forever_accent_24dp_wrapper"
+                            android:drawableRight="@drawable/ic_vector_delete_forever_accent_24dp_wrapper"
+                            android:onClick="@{() -> handler.emptyCart()}"
+                            android:text="@string/empty_shopping_bag"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="?attr/colorAccent"
+                            android:textStyle="bold" />
+
+                    </androidx.cardview.widget.CardView>
+
+
+                    <!--Cart Total Layout-->
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardUseCompatPadding="true"
+                        app:contentPadding="@dimen/spacing_generic">
+
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TableRow android:padding="@dimen/spacing_tiny">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@{data.subtotal.title}"
+                                    tools:text="Subtotal" />
+
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:layout_weight="1"
+                                    android:gravity="end"
+                                    android:text="@{data.subtotal.value}"
+                                    android:textColor="?android:attr/textColorSecondary"
+                                    android:textStyle="bold"
+                                    tools:text="$1000.0000" />
+
+                            </TableRow>
+
+
+                            <TableRow android:padding="@dimen/spacing_tiny">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@{data.tax.title}"
+                                    tools:text="Tax" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:layout_weight="1"
+                                    android:gravity="end"
+                                    android:text="@{data.tax.value}"
+                                    android:textColor="?android:attr/textColorSecondary"
+                                    android:textStyle="bold"
+                                    tools:text="$1000.0000" />
+
+                            </TableRow>
+
+                            <TableRow android:padding="@dimen/spacing_tiny">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@{data.grandTotal.title}"
+                                    android:textAllCaps="true"
+                                    android:textColor="?android:attr/textColorPrimary"
+                                    android:textStyle="bold"
+                                    tools:text="Grand Total" />
+
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:layout_weight="1"
+                                    android:gravity="end"
+                                    android:text="@{data.grandTotal.value}"
+                                    android:textColor="?android:attr/textColorPrimary"
+                                    android:textStyle="bold"
+                                    tools:text="$1000.0000" />
+
+                            </TableRow>
+
+                        </TableLayout>
+
+
+                    </androidx.cardview.widget.CardView>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.core.widget.NestedScrollView>
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/custom_progress_drawable"
+                android:indeterminate="true"
+                android:visibility="@{data == null || data.items.empty ? View.VISIBLE :View.GONE}" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@color/white"
+                android:visibility="@{data==null || data.items.empty ? View.GONE :View.VISIBLE}"
+                app:contentPadding="@dimen/spacing_generic">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height_generic"
+                    android:onClick="@{()->IntentHelper.beginCheckout(context)}"
+                    android:text="@string/proceed_to_checkout"
+                    android:textAllCaps="true" />
+
+            </androidx.cardview.widget.CardView>
+
+        </FrameLayout>
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

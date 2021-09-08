@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.webkul.mobikul.odoo.helper.FontHelper" />
+
+        <import type="com.webkul.mobikul.odoo.helper.IntentHelper" />
+
+        <variable
+            name="productName"
+            type="String" />
+
+        <variable
+            name="message"
+            type="String" />
+
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/activityBackground"
+        android:minWidth="@dimen/dialog_min_width"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/background"
+            android:drawablePadding="@dimen/spacing_generic"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:text="@{productName}"
+            android:textAllCaps="true"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            tools:text="Convertible Dress" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:gravity="center"
+                android:padding="@dimen/spacing_normal"
+                android:text="@{message}"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold"
+                app:font="@{FontHelper.FONT_PATH_1}"
+                tools:text="Added Successfully." />
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end">
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()->IntentHelper.continueShopping(context)}"
+                    android:padding="@dimen/spacing_normal"
+                    android:text="@string/continue_shopping"
+                    android:textAllCaps="true"
+                    android:textColor="?colorAccent"
+                    android:textStyle="bold" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()->IntentHelper.goToBag(context)}"
+                    android:padding="@dimen/spacing_normal"
+                    android:text="@string/go_to_bag"
+                    android:textAllCaps="true"
+                    android:textColor="?colorAccent"
+                    android:textStyle="bold" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</layout>

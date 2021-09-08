@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import
+            alias="View"
+            type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.customer.order.OrderDetailResponse" />
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.order.OrderFragmentHandler"/>
+    </data>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/order_details_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{data==null ? View.GONE : View.VISIBLE}">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardUseCompatPadding="true">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/activity_vertical_margin"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingRight="@dimen/activity_horizontal_margin"
+                        android:paddingTop="@dimen/activity_vertical_margin">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_generic"
+                            android:text="@{@string/order_noX(data.name)}"
+                            android:textAllCaps="true"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textStyle="bold"
+                            tools:text="Order Id #216498014 " />
+
+
+                        <View
+                            style="@style/DividerHorizontal"
+                            android:layout_margin="@dimen/spacing_generic" />
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_generic">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@{@string/placed_on_Xdate(data.createDate)}"
+                                tools:text="Placed on 20th March 2016" />
+
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/spacing_generic"
+                                android:text="@{data.status}"
+                                android:textAllCaps="true"
+                                android:textStyle="bold"
+                                tools:text="DEFAULT STATUS" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_tiny"
+                            android:text="@string/label_order_shipping_address"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:textStyle="bold"
+                            android:visibility="@{data.shippingAddress.isEmpty() ? View.GONE : View.VISIBLE}" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_generic"
+                            android:text="@{data.shippingAddress}"
+                            android:visibility="@{data.shippingAddress.isEmpty() ? View.GONE : View.VISIBLE}"
+                            tools:text="Admin User\nWebkul Software Pvt. Ltd\n2nd floor, A-67,\n A Block, Sector 63\nNoida,  Uttar Pradesh, 201301\nIndia\nT: 123456789\nF: 123456\n" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_tiny"
+                            android:text="@string/label_order_billing_address"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:textStyle="bold" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_generic"
+                            android:text="@{data.billingAddress}"
+                            tools:text="Admin User\nWebkul Software Pvt. Ltd\n2nd floor, A-67,\n A Block, Sector 63\nNoida,  Uttar Pradesh, 201301\nIndia\nT: 123456789\nF: 123456\n" />
+
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_tiny"
+                            android:text="@string/label_order_delivery_orders"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:textStyle="bold"
+                            android:visibility="@{( data.deliveryOrders == null || data.deliveryOrders.size() ==0 ) ? View.GONE : View.VISIBLE }"
+                            />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/delivery_orders_rv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            android:visibility="@{( data.deliveryOrders == null || data.deliveryOrders.size() ==0 ) ? View.GONE : View.VISIBLE }"
+                            />
+
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_tiny"
+                            android:text="@string/label_order_transactions"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:textStyle="bold"
+                            android:visibility="@{( data.transactions == null || data.transactions.size() ==0 ) ? View.GONE : View.VISIBLE }"
+                            />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/transactions_rv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:visibility="@{( data.transactions == null || data.transactions.size() ==0 ) ? View.GONE : View.VISIBLE }"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                        <!--<androidx.appcompat.widget.AppCompatTextView-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginBottom="@dimen/spacing_generic"-->
+                            <!--android:text="@{data.transactions.get(0).reference}"-->
+                            <!--android:visibility="@{( data.transactions == null || data.transactions.size() ==0 ) ? View.GONE : View.VISIBLE }"-->
+                            <!--tools:text="WH/OUT/00114"-->
+                            <!--/>-->
+                        <!--<androidx.appcompat.widget.AppCompatTextView-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginBottom="@dimen/spacing_generic"-->
+                            <!--android:visibility="@{( data.transactions == null || data.transactions.size() ==0 ) ? View.GONE : View.VISIBLE }"-->
+                            <!--android:text="@{data.transactions.get(0).createDate}"-->
+                            <!--tools:text="2019-01-15" />-->
+
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/spacing_generic"
+                        android:background="@drawable/shape_rectangular_white_bg_gray300_border_1dp"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/activity_vertical_margin"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingRight="@dimen/activity_horizontal_margin"
+                        android:paddingTop="@dimen/activity_vertical_margin">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_generic"
+                            android:text="@string/orders_product_info"
+                            android:textAllCaps="true"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textStyle="bold" />
+
+                        <View style="@style/DividerHorizontal" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/product_info_rv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:ignore="UnusedAttribute" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/spacing_generic"
+                        android:background="@drawable/shape_rectangular_white_bg_gray300_border_1dp"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/activity_vertical_margin"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingRight="@dimen/activity_horizontal_margin"
+                        android:paddingTop="@dimen/activity_vertical_margin"
+                        android:visibility="@{data.delivery == null ? View.GONE : View.VISIBLE}">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_generic"
+                            android:text="@string/checkout_heading_shipping_method"
+                            android:textAllCaps="true"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textStyle="bold" />
+
+                        <View style="@style/DividerHorizontal" />
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/spacing_generic"
+                                android:layout_weight="1"
+                                android:text="@{data.delivery.name}"
+                                tools:text="DHL Shipping" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/spacing_generic"
+                                android:text="@{data.delivery.total}"
+                                android:textStyle="bold"
+                                tools:text="$20" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <!--Cart Total Layout-->
+
+
+                    <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/spacing_generic"
+                        android:background="@drawable/shape_rectangular_white_bg_gray300_border_1dp"
+                        android:paddingBottom="@dimen/activity_vertical_margin"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingRight="@dimen/activity_horizontal_margin"
+                        android:paddingTop="@dimen/activity_vertical_margin">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_generic"
+                            android:text="@string/orders_order_details"
+                            android:textAllCaps="true"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textStyle="bold" />
+
+                        <View
+                            style="@style/DividerHorizontal"
+                            android:layout_margin="@dimen/spacing_generic" />
+
+                        <!--
+                        Making subtotal visible as there will always be value for subtotal and some products are free
+                        android:visibility="@{data.totals.subtotal.unformatedValue == 0.0 ? View.GONE : View.VISIBLE}"
+                        -->
+                        <TableRow>
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.3"
+                                android:gravity="end"
+                                android:text="@string/subtotal"
+                                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text=":"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                tools:ignore="HardcodedText" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_weight="1"
+                                android:gravity="end"
+                                android:text="@{data.amountUntaxed}"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="?android:attr/textColorSecondary"
+                                tools:text="$1000.0000" />
+
+                        </TableRow>
+
+
+                        <!--CHECK FOR VISIBILITY WHETHER TO SHOW IT OR NOT-->
+                        <!--android:visibility="@{data.totals.tax.unformatedValue == 0.0 ? View.GONE : View.VISIBLE}"-->
+                        <TableRow>
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.3"
+                                android:gravity="end"
+                                android:text="@string/tax"
+                                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text=":"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                tools:ignore="HardcodedText" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_weight="1"
+                                android:gravity="end"
+                                android:text="@{data.amountTax}"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="?android:attr/textColorSecondary"
+                                tools:text="$1000.0000" />
+
+                        </TableRow>
+
+                        <View
+                            style="@style/DividerHorizontal"
+                            android:layout_margin="@dimen/spacing_generic" />
+
+                        <!--
+                        Making Grand Total, always visible as some product are free.
+                        android:visibility="@{data.totals.grandTotal.unformatedValue == 0.0 ? View.GONE : View.VISIBLE}"
+                        -->
+                        <TableRow>
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.3"
+                                android:gravity="end"
+                                android:text="@string/grand_total"
+                                android:textAllCaps="true"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textStyle="bold"
+                                tools:text="" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text=":"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textStyle="bold"
+                                tools:ignore="HardcodedText" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_weight="1"
+                                android:gravity="end"
+                                android:text="@{data.amountTotal}"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textColor="?android:attr/textColorSecondary"
+                                android:textStyle="bold"
+                                tools:text="$1000.0000" />
+
+                        </TableRow>
+
+                    </TableLayout>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            </androidx.cardview.widget.CardView>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/custom_progress_drawable"
+            android:indeterminate="true"
+            android:visibility="@{data==null ? View.VISIBLE :View.GONE}" />
+
+    </FrameLayout>
+
+</layout>

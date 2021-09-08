@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.webkul.mobikul.odoo.helper.ImageHelper.ImageType" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.generic.BannerImageData" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.home.HomeBannerHandler" />
+    </data>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/banner_size_generic"
+        app:cardCornerRadius="5dp"
+        app:cardUseCompatPadding="true">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/banner_image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/banner_size_generic"
+            android:onClick="@{() -> handler.onClickBanner()}"
+            android:scaleType="fitXY"
+            app:imageUrl="@{data.url}"
+            app:imageType="@{ImageType.BANNER_SIZE_GENERIC}"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
+
+        <!--app:placeholder="@{@drawable/ic_vector_odoo_placeholder_grey400_48dp}"-->
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

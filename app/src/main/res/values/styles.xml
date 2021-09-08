@@ -1,0 +1,128 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="BaseTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:itemBackground">@color/bottomNavigationBackground</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimaryLight">@color/colorPrimaryLight</item>
+
+<!--        <item name="android:windowContentTransitions">true</item>-->
+<!--        <item name="android:forceDarkAllowed">true</item>-->
+
+        <!--TEXT COLORS-->
+        <item name="textColorRequired">@color/text_color_required</item>
+        <item name="android:textColor">@color/text_color_primary</item>
+        <item name="android:textColorPrimary">@color/text_color_primary</item>
+        <item name="android:textColorSecondary">@color/text_color_Secondary</item>
+
+        <!--BACKGROUND COLORS-->
+        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="background">@color/appBackground</item>
+
+
+        <!--VIEW STYLES-->
+        <!--need to use both as it donesn't work for api 19 @Verified-->
+        <item name="android:buttonStyle">@style/ButtonStyle</item>
+        <item name="buttonStyle">@style/ButtonStyle</item>
+
+        <!--APPLICATION DIVIDER COLOR-->
+        <item name="dividerHorizontal">@color/grey_300</item>
+        <item name="dividerVertical">@color/grey_300</item>
+        <item name="android:divider">@color/grey_300</item>
+
+        <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
+    </style>
+
+
+    <!-- Application theme. -->
+    <style name="BaseTheme.AppTheme">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="BaseTheme.AppTheme.NoActionBar.SpinnerStyle">
+        <item name="android:dropDownListViewStyle">@style/SpinnerStyle</item>
+    </style>
+
+    <style name="BaseTheme.AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+
+    <style name="BaseTheme.AppTheme.NoActionBar.FullScreenTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+
+    <style name="ButtonStyle" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/btn_rounded_corners_accent_bg</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingStart" tools:ignore="NewApi">@dimen/activity_horizontal_margin
+        </item>
+        <item name="android:paddingEnd" tools:targetApi="jelly_bean_mr1">
+            @dimen/activity_horizontal_margin
+        </item>
+        <item name="android:paddingTop">@dimen/spacing_generic</item>
+        <item name="android:paddingBottom">@dimen/spacing_generic</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+
+    <style name="DividerVertical">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">?android:attr/divider</item>
+    </style>
+
+    <style name="DividerHorizontal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">?android:attr/divider</item>
+    </style>
+
+    <style name="SpinnerStyle" parent="android:Widget.ListView.DropDown">
+        <item name="android:divider">?android:attr/divider</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
+
+    <!--@Override-->
+    <!--https://github.com/pedant/sweet-alert-dialog/blob/master/library/src/main/res/values/styles.xml-->
+    <style name="dialog_blue_button" parent="ButtonStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <!--<item name="android:background">@drawable/btn_rounded_corners_accent_bg</item>-->
+        <!--<item name="android:gravity">center</item>-->
+        <!--<item name="android:textSize">22sp</item>-->
+        <!--<item name="android:paddingLeft">21dp</item>-->
+        <!--<item name="android:paddingRight">21dp</item>-->
+        <!--<item name="android:textColor">@color/button_text_color</item>-->
+    </style>
+
+
+    <style name="GenericStyleableToast">
+        <!--https://github.com/Muddz/StyleableToast-->
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:colorBackground">@color/colorPrimaryLight</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:alpha">255</item>
+        <item name="android:fontFamily">fonts/dosis.otf"</item>
+        <!--<item name="android:icon">@drawable/ic_file_download</item>-->
+    </style>
+
+    <!--resolution: https://stackoverflow.com/a/41191717/7967112-->
+    <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorBackgroundFloating">@color/activityBackground</item>
+
+    </style>
+</resources>

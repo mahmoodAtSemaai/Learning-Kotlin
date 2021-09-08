@@ -1,0 +1,73 @@
+##### odoo Mobikul Application configuration guide #########
+
+1. Check the product to be delivered (remove marketplace if not purchased)
+
+2. gradle.properties 		         remove live credentials.(KeyStore Related Credentials and specifications)
+                                     IS_MARKETPLACE=false (if marketplace not purchased)
+
+3. build.gradle			             remove signing configuration(block as well as usage from product flavors), change application id and name,
+                                     strings, product flavors defn(except for mobikul),
+                                     remove dependencies of payment gateway and other that are not needed in the project..
+                                     (Change APP_PLAYSTORE_URL appid to "")
+                                      Remove demo login Credantial(demo_username,demo_password)
+
+4. product flavors		            remove product flavors,
+
+5. EDIT APPLICATIONCONSTANTS        CHECK FOR:
+                                    AVAILABLE_PAYMENT_METHOD(COD,WIRE_TRANSFER)
+                                   
+
+6. Remove payment gateways...       (if Any)
+
+7. Remove internationalization resources (strings only in english)
+
+8. Change app_name and store_name from /app/src/main/res/values/strings.xml (Only if provided by the client)
+
+9. Remove SOCIAL LOGIN if not provided to client...(For Raw source code remove all the files, for configuration only you can just comment in the activit_sign_insign_up.xml)
+
+10. Remove 2do file.
+
+11. Configuration details required for facebook login for client [NOTE: We are not providing social login to client right now]
+    same goes for the Google Login....
+
+12. Remove version update
+
+13. Replacement of google service.json
+
+####################################################
+
+For Raw Source code :
+a) Add configuration related todos so that client can work with the source code.
+*) Changing Base url and Basic auth instructions.
+*) Replacement of google service.json
+*) Images replacement instructions in Readme.
+*) General changing Colors instructions in Read Me
+*) To do for changing deeplinking Url
+
+####################################################
+
+For Basic Configuration :
+*) Replace icons as provided by the client.
+   Launcher icon
+   placeholder (ic_vector_odoo_placeholder_grey400_48dp)
+   splash screen  (img_splash_screen)
+   status bar icon (ic_stat_ic_notification)
+
+*) Change BASE_URL/BASIC_AUTH_KEY as per client website
+*) Change colors as per client requirement
+*) Change deeplinking in android manifest file
+
+## At last register user and place order
+## Before delivery remove testing base url
+
+
+
+
+
+
+
+
+
+
+
+

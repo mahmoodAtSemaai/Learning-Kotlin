@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <data>
+
+
+        <import type="com.webkul.mobikul.odoo.helper.ImageHelper.ImageType" />
+
+        <import type="com.webkul.mobikul.odoo.helper.FontHelper" />
+
+        <import
+            alias="View"
+            type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.cart.BagItemData" />
+    </data>
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_generic"
+        android:layout_marginTop="@dimen/spacing_generic"
+        android:background="@drawable/shape_rectangular_white_bg_gray_border_1dp"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/product_iv"
+            android:layout_width="@dimen/product_image_small"
+            android:layout_height="@dimen/product_image_small"
+            android:layout_gravity="center"
+            android:padding="@dimen/spacing_generic"
+            android:scaleType="centerInside"
+            app:imageType="@{ImageType.PRODUCT_SMALL}"
+            app:imageUrl="@{data.thumbNail}"
+            app:placeholder="@{@drawable/ic_vector_odoo_placeholder_grey400_48dp}"
+            app:srcCompat="@drawable/ic_vector_odoo_placeholder_grey400_48dp"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_generic"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_generic"
+                android:text="@{data.productName}"
+                android:textAllCaps="true"
+                app:font="@{FontHelper.FONT_PATH_1}"
+                tools:text="Lafayette Convertable Bag" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_generic"
+                android:text="@{@string/order_review_product_qty_is_X(data.qty)}"
+                tools:text="@string/order_review_product_qty_is_X" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_generic"
+                android:text="@{@string/order_review_product_price_is_X(data.priceUnit)}"
+                tools:text="$0.80" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_generic"
+                android:text="@{@string/order_review_product_subtotal_is_X(data.total)}"
+                tools:text="$1.60" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</layout>
+

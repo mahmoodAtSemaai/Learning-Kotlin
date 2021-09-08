@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="value"
+            type="String" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.generic.QtyAdapterHandler" />
+
+    </data>
+
+    <androidx.appcompat.widget.AppCompatCheckedTextView
+        android:id="@+id/qty_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_qty_bg"
+        android:onClick="@{()->handler.onItemSelected()}"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/spacing_generic"
+        android:paddingEnd="@{@dimen/spacing_normal+@dimen/spacing_generic}"
+        android:paddingLeft="@{@dimen/spacing_normal+@dimen/spacing_generic}"
+        android:paddingRight="@{@dimen/spacing_normal+@dimen/spacing_generic}"
+        android:paddingStart="@{@dimen/spacing_normal+@dimen/spacing_generic}"
+        android:paddingTop="@dimen/spacing_generic"
+        android:text="@{value}"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        tools:checked="true"
+        tools:ignore="RtlSymmetry"
+        tools:paddingLeft="42dp"
+        tools:text="1" />
+
+</layout>

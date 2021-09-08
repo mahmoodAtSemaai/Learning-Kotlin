@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import
+            alias="View"
+            type="android.view.View" />
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.customer.order.DeliveryOrder" />
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.order.OrderFragmentHandler" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_generic"
+            android:text="@{data.name +`(`+data.state+`)`}"
+            android:visibility="@{( data.name == null || data.name.empty) ? View.GONE : View.VISIBLE }"
+            android:drawableLeft="@drawable/ic_vector_download_grey_24dp_wrapper"
+            android:drawableStart="@drawable/ic_vector_download_grey_24dp_wrapper"
+            android:drawableTint="@color/colorAccent"
+            android:textColor="@color/colorAccent"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:onClick="@{()->handler.onClickDownloadDeliveryOrder(data.reportUrl, data.name)}"
+            tools:text="WH/OUT/00114"
+            />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_generic"
+            android:visibility="@{( data.date == null || data.date.empty) ? View.GONE : View.VISIBLE }"
+            android:text="@{data.date}"
+            tools:text="2019-01-15" />
+
+    </LinearLayout>
+
+</layout>

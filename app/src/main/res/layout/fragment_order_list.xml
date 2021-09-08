@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import
+            alias="View"
+            type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.customer.order.MyOrderReponse" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:text="@string/you_have_not_placed_any_orders_yet"
+            android:visibility="@{data!=null &amp;&amp; data.totalCount == 0 ? View.VISIBLE : View.GONE}" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/order_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/custom_progress_drawable"
+            android:indeterminate="true"
+            android:visibility="@{data== null ? View.VISIBLE :View.GONE}" />
+
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:indeterminate="true"
+            android:visibility="@{data.lazyLoading ? View.VISIBLE :View.GONE}" />
+
+    </FrameLayout>
+
+</layout>
+

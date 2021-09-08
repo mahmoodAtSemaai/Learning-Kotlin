@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import
+            alias="View"
+            type="android.view.View" />
+
+        <import
+            alias="appSharedPref"
+            type="com.webkul.mobikul.odoo.helper.AppSharedPref" />
+
+        <import type="com.webkul.mobikul.odoo.helper.FontHelper" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.marketplace.odoo.model.SellerDashboard" />
+
+        <variable
+            name="title"
+            type="String" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.marketplace.odoo.handler.SellerDashboardActivityHandler" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?android:attr/actionBarSize"
+                    android:background="@android:color/transparent"
+                    android:elevation="@dimen/toolbar_elevation_generic"
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                    app:navigationIcon="@drawable/ic_vector_chevron_left_white_24dp"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:title="@{title}"
+                    app:titleTextAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+                    app:titleTextColor="@color/tw__solid_white"
+                    tools:targetApi="lollipop"
+                    tools:title="Fashion Store" />
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+
+            <FrameLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="@{data == null ? View.GONE : View.VISIBLE}">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/spacing_generic"
+                            android:clickable="true"
+                            app:cardBackgroundColor="@color/activityBackground"
+                            tools:visibility="visible">
+
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <ImageButton
+                                    android:id="@+id/product_image"
+                                    android:layout_width="96dp"
+                                    android:layout_height="96dp"
+                                    android:layout_marginLeft="24dp"
+                                    android:layout_marginStart="24dp"
+                                    android:layout_marginTop="8dp"
+                                    android:background="@color/transparent"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/ic_vector_seller_product_accent_96dp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="16dp"
+                                    android:layout_marginStart="16dp"
+                                    android:gravity="center_horizontal"
+                                    android:text="@string/products"
+                                    android:textColor="?attr/colorAccent"
+                                    android:textSize="@dimen/text_size_medium"
+                                    android:textStyle="bold"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintRight_toRightOf="@+id/product_image"
+                                    app:layout_constraintTop_toBottomOf="@+id/product_image" />
+
+                                <TextView
+                                    android:id="@+id/pending_products"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="24dp"
+                                    android:layout_marginStart="24dp"
+                                    android:background="#7c7bad"
+                                    android:gravity="center"
+                                    android:onClick="@{()->handler.onClickPendingProducts()}"
+                                    android:padding="16dp"
+                                    android:text="@{@string/x_pending_products(data.pendingProductCount)}"
+                                    android:textColor="@color/white_ish"
+                                    app:layout_constraintLeft_toRightOf="@+id/product_image"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/approved_products"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="24dp"
+                                    android:layout_marginStart="24dp"
+                                    android:background="#808080"
+                                    android:gravity="center"
+                                    android:onClick="@{()->handler.onClickApprovedProducts()}"
+                                    android:padding="16dp"
+                                    android:text="@{@string/x_approved_products(data.approvedProductCount)}"
+                                    android:textColor="@color/white_ish"
+                                    app:layout_constraintLeft_toRightOf="@+id/product_image"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/pending_products" />
+
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="24dp"
+                                    android:layout_marginStart="24dp"
+                                    android:background="#dfa941"
+                                    android:gravity="center"
+                                    android:onClick="@{()->handler.onClickRejectedProducts()}"
+                                    android:padding="16dp"
+                                    android:text="@{@string/x_rejected_products(data.rejectedProductCount)}"
+                                    android:textColor="@color/white_ish"
+                                    app:layout_constraintLeft_toRightOf="@+id/product_image"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/approved_products" />
+
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/spacing_generic"
+                            android:clickable="true"
+                            app:cardBackgroundColor="@color/activityBackground"
+                            tools:visibility="visible">
+
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <ImageButton
+                                    android:id="@+id/order_image"
+                                    android:layout_width="96dp"
+                                    android:layout_height="96dp"
+                                    android:layout_marginLeft="24dp"
+                                    android:layout_marginStart="24dp"
+                                    android:layout_marginTop="8dp"
+                                    android:background="@color/transparent"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/ic_vector_seller_order_accent_96dp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="16dp"
+                                    android:layout_marginStart="16dp"
+                                    android:gravity="center_horizontal"
+                                    android:text="@string/orders"
+                                    android:textColor="?attr/colorAccent"
+                                    android:textSize="@dimen/text_size_medium"
+                                    android:textStyle="bold"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintRight_toRightOf="@+id/order_image"
+                                    app:layout_constraintTop_toBottomOf="@+id/order_image" />
+
+                                <TextView
+                                    android:id="@+id/new_orders"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="24dp"
+                                    android:layout_marginStart="24dp"
+                                    android:background="#7c7bad"
+                                    android:gravity="center"
+                                    android:onClick="@{()->handler.onClickNewOrders()}"
+                                    android:padding="16dp"
+                                    android:text="@{@string/x_new_order(data.new_solCount)}"
+                                    android:textColor="@color/white_ish"
+                                    app:layout_constraintLeft_toRightOf="@+id/order_image"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/approved_orders"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="24dp"
+                                    android:layout_marginStart="24dp"
+                                    android:background="#808080"
+                                    android:gravity="center"
+                                    android:onClick="@{()->handler.onClickApprovedOrders()}"
+                                    android:padding="16dp"
+                                    android:text="@{@string/x_approved_orders(data.approved_solCount)}"
+                                    android:textColor="@color/white_ish"
+                                    app:layout_constraintLeft_toRightOf="@+id/order_image"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/new_orders" />
+
+                                <TextView
+                                    android:id="@+id/shipped_orders"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="24dp"
+                                    android:layout_marginStart="24dp"
+                                    android:background="#dfa941"
+                                    android:gravity="center"
+                                    android:onClick="@{()->handler.onClickShppedOrders()}"
+                                    android:padding="16dp"
+                                    android:text="@{@string/x_shipped_orders(data.shipped_solCount)}"
+                                    android:textColor="@color/white_ish"
+                                    app:layout_constraintLeft_toRightOf="@+id/order_image"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/approved_orders" />
+
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/spacing_generic"
+                            android:clickable="false"
+                            app:cardBackgroundColor="@color/activityBackground"
+                            tools:visibility="visible">
+
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <ImageButton
+                                    android:id="@+id/payment_image"
+                                    android:layout_width="96dp"
+                                    android:layout_height="96dp"
+                                    android:layout_marginLeft="24dp"
+                                    android:layout_marginStart="24dp"
+                                    android:layout_marginTop="8dp"
+                                    android:background="@color/transparent"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/ic_vector_seller_payment_accent_96dp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="16dp"
+                                    android:layout_marginStart="16dp"
+                                    android:gravity="center_horizontal"
+                                    android:text="@string/payments"
+                                    android:textColor="?attr/colorAccent"
+                                    android:textSize="@dimen/text_size_medium"
+                                    android:textStyle="bold"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintRight_toRightOf="@+id/payment_image"
+                                    app:layout_constraintTop_toBottomOf="@+id/payment_image" />
+
+                                <TextView
+                                    android:id="@+id/requested_payments"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="24dp"
+                                    android:layout_marginStart="24dp"
+                                    android:background="#7c7bad"
+                                    android:gravity="center"
+                                    android:padding="16dp"
+                                    android:text="@{@string/x_requested_payments(data.requestedPaymentCount)}"
+                                    android:textColor="@color/white_ish"
+                                    app:layout_constraintLeft_toRightOf="@+id/payment_image"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/to_be_approved_payments"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="24dp"
+                                    android:layout_marginStart="24dp"
+                                    android:background="#808080"
+                                    android:gravity="center"
+                                    android:padding="16dp"
+                                    android:text="@{@string/x_to_be_approved_payments(data.toBeApprovedPaymentCount)}"
+                                    android:textColor="@color/white_ish"
+                                    app:layout_constraintLeft_toRightOf="@+id/payment_image"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/requested_payments" />
+
+                                <TextView
+                                    android:id="@+id/approved_payments"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="24dp"
+                                    android:layout_marginStart="24dp"
+                                    android:background="#dfa941"
+                                    android:gravity="center"
+                                    android:padding="16dp"
+                                    android:text="@{@string/x_approved_payments(data.approvedPaymentCount)}"
+                                    android:textColor="@color/white_ish"
+                                    app:layout_constraintLeft_toRightOf="@+id/payment_image"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/to_be_approved_payments" />
+
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </androidx.cardview.widget.CardView>
+
+
+
+                    </LinearLayout>
+
+                </androidx.core.widget.NestedScrollView>
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/custom_progress_drawable"
+                    android:visibility="@{data == null ? View.VISIBLE : View.GONE}"
+                    tools:visibility="gone" />
+            </FrameLayout>
+
+            <!--<FrameLayout-->
+            <!--android:id="@+id/fragment_container"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
+
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+        <com.webkul.mobikul.odoo.custom.MaterialSearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/custom_progress_drawable"
+            android:fitsSystemWindows="true"
+            android:visibility="gone"
+            tools:visibility="invisible" />
+    </FrameLayout>
+</layout>

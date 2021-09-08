@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <data>
+
+        <import
+            alias="View"
+            type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.customer.address.AddressData" />
+
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.customer.AdditionalAddressRvHandler" />
+
+        <variable
+            name="position"
+            type="int" />
+    </data>
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_generic"
+            android:layout_marginTop="@dimen/spacing_generic"
+            android:text="@{@string/subheading_shipping_address_X(position+1)}"
+            android:textAllCaps="true"
+            android:textStyle="italic"
+            tools:text="@string/subheading_shipping_address_X" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{data.displayName}"
+            tools:text="@string/dummy_address" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_generic"
+                android:layout_marginRight="@dimen/spacing_generic"
+                android:onClick="@{()->handler.editAddress()}"
+                android:paddingBottom="@dimen/spacing_generic"
+                android:paddingTop="@dimen/spacing_generic"
+                android:text="@string/edit_address"
+                android:textColor="?colorAccent"
+                app:underline="@{true}" />
+
+            <!---->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_generic"
+                android:layout_marginStart="@dimen/spacing_generic"
+                android:onClick="@{()->handler.deleteAddress()}"
+                android:padding="@dimen/spacing_generic"
+                android:paddingBottom="@dimen/spacing_generic"
+                android:paddingTop="@dimen/spacing_generic"
+                android:text="@string/delete_address"
+                android:textColor="?colorAccent"
+                app:underline="@{true}" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</layout>

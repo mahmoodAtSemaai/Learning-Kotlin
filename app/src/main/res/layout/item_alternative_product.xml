@@ -1,0 +1,70 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.webkul.mobikul.odoo.helper.ImageHelper.ImageType" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.generic.ProductData" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.product.AlternativeProductHandler" />
+    </data>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_generic"
+        android:onClick="@{()->handler.clickOnProduct(data)}"
+        android:padding="@dimen/spacing_generic"
+        app:cardBackgroundColor="?attr/colorPrimary">
+        <!--app:cardCornerRadius="4dp">-->
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/product_iv"
+                android:layout_width="@dimen/product_image_small"
+                android:layout_height="@dimen/product_image_small"
+                android:background="@android:color/white"
+                android:padding="@dimen/spacing_generic"
+                android:scaleType="centerInside"
+                app:imageUrl="@{data.image}"
+                app:placeholder="@{@drawable/ic_vector_odoo_placeholder_grey400_48dp}"
+                app:srcCompat="@drawable/ic_vector_odoo_placeholder_grey400_48dp"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:paddingBottom="@dimen/spacing_tiny"
+            android:paddingEnd="@dimen/spacing_tiny"
+            android:paddingLeft="@dimen/spacing_tiny"
+            android:paddingRight="@dimen/spacing_tiny"
+            android:paddingStart="@dimen/spacing_tiny"
+            android:paddingTop="@dimen/spacing_tiny"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_min"
+            app:htmlText="@{data.name}"
+            tools:text="Magento dhded" />
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

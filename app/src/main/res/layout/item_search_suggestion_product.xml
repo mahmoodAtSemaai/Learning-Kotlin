@@ -1,0 +1,94 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.webkul.mobikul.odoo.helper.ImageHelper.ImageType" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.generic.ProductData" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.extra.search.SearchSuggestionProductHandler" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:onClick="@{()->handler.viewProduct()}"
+        android:padding="16dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/product_image_tiny"
+            android:layout_height="@dimen/product_image_tiny"
+            android:layout_marginEnd="@dimen/spacing_generic"
+            android:layout_marginRight="@dimen/spacing_generic"
+            android:scaleType="centerInside"
+            app:imageType="@{ImageType.PRODUCT_TINY}"
+            app:imageUrl="@{data.thumbNail}"
+            app:placeholder="@{@drawable/ic_vector_odoo_placeholder_grey400_48dp}"
+            app:srcCompat="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/spacing_generic"
+            android:layout_marginLeft="@dimen/spacing_generic"
+            android:layout_marginRight="@dimen/spacing_generic"
+            android:layout_marginStart="@dimen/spacing_generic"
+            android:orientation="vertical">
+
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_tiny"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/text_color_primary"
+                app:htmlText="@{data.name}"
+                tools:text="Magento Marketplace Multi Vendor Module" />
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_generic"
+                    android:layout_marginRight="@dimen/spacing_generic"
+                    android:background="@{data.priceReduce.empty ?  null : @drawable/bg_strikethrough}"
+                    android:text="@{data.priceUnit}"
+                    app:textStyle="@{data.priceReduce.empty ? &quot;bold&quot; : &quot;normal&quot;}"
+                    tools:text="$349.00" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{data.priceReduce}"
+                    android:textStyle="bold"
+                    app:visibility="@{!data.priceReduce.empty}"
+                    tools:text="$300.00" />
+
+            </LinearLayout>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</layout>

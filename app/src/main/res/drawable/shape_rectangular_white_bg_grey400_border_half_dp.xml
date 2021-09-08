@@ -1,0 +1,11 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:tint="@color/activityBackground"
+    android:shape="rectangle">
+
+    <solid android:color="@color/activityBackground" />
+    <stroke
+        android:width="0.5dp"
+        android:color="@color/grey_400" />
+</shape>
+
+

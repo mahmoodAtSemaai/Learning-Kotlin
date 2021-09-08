@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">Semaai_Application</string>
+    <string name="mobikul" translatable="false">Semaai</string>
+    <string name="deeplinking_host" translatable="false">mpdemo.webkul.com</string>
+
+    <string name="about_store">About Store</string>
+    <string name="read_more">Read More</string>
+    <string name="recently_added_products">Recently added products</string>
+    <string name="view_all_title">View All</string>
+    <string name="store_rating">Store Rating</string>
+    <string name="average_rating">Average Rating</string>
+    <string name="make_a_review">Write a review</string>
+    <string name="please_login_to_write_reviews">Please login to write a review.</string>
+    <string name="title_fragment_policies">Policies</string>
+    <string name="product_reviews">Product Reviews</string>
+    <string name="recent_feedbacks">Recent Feedbacks</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="view_large_map">View large map</string>
+    <string name="empty_about_store">No information available.</string>
+    <string name="read_less">Read Less</string>
+    <string name="view_all_x_reviews">View All %1$d reviews.</string>
+    <string name="no_policies_added_by_seller">No policies added by Seller.</string>
+    <string name="return_policy">Return Policy</string>
+    <string name="shipping_policy">Shipping Policy</string>
+    <string name="seller_have_no_review_yet">Seller do not have any review yet.</string>
+    <string name="top_sellers">Top Sellers</string>
+    <string name="x_products">%1$d Product(s).</string>
+    <string name="products">Products</string>
+
+
+    <string name="seller_reviews">Seller Reviews</string>
+
+    <string name="x_pending_products"><b>%1$d</b> Pending</string>
+    <string name="x_approved_products"><b>%1$d</b> Approved</string>
+    <string name="x_rejected_products"><b>%1$d</b> Rejected</string>
+    <string name="x_new_order"><b>%1$d</b> New Orders</string>
+    <string name="x_approved_orders"><b>%1$d</b> Approved Orders</string>
+    <string name="x_shipped_orders"><b>%1$d</b> Shipped Orders</string>
+    <string name="orders">Orders</string>
+    <string name="seller_orders">Seller Orders</string>
+    <string name="seller_products">Seller products</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="add_review">Add a review</string>
+    <string name="product">Product</string>
+    <string name="send">Send</string>
+    <string name="open_a_new_shop">Open A New Shop</string>
+    <string name="no_products_still_added_by_the_seller">No Products Still added by the seller</string>
+    <string name="payments">Payments</string>
+    <string name="x_requested_payments"><b>%1$d</b> Requested</string>
+    <string name="x_to_be_approved_payments"><b>%1$d</b> To Be Approved</string>
+    <string name="x_approved_payments"><b>%1$d</b> Approved</string>
+
+</resources>

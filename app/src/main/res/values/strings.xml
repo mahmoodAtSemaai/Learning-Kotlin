@@ -1,0 +1,429 @@
+<resources>
+    <!--CONFIGURATION -->
+    <string name="app_name" translatable="false">Semaai</string>
+    <string name="store_name" translatable="false">Semaai</string>
+    <string name="deeplinking_host" translatable="false">demo.webkul.com</string>
+    <string name="home">Home</string>
+    <string name="powered_by_mobikul">Powered by Semaai</string>
+    <string name="facebook_app_id" translatable="false">dummy</string> <!--live fb app id -->
+    <string name="fb_login_protocol_scheme" translatable="false">dummy</string>
+
+    <!--    <string name="com.twitter.sdk.android.CONSUMER_KEY" translatable="false">xrpSJuw2eZJYyz5IC4jSD0Fqr</string>-->
+    <string name="com.twitter.sdk.android.CONSUMER_KEY" translatable="false">dummy</string>
+
+    <!--    <string name="com.twitter.sdk.android.CONSUMER_SECRET" translatable="false">kX9SYg6wuyofgw3Q7aOFlPoWhADhj8UHhaH66IwDrhSb4DeUI2</string>-->
+    <string name="com.twitter.sdk.android.CONSUMER_SECRET" translatable="false">dummy</string>
+
+    <!--user color code as of accent color.-->
+    <string name="signup_text_on_sign_in_page"><![CDATA[New in Semaai. <font color="#6fa088">SIGN-UP</font> now.]]></string>
+    <string name="signin_text_on_sign_up_page"><![CDATA[Already have an account.  <font color="#6fa088">SIGN-IN</font> now.]]></string>
+    <string name="mobikul" translatable="false">Semaai</string>
+    <!---->
+    <!--Menu-->
+    <string name="search">Search</string>
+    <string name="search_hint">Search…</string>
+    <!---->
+    <!---->
+    <!--BASE/ GLOBAL/ GENERIC-->
+    <string name="customer">Customer</string>
+    <string name="rate_us">Rate us</string>
+    <string name="share_app">Share App</string>
+    <string name="more">More</string>
+    <string name="enter_quantity">Enter Quantity</string>
+    <string name="quantity">quantity</string>
+    <string name="choose_an_action">Choose an Action:</string>
+    <!---->
+    <!---->
+    <!--Home Page-->
+    <string name="notification">Notification</string>
+    <string name="bag">Bag</string>
+    <string name="account">Account</string>
+    <string name="login">Login</string>
+    <string name="view_all">View All</string>
+    <string name="please_wait">Please wait…</string>
+    <string name="press_back_to_exit">Press Back again to Exit</string>
+    <!---->
+    <!--DRAWER-->
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <!---->
+    <!---->
+    <!--ERROR ERROR ERRROR ARE EVERY WHEREERERERRE BUT NO ERROR TO FOUND-->
+    <string name="error">Error</string>
+    <string name="error_request_failed">Request Failed, Please try again</string>
+    <string name="error_request_timeout">Request Failed, Please try again</string>
+    <string name="error_no_network_cross_check_connection">Internet not available, Cross check your internet connectivity and try again</string>
+    <string name="error_is_required">is required !</string>
+    <string name="error_enter_valid_email">Please Enter a Valid Email!</string>
+    <string name="error_password_length_x">must have at least %d characters.</string>
+    <string name="error_enter_valid_login_details">Please enter valid login details</string>
+    <string name="plese_accept_tnc">Please accept the Terms and Condition.</string>
+    <string name="error_login_failure">Login Failure</string>
+    <string name="error_cant_perform_operation">Cannot perform this operation at this time!</string>
+    <string name="error_fill_req_field">Please fill the required field!</string>
+    <string name="error_this_is_a_required_field">This is a required field.</string>
+    <string name="error_network_unavailble">Network Unavailable</string>
+    <string name="error_please_provide_permission_to_pick_location">Please provide permission to view pick location</string>
+    <string name="error_enable_location_of_device">Please enable location of your device</string>
+    <string name="error_could_get_location_at_this_point">Could not get your location at this point</string>
+    <string name="error_something_went_wrong">Something went wrong</string>
+    <string name="error_could_not_add_to_bag_pls_try_again">Could not add item to the bag Please try again later.</string>
+    <string name="error_could_not_add_to_wishlist_pls_try_again">Could not add item to the wishlist. Please try again later.</string>
+    <string name="error_no_shipping_method_chosen">Please specify shipping method.</string>
+    <string name="error_no_payment_method_chosen">Please specify payment method.</string>
+    <string name="error_permision_required_to_change_profile_image">Please provide required permission to change profile image</string>
+    <string name="error_in_changing_profile_image">Something went wrong in uploading profile image to server. Please try again after some time</string>
+    <string name="error_please_login_to_continue">Please login to continue</string>
+    <string name="error_password_not_match">Password not match</string>
+    <string name="error_invalid_card_number">Please enter valid card number</string>
+    <string name="error_invalid_cvv">Please enter valid cvv number</string>
+    <string name="error_invalid_date">Please enter valid date</string>
+    <string name="error_invalid_card_details">Please enter valid card details</string>
+    <string name="error_order_place">Could not place order at this moment, please try again after some time</string>
+    <string name="error_inappropriate_details">Please provide the appropriate details</string>
+    <string name="error_default_address_not_found">Default Address not found !</string>
+    <string name="error_failed_to_connect_google">Failed to connect Google. Please try again.</string>
+    <string name="error_billing_address_not_configured">Billing address is not configured, please select edit to set up your address</string>
+    <string name="error_google_sign_in">Could not perform sign in via Google. Please try again.</string>
+    <string name="error_twitter_sign_in">Could not perform sign in via Twitter. Please try again.</string>
+    <string name="error_in_zip_code">Please enter valid zip code.</string>
+    <!---->
+    <!---->
+    <!--MESSAGES MESSAGES MESSAGES => All Relavent question alert warning messages etc are summed up here.-->
+    <!---->
+    <!---->
+    <string name="msg_are_you_sure">Are you sure ?</string>
+    <string name="account_created_successfully">Account created…</string>
+    <string name="msg_want_to_delete_this_address">You want to delete this address ?</string>
+    <string name="question_want_to_empty_bag">You want to empty your bag?</string>
+    <string name="question_add_new_address_to_place_order">Add a new address to place order ?</string>
+    <string name="message_yes_delete_it">Yes, Delete it</string>
+    <string name="message_deleted">Deleted</string>
+    <string name="ques_want_to_delete_this_product">Do you want to delete this product?</string>
+    <!--SPLASH SCREEN-->
+    <string name="this_is_a_demo_store">This is a demo store.</string>
+    <string name="any_orders_placed_from_this_store_will_not_be_honored_or_fullfilled">Any orders placed from this store will not be honored or fulfilled</string>
+    <string name="odoo">Odoo</string>
+    <string name="title_update_app">Update Available !</string>
+    <string name="new_version_available_X">There is a newer version of %s application available, click OK to upgrade now ?</string>
+    <string name="remind_later">Remind Later</string>
+    <!---->
+    <!---->
+    <!--SIGN IN AND SIGN UP-->
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="email">Email</string>
+    <string name="phoneNumber">Phone Number</string>
+    <string name="email_or_username">Email/Username</string>
+    <string name="write_your_email_here">Write your email here</string>
+    <string name="write_your_email_or_username_here">Write your email or username here</string>
+    <string name="password">Password</string>
+    <string name="write_your_password_here">Write your password here</string>
+    <string name="forget_password_heading">Forget Password…?</string>
+    <string name="forgot_your_password">Forgot your password ?</string>
+    <string name="please_enter_your_email_address_below_you_will_receive_a_link_to_reset_your_password_">Please enter your email address below. You will receive a link to reset your password.</string>
+    <string name="link_to_resend_login_password_send">Link Send</string>
+    <string name="your_email">Your Email</string>
+    <string name="your_name">Your Name</string>
+    <string name="e_g_john_doe">e.g. John Doe</string>
+    <string name="login_successful_message">Login Successful</string>
+    <string name="skip">Skip</string>
+    <string name="use_email_address">Use Email Address</string>
+    <string name="or_continue_with">Or Continue with</string>
+    <string name="sign_in_with_facebook">Sign in with Facebook</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="enter_email_address">Enter email address</string>
+    <string name="enter_phone_number">Enter Phone Number</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="enter_telephone_no">Enter telephone no</string>
+    <string name="enter_street_address">Enter Street address</string>
+    <string name="enter_your_city">Enter your city</string>
+    <string name="enter_your_postal_code">Enter Zip/PostalCode</string>
+    <string name="enter_your_password">Enter password</string>
+    <string name="enter_confirm_password">Enter confirm password</string>
+    <string name="error_fb_sign_in">Could not perform sign in via Facebook. Please try again.</string>
+    <string name="view_term_and_cond">View Terms and Conditions</string>
+    <string name="i_agree_with_term_and_condition">I agree with Terms and Conditions</string>
+    <!---->
+    <!---->
+    <!--ACCOUNT FRAGMENT-->
+    <string name="dashboard">Dashboard</string>
+    <string name="account_info">Account Info</string>
+    <string name="address_book">Address Book</string>
+    <string name="sign_out">Sign out</string>
+    <string name="hello_x_">Hello %s !</string>
+    <string name="choose_from_library">Choose from Library</string>
+    <string name="camera_pick">Pick from Camera</string>
+    <string name="select_file">Select File</string>
+    <string name="upload_profile_image">Upload Profile Image</string>
+    <string name="upload_banner_image">Upload Banner Image</string>
+    <string name="deactivate_account">Deactivate your Account Temporary/Permanent</string>
+    <string name="deactivate_temporary">Deactivate Temporary</string>
+    <string name="deactivate_permanent">Deactivate Permanent</string>
+    <string name="deactivate">Deactivate</string>
+    <string name="want_to_deactivate_account">Do you want to deactivate your account %1$s ?</string>
+    <string name="download_data">Download all information</string>
+    <string name="download">Download</string>
+    <string name="download_request">Download Request</string>
+    <!---->
+    <!---->
+    <!-- CATALOG PRODUCT ACTIVITY-->
+    <string name="x_results_found">%d Results Found</string>
+    <string name="of_toast_for_no_of_item">of</string>
+    <string name="that_s_all_folks">~~~ That`s all folks! ~~~</string>
+    <string name="rating_out_of_5">Rating: %1$d/5</string>
+    <string name="reviewed_by">Review By %1$s</string>
+    <!---->
+    <!---->
+    <!--EMPTY LAYOUT STRINGS-->
+    <string name="empty_product_catalog">Sorry no products found !</string>
+    <string name="no_order_placed">No order placed!</string>
+    <string name="try_different_category_or_search_keyword_maybe">Try different category or search keyword maybe … ?</string>
+    <string name="empty_notification">You don\'t have any notification !</string>
+    <string name="visit_later_to_check_your_notification">Visit later to check your notifications</string>
+    <string name="empty_bag">Your bag is empty !!!</string>
+    <string name="add_item_to_your_bag_now">Add item to your bag now</string>
+    <string name="start_shopping">Start Shopping</string>
+    <string name="congrats">Congrats…</string>
+
+    <!---->
+    <!---->
+    <!--SEARCH -->
+    <string name="hint_prompt">Speak an item name</string>
+    <string name="related_products">Related Products</string>
+    <!---->
+    <!---->
+    <!--MY ORDERS-->
+    <string name="all_orders">All Orders</string>
+    <string name="my_order">My Order</string>
+    <string name="you_have_not_placed_any_orders_yet">You have not placed any orders yet</string>
+    <string name="order_no">Order #</string>
+    <string name="date">Date</string>
+    <string name="order_total">Order Total</string>
+    <string name="status">Status</string>
+    <string name="label_order_shipping_address">Shipping Address</string>
+    <string name="label_order_billing_address">Billing Address</string>
+    <string name="orders_product_info">Product Info</string>
+    <string name="orders_order_details">ORDER DETAILS</string>
+    <string name="tax">Tax</string>
+    <string name="subtotal">Subtotal</string>
+    <string name="grand_total">Grand Total</string>
+    <string name="placed_on_Xdate">Placed on %s</string>
+    <string name="state_x">State: %s</string>
+    <string name="unit_price_x">Unit Price: %s</string>
+    <string name="qty_x">Qty: %s</string>
+    <string name="discount_x">Discount: %s</string>
+    <string name="tax_x">Tax: %s</string>
+    <string name="price_total_x">Total Price: %s</string>
+    <string name="order_noX">Order #%s</string>
+    <!---->
+    <!---->
+    <!--WISHLIST-->
+    <string name="wishlist">Wishlist</string>
+    <string name="my_wishlist">My Wishlist</string>
+    <string name="you_have_no_products_in_your_wishlist">You do not have any products in your Wishlist</string>
+    <string name="move_to_wishlist">Move to Wishlist</string>
+    <string name="move_to_bag">Move To Bag</string>
+    <!---->
+    <!---->
+    <!--ADDRESS BOOK -->
+    <string name="add_new_address">Add New Address</string>
+    <string name="default_billing_address">Default Billing Address</string>
+    <string name="dummy_address">Shubham Agarwal Webkul A-67, noida sector-63 Noida, UP, 201301 India</string>
+    <string name="edit_billing_address">Edit Billing Address</string>
+    <string name="default_shipping_address">Default Shipping Address</string>
+    <string name="edit_shipping_address">Edit Shipping Address</string>
+    <string name="change_shipping_address">Change Shipping Address</string>
+    <string name="subheading_shipping_address_X">Shipping Address - %s</string>
+    <string name="edit_address">Edit Address</string>
+    <string name="delete_address">Delete Address</string>
+    <string name="billing_address">Billing Address</string>
+    <string name="shipping_address">Shipping Address</string>
+    <string name="shipping_addresses">Shipping Addresses</string>
+    <string name="additional_address">Additional Address</string>
+    <string name="telephone">Telephone</string>
+    <!--<string name="company">Company</string>-->
+    <string name="street">Street</string>
+    <string name="city">City</string>
+    <string name="zip_postalcode">Zip/PostalCode</string>
+    <string name="country">Country</string>
+    <string name="state">State</string>
+    <string name="new_address_btn_save_address">Save Address</string>
+    <string name="select_default_shipping_address">Select Default Shipping Address</string>
+    <string name="set_default">Set Default</string>
+
+    <!---->
+    <!---->
+    <!-- DASHBOARD-->
+    <string name="recent_orders">Recent Orders</string>
+    <string name="account_information">Account Information</string>
+    <string name="contact_information">Contact Information</string>
+    <string name="edit">Edit</string>
+    <string name="change_password">Change Password</string>
+    <string name="manage_address">Manage Address</string>
+    <!---->
+    <!---->
+    <!--ACCOUNT INFO-->
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="save">Save</string>
+    <!---->
+    <!---->
+    <!--PRODUCT PAGE..-->
+    <string name="guest_user">Guest User</string>
+    <string name="add_to_bag">Add To Bag</string>
+    <string name="go_to_bag">Go To Bag</string>
+    <string name="buy_now">Buy Now</string>
+    <string name="qty">Qty:</string>
+    <string name="qty_x_int">Qty: %d </string>
+
+
+    <!---->
+    <!---->
+    <!--BAG PAGE-->
+    <string name="items">items</string>
+    <string name="total">Total</string>
+    <string name="continue_shopping">Continue Shopping</string>
+    <string name="empty_shopping_bag">Empty Shopping Bag</string>
+    <string name="proceed_to_checkout">Proceed To Checkout</string>
+    <string name="unit_price">Unit Price</string>
+    <string name="updating_bag">Updating bag…</string>
+    <!---->
+    <!---->
+    <!--CHECKOUT PAGE-->
+    <string name="set_address">Set Address</string>
+    <string name="select_payment_method">Select Payment Method</string>
+    <string name="review_order">Review Order</string>
+    <string name="continue_">Continue</string>
+    <string name="ship_to_this_address">Ship to this address</string>
+    <string name="checkout_subheading_address">Select a address from your address book or add a new address.</string>
+    <string name="billing_and_shipping_address">Billing and Shipping Address</string>
+    <string name="checkout_heading_shipping_method">Shipping Method</string>
+    <string name="checkout_select_a_shipping_method">Select a shipping method</string>
+    <string name="checkout_heading_payment_method">Payment Information</string>
+    <string name="checkout_select_a_payment_method">Select a payment method</string>
+    <string name="checkout_heading_order_review">Review your order</string>
+    <string name="order_review_payment_method">Payment Method</string>
+    <string name="place_order">Place Order</string>
+    <string name="pay_now">Pay Now</string>
+    <string name="order_review_product_qty_is_X">Quantity: %d</string>
+    <string name="order_review_product_price_is_X">Price: %s</string>
+    <string name="order_review_product_subtotal_is_X">Subtotal: %s</string>
+    <string name="checkout">Checkout</string>
+    <!---->
+    <!---->
+    <!--RATE APP DIALOG-->
+    <string name="later">Later</string>
+    <string name="rate_app">Rate App</string>
+    <string name="how_was_your_experience_with_us">How was your experience with us?</string>
+    <!---->
+    <!---->
+    <!--Order Place Activity-->
+    <string name="your_order_has_been_received">Your order has been received</string>
+    <string name="thank_you_for_your_purchase">Thank you for your purchase !</string>
+    <string name="you_will_receive_an_order_confirmation_email_with_details_of_your_order_and_a_link_to_track_its_progress">You will receive an order confirmation email with details of your order and a link to track its progress.</string>
+    <string name="your_order_id_is_x">Your order id is: %s.</string>
+    <string name="title_activity_order_placed">Order Placed</string>
+    <!---->
+    <!---->
+    <!--Stripe Payment-->
+    <string name="pay_with_new_card">Pay with new card</string>
+    <string name="write_your_review">Write Your Review</string>
+    <string name="write_review_title">Write Review Title</string>
+    <string name="please_enter_required_details">Please enter required details</string>
+    <string name="resend_verification_link">Resend Verification Link</string>
+    <string name="average_rating_out_of_5">%1$.1f /5</string>
+    <string name="x_customer_reviews">%1$d Customer review(s) </string>
+    <string name="be_the_first_to_write_a_review">Be the first to write a review</string>
+    <string name="email_activation_text">Your email is not verified yet. To verify, click the RESEND VERIFICATION LINK button and the verification email will be sent to your email address.</string>
+    <string name="please_add_your_rating">Please add your rating!</string>
+    <!---->
+    <!---->
+    <!--Marketplace-->
+    <string name="sold_by">Sold By</string>
+    <string name="marketplace">Marketplace</string>
+    <string name="do_you_want_to_become_a_seller">Do you want to become a seller/vendor?</string>
+    <string name="seller_dashboard">Seller Dashboard</string>
+    <string name="register">Register</string>
+    <string name="become_seller_activity_title">Become Seller</string>
+
+    <!---->
+    <!---->
+
+    <!--Customization-->
+    <string name="forecast_quantity_x">%1$d products Available</string>
+    <string name="out_of_stock">Out of Stock.</string>
+    <string name="product_not_available_in_this_quantity">Product not available in this quantity.</string>
+    <string name="product_not_available_in_this_combination">Product not available</string>
+    <string name="profile_url">Profile URL</string>
+    <string name="order_review_shipping">Shipping</string>
+    <string name="seller_profile">Seller Profile</string>
+    <string name="ask_to_admin">Ask to Admin</string>
+    <string name="seller_orders">Seller Orders</string>
+    <string name="language">Language</string>
+    <string name="lightMode">Light Mode</string>
+    <string name="darkMode">Dark Mode</string>
+    <string name="setting">Settings</string>
+
+    <!--Fingerprint-->
+    <string name="fingerprint_login_header">Fingerprint Login</string>
+    <string name="ok">OK</string>
+    <string name="cancel">CANCEL</string>
+    <string name="cancel_small">Cancel</string>
+    <string name="no_fingerprint_permission">Fingerprint authentication permission not enabled</string>
+    <string name="no_fingerprint_registered">Register at least one fingerprint in Settings</string>
+    <string name="no_lock_screen_security">Lock screen security not enabled in Settings</string>
+    <string name="place_your_finger_on_sensor">Place your finger on sensor</string>
+    <string name="fingerprint_authentication">Fingerprint Authentication</string>
+    <string name="ask_for_fingerprint_login">Would you like to opt for fingerprint login?</string>
+    <string name="fingerprint_error">Fingerprint error occurred. Check your security settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="downloading">Downloading&#8230;</string>
+    <string name="download_started">Download started</string>
+    <string name="no_items_yet">No items yet</string>
+    <string name="manage_your_wishlist_by_tapping_on_heart_icon">Manage your wishlist by tapping on the Heart icon.</string>
+    <string name="fingerprint_login">FingerPrint Login</string>
+    <string name="yes">Yes</string>
+    <string name="no_terms_and_conditions_to_display">No Terms &amp; Conditions </string>
+    <string name="access_denied_message"> You need to Login again in the application to continue </string>
+    <string name="delete_my_image">Delete Image</string>
+    <string name="label_order_delivery_orders">Delivery Orders</string>
+    <string name="label_order_transactions">Transactions</string>
+    <string name="add_image">Add Image</string>
+    <string name="search_by_scanning">Search By Scanning</string>
+    <string name="scan_as_text">Scan As Text</string>
+    <string name="scan_as_image">Scan As Product</string>
+    <string name="error_while_using_flash">There has been some error while accessing flash on your device.</string>
+    <string name="results_found"> Results Found</string>
+
+    <string name="action_geolocate">Pick Location</string>
+    <string name="default_info_title">Default Location</string>
+    <string name="default_info_snippet">No places found, because location permission is disabled.</string>
+    <string name="permission_denied">Permission denied to read your location</string>
+    <string name="alternative_products">Alternative Products:</string>
+    <string name="recent_view_products">Recently Viewed Products</string>
+    <string name="permission_confirmation">Permission confirmation</string>
+    <string name="permission_msg">We need your location permission to set the address from your current location</string>
+    <string name="download_storage_permission">We need your storage permission to save the download file in your device storage</string>
+    <string name="camra_permission">We need your camera and storage permission to take image and set your profile image</string>
+    <string name="camera_search">We need your camera permission scan and search product by camera</string>
+
+    <!-- Abandoned Cart Alarm-->
+    <string name="abandoned_cart">Abandoned Cart</string>
+    <string name="your_cart_misses_you">Your Cart Misses You!</string>
+    <string name="products_waiting_in_cart_msg">You have products waiting in your cart to checkout. Running out of stock! Hurry!</string>
+    <string name="theme">Theme</string>
+    <string name="transition">SharedTransition</string>
+
+
+    <string name="back_to_home">Back to Top</string>
+    <string name="show_notification">Show Notification</string>
+    <string name="show_recent_review">Show Recent View</string>
+    <string name="reventviewedproduct">Are you sure want to clear your recent viewed product</string>
+    <string name="clearsearch">Clear search history</string>
+    <string name="clearsearchhistory">Are you sure want to clear your search history</string>
+    <string name="clearrecent">Clear Recent View</string>
+    <string name="privacy_policy">Privacy Policy</string>
+</resources>

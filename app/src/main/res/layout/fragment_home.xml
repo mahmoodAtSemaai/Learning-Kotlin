@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.home.HomePageResponse" />
+
+    </data>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:orientation="vertical">
+
+
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/featured_categories_rv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:nestedScrollingEnabled="false"
+                            android:orientation="horizontal"
+                            android:visibility="@{data.featuredCategories.empty ? View.GONE : View.VISIBLE}"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:listitem="@layout/item_featured_category"
+                            tools:targetApi="lollipop" />
+
+                        <!--BANNER SLIDERS-->
+
+                        <androidx.viewpager.widget.ViewPager
+                            android:id="@+id/banner_view_pager"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/banner_size_generic"
+                            android:clipToPadding="false"
+                            android:nestedScrollingEnabled="false"
+                            android:paddingEnd="@dimen/spacing_generic"
+                            android:paddingLeft="@dimen/spacing_generic"
+                            android:paddingRight="@dimen/spacing_generic"
+                            android:paddingStart="@dimen/spacing_generic"
+                            android:scaleType="fitCenter"
+                            android:visibility="@{data.bannerImages.empty? View.GONE : View.VISIBLE}"
+                            tools:background="@color/badge_background_color"
+                            tools:ignore="UnusedAttribute" />
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/banner_dots_tab_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/tab_dot_switcher_height"
+                            android:layout_marginBottom="@dimen/spacing_generic"
+                            android:visibility="@{data.bannerImages.empty? View.GONE : View.VISIBLE}"
+                            app:tabBackground="@drawable/selector_dots_tab_layout"
+                            app:tabGravity="center"
+                            app:tabIndicatorHeight="0dp"
+                            app:tabPaddingEnd="@dimen/spacing_generic"
+                            app:tabPaddingStart="@dimen/spacing_generic"
+                            tools:background="@color/bb_tabletRightBorderDark" />
+
+                        <!--PRODUCT SLIDERS-->
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/product_slider_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical" />
+
+
+                        <LinearLayout
+                            android:id="@+id/llRecentViewProducts"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/recent_view_products"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textStyle="bold"
+                                android:paddingBottom="@dimen/spacing_tiny"
+                                android:paddingLeft="@dimen/spacing_normal"/>
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rvAlternativeProduct"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.core.widget.NestedScrollView>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/custom_progress_drawable"
+            app:visibility="@{data == null}" />
+
+    </FrameLayout>
+
+
+</layout>

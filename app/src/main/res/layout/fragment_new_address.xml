@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import
+            alias="View"
+            type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.customer.address.AddressFormResponse" />
+
+        <variable
+            name="addressType"
+            type="com.webkul.mobikul.odoo.fragment.NewAddressFragment.AddressType" />
+
+
+        <import type="com.webkul.mobikul.odoo.fragment.NewAddressFragment.AddressType" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.customer.NewAddressFragHandler" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_marginBottom="@{@dimen/button_height_generic + @dimen/spacing_generic}">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="@dimen/activity_vertical_margin">
+
+
+                    <!--NAME-->
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_tiny"
+                        android:text="@string/your_name" />
+
+                    <com.webkul.mobikul.odoo.custom.NoChangingBackgroundTextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_tiny"
+                        android:gravity="center"
+                        app:error="@{data.nameError}"
+                        app:errorEnabled="@{!data.nameError.empty}"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/name_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/selector_edit_text_form_field_bg"
+                            android:hint="@string/enter_your_name"
+                            android:inputType="textPersonName"
+                            android:maxLines="1"
+                            android:padding="@dimen/spacing_generic"
+                            android:text="@={data.name}" />
+
+                    </com.webkul.mobikul.odoo.custom.NoChangingBackgroundTextInputLayout>
+
+
+                    <!--TELEPHONE-->
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_tiny"
+                        android:text="@string/telephone" />
+
+
+                    <com.webkul.mobikul.odoo.custom.NoChangingBackgroundTextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_tiny"
+                        android:gravity="center"
+                        app:error="@{data.phoneError}"
+                        app:errorEnabled="@{!data.phoneError.empty}"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/telephone_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/selector_edit_text_form_field_bg"
+                            android:hint="@string/enter_telephone_no"
+                            android:inputType="number"
+                            android:maxLines="1"
+                            android:padding="@dimen/spacing_generic"
+                            android:text="@={data.phone}" />
+
+                    </com.webkul.mobikul.odoo.custom.NoChangingBackgroundTextInputLayout>
+
+                    <!--STREET-->
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_tiny"
+                        android:text="@string/street" />
+
+
+                    <com.webkul.mobikul.odoo.custom.NoChangingBackgroundTextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_tiny"
+                        android:gravity="center"
+                        app:error="@{data.streetError}"
+                        app:errorEnabled="@{!data.streetError.empty}"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/street_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/selector_edit_text_form_field_bg"
+                            android:hint="@string/enter_street_address"
+                            android:inputType="textPostalAddress"
+                            android:maxLines="1"
+                            android:padding="@dimen/spacing_generic"
+                            android:text="@={data.street}" />
+
+                    </com.webkul.mobikul.odoo.custom.NoChangingBackgroundTextInputLayout>
+
+                    <!--CITY-->
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_tiny"
+                        android:text="@string/city" />
+
+                    <com.webkul.mobikul.odoo.custom.NoChangingBackgroundTextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_tiny"
+                        android:gravity="center"
+                        app:error="@{data.cityError}"
+                        app:errorEnabled="@{!data.cityError.empty}"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/city_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/selector_edit_text_form_field_bg"
+                            android:hint="@string/enter_your_city"
+                            android:inputType="textPostalAddress"
+                            android:maxLines="1"
+                            android:padding="@dimen/spacing_generic"
+                            android:text="@={data.city}" />
+
+                    </com.webkul.mobikul.odoo.custom.NoChangingBackgroundTextInputLayout>
+
+                    <!--POST CODE-->
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_tiny"
+                        android:text="@string/zip_postalcode" />
+
+
+                    <com.webkul.mobikul.odoo.custom.NoChangingBackgroundTextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginBottom="@dimen/spacing_tiny"
+                        app:error="@{data.zipCodeError}"
+                        app:errorEnabled="@{!data.zipCodeError.empty}"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/zip_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/enter_your_postal_code"
+                            android:inputType="textPostalAddress"
+                            android:maxLines="1"
+                            android:text="@={data.zip}" />
+
+                    </com.webkul.mobikul.odoo.custom.NoChangingBackgroundTextInputLayout>
+
+
+                    <!--COUNTRY-->
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_tiny"
+                        android:text="@string/country" />
+
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/country_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/spinner_min_height" />
+
+
+                    <!--STATE-->
+
+                    <LinearLayout
+                        android:id="@+id/state_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_tiny"
+                            android:text="@string/state" />
+
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/state_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="@dimen/spinner_min_height" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/map_marker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_tiny"
+            app:fabSize="mini"
+            android:layout_above="@+id/current_location"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/spacing_generic"
+            app:srcCompat="@drawable/ic_vector_map_marker"
+            android:tint="@android:color/white"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/current_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/save_address_btn_container"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/spacing_generic"
+            android:clickable="true"
+            android:onClick="@{()->handler.getCurrentLocation()}"
+            app:fabSize="mini"
+            app:layout_anchor="@id/form"
+            app:srcCompat="@drawable/ic_vector_menu_gps_white_24dp" />
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/save_address_btn_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/white"
+            app:contentPadding="@dimen/spacing_generic">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height_generic"
+                android:onClick="@{()->handler.saveAddress()}"
+                android:text="@string/new_address_btn_save_address"
+                android:textAllCaps="true"
+                android:textStyle="bold" />
+
+        </androidx.cardview.widget.CardView>
+
+
+    </RelativeLayout>
+
+</layout>

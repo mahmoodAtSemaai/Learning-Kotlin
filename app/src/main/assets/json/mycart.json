@@ -1,0 +1,31 @@
+{
+  "lang": "fr_FR",
+  "grandtotal": {
+    "value": "$1.0",
+    "title": "Total"
+  },
+  "cartCount": 1,
+  "success": true,
+  "tax": {
+    "value": "$0.0",
+    "title": "Taxes"
+  },
+  "itemsPerPage": 10,
+  "subtotal": {
+    "value": "$1.0",
+    "title": "Subtotal"
+  },
+  "customerId": 3,
+  "responseCode": 2,
+  "items": [
+    {
+      "price": "$1.0",
+      "lineId": 11,
+      "qty": 1,
+      "name": "Test ",
+      "thumbNail": "http://192.168.1.106:8010/web/image/product.product/3/image_small"
+    }
+  ],
+  "message": "Login successfully.",
+  "pricelist": 1
+}

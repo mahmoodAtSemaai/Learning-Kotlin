@@ -1,0 +1,86 @@
+{
+  "project_info": {
+    "project_number": "626326470542",
+    "firebase_url": "https://mobikul-odoo-app.firebaseio.com",
+    "project_id": "mobikul-odoo-app",
+    "storage_bucket": "mobikul-odoo-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:626326470542:android:5db62d959b847614",
+        "android_client_info": {
+          "package_name": "com.webkul.mobikul.odoo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "626326470542-1ve21rf2lff7pv8gk2ql7l9ttup09v44.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7u5Ils3pj6BZecBtudZYgqCZdsWqDkfg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:626326470542:android:19627db686da6e81",
+        "android_client_info": {
+          "package_name": "com.webkul.mobikul.odoo.local"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "626326470542-7rnlp3u5cvc0nbubs6k446u1dkaan86t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.webkul.mobikul.odoo.local",
+            "certificate_hash": "a67963a64603ac02270864b6a54eb739d4b019af"
+          }
+        },
+        {
+          "client_id": "626326470542-1ve21rf2lff7pv8gk2ql7l9ttup09v44.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7u5Ils3pj6BZecBtudZYgqCZdsWqDkfg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "626326470542-1ve21rf2lff7pv8gk2ql7l9ttup09v44.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

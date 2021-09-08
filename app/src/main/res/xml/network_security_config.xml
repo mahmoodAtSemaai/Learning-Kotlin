@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Webkul Software.
+  ~
+  ~ Kotlin
+  ~
+  ~ @author Webkul <support@webkul.com>
+  ~ @category Webkul
+  ~ @package com.webkul.mobikul
+  ~ @copyright 2010-2018 Webkul Software Private Limited (https://webkul.com)
+  ~ @license https://store.webkul.com/license.html ASL Licence
+  ~ @link https://store.webkul.com/license.html
+  -->
+
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">demo.webkul.com</domain>
+        <domain includeSubdomains="true">18.141.163.230</domain>
+        <domain includeSubdomains="true">play.google.com</domain>
+    </domain-config>
+</network-security-config>

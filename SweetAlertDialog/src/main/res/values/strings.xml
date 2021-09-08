@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">SweetAlertDialog</string>
+    <string name="dialog_default_title" translatable="false">Here\'s a message!</string>
+    <string name="dialog_ok" translatable="false">OK</string>
+    <string name="dialog_cancel" translatable="false">Cancel</string>
+    <string name="LOADING" translatable="false">Loading...</string>
+</resources>

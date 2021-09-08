@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.customer.dashboard.DashboardData" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.customer.DashboardFragmentHandler" />
+
+        <variable
+            name="customerName"
+            type="String" />
+
+        <variable
+            name="customerEmail"
+            type="String" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{data== null ? View.GONE :View.VISIBLE}">
+
+
+            <!--RECENT ORDER CONTAINER-->
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/spacing_generic"
+                android:layout_marginLeft="@dimen/spacing_generic"
+                android:layout_marginRight="@dimen/spacing_generic"
+                android:layout_marginStart="@dimen/spacing_generic"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{data.recentOrders.empty ? View.GONE : View.VISIBLE}">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/recent_orders"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textStyle="bold" />
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{()->handler.viewAllOrder()}"
+                        android:paddingBottom="@dimen/spacing_generic"
+                        android:paddingTop="@dimen/spacing_generic"
+                        android:text="@string/view_all"
+                        android:textColor="?colorAccent" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recent_order_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/spacing_generic"
+                    android:layout_marginTop="@dimen/spacing_generic"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:targetApi="lollipop" />
+                <!--    tools:listitem="@layout/item_order"-->
+
+                <!--Account information layout-->
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account_information"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold" />
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_generic"
+                    app:cardUseCompatPadding="true">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_generic">
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/contact_information"
+                                android:textStyle="bold" />
+
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{()->handler.editAccountInfo()}"
+                                android:paddingBottom="@dimen/spacing_generic"
+                                android:paddingTop="@dimen/spacing_generic"
+                                android:text="@string/edit"
+                                android:textColor="?colorAccent" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <View
+                            style="@style/DividerHorizontal"
+                            android:layout_margin="@dimen/spacing_generic" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{customerName}"
+                            tools:text="Shubham Agarwal" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{customerEmail}"
+                            tools:text="shubham.agarwal52@webkul.com" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{()->handler.editAccountInfo()}"
+                            android:paddingBottom="@dimen/spacing_generic"
+                            android:paddingTop="@dimen/spacing_generic"
+                            android:text="@string/change_password"
+                            android:textColor="?colorAccent"
+                            app:underline="@{true}" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <!--ADDRESS BOOK -->
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_generic"
+                    app:cardUseCompatPadding="true">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_generic">
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/address_book"
+                                android:textStyle="bold" />
+
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{()->handler.viewAddressBook()}"
+                                android:paddingBottom="@dimen/spacing_generic"
+                                android:paddingTop="@dimen/spacing_generic"
+                                android:text="@string/manage_address"
+                                android:textColor="?colorAccent" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <View
+                            style="@style/DividerHorizontal"
+                            android:layout_margin="@dimen/spacing_generic" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_generic"
+                            android:layout_marginTop="@dimen/spacing_generic"
+                            android:text="@string/default_billing_address"
+                            android:textAllCaps="true"
+                            android:textStyle="italic" />
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{data.billingAddress}"
+                            tools:text="@string/dummy_address" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{()->handler.editBillingAddress()}"
+                            android:paddingBottom="@dimen/spacing_generic"
+                            android:paddingTop="@dimen/spacing_generic"
+                            android:text="@string/edit_billing_address"
+                            android:textColor="?colorAccent"
+                            app:underline="@{true}" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:visibility="@{!data.shippingAddress.empty}">
+
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/spacing_generic"
+                                android:layout_marginTop="@dimen/spacing_generic"
+                                android:text="@string/default_shipping_address"
+                                android:textAllCaps="true"
+                                android:textStyle="italic" />
+
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{data.shippingAddress}"
+                                tools:text="@string/dummy_address" />
+
+
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="@dimen/spacing_generic"
+                                    android:layout_marginRight="@dimen/spacing_generic"
+                                    android:layout_weight="1"
+                                    android:onClick="@{()->handler.editShippingAddress()}"
+                                    android:paddingBottom="@dimen/spacing_generic"
+                                    android:paddingTop="@dimen/spacing_generic"
+                                    android:text="@string/edit_shipping_address"
+                                    android:textColor="?colorAccent"
+                                    app:underline="@{true}" />
+
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/spacing_generic"
+                                    android:layout_marginStart="@dimen/spacing_generic"
+                                    android:layout_weight="1"
+                                    android:onClick="@{()->handler.changeShippingAddress()}"
+                                    android:paddingBottom="@dimen/spacing_generic"
+                                    android:paddingTop="@dimen/spacing_generic"
+                                    android:text="@string/change_shipping_address"
+                                    android:textColor="?colorAccent"
+                                    app:underline="@{true}" />
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                        </LinearLayout>
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.cardview.widget.CardView>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/custom_progress_drawable"
+            android:indeterminate="true"
+            android:visibility="@{data== null ? View.VISIBLE :View.GONE}" />
+
+
+    </FrameLayout>
+
+
+</layout>
+

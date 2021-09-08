@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <data>
+
+        <import type="com.webkul.mobikul.odoo.helper.ImageHelper.ImageType" />
+
+        <import
+            alias="View"
+            type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.customer.wishlist.WishListData" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.customer.WishlistProductInfoItemHandler" />
+
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:onClick="@{()->handler.viewProduct()}"
+        android:padding="@dimen/spacing_generic">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/product_image_small"
+            android:layout_height="@dimen/product_image_small"
+            app:imageType="@{ImageType.PRODUCT_SMALL}"
+            app:imageUrl="@{data.thumbNail}"
+            app:placeholder="@{@drawable/ic_vector_odoo_placeholder_grey400_48dp}"
+            app:srcCompat="@drawable/ic_vector_odoo_placeholder_grey400_48dp"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_generic">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{data.name}"
+                tools:text="[E-COM12] iPod (16 GB)" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/unit_price + ':'}"
+                    tools:text="@string/unit_price" />
+
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:flexWrap="wrap">
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_tiny"
+                        android:layout_marginRight="@dimen/spacing_tiny"
+                        android:text="@{data.priceReduce}"
+                        android:textStyle="bold"
+                        app:visibility="@{!data.priceReduce.empty}"
+                        tools:text="$100.00" />
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_tiny"
+                        android:layout_marginRight="@dimen/spacing_tiny"
+                        android:background="@{data.priceReduce.empty ?  null : @drawable/bg_strikethrough}"
+                        android:text="@{data.priceUnit}"
+                        tools:background="@drawable/bg_strikethrough"
+                        tools:text="$120.00" />
+
+
+                </com.google.android.flexbox.FlexboxLayout>
+            </LinearLayout>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="@dimen/spacing_generic">
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="@{()->handler.addProductToBag()}"
+                    android:text="@string/move_to_bag" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()->handler.deleteProduct()}"
+                    app:srcCompat="@drawable/ic_vector_delete_forever_grey_64dp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</layout>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <data>
+
+        <import type="com.webkul.mobikul.odoo.helper.ImageHelper.ImageType" />
+
+        <import
+            alias="View"
+            type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.product.Review" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.product.ProductReviewInfoHandler" />
+
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/activityBackground"
+        android:gravity="center_vertical"
+        android:padding="@dimen/spacing_generic">
+        <!--android:onClick="@{()->handler.viewProduct()}"-->
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="@dimen/product_image_small"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_generic"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/product_image_small"
+                android:layout_height="@dimen/product_image_small"
+                android:scaleType="centerInside"
+                app:imageType="@{ImageType.PRODUCT_SMALL}"
+                app:imageUrl="@{data.customerImage}"
+                app:placeholder="@{@drawable/ic_vector_odoo_placeholder_grey400_48dp}"
+                app:srcCompat="@drawable/ic_vector_odoo_placeholder_grey400_48dp"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@{@string/reviewed_by(data.customer)}"
+                android:textColor="@color/text_color_primary"
+                tools:text="Review by John Doe" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_generic">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/rating_out_of_5(data.rating)}"
+                    tools:text="Rating : 3/5" />
+
+                <androidx.appcompat.widget.AppCompatRatingBar
+                    style="@style/Base.Widget.AppCompat.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:numStars="5"
+                    android:rating="@{data.rating}"
+                    tools:rating="3" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:text="@{data.title}"
+                tools:text="Excellent product" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{data.msg}"
+                tools:text="Absolutely in love with it. The quality of the product is very good." />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="@dimen/spacing_generic">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_normal"
+                    android:layout_marginRight="@dimen/spacing_normal"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@drawable/ic_vector_thumb_up_accent_24dp"
+                    android:drawablePadding="@dimen/spacing_normal"
+                    android:drawableStart="@drawable/ic_vector_thumb_up_accent_24dp"
+                    android:onClick="@{()->handler.onClickLikeDislike(true)}"
+                    android:text="@={data.likes}"
+                    android:textColor="@color/text_color_primary"
+                    tools:text="5" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_normal"
+                    android:layout_marginRight="@dimen/spacing_normal"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@drawable/ic_vector_thumb_down_accent_24dp"
+                    android:drawablePadding="@dimen/spacing_normal"
+                    android:drawableStart="@drawable/ic_vector_thumb_down_accent_24dp"
+                    android:onClick="@{()->handler.onClickLikeDislike(false)}"
+                    android:text="@={data.dislikes}"
+                    android:textColor="@color/text_color_primary"
+                    tools:text="5" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@{data.createDate}"
+                android:textColor="@color/text_color_Secondary"
+                tools:text="1 min ago" />
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</layout>

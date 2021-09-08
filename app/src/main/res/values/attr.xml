@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="colorPrimaryLight" format="reference" />
+    <attr name="colorHighlight" format="reference" />
+
+
+    <!--<attr name="buttonBackgroundNormal" format="reference"/>-->
+    <!--<attr name="buttonBackgroundSpecial" format="reference"/>-->
+    <!--<attr name="snackbarBackgroundNormal" format="reference"/>-->
+    <!--<attr name="snackbarBackgroundWarning" format="reference"/>-->
+
+
+    <!--TEXT COLORS VARIETIES...-->
+    <attr name="textColorRequired" format="reference" />
+    <!--<attr name="linkColorText" format="reference"/>-->
+
+    <!--Order status color-->
+    <!--<attr name="orderStatusDefaultTextColor" format="reference"/>-->
+    <!--<attr name="orderStatusCompletetTextColor" format="reference"/>-->
+    <!--<attr name="orderStatusPendingtTextColor" format="reference"/>-->
+    <!--<attr name="orderStatusProcessingTextColor" format="reference"/>-->
+    <!--<attr name="orderStatusHoldtTextColor" format="reference"/>-->
+    <!--<attr name="orderStatusCancelledTextColor" format="reference"/>-->
+    <!--<attr name="orderStatusNewTextColor" format="reference"/>-->
+    <!--<attr name="orderStatusClosedTextColor" format="reference"/>-->
+
+</resources>

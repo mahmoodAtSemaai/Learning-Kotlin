@@ -1,0 +1,12 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_vector_person_grey600_24dp" />
+    <item
+        android:bottom="16dp"
+        android:drawable="@drawable/ic_vector_high_priority_red_24dp"
+        android:right="16dp"
+        android:end="16dp"
+        android:left="0dp"
+        android:start="0dp"
+        android:top="0dp"
+        />
+</layer-list>

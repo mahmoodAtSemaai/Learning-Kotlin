@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import
+            alias="View"
+            type="android.view.View" />
+
+        <import type="com.webkul.mobikul.odoo.helper.IntentHelper" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.marketplace.odoo.model.SellerReviewForm" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.marketplace.odoo.handler.SellerReviewHandler" />
+    </data>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bottomNavigationBackground"
+        android:clickable="true">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/activity_horizontal_margin">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:gravity="center"
+                android:text="Add Your Review"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold" />
+
+            <!-- RATING-->
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/rate_us"
+                tools:text="@string/rate_us" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <androidx.appcompat.widget.AppCompatRatingBar
+                    style="@style/Base.Widget.AppCompat.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"
+                    android:isIndicator="false"
+                    android:numStars="5"
+                    android:rating="@={data.rating}"
+                    android:stepSize="1"
+                    tools:rating="2" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:text="@={data.ratingText}"
+                    android:textColor="@{data.ratingTextColor}"
+                    tools:text="good" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <!-- Name -->
+            <!--<androidx.appcompat.widget.AppCompatTextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/your_name"-->
+            <!--tools:text="@string/your_name"/>-->
+
+
+            <!--<com.google.android.material.textfield.TextInputLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:error="@{data.customerError}"-->
+            <!--app:errorEnabled="@{data.displayError}"-->
+            <!--app:hintEnabled="false">-->
+
+            <!--<com.google.android.material.textfield.TextInputEditText-->
+            <!--android:id="@+id/name_et"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:hint="@string/enter_email_address"-->
+            <!--android:inputType="textEmailAddress"-->
+            <!--android:maxLines="1"-->
+            <!--android:text="@={data.email}"-->
+            <!--/>-->
+
+            <!--</com.google.android.material.textfield.TextInputLayout>-->
+
+            <!--&lt;!&ndash; Email &ndash;&gt;-->
+
+            <!--<androidx.appcompat.widget.AppCompatTextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/email"-->
+            <!--tools:text="@string/email"/>-->
+
+
+            <!--<com.google.android.material.textfield.TextInputLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:error="@{data.emailError}"-->
+            <!--app:errorEnabled="@{data.displayError}"-->
+            <!--app:hintEnabled="false">-->
+
+            <!--<com.google.android.material.textfield.TextInputEditText-->
+            <!--android:id="@+id/email_et"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:hint="@string/enter_email_address"-->
+            <!--android:inputType="textEmailAddress"-->
+            <!--android:maxLines="1"-->
+            <!--android:text="@={data.email}"-->
+            <!--/>-->
+
+            <!--</com.google.android.material.textfield.TextInputLayout>-->
+
+
+            <!--Title-->
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/write_review_title"
+                tools:text="@string/write_review_title" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:error="@{data.titleError}"
+                app:errorEnabled="@{data.displayError}"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/title_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/write_review_title"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:text="@={data.title}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <!-- Description -->
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/write_your_review"
+                tools:text="@string/write_your_review" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:error="@{data.msgError}"
+                app:errorEnabled="@{data.displayError}"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/description_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/write_your_review"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:text="@={data.msg}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:onClick="@{() -> handler.addNewReview(data)}"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:text="Add Review" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.core.widget.NestedScrollView>
+</layout>

@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="com.webkul.mobikul.odoo.helper.AppSharedPref" />
+        <import type="android.view.View" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.home.SettingHandler" />
+    </data>
+
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/activityBackground"
+        android:orientation="vertical"
+        tools:context=".activity.SettingsActivity">
+
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                app:navigationIcon="@drawable/ic_vector_chevron_left_white_24dp"
+                tools:targetApi="lollipop">
+            </androidx.appcompat.widget.Toolbar>
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardUseCompatPadding="true">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/spacing_normal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="@string/show_notification"
+                            android:textSize="@dimen/spacing_normal"
+                            android:textStyle="bold" />
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/showNotification"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginRight="20dp"
+                            android:onClick="@{()->handler.onClickNotification()}" />
+
+                    </FrameLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardUseCompatPadding="true">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/spacing_normal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="@string/show_recent_review"
+                            android:textSize="@dimen/spacing_normal"
+                            android:textStyle="bold" />
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/showRecentView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginRight="20dp"
+                            android:onClick="@{()->handler.onClickedShowRecentView()}" />
+                    </FrameLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardUseCompatPadding="true">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/spacing_normal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="@string/clearrecent"
+                            android:textSize="@dimen/spacing_normal"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/clearRecentView"
+                            style="@style/CardView.Dark"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginRight="20dp"
+                            android:onClick="@{()->handler.oNClickedClearRecentView()}"
+                            android:text="Yes" />
+                    </FrameLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardUseCompatPadding="true">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/spacing_normal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="@string/clearsearch"
+                            android:textSize="@dimen/spacing_normal"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/searchEnable"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginRight="20dp"
+                            android:onClick="@{()->handler.onClickedClearSearchHistory()}"
+                            android:text="Yes" />
+                    </FrameLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()->handler.onClickThemeIcon()}"
+                    app:cardUseCompatPadding="true">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/spacing_normal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/theme_textView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_baseline_dark_mode_24"
+                            android:drawableLeft="@drawable/ic_baseline_dark_mode_24"
+                            android:drawablePadding="@dimen/spacing_normal"
+                            android:gravity="center_vertical"
+                            android:text="@string/lightMode"
+                            android:textSize="@dimen/spacing_normal"
+                            android:textStyle="bold"
+
+                            />
+                    </FrameLayout>
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:visibility="@{AppSharedPref.getPrivacyURL(context)!=null?View.VISIBLE :View.GONE}"
+                    android:onClick="@{()->handler.onPrivacyPolicyClick()}"
+                    app:cardUseCompatPadding="true">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/spacing_normal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/privcy_policy"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_list"
+                            android:drawableLeft="@drawable/ic_list"
+                            android:drawableTint="#BDBDBD"
+                            android:drawablePadding="@dimen/spacing_normal"
+                            android:gravity="center_vertical"
+                            android:text="@string/privacy_policy"
+                            android:textSize="@dimen/spacing_normal"
+                            android:textStyle="bold"
+
+                            />
+                    </FrameLayout>
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+        </ScrollView>
+        <TextView
+            android:id="@+id/version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/spacing_normal"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:text="@{handler.getCurrentVersion()}"
+            />
+    </LinearLayout>
+</layout>

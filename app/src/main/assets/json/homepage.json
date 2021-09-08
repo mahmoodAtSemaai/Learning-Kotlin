@@ -1,0 +1,348 @@
+{
+  "customerLang": "en",
+  "cartCount": 0,
+  "success": true,
+  "cartId": "",
+  "bannerImages": [
+    {
+      "bannerType": "category",
+      "url": "http://192.168.1.86:8010/web/image/mobikul.banners/4/image",
+      "bannerName": "Banner Category 4",
+      "id": 6
+    },
+    {
+      "bannerType": "product",
+      "url": "http://192.168.1.86:8010/web/image/mobikul.banners/5/image",
+      "bannerName": "Banner Product 3",
+      "id": 25
+    },
+    {
+      "bannerType": "category",
+      "url": "http://192.168.1.86:8010/web/image/mobikul.banners/3/image",
+      "bannerName": "Category Banner 1",
+      "id": 7
+    },
+    {
+      "bannerType": "product",
+      "url": "http://192.168.1.86:8010/web/image/mobikul.banners/1/image",
+      "bannerName": "Product Banner",
+      "id": 10
+    },
+    {
+      "bannerType": "product",
+      "url": "http://192.168.1.86:8010/web/image/mobikul.banners/2/image",
+      "bannerName": "Product Banner 2",
+      "id": 14
+    }
+  ],
+  "currencyCode": "USD",
+  "userId": 8,
+  "customerBannerImage": "http://192.168.1.86:8010/web/image/res.partner/8/banner_image",
+  "customerEmail": "mobikul@mobikul.com",
+  "featuredCategories": [
+    {
+      "url": "NOT-IMPLEMENTED",
+      "categoryName": "Headset",
+      "categoryId": 7
+    },
+    {
+      "url": "NOT-IMPLEMENTED",
+      "categoryName": "Laptops",
+      "categoryId": 1
+    },
+    {
+      "url": "NOT-IMPLEMENTED",
+      "categoryName": "Pen Drive",
+      "categoryId": 9
+    },
+    {
+      "url": "NOT-IMPLEMENTED",
+      "categoryName": "Printer",
+      "categoryId": 10
+    },
+    {
+      "url": "NOT-IMPLEMENTED",
+      "categoryName": "Speakers",
+      "categoryId": 13
+    }
+  ],
+  "customerProfileImage": "http://192.168.1.86:8010/web/image/res.partner/8/image",
+  "themeCode": "?",
+  "responseCode": 2,
+  "currencySymbol": "$",
+  "currencyPosition": "before",
+  "message": "Login successfully.",
+  "productSliders": [
+    {
+      "product_img_position": "center",
+      "title": "Old Products",
+      "item_display_limit": 5,
+      "slider_mode": "default",
+      "url": "/api/pslider/3",
+      "products": [
+        {
+          "description": "",
+          "price": 150,
+          "productCount": 1,
+          "name": "Deposit",
+          "templateId": 34,
+          "thumbNail": "http://192.168.1.86:8010/web/image/product.template/34/image_small",
+          "productId": 42
+        },
+        {
+          "description": "",
+          "price": 40,
+          "productCount": 0,
+          "name": "Basic Membership",
+          "templateId": 33,
+          "thumbNail": "http://192.168.1.86:8010/web/image/product.template/33/image_small",
+          "productId": ""
+        },
+        {
+          "description": "",
+          "price": 80,
+          "productCount": 0,
+          "name": "Silver Membership",
+          "templateId": 32,
+          "thumbNail": "http://192.168.1.86:8010/web/image/product.template/32/image_small",
+          "productId": ""
+        },
+        {
+          "description": "",
+          "price": 180,
+          "productCount": 0,
+          "name": "Gold Membership",
+          "templateId": 31,
+          "thumbNail": "http://192.168.1.86:8010/web/image/product.template/31/image_small",
+          "productId": ""
+        },
+        {
+          "description": "",
+          "price": 3645,
+          "productCount": 1,
+          "name": "Laptop Customized",
+          "templateId": 27,
+          "thumbNail": "http://192.168.1.86:8010/web/image/product.template/27/image_small",
+          "productId": 35
+        }
+      ]
+    },
+    {
+      "product_img_position": "center",
+      "title": "New Product",
+      "item_display_limit": 5,
+      "slider_mode": "fixed",
+      "url": "/api/pslider/1",
+      "products": [
+        {
+          "description": "Frequency: 5Hz to 21kHz\nImpedance: 23 ohms\nSensitivity: 109 dB SPL/mW\nDrivers: two-way balanced armature\nCable length: 1065 mm\nWeight: 10.2 grams\n            ",
+          "price": 79,
+          "productCount": 1,
+          "name": "Apple In-Ear Headphones",
+          "templateId": 14,
+          "thumbNail": "http://192.168.1.86:8010/web/image/product.template/14/image_small",
+          "productId": 21
+        },
+        {
+          "description": "Bose's smallest portable Bluetooth speaker",
+          "price": 247,
+          "productCount": 1,
+          "name": "Bose Mini Bluetooth Speaker",
+          "templateId": 11,
+          "thumbNail": "http://192.168.1.86:8010/web/image/product.template/11/image_small",
+          "productId": 18
+        },
+        {
+          "description": "Height: 76.5 mm\nWidth:  39.6 mm\nDepth:  5.4 mm\nWeight: 31 grams",
+          "price": 16.5,
+          "productCount": 2,
+          "name": "iPod",
+          "templateId": 18,
+          "thumbNail": "http://192.168.1.86:8010/web/image/product.template/18/image_small",
+          "productId": 25
+        },
+        {
+          "description": "7.9‑inch (diagonal) LED-backlit, 128Gb\nDual-core A5 with quad-core graphics\nFaceTime HD Camera, 1.2 MP Photos",
+          "price": 750,
+          "productCount": 7,
+          "name": "iPad Retina Display",
+          "templateId": 10,
+          "thumbNail": "http://192.168.1.86:8010/web/image/product.template/10/image_small",
+          "productId": 10
+        }
+      ]
+    },
+    {
+      "product_img_position": "center",
+      "title": "Featured Products",
+      "item_display_limit": 5,
+      "slider_mode": "default",
+      "url": "/api/pslider/2",
+      "products": [
+        {
+          "description": "2.7GHz quad-core Intel Core i5\n                Turbo Boost up to 3.2GHz\n                8GB (two 4GB) memory\n                1TB hard drive\n                Intel Iris Pro graphics\n            ",
+          "price": 1799,
+          "productCount": 1,
+          "name": "iMac",
+          "templateId": 15,
+          "thumbNail": "http://192.168.1.86:8010/web/image/product.template/15/image_small",
+          "productId": 22
+        },
+        {
+          "description": "7.9‑inch (diagonal) LED-backlit, 128Gb\nDual-core A5 with quad-core graphics\nFaceTime HD Camera, 1.2 MP Photos",
+          "price": 750,
+          "productCount": 7,
+          "name": "iPad Retina Display",
+          "templateId": 10,
+          "thumbNail": "http://192.168.1.86:8010/web/image/product.template/10/image_small",
+          "productId": 10
+        },
+        {
+          "description": "",
+          "price": 25,
+          "productCount": 1,
+          "name": "Computer Case",
+          "templateId": 21,
+          "thumbNail": "http://192.168.1.86:8010/web/image/product.template/21/image_small",
+          "productId": 29
+        },
+        {
+          "description": "17\" LCD Monitor\nProcessor AMD 8-Core\n512MB RAM\nHDD SH-1",
+          "price": 450,
+          "productCount": 1,
+          "name": "Computer SC234",
+          "templateId": 9,
+          "thumbNail": "http://192.168.1.86:8010/web/image/product.template/9/image_small",
+          "productId": 9
+        },
+        {
+          "description": "",
+          "price": 1950,
+          "productCount": 1,
+          "name": "Motherboard I9P57",
+          "templateId": 23,
+          "thumbNail": "http://192.168.1.86:8010/web/image/product.template/23/image_small",
+          "productId": 31
+        }
+      ]
+    }
+  ],
+  "customerId": 45,
+  "categories": [
+    {
+      "category_id": 15,
+      "banner": "http://192.168.1.86:8010/web/image/mobikul.category/15/banner",
+      "name": "Components",
+      "icon": "http://192.168.1.86:8010/web/image/mobikul.category/15/icon",
+      "children": []
+    },
+    {
+      "category_id": 2,
+      "banner": "http://192.168.1.86:8010/web/image/mobikul.category/2/banner",
+      "name": "Computers",
+      "icon": "http://192.168.1.86:8010/web/image/mobikul.category/2/icon",
+      "children": [
+        {
+          "category_id": 3,
+          "banner": "http://192.168.1.86:8010/web/image/mobikul.category/3/banner",
+          "name": "Computer all-in-one",
+          "icon": "http://192.168.1.86:8010/web/image/mobikul.category/3/icon",
+          "children": []
+        },
+        {
+          "category_id": 4,
+          "banner": "http://192.168.1.86:8010/web/image/mobikul.category/4/banner",
+          "name": "Server",
+          "icon": "http://192.168.1.86:8010/web/image/mobikul.category/4/icon",
+          "children": []
+        }
+      ]
+    },
+    {
+      "category_id": 5,
+      "banner": "http://192.168.1.86:8010/web/image/mobikul.category/5/banner",
+      "name": "Devices",
+      "icon": "http://192.168.1.86:8010/web/image/mobikul.category/5/icon",
+      "children": [
+        {
+          "category_id": 6,
+          "banner": "http://192.168.1.86:8010/web/image/mobikul.category/6/banner",
+          "name": "External Hard Drive",
+          "icon": "http://192.168.1.86:8010/web/image/mobikul.category/6/icon",
+          "children": []
+        },
+        {
+          "category_id": 7,
+          "banner": "http://192.168.1.86:8010/web/image/mobikul.category/7/banner",
+          "name": "Headset",
+          "icon": "http://192.168.1.86:8010/web/image/mobikul.category/7/icon",
+          "children": []
+        },
+        {
+          "category_id": 8,
+          "banner": "http://192.168.1.86:8010/web/image/mobikul.category/8/banner",
+          "name": "Keyboard / Mouse",
+          "icon": "http://192.168.1.86:8010/web/image/mobikul.category/8/icon",
+          "children": []
+        },
+        {
+          "category_id": 9,
+          "banner": "http://192.168.1.86:8010/web/image/mobikul.category/9/banner",
+          "name": "Pen Drive",
+          "icon": "http://192.168.1.86:8010/web/image/mobikul.category/9/icon",
+          "children": []
+        },
+        {
+          "category_id": 10,
+          "banner": "http://192.168.1.86:8010/web/image/mobikul.category/10/banner",
+          "name": "Printer",
+          "icon": "http://192.168.1.86:8010/web/image/mobikul.category/10/icon",
+          "children": []
+        },
+        {
+          "category_id": 11,
+          "banner": "http://192.168.1.86:8010/web/image/mobikul.category/11/banner",
+          "name": "Screen",
+          "icon": "http://192.168.1.86:8010/web/image/mobikul.category/11/icon",
+          "children": []
+        },
+        {
+          "category_id": 12,
+          "banner": "http://192.168.1.86:8010/web/image/mobikul.category/12/banner",
+          "name": "Software",
+          "icon": "http://192.168.1.86:8010/web/image/mobikul.category/12/icon",
+          "children": []
+        },
+        {
+          "category_id": 13,
+          "banner": "http://192.168.1.86:8010/web/image/mobikul.category/13/banner",
+          "name": "Speakers",
+          "icon": "http://192.168.1.86:8010/web/image/mobikul.category/13/icon",
+          "children": []
+        }
+      ]
+    },
+    {
+      "category_id": 1,
+      "banner": "http://192.168.1.86:8010/web/image/mobikul.category/1/banner",
+      "name": "Laptops",
+      "icon": "http://192.168.1.86:8010/web/image/mobikul.category/1/icon",
+      "children": []
+    },
+    {
+      "category_id": 14,
+      "banner": "http://192.168.1.86:8010/web/image/mobikul.category/14/banner",
+      "name": "Network",
+      "icon": "http://192.168.1.86:8010/web/image/mobikul.category/14/icon",
+      "children": []
+    },
+    {
+      "category_id": 16,
+      "banner": "http://192.168.1.86:8010/web/image/mobikul.category/16/banner",
+      "name": "Services",
+      "icon": "http://192.168.1.86:8010/web/image/mobikul.category/16/icon",
+      "children": []
+    }
+  ],
+  "customerName": "Mobikul"
+}

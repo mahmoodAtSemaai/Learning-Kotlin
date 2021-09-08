@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.webkul.mobikul.odoo.BuildConfig" />
+
+        <import type="com.webkul.mobikul.odoo.helper.ImageHelper.ImageType" />
+
+        <import type="com.webkul.mobikul.odoo.helper.AppSharedPref" />
+
+        <variable
+            name="customerName"
+            type="String" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.customer.AccountFragmentHandler" />
+
+        <import type="com.bumptech.glide.load.engine.DiskCacheStrategy" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".dialog_frag.ProfilePictureDialogFragment">
+
+        <ImageView
+            android:id="@+id/profile_picture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            app:diskCacheStrategy="@{DiskCacheStrategy.NONE}"
+            app:imageUrl="@{AppSharedPref.getCustomerProfileImage(context)}"
+            app:layout_collapseMode="parallax"
+            app:placeholder="@{@drawable/ic_men_avatar}"
+            app:skipMemoryCache="@{true}" />
+
+    </FrameLayout>
+</layout>

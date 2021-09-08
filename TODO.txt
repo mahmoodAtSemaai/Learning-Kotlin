@@ -1,0 +1,21 @@
+// ENHANCEMENT FEATURE... [LOW PRIORITY]
+> Verifiy and add DEEP LINKING IN APPLICATION
+> Use fabric crash analytics [RECOMMENDATION ...]
+
+@Shweta ma'am...
+
+Home
+  - we use search twice in a same page. we can use all category link instead of search in bottom navigation.
+
+Product Description
+    - product description section not looking good. (need to improve page view)
+      (take reference from v3 theme)
+
+Checkout
+- Step-1
+    - Edit billing address - remove icons from the form view (not looking good).
+    - ship to this address - address drop down - need to improve view (discuss)
+
+- step-3
+  - need to improve view (discuss)
+

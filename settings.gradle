@@ -1,0 +1,2 @@
+include ':app', ':appMarketplace', ':SweetAlertDialog'
+//include ':app', ':SweetAlertDialog'

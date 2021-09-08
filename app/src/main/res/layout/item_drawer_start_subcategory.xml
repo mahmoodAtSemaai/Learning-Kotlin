@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.generic.CategoryData" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.home.NavDrawerStartSubCategoryHandler" />
+    </data>
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:baselineAligned="false"
+        android:clickable="true"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_vertical|start"
+            android:lines="1"
+            android:maxLines="1"
+            android:onClick="@{(v)->handler.viewCategory()}"
+            android:padding="@dimen/spacing_normal"
+            android:textDirection="anyRtl"
+            app:htmlText="@{data.name}"
+            tools:targetApi="jelly_bean_mr1"
+            tools:text="Subcategory name" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</layout>

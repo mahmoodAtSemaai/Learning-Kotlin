@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.marketplace.odoo.model.SellerOrderLine" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.marketplace.odoo.handler.SellerOrderListActivityHandler" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:onClick="@{()->handler.onClickOrderLine()}"
+        android:orientation="vertical"
+        app:contentPadding="10dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/order_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/order_no"
+                android:textSize="@dimen/text_size_medium"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{data.orderReference}"
+                android:textSize="@dimen/text_size_medium"
+                app:layout_constraintLeft_toRightOf="@+id/order_text"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="S031" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{data.orderState}"
+                android:textColor="@color/text_order_color"
+                android:textSize="@dimen/text_size_medium"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Pending" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/date_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/date"
+                android:textColor="@color/text_order_color"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/order_text" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/data_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{data.createDate}"
+                android:textSize="@dimen/text_size_medium"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/date_label"
+                tools:text="28/05/17" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/customer_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/customer"
+                android:textColor="@color/text_order_color"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/data_value" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/customer_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{data.customer}"
+                android:textSize="@dimen/text_size_medium"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/customer_label"
+                tools:text="Daniel" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/subtotal_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/subtotal"
+                android:textColor="@color/text_order_color"
+                android:textSize="@dimen/text_size_medium"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/customer_value" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:text="@{data.subTotal}"
+                android:textSize="@dimen/text_size_medium"
+                app:layout_constraintLeft_toRightOf="@+id/subtotal_label"
+                app:layout_constraintTop_toBottomOf="@+id/customer_value"
+                tools:text="$25" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

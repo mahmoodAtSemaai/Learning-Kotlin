@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="query"
+            type="String" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.extra.search.SearchHistoryHandler" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:onClick="@{()->handler.onQuerySelected()}">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="@dimen/spacing_generic"
+            app:srcCompat="@drawable/ic_vector_history_gray400_24dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_generic"
+            app:htmlText="@{query}"
+            tools:text="Shirt" />
+
+    </LinearLayout>
+
+</layout>
