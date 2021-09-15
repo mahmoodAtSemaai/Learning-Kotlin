@@ -70,6 +70,7 @@ public class DashboardFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         mBinding.setCustomerName(Helper.initCap(AppSharedPref.getCustomerName(getContext())));
         mBinding.setCustomerEmail(AppSharedPref.getCustomerEmail(getContext()));
+        mBinding.setCustomerPhoneNumber(AppSharedPref.getCustomerPhoneNumber(getContext()));
         Observable<MyOrderReponse> myOrderReponseObservable = ApiConnection.getOrders(getContext(), new BaseLazyRequest(0, 5)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
         Observable<MyAddressesResponse> myAddressesResponseDataObservable = ApiConnection.getAddressBookData(getContext(), new BaseLazyRequest(0, 1)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
 

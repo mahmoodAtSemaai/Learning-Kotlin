@@ -22,6 +22,10 @@
         <variable
             name="customerEmail"
             type="String" />
+
+        <variable
+            name="customerPhoneNumber"
+            type="String" />
     </data>
 
     <FrameLayout
@@ -138,11 +142,17 @@
                             android:text="@{customerName}"
                             tools:text="Shubham Agarwal" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
+                        <!--androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@{customerEmail}"
-                            tools:text="shubham.agarwal52@webkul.com" />
+                            tools:text="shubham.agarwal52@webkul.com" /-->
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{customerPhoneNumber}"
+                            tools:text="9999999999" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
