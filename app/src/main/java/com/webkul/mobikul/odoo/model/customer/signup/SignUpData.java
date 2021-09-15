@@ -68,6 +68,7 @@ public class SignUpData extends BaseObservable {
     }
 
 
+    @Bindable
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -82,7 +83,7 @@ public class SignUpData extends BaseObservable {
             return "";
         }
         if (getPhoneNumber().isEmpty()) {
-            return String.format("%s %s", mContext.getString(R.string.phoneNumber), mContext.getResources().getString(R.string.error_is_required));
+            return String.format("%s %s", mContext.getString(R.string.phone_number), mContext.getResources().getString(R.string.error_is_required));
         }
         return "";
     }

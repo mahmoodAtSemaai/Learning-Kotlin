@@ -43,12 +43,13 @@ android {
 
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
+        applicationId "com.semaai.toko"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 13
-        versionName "2.3"
+        versionCode 1
+        versionName "1.0"
         multiDexEnabled true
-
+        setProperty("archivesBaseName", "${applicationId}-v${versionName}(${versionCode})")
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
@@ -66,7 +67,6 @@ android {
     productFlavors {
         live {
             dimension "default"
-            applicationId "com.semaai.toko"
             signingConfig signingConfigs.LiveServerConfigurationMobikul
         }
     }

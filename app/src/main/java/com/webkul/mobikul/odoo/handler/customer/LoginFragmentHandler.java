@@ -106,7 +106,7 @@ public class LoginFragmentHandler {
     public void signIn() {
         Helper.hideKeyboard((AppCompatActivity) mContext);
         if (mData.isFormValidated()) {
-            AppSharedPref.setCustomerLoginBase64Str(mContext, Base64.encodeToString(new AuthenticationRequest(mData.getUsername().toLowerCase(), mData.getPassword()).toString().getBytes(), Base64.NO_WRAP));
+            AppSharedPref.setCustomerLoginBase64Str(mContext, Base64.encodeToString(new AuthenticationRequest(mData.getUsername(), mData.getPassword()).toString().getBytes(), Base64.NO_WRAP));
 
             ApiConnection.signIn(mContext).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<LoginResponse>(mContext) {
                 @Override
