@@ -202,7 +202,7 @@ public class SignUpData extends BaseObservable {
         Fragment fragment = ((BaseActivity) mContext).mSupportFragmentManager.findFragmentByTag(SignUpFragment.class.getSimpleName());
         if (fragment != null && fragment.isAdded()) {
             SignUpFragment signUpFragment = (SignUpFragment) fragment;
-            if (!getEmailError().isEmpty()) {
+            if (!getPhoneNumberError().isEmpty()) {
                 signUpFragment.mBinding.emailEt.requestFocus();
                 return false;
             }
