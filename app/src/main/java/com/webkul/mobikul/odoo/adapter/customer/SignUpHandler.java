@@ -102,9 +102,9 @@ public class SignUpHandler {
     public void handleSignUp() {
         AlertDialogHelper.showDefaultProgressDialog(mContext);
 
-        AppSharedPref.setCustomerLoginBase64Str(mContext, Base64.encodeToString(new AuthenticationRequest(mData.getEmail().toLowerCase(), mData.getPassword()).toString().getBytes(), Base64.NO_WRAP));
+        AppSharedPref.setCustomerLoginBase64Str(mContext, Base64.encodeToString(new AuthenticationRequest(mData.getPhoneNumber(), mData.getPassword()).toString().getBytes(), Base64.NO_WRAP));
 
-        ApiConnection.signUp(mContext, new SignUpRequest(mContext, mData.getName(), mData.getEmail(), mData.getPassword(), false, isSeller, mData.getProfileURL(), countryId)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<SignUpResponse>(mContext) {
+        ApiConnection.signUp(mContext, new SignUpRequest(mContext, mData.getName(), mData.getPhoneNumber(), mData.getPassword(), false, isSeller, mData.getProfileURL(), countryId)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<SignUpResponse>(mContext) {
             @Override
             public void onNext(@NonNull SignUpResponse signUpResponse) {
                 super.onNext(signUpResponse);

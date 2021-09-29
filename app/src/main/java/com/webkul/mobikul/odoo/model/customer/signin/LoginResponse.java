@@ -47,6 +47,10 @@ public class LoginResponse extends BaseResponse implements Parcelable {
     @Expose
     private String customerEmail;
 
+    @SerializedName("customerPhoneNumber")
+    @Expose
+    private String customerPhoneNumber;
+
     @SerializedName("customerLang")
     @Expose
     private String customerLang;
@@ -68,6 +72,7 @@ public class LoginResponse extends BaseResponse implements Parcelable {
         themeCode = in.readString();
         customerName = in.readString();
         customerEmail = in.readString();
+        customerPhoneNumber = in.readString();
         customerLang = in.readString();
         isSeller = in.readByte() != 0;
     }
@@ -81,6 +86,7 @@ public class LoginResponse extends BaseResponse implements Parcelable {
         dest.writeString(themeCode);
         dest.writeString(customerName);
         dest.writeString(customerEmail);
+        dest.writeString(customerPhoneNumber);
         dest.writeString(customerLang);
         dest.writeByte((byte) (isSeller ? 1 : 0));
     }
@@ -126,6 +132,13 @@ public class LoginResponse extends BaseResponse implements Parcelable {
         return customerEmail;
     }
 
+    public String getCustomerPhoneNumber() {
+        if (customerPhoneNumber == null) {
+            return "";
+        }
+        return customerPhoneNumber;
+    }
+
     @SuppressWarnings("unused")
     public String getCartId() {
         if (cartId == null) {
@@ -165,7 +178,7 @@ public class LoginResponse extends BaseResponse implements Parcelable {
 
     public void updateSharedPref(Context context, String password) {
         if (!password.isEmpty()) {
-            AppSharedPref.setCustomerLoginBase64Str(context, Base64.encodeToString(new AuthenticationRequest(getCustomerEmail(), password).toString().getBytes(), Base64.NO_WRAP));
+            AppSharedPref.setCustomerLoginBase64Str(context, Base64.encodeToString(new AuthenticationRequest(getCustomerPhoneNumber(), password).toString().getBytes(), Base64.NO_WRAP));
         }
         Log.d("TAG", "LoginResponse  updateSharedPref: " + getCustomerName());
         if (getCustomerName() != null && !getCustomerName().equals("")) {
@@ -174,6 +187,11 @@ public class LoginResponse extends BaseResponse implements Parcelable {
         if (getCustomerEmail() != null && !getCustomerEmail().equals("")) {
             AppSharedPref.setCustomerEmail(context, getCustomerEmail());
         }
+
+        if (getCustomerPhoneNumber() != null && !getCustomerPhoneNumber().equals("")) {
+            AppSharedPref.setCustomerPhoneNumber(context, getCustomerPhoneNumber());
+        }
+
         if (getCustomerProfileImage() != null && !getCustomerProfileImage().equals("")) {
             AppSharedPref.setCustomerProfileImage(context, getCustomerProfileImage());
         }

@@ -50,7 +50,7 @@ public class LoginRequestData extends BaseObservable {
         }
 
         if (getUsername().isEmpty()) {
-            return String.format("%s %s", mContext.getString(R.string.email_or_username), mContext.getResources().getString(R.string.error_is_required));
+            return String.format("%s %s", mContext.getString(R.string.phone_number_or_username), mContext.getResources().getString(R.string.error_is_required));
         }
 
         return "";

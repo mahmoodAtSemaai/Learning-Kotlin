@@ -82,15 +82,12 @@ public class SignUpFragment extends BaseFragment {
                 super.onNext(countryStateData);
                 if (isAdded()) {
                     if (countryStateData.isAccessDenied()){
-                        AlertDialogHelper.showDefaultWarningDialogWithDismissListener(getContext(), getString(R.string.error_login_failure), getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                sweetAlertDialog.dismiss();
-                                AppSharedPref.clearCustomerData(getContext());
-                                Intent i = new Intent(getContext(), SignInSignUpActivity.class);
-                                i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, getActivity().getClass().getSimpleName());
-                                startActivity(i);
-                            }
+                        AlertDialogHelper.showDefaultWarningDialogWithDismissListener(getContext(), getString(R.string.error_login_failure), getString(R.string.access_denied_message), sweetAlertDialog -> {
+                            sweetAlertDialog.dismiss();
+                            AppSharedPref.clearCustomerData(getContext());
+                            Intent i = new Intent(getContext(), SignInSignUpActivity.class);
+                            i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, getActivity().getClass().getSimpleName());
+                            startActivity(i);
                         });
                     }else {
                         setUpCountrySpinners(countryStateData);

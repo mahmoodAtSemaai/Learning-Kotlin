@@ -111,7 +111,7 @@ public class AccountInfoFragmentHandler {
                             Toast.makeText(mContext, saveCustomerDetailResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             AppSharedPref.setCustomerName(mContext, mData.getName());
                             if (mData.isChangePassword()) {
-                                AppSharedPref.setCustomerLoginBase64Str(mContext, Base64.encodeToString(new AuthenticationRequest(AppSharedPref.getCustomerEmail(mContext), mData.getNewPassword()).toString().getBytes(), Base64.NO_WRAP).trim());
+                                AppSharedPref.setCustomerLoginBase64Str(mContext, Base64.encodeToString(new AuthenticationRequest(AppSharedPref.getCustomerPhoneNumber(mContext), mData.getNewPassword()).toString().getBytes(), Base64.NO_WRAP).trim());
                             }
                             IntentHelper.continueShopping(mContext);
                         } else {

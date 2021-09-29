@@ -27,6 +27,7 @@ public class AppSharedPref {
     private static final String KEY_CUSTOMER_NAME = "CUSTOMER_NAME";
     private static final String KEY_CUSTOMER_ID = "CUSTOMER_ID";
     private static final String KEY_CUSTOMER_EMAIL = "CUSTOMER_EMAIL";
+    private static final String KEY_CUSTOMER_PHONE_NUMBER = "CUSTOMER_PHONE_NUMBER";
     private static final String KEY_CUSTOMER_PROFILE_IMAGE = "CUSTOMER_PROFILE_IMAGE";
     private static final String KEY_CUSTOMER_BANNER_IMAGE = "CUSTOMER_BANNER_IMAGE";
     private static final String KEY_CUSTOMER_IS_SOCIAL_LOGGED_IN = "CUSTOMER_IS_SOCIAL_LOGGED_IN";
@@ -131,6 +132,15 @@ public class AppSharedPref {
 
     public static void setCustomerEmail(Context context, String email) {
         getSharedPreferenceEditor(context, CUSTOMER_PREF).putString(KEY_CUSTOMER_EMAIL, email).apply();
+    }
+
+    /*Customer Phone Number*/
+    public static String getCustomerPhoneNumber(Context context) {
+        return getSharedPreference(context, CUSTOMER_PREF).getString(KEY_CUSTOMER_PHONE_NUMBER, "");
+    }
+
+    public static void setCustomerPhoneNumber(Context context, String phoneNumber) {
+        getSharedPreferenceEditor(context, CUSTOMER_PREF).putString(KEY_CUSTOMER_PHONE_NUMBER, phoneNumber).apply();
     }
 
     /*Customer Id*/
