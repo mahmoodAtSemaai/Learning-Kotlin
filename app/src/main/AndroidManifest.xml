@@ -14,11 +14,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- PERMISION REQUIRED TO UPLOAD PROFILE IMAGE FROM CAMERA -->
     <uses-permission android:name="android.permission.CAMERA" /> <!-- Design for phone issue.... -->
     <!-- Not all tablets support certain hardware features such as a camera. -->
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
-    <!--Image upload from camera not working-->
-    <!--    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />-->
-
+    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- Image upload from camera not working -->
+    <!-- <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> -->
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -43,10 +40,13 @@
         android:vmSafeMode="true"
         tools:replace="icon,allowBackup">
         <activity
+            android:name=".activity.NewAddressActivity"
+            android:exported="true" />
+        <activity
             android:name=".activity.SettingsActivity"
             android:label="@string/setting"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity android:name=".activity.CameraSearchActivity" /> <!-- USE PORTRAIT MODE FOR EVERY ACTIVITY -->
         <activity
             android:name=".activity.SplashScreenActivity"

@@ -4,13 +4,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.webkul.mobikul.odoo.model.customer.address.addressBodyParams.AddressAPIConstants;
 
-/**
- * Created by shubham.agarwal on 11/5/17.
- */
+public class DistrictData {
 
-public class StateData {
-    @SuppressWarnings("unused")
-    private static final String TAG = "StateData";
+    private static final String TAG = "DistrictData";
 
     @SerializedName(AddressAPIConstants.ID)
     @Expose
@@ -26,9 +22,7 @@ public class StateData {
         return TAG;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+
 
     public void setName(String name) {
         this.name = name;
@@ -46,6 +40,10 @@ public class StateData {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getName() {
         if (name == null) {
             return "";
@@ -53,4 +51,5 @@ public class StateData {
 
         return name;
     }
+
 }

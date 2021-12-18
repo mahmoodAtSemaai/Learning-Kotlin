@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.muddzdev.styleabletoastlibrary.StyleableToast;
 import com.webkul.mobikul.odoo.R;
+import com.webkul.mobikul.odoo.activity.NewAddressActivity;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.handler.fingerprint.FingerprintHandler;
 import com.webkul.mobikul.odoo.model.customer.signin.LoginRequestData;
@@ -47,6 +49,9 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 import static android.content.Context.FINGERPRINT_SERVICE;
 import static android.content.Context.KEYGUARD_SERVICE;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_NAME;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PHONE_NUMBER;
 
 public class FingerPrintLoginHelper {
 
@@ -189,7 +194,14 @@ public class FingerPrintLoginHelper {
         } else if (signUpResponse != null) {
             FirebaseAnalyticsImpl.logSignUpEvent(mContext, signUpResponse.getCustomerId(), signUpResponse.getLogin().getCustomerName());
             signUpResponse.getLogin().updateSharedPref(mContext, sData.getPassword());
+            ((Activity) mContext).startActivity(new Intent(mContext, NewAddressActivity.class).
+                    setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            .putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, signUpResponse.getHomePageResponse())
+            .putExtra(BUNDLE_KEY_NAME,sData.getName())
+            .putExtra(BUNDLE_KEY_PHONE_NUMBER,sData.getPhoneNumber()));
+/*
             IntentHelper.continueShopping(mContext, signUpResponse.getHomePageResponse());
+*/
             ((Activity) mContext).finish();
         }
 

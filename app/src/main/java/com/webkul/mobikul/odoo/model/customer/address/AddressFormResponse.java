@@ -1,12 +1,13 @@
 package com.webkul.mobikul.odoo.model.customer.address;
 
 import android.content.Context;
-import androidx.databinding.Bindable;
 import android.os.Parcel;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.Bindable;
+import androidx.fragment.app.Fragment;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -26,12 +27,13 @@ import java.util.regex.Pattern;
  */
 
 public class AddressFormResponse extends BaseResponse {
+    public static final String KEY_PROVINCE = "province";
+    public static final String KEY_DISTRICT = "district";
+    public static final String KEY_SUB_DISTRICT = "sub_district";
+    public static final String KEY_VILLAGE = "village";
     @SuppressWarnings("unused")
     private static final String TAG = "AddressFormResponse";
-
-
     private static final String KEY_NAME = "name";
-    private static final String KEY_CITY = "city";
     private static final String KEY_ZIP = "zip";
     private static final String KEY_STREET = "street";
     private static final String KEY_PHONE = "phone";
@@ -39,17 +41,17 @@ public class AddressFormResponse extends BaseResponse {
     private static final String KEY_STATE_ID = "state_id";
     private static final String KEY_COUNTRY_ID = "country_id";
 //    private static final String KEY_SET_AS_DEFAUT_SHIPPING_ADDRESS = "setAsDefault";
-
-    @SerializedName(KEY_CITY)
-    @Expose
-    private String city;
+    private static final String KEY_DISTRICT_ID = "district_id";
+    private static final String KEY_SUB_DISTRICT_ID = "sub_district_id";
+    private static final String KEY_VILLAGE_ID = "village_id";
+    private static final String KEY_CITY = "city";
     @SerializedName(KEY_ZIP)
     @Expose
     private String zip;
     @SerializedName(KEY_NAME)
     @Expose
     private String name;
-    @SerializedName("country_id")
+    @SerializedName(KEY_COUNTRY_ID)
     @Expose
     private String countryId;
     @SerializedName(KEY_PHONE)
@@ -61,50 +63,89 @@ public class AddressFormResponse extends BaseResponse {
     @SerializedName(KEY_STATE_ID)
     @Expose
     private String stateId;
-
-
+    @SerializedName(KEY_DISTRICT_ID)
+    @Expose
+    private String districtId;
+    @SerializedName(KEY_SUB_DISTRICT_ID)
+    @Expose
+    private String sub_district_id;
+    @SerializedName(KEY_VILLAGE_ID)
+    @Expose
+    private String village_id;
+    @SerializedName(KEY_CITY)
+    @Expose
+    private String city;
     private Context mContext;
     private boolean displayError;
-
-
     /**
      * Country data is added asynchronously via Rx
      */
     private CountryStateData mCountryStateData;
     private NewAddressFragment.AddressType mAddressType;
 
-//    private boolean setAsDefaultShippingAddress;
 
     public AddressFormResponse(@Nullable Parcel in) {
         super(in);
 
     }
 
-    /*CITY*/
-    @Bindable
+    public String getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(String districtId) {
+        this.districtId = districtId;
+    }
+
+    public String getSub_district_id() {
+        return sub_district_id;
+    }
+
+    public void setSub_district_id(String sub_district_id) {
+        this.sub_district_id = sub_district_id;
+    }
+
+    public String getVillage_id() {
+        return village_id;
+    }
+
+    public void setVillage_id(String village_id) {
+        this.village_id = village_id;
+    }
+
     public String getCity() {
-        if (city == null) {
-            return "";
-        }
         return city;
     }
 
     public void setCity(String city) {
         this.city = city;
-        notifyPropertyChanged(BR.city);
     }
 
-    @Bindable({"city", "displayError"})
-    public String getCityError() {
-        if (!isDisplayError()) {
-            return "";
-        }
-        if (getCity().isEmpty()) {
-            return getContext().getString(R.string.error_this_is_a_required_field);
-        }
-        return "";
+    public Context getmContext() {
+        return mContext;
     }
 
+    public void setmContext(Context mContext) {
+        this.mContext = mContext;
+    }
+
+    public CountryStateData getmCountryStateData() {
+        return mCountryStateData;
+    }
+
+    public void setmCountryStateData(CountryStateData mCountryStateData) {
+        this.mCountryStateData = mCountryStateData;
+    }
+
+    public NewAddressFragment.AddressType getmAddressType() {
+        return mAddressType;
+    }
+
+//    private boolean setAsDefaultShippingAddress;
+
+    public void setmAddressType(NewAddressFragment.AddressType mAddressType) {
+        this.mAddressType = mAddressType;
+    }
 
     /*ZIP*/
     @Bindable
@@ -321,10 +362,6 @@ public class AddressFormResponse extends BaseResponse {
             }
 
 
-            if (!getCityError().isEmpty()) {
-                newAddressFragment.mBinding.cityEt.requestFocus();
-                return false;
-            }
             if (!getZipCodeError().isEmpty()) {
                 newAddressFragment.mBinding.zipEt.requestFocus();
                 return false;
@@ -342,7 +379,6 @@ public class AddressFormResponse extends BaseResponse {
             addressFormDataJson.put(KEY_NAME, getName());
             addressFormDataJson.put(KEY_PHONE, getPhone());
             addressFormDataJson.put(KEY_STREET, getStreet());
-            addressFormDataJson.put(KEY_CITY, getCity());
             addressFormDataJson.put(KEY_ZIP, getZip());
             addressFormDataJson.put(KEY_COUNTRY_ID, getCountryId());
             addressFormDataJson.put(KEY_STATE_ID, getStateId());

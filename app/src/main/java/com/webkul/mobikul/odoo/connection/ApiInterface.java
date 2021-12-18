@@ -10,7 +10,13 @@ import com.webkul.mobikul.odoo.model.checkout.ShippingMethodResponse;
 import com.webkul.mobikul.odoo.model.customer.ResetPasswordResponse;
 import com.webkul.mobikul.odoo.model.customer.account.SaveCustomerDetailResponse;
 import com.webkul.mobikul.odoo.model.customer.address.AddressFormResponse;
+import com.webkul.mobikul.odoo.model.customer.address.AddressRequestBody;
+import com.webkul.mobikul.odoo.model.customer.address.addressBodyParams.AddressAPIConstants;
+import com.webkul.mobikul.odoo.model.customer.address.addressResponse.DistrictListResponse;
+import com.webkul.mobikul.odoo.model.customer.address.addressResponse.StateListResponse;
 import com.webkul.mobikul.odoo.model.customer.address.MyAddressesResponse;
+import com.webkul.mobikul.odoo.model.customer.address.addressResponse.SubDistrictListResponse;
+import com.webkul.mobikul.odoo.model.customer.address.addressResponse.VillageListResponse;
 import com.webkul.mobikul.odoo.model.customer.order.MyOrderReponse;
 import com.webkul.mobikul.odoo.model.customer.order.OrderDetailResponse;
 import com.webkul.mobikul.odoo.model.customer.signin.LoginResponse;
@@ -32,6 +38,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 /**
@@ -94,6 +101,10 @@ public interface ApiInterface {
     /*Extras*/
     String MOBIKUL_EXTRAS_SPLASH_PAGE_DATA = "mobikul/splashPageData";
     String MOBIKUL_EXTRAS_COUNTRY_STATE_DATA = "mobikul/localizationData";
+    String MOBIKUL_EXTRAS_STATE_DATA = "/states";
+    String MOBIKUL_EXTRAS_DISTRICT_DATA = "/districts";
+    String MOBIKUL_EXTRAS_SUB_DISTRICT_DATA = "/subdistricts";
+    String MOBIKUL_EXTRAS_VILLAGE_DATA = "/villages";
     String MOBIKUL_EXTRAS_SEARCH = "mobikul/search";
     String MOBIKUL_EXTRAS_REGISTER_FCM_TOKEN = "mobikul/registerFcmToken";
     String MOBIKUL_EXTRAS_NOTIFICATION_MESSAGES = "mobikul/notificationMessages";
@@ -191,6 +202,7 @@ public interface ApiInterface {
             @Url String url
     );
 
+
     @PUT
     Observable<BaseResponse> updateAddressFormData(
             @Url String url
@@ -201,6 +213,9 @@ public interface ApiInterface {
     Observable<BaseResponse> addNewAddress(
             @Body String newAddressFormDataStr
     );
+
+    @PUT
+    Observable<BaseResponse> editAddress(@Url String url,@Body String addressData);
 
     @DELETE
     Observable<BaseResponse> deleteAddress(
@@ -311,6 +326,19 @@ public interface ApiInterface {
 
     @POST(MOBIKUL_EXTRAS_COUNTRY_STATE_DATA)
     Observable<CountryStateData> getCountryStateData();
+
+
+    @GET(MOBIKUL_EXTRAS_STATE_DATA)
+    Observable<StateListResponse> getStates(@Query(AddressAPIConstants.COMPANY_ID) int company_id);
+
+    @GET(MOBIKUL_EXTRAS_DISTRICT_DATA)
+    Observable<DistrictListResponse> getDistricts(@Query(AddressAPIConstants.STATE_ID) int state_id);
+
+    @GET(MOBIKUL_EXTRAS_SUB_DISTRICT_DATA)
+    Observable<SubDistrictListResponse> getSubDistricts(@Query(AddressAPIConstants.DISTRICT_ID) int district_id);
+
+    @GET(MOBIKUL_EXTRAS_VILLAGE_DATA)
+    Observable<VillageListResponse> getVillages(@Query(AddressAPIConstants.SUBDISTRICT_ID) int sub_district_id);
 
 
     @POST(MOBIKUL_EXTRAS_SEARCH)

@@ -31,6 +31,10 @@
     <dimen name="spacing_normal">16dp</dimen>
     <dimen name="spacing_generic">8dp</dimen>
     <dimen name="spacing_tiny">4dp</dimen>
+    <dimen name="spacing_no">0dp</dimen>
+
+
+    <dimen name="size_1">1dp</dimen>
 
     <!--GENERIC DIMENSIONS FOR THE TOOLBAR ELEVATION-->
     <dimen name="toolbar_elevation_generic">4dp</dimen>

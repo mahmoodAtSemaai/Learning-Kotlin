@@ -19,7 +19,7 @@ android {
     defaultPublishConfig "release"
     publishNonDefault true
     compileSdkVersion 30
-    buildToolsVersion "28.0.3"
+    buildToolsVersion "30.0.3"
     flavorDimensions "default"
 
     lintOptions {
@@ -97,7 +97,7 @@ android {
                     /**For Odoo Marketplace APP */
                     versionCode 1
                     versionName "1.0"
-                    buildConfigField "String", "BASE_URL", '"https://toko.semaai.com"'
+                    buildConfigField "String", "BASE_URL", '"https://test-toko.semaai.com"'
                     buildConfigField "String", "BASIC_AUTH_KEY", '"Basic bWtSNjl2bmhnbXlWcEdCODpta1I2OXZuaGdteVZwR0I4"'
                     buildConfigField "String", "APP_PLAYSTORE_URL", '"https://play.google.com/store/apps/details?id=com.semaai.toko"'
                     buildConfigField "String", "demo_username", '""'
