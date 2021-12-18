@@ -62,7 +62,7 @@ public class CountryStateData extends BaseResponse {
         List<StateData> stateDatas = getCountries().get(selectedCountryPos).getStates();
         for (int i = 0; i < stateDatas.size(); i++) {
             StateData eachStateData = stateDatas.get(i);
-            if (eachStateData.getId().equals(stateId)) {
+            if (String.valueOf(eachStateData.getId()).equals(stateId)) {
                 return i;
             }
         }
@@ -77,7 +77,7 @@ public class CountryStateData extends BaseResponse {
         for (int i = 0; i < stateDatas.size(); i++) {
             StateData eachStateData = stateDatas.get(i);
             if (eachStateData.getName().equalsIgnoreCase(stateName)) {
-                return eachStateData.getId();
+                return String.valueOf(eachStateData.getId());
             }
         }
         return "";

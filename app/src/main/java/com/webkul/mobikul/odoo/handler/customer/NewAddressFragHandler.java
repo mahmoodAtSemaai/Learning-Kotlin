@@ -169,8 +169,9 @@ public class NewAddressFragHandler {
                 case TYPE_ADDITIONAL:
                     ApiConnection.updateAddressFormData(mContext, mUrl, mData.getNewAddressData()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(mUpdateAddressFormObserver);
                     break;
-                case TYPE_NEW:
-                    ApiConnection.addNewAddress(mContext, mData.getNewAddressData()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(mUpdateAddressFormObserver);
+                case TYPE_NEW: {
+                //    ApiConnection.addNewAddress(mContext, mData.getNewAddressData()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(mUpdateAddressFormObserver);
+                }
             }
         } else {
             SnackbarHelper.getSnackbar((Activity) mContext, mContext.getString(R.string.error_fill_req_field), Snackbar.LENGTH_LONG, SnackbarHelper.SnackbarType.TYPE_WARNING).show();

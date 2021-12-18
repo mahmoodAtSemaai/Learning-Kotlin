@@ -253,7 +253,24 @@
     <string name="new_address_btn_save_address">Simpan Alamat</string>
     <string name="select_default_shipping_address">Pilih alamat pengiriman default</string>
     <string name="set_default">Tentukan default</string>
-
+    <string name="province">Propinsi</string>
+    <string name="district">Daerah</string>
+    <string name="district_city">Daerah / Kota</string>
+    <string name="sub_district">Kecamatan</string>
+    <string name="village">Desa</string>
+    <string name="postal_code">Kode Pos <font color='#FF0000'>*</font></string>
+    <string name="enter_your_village_code">Masukkan Kode Pos Anda</string>
+    <string name="missing_postal_code_text">Kode pos tidak ada untuk</string>
+    <string name="missing_feilds_in_address_form">Bidang yang Hilang dalam Formulir Alamat</string>
+    <string name="address_added_text">Alamat berhasil ditambahkan</string>
+    <string name="address_edit_text">Perubahan yang dilakukan pada alamat disimpan</string>
+    <string name="address_now">tambahkan sekarang</string>
+    <string name="not_now">tidak sekarang</string>
+    <string name="no_address_text">Anda tidak memiliki alamat tersimpan</string>
+    <string name="missing_address">Alamat hilang</string>
+    <string name="indonesia">Indonesia</string>
+    <string name="service_unavailablity_text">Thanks for your interest but we are not yet available in your area. We will get in touch with you when we start operations there.</string>
+    <string name="service_unavailable">Layanan tidak tersedia</string>
     <!---->
     <!---->
     <!-- DASHBOARD-->
@@ -371,6 +388,8 @@
     <string name="ok">OK</string>
     <string name="cancel">BATAL</string>
     <string name="cancel_small">Batal</string>
+    <string name="confirm">KONFIRMASI</string>
+    <string name="confirm_small">Konfirmasi</string>
     <string name="no_fingerprint_permission">Otentifikasi menggunakan sidik jari tidak tersedia</string>
     <string name="no_fingerprint_registered">Daftarkan setidaknya satu sidik jari di pengaturan</string>
     <string name="no_lock_screen_security">Penguncian layar tidak tersedia</string>
@@ -427,4 +446,6 @@
     <string name="clearsearchhistory">Kosongkan sejarah pencarian</string>
     <string name="clearrecent">Kosongkan pengelihatan baru-baru ini</string>
     <string name="privacy_policy">Kebijakan Privasi</string>
+    <string name="false_">False</string>
+    <string name="service_not_availabe_text">Maaf, tidak pelayanan kami belum tersedia di dalam negeri ini sekarang.</string>
 </resources>

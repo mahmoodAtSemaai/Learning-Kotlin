@@ -1,18 +1,28 @@
 package com.webkul.mobikul.odoo.fragment;
 
-import androidx.databinding.DataBindingUtil;
+import static com.webkul.mobikul.odoo.constant.ApplicationConstant.SLIDER_MODE_DEFAULT;
+import static com.webkul.mobikul.odoo.constant.ApplicationConstant.SLIDER_MODE_FIXED;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
+
+import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.GridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.webkul.mobikul.odoo.R;
+import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
 import com.webkul.mobikul.odoo.activity.HomeActivity;
+import com.webkul.mobikul.odoo.activity.NewAddressActivity;
+import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.adapter.home.FeaturedCategoriesRvAdapter;
 import com.webkul.mobikul.odoo.adapter.home.HomeBannerAdapter;
 import com.webkul.mobikul.odoo.adapter.home.NavDrawerCategoryStartRvAdapter;
@@ -27,47 +37,42 @@ import com.webkul.mobikul.odoo.databinding.FragmentHomeBinding;
 import com.webkul.mobikul.odoo.databinding.ItemProductSliderDefaultStyleBinding;
 import com.webkul.mobikul.odoo.databinding.ItemProductSliderFixedStyleBinding;
 import com.webkul.mobikul.odoo.handler.generic.ProductSliderHandler;
+import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.ViewHelper;
+import com.webkul.mobikul.odoo.model.customer.address.MyAddressesResponse;
 import com.webkul.mobikul.odoo.model.generic.ProductData;
 import com.webkul.mobikul.odoo.model.generic.ProductSliderData;
 import com.webkul.mobikul.odoo.model.home.HomePageResponse;
+import com.webkul.mobikul.odoo.model.request.BaseLazyRequest;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.webkul.mobikul.odoo.constant.ApplicationConstant.SLIDER_MODE_DEFAULT;
-import static com.webkul.mobikul.odoo.constant.ApplicationConstant.SLIDER_MODE_FIXED;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
-
 
 /**
-
  * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
+ *
  * @author Webkul <support@webkul.com>
-
+ * @package Mobikul App
+ * @Category Mobikul
  * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
  * @license https://store.webkul.com/license.html ASL Licence
-
  * @link https://store.webkul.com/license.html
-
  */
 public class HomeFragment extends BaseFragment implements CustomRetrofitCallback {
 
     @SuppressWarnings("unused")
     private static final String TAG = "HomeFragment";
     public FragmentHomeBinding mBinding;
+
+    private int CHECK_FOR_EXISTING_ADDRESS = 1;
 
     public static HomeFragment newInstance(@Nullable HomePageResponse homePageResponse) {
         Bundle args = new Bundle();
@@ -99,6 +104,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         HomePageResponse homePageResponse = getArguments().getParcelable(BUNDLE_KEY_HOME_PAGE_RESPONSE);
+        fetchExistingAddresses();
         if (homePageResponse == null) {
             hitApiForFetchingData();
             return;
@@ -144,7 +150,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 //    }
 
     private void loadHomePage(HomePageResponse homePageResponse, boolean isFromApi) {
-        if (isFromApi){
+        if (isFromApi) {
             homePageResponse.updateSharedPref(getContext(), "");
         }
         mBinding.setData(homePageResponse);
@@ -200,19 +206,80 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     }
 
     private void getRecentProductList() {
-        if (AppSharedPref.isRecentViewEnable(getContext())){
+        if (AppSharedPref.isRecentViewEnable(getContext())) {
             SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(getContext());
             ArrayList<ProductData> productData = sqlLiteDbHelper.getRecentProductList();
-             if (productData.size() > 0) {
-                    mBinding.llRecentViewProducts.setVisibility(View.VISIBLE);
-                    mBinding.rvAlternativeProduct.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-                    mBinding.rvAlternativeProduct.setAdapter(new AlternativeProductsRvAdapter(getActivity(), productData, true));
-             }else {
-                    mBinding.llRecentViewProducts.setVisibility(View.GONE);
-             }
+            if (productData.size() > 0) {
+                mBinding.llRecentViewProducts.setVisibility(View.VISIBLE);
+                mBinding.rvAlternativeProduct.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+                mBinding.rvAlternativeProduct.setAdapter(new AlternativeProductsRvAdapter(getActivity(), productData, true));
+            } else {
+                mBinding.llRecentViewProducts.setVisibility(View.GONE);
+            }
 
         } else {
             mBinding.llRecentViewProducts.setVisibility(View.GONE);
         }
     }
+
+    public void fetchExistingAddresses() {
+        ApiConnection.getAddressBookData(getContext(), new BaseLazyRequest(0, 1)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(getAddressResponseObserver());
+    }
+
+    private Observer<? super MyAddressesResponse> getAddressResponseObserver() {
+        return new CustomObserver<MyAddressesResponse>(getContext()) {
+            @Override
+            public void onNext(@NonNull MyAddressesResponse myAddressesResponse) {
+                super.onNext(myAddressesResponse);
+                checkIfAddressExists(myAddressesResponse);
+            }
+        };
+    }
+
+    private void checkIfAddressExists(MyAddressesResponse myAddressesResponse) {
+        if (myAddressesResponse.isAccessDenied()) {
+            showAlertDialog(getString(R.string.error_login_failure), getString(R.string.access_denied_message));
+        } else {
+            myAddressesResponse.setContext(getContext());
+            if (myAddressesResponse.getTotalCount() == 1) {
+                showPromptToAddAddress();
+            }
+        }
+    }
+
+
+    private void showAlertDialog(String title, String message) {
+        AlertDialogHelper.showDefaultWarningDialogWithDismissListener(getContext(), title, message, sweetAlertDialog -> {
+            sweetAlertDialog.dismiss();
+            clearCustomerDataFromSharedPref();
+            redirectToCatalogActivity();
+        });
+    }
+
+    private void redirectToCatalogActivity() {
+        Intent i = new Intent(getContext(), SignInSignUpActivity.class);
+        i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, CatalogProductActivity.class.getSimpleName());
+        startActivity(i);
+    }
+
+    private void clearCustomerDataFromSharedPref() {
+        AppSharedPref.clearCustomerData(getContext());
+    }
+
+    private void showPromptToAddAddress() {
+        new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(getString(R.string.missing_address))
+                .setContentText(getString(R.string.no_address_text))
+                .setConfirmText(getString(R.string.address_now))
+                .setCancelText(getString(R.string.not_now))
+                .setConfirmClickListener(sweetAlertDialog -> {
+                    startActivity(new Intent(requireActivity(), NewAddressActivity.class));
+                    sweetAlertDialog.dismiss();
+                })
+                .setCancelClickListener(sweetAlertDialog -> {
+                    sweetAlertDialog.dismiss();
+                })
+                .show();
+    }
+
 }

@@ -33,11 +33,23 @@ public class AddressData implements Parcelable {
     @SerializedName("addressId")
     @Expose
     private String addressId;
+    @SerializedName("name")
+    @Expose
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     protected AddressData(Parcel in) {
         url = in.readString();
         displayName = in.readString();
         addressId = in.readString();
+        name = in.readString();
     }
 
     @Override
@@ -45,6 +57,7 @@ public class AddressData implements Parcelable {
         dest.writeString(url);
         dest.writeString(displayName);
         dest.writeString(addressId);
+        dest.writeString(name);
     }
 
     @Override
