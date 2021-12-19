@@ -253,7 +253,24 @@
     <string name="new_address_btn_save_address">Save Address</string>
     <string name="select_default_shipping_address">Select Default Shipping Address</string>
     <string name="set_default">Set Default</string>
-
+    <string name="province">Province</string>
+    <string name="district">District</string>
+    <string name="district_city">District / City</string>
+    <string name="sub_district">Sub-District</string>
+    <string name="village">Village</string>
+    <string name="postal_code">Postal Code <font color='#FF0000'>*</font></string>
+    <string name="enter_your_village_code">Enter Your Postal Code</string>
+    <string name="missing_postal_code_text">Missing Postal code for </string>
+    <string name="missing_feilds_in_address_form">Missing Feilds in Address Form</string>
+    <string name="address_added_text">Address added successfully</string>
+    <string name="address_edit_text">Changes made to address saved</string>
+    <string name="address_now">Add now</string>
+    <string name="not_now">Not now</string>
+    <string name="no_address_text">You don\'t have any saved address</string>
+    <string name="missing_address">Address missing</string>
+    <string name="indonesia">Indonesia</string>
+    <string name="service_unavailablity_text">Thanks for your interest but we are not yet available in your area. We will get in touch with you when we start operations there.</string>
+    <string name="service_unavailable">Service Unavailable</string>
     <!---->
     <!---->
     <!-- DASHBOARD-->
@@ -372,6 +389,8 @@
     <string name="ok">OK</string>
     <string name="cancel">CANCEL</string>
     <string name="cancel_small">Cancel</string>
+    <string name="confirm">CONFIRM</string>
+    <string name="confirm_small">Confirm</string>
     <string name="no_fingerprint_permission">Fingerprint authentication permission not enabled</string>
     <string name="no_fingerprint_registered">Register at least one fingerprint in Settings</string>
     <string name="no_lock_screen_security">Lock screen security not enabled in Settings</string>
@@ -428,4 +447,6 @@
     <string name="clearsearchhistory">Are you sure want to clear your search history</string>
     <string name="clearrecent">Clear Recent View</string>
     <string name="privacy_policy">Privacy Policy</string>
+    <string name="false_">False</string>
+    <string name="service_not_availabe_text">Sorry, our services are not available in your village right now.</string>
 </resources>

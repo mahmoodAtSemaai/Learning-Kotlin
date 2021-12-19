@@ -27,6 +27,8 @@ public interface BundleConstant {
     /*SIGN IN SIGN UP*/
     String BUNDLE_KEY_SELECT_PAGE = "SELECT_PAGE";
     String BUNDLE_KEY_USERNAME = "USERNAME";
+    String BUNDLE_KEY_NAME = "NAME";
+    String BUNDLE_KEY_PHONE_NUMBER = "PHONE_NUMBER";
 
     /*CATALOG PRODUCT*/
     String BUNDLE_KEY_CATEGORY_ID = "CATEGORY_ID";

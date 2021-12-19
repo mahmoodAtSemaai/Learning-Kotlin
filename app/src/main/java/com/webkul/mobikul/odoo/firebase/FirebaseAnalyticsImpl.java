@@ -6,7 +6,6 @@ import android.os.Bundle;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 
-
 /**
 
  * Webkul Software.
@@ -26,6 +25,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
  */
 
 public class FirebaseAnalyticsImpl {
+
 
 
     private static FirebaseAnalytics mFirebaseAnalytics;
@@ -141,5 +141,17 @@ public class FirebaseAnalyticsImpl {
         bundle.putInt(FirebaseAnalytics.Param.ITEM_ID, Integer.parseInt(customerId));
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, customerName);
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SIGN_UP, bundle);
+    }
+
+    public static void logPostalCodeUnavailable(Context context, String state,String district,String subdistrict,String village){
+        if(mFirebaseAnalytics == null){
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
+        }
+        Bundle bundle = new Bundle();
+        bundle.putString(CustomFirebaseAnalyticsEvent.UNSERVICEABLE_STATE,state);
+        bundle.putString(CustomFirebaseAnalyticsEvent.UNSERVICEABLE_DISTRICT,district);
+        bundle.putString(CustomFirebaseAnalyticsEvent.UNSERVICEABLE_SUB_DISTRICT,subdistrict);
+        bundle.putString(CustomFirebaseAnalyticsEvent.UNSERVICEABLE_VILLAGE,village);
+        mFirebaseAnalytics.logEvent(CustomFirebaseAnalyticsEvent.NON_SERVICEABLE_LOCATION_EVENT,bundle);
     }
 }

@@ -16,7 +16,6 @@ import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.databinding.FragmentSignUpBinding;
-import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.fragment.LoginFragment;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
@@ -81,30 +80,30 @@ public class SignUpHandler {
 
                     if (BuildConfig.isMarketplace && isSeller){
                         if (isMarketplaceTermAndCondition){
-                            handleSignUp();
+                            handleSignUp(mData);
                         }else {
                             SnackbarHelper.getSnackbar((Activity) mContext, mContext.getString(R.string.plese_accept_tnc), Snackbar.LENGTH_LONG).show();
                         }
                     }else {
-                        handleSignUp();
+                        handleSignUp(mData);
                     }
                 } else {
                     SnackbarHelper.getSnackbar((Activity) mContext, mContext.getString(R.string.plese_accept_tnc), Snackbar.LENGTH_LONG).show();
                 }
             } else {
-                handleSignUp();
+                handleSignUp(mData);
             }
         } else {
             SnackbarHelper.getSnackbar((Activity) mContext, mContext.getString(R.string.error_enter_valid_login_details), Snackbar.LENGTH_LONG).show();
         }
     }
 
-    public void handleSignUp() {
+    public void handleSignUp(SignUpData mData) {
         AlertDialogHelper.showDefaultProgressDialog(mContext);
 
-        AppSharedPref.setCustomerLoginBase64Str(mContext, Base64.encodeToString(new AuthenticationRequest(mData.getPhoneNumber(), mData.getPassword()).toString().getBytes(), Base64.NO_WRAP));
+        AppSharedPref.setCustomerLoginBase64Str(mContext, Base64.encodeToString(new AuthenticationRequest(this.mData.getPhoneNumber(), this.mData.getPassword()).toString().getBytes(), Base64.NO_WRAP));
 
-        ApiConnection.signUp(mContext, new SignUpRequest(mContext, mData.getName(), mData.getPhoneNumber(), mData.getPassword(), false, isSeller, mData.getProfileURL(), countryId)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<SignUpResponse>(mContext) {
+        ApiConnection.signUp(mContext, new SignUpRequest(mContext, this.mData.getName(), this.mData.getPhoneNumber(), this.mData.getPassword(), false, isSeller, this.mData.getProfileURL(), countryId)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<SignUpResponse>(mContext) {
             @Override
             public void onNext(@NonNull SignUpResponse signUpResponse) {
                 super.onNext(signUpResponse);
@@ -117,10 +116,10 @@ public class SignUpHandler {
                                 sweetAlertDialog.dismiss();
                                 FingerPrintLoginHelper fingerPrintLoginHelper = new FingerPrintLoginHelper();
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                    fingerPrintLoginHelper.askForFingerprintLogin(mContext, null, null, signUpResponse, mData);
+                                    fingerPrintLoginHelper.askForFingerprintLogin(mContext, null, null, signUpResponse, SignUpHandler.this.mData);
                                 } else {
                                     AppSharedPref.setIsAllowedFingerprintLogin(mContext, false);
-                                    fingerPrintLoginHelper.goToHomePage(mContext, null, null, signUpResponse, mData);
+                                    fingerPrintLoginHelper.goToHomePage(mContext, null, null, signUpResponse, SignUpHandler.this.mData);
                                 }
                             }).show();
                 } else {

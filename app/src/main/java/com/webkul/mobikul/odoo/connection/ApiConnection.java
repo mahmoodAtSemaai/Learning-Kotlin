@@ -4,9 +4,7 @@ package com.webkul.mobikul.odoo.connection;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.webkul.mobikul.odoo.constant.ApplicationConstant;
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
-import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.helper.NetworkHelper;
 import com.webkul.mobikul.odoo.model.BaseResponse;
 import com.webkul.mobikul.odoo.model.cart.BagResponse;
@@ -18,7 +16,12 @@ import com.webkul.mobikul.odoo.model.checkout.ShippingMethodResponse;
 import com.webkul.mobikul.odoo.model.customer.ResetPasswordResponse;
 import com.webkul.mobikul.odoo.model.customer.account.SaveCustomerDetailResponse;
 import com.webkul.mobikul.odoo.model.customer.address.AddressFormResponse;
+import com.webkul.mobikul.odoo.model.customer.address.AddressRequestBody;
+import com.webkul.mobikul.odoo.model.customer.address.addressResponse.DistrictListResponse;
+import com.webkul.mobikul.odoo.model.customer.address.addressResponse.StateListResponse;
 import com.webkul.mobikul.odoo.model.customer.address.MyAddressesResponse;
+import com.webkul.mobikul.odoo.model.customer.address.addressResponse.SubDistrictListResponse;
+import com.webkul.mobikul.odoo.model.customer.address.addressResponse.VillageListResponse;
 import com.webkul.mobikul.odoo.model.customer.order.MyOrderReponse;
 import com.webkul.mobikul.odoo.model.customer.order.OrderDetailResponse;
 import com.webkul.mobikul.odoo.model.customer.signin.LoginResponse;
@@ -217,6 +220,10 @@ public class ApiConnection {
         return RetrofitClient.getClient(context).create(ApiInterface.class).addNewAddress(addressFormDataStr);
     }
 
+    public static Observable<BaseResponse> editAddress(Context context,String addressData,String addressUrl){
+        return RetrofitClient.getClient(context).create(ApiInterface.class).editAddress(addressUrl,addressData);
+    }
+
     public static Observable<BaseResponse> deleteAddress(Context context, String addressUrl) {
         return RetrofitClient.getClient(context).create(ApiInterface.class).deleteAddress(addressUrl);
     }
@@ -330,6 +337,23 @@ public class ApiConnection {
     public static Observable<CountryStateData> getCountryStateData(Context context) {
         return RetrofitClient.getClient(context).create(ApiInterface.class).getCountryStateData();
     }
+
+    public static Observable<StateListResponse> getStates(Context context, int company_id){
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getStates(company_id);
+    }
+
+    public static Observable<DistrictListResponse> getDistricts(Context context, int state_id){
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getDistricts(state_id);
+    }
+
+    public static Observable<SubDistrictListResponse> getSubDistricts(Context context, int district_id){
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getSubDistricts(district_id);
+    }
+
+    public static Observable<VillageListResponse> getVillages(Context context, int sub_district_id){
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getVillages(sub_district_id);
+    }
+
 
     public static Observable<CatalogProductResponse> getSearchResponse(Context context, SearchRequest searchRequest) {
         return RetrofitClient.getClient(context).create(ApiInterface.class).getSearchResponse(searchRequest.toString());
