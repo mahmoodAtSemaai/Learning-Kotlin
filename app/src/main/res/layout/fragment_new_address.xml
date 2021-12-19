@@ -353,6 +353,7 @@
             android:layout_margin="@dimen/spacing_generic"
             android:layout_marginTop="@dimen/spacing_tiny"
             android:tint="@android:color/white"
+            android:visibility="gone"
             app:fabSize="mini"
             app:srcCompat="@drawable/ic_vector_map_marker" />
 
@@ -367,6 +368,7 @@
             android:clickable="true"
             android:focusable="true"
             android:onClick="@{()->handler.getCurrentLocation()}"
+            android:visibility="gone"
             app:fabSize="mini"
             app:layout_anchor="@id/form"
             app:srcCompat="@drawable/ic_vector_menu_gps_white_24dp" />
