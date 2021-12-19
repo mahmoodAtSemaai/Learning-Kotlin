@@ -19,7 +19,7 @@ android {
     defaultPublishConfig "release"
     publishNonDefault true
     compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    buildToolsVersion "28.0.3"
     flavorDimensions "default"
 
     lintOptions {
