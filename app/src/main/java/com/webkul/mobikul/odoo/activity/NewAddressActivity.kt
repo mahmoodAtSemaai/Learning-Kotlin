@@ -253,13 +253,17 @@ class NewAddressActivity : AppCompatActivity() {
         if(isFormFilledup) {
             showUnavailabilityAlertDialog(selectedStateId)
         } else {
-            SnackbarHelper.getSnackbar(
-                this,
-                getString(R.string.missing_feilds_in_address_form),
-                Snackbar.LENGTH_SHORT,
-                SnackbarHelper.SnackbarType.TYPE_WARNING
-            ).show()
+            showErrorMessage(getString(R.string.missing_feilds_in_address_form),)
         }
+    }
+
+    private fun showErrorMessage(errorMessage: String) {
+        SnackbarHelper.getSnackbar(
+            this,
+            errorMessage,
+            Snackbar.LENGTH_SHORT,
+            SnackbarHelper.SnackbarType.TYPE_WARNING
+        ).show()
     }
 
     private fun showUnavailabilityAlertDialog(unavailableStateId: Any) {

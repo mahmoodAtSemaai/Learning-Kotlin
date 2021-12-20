@@ -268,7 +268,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
     private void showPromptToAddAddress() {
         new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
-                .setTitleText(getString(R.string.shipping_missing_address))
+                .setTitleText(getString(R.string.shipping_address_missing))
                 .setContentText(getString(R.string.no_address_text))
                 .setConfirmText(getString(R.string.address_now))
                 .setCancelText(getString(R.string.not_now))

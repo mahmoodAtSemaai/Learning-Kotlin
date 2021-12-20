@@ -267,7 +267,7 @@
     <string name="address_now">Add now</string>
     <string name="not_now">Not now</string>
     <string name="no_address_text">You don\'t have any saved address</string>
-    <string name="shipping_missing_address">Shipping Address missing</string>
+    <string name="shipping_address_missing">Shipping Address missing</string>
     <string name="indonesia">Indonesia</string>
     <string name="service_unavailablity_text">Thanks for your interest but we are not yet available in your area. We will get in touch with you when we start operations there.</string>
     <string name="service_unavailable">Service Unavailable</string>
