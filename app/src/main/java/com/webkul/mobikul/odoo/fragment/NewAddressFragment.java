@@ -166,12 +166,6 @@ public class NewAddressFragment extends BaseFragment {
 
     private void setCurrentAddressDetails(AddressFormResponse addressFormResponse) {
         this.addressFormResponse = addressFormResponse;
-        Log.i(TAG, "setCurrentAddressDetails: "+
-                this.addressFormResponse.getCountryId() + "-" +
-                this.addressFormResponse.getStateId() + "-" +
-                this.addressFormResponse.getDistrictId() + "-" +
-                this.addressFormResponse.getSub_district_id() + "-" +
-                this.addressFormResponse.getVillage_id());
         mBinding.nameEt.setText(addressFormResponse.getName());
         mBinding.telephoneEt.setText(addressFormResponse.getPhone());
         mBinding.streetEt.setText(addressFormResponse.getStreet());
