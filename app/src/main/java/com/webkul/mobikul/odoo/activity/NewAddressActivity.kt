@@ -76,7 +76,7 @@ class NewAddressActivity : AppCompatActivity() {
 
         mBinding!!.saveAddressBtn.setOnClickListener {
             if (isMissingDetails)
-                showUnavailabilityAlertDialog(selectedStateId)
+                validateMandatoryFeilds(selectedStateId)
             else
                 validateAddressEditTextFeilds()
         }
@@ -166,7 +166,7 @@ class NewAddressActivity : AppCompatActivity() {
                     position: Int,
                     id: Long
                 ) {
-                    addressRequestBody.setCountry_id(COMPANY_ID.toString())
+                    addressRequestBody.setCompany_id(COMPANY_ID.toString())
                     resetSpinners(RESET_SPINNERS_FROM_STATE_UPTO_VILLAGE)
                     fetchStates(COMPANY_ID);
                 }
@@ -240,15 +240,33 @@ class NewAddressActivity : AppCompatActivity() {
 
     private fun setSubRegionFieldsVisibility(show: Boolean) {
         mBinding?.apply {
-            districtContainer.visibility = if(show) View.VISIBLE else View.INVISIBLE
-            subDistrictContainer.visibility = if(show) View.VISIBLE else View.INVISIBLE
-            villageContainer.visibility = if(show) View.VISIBLE else View.INVISIBLE
-            postalCodeContainer.visibility = if(show) View.VISIBLE else View.INVISIBLE
-            streetContainer.visibility = if(show) View.VISIBLE else View.INVISIBLE
+            districtContainer.visibility = if(show) View.VISIBLE else View.GONE
+            subDistrictContainer.visibility = if(show) View.VISIBLE else View.GONE
+            villageContainer.visibility = if(show) View.VISIBLE else View.GONE
+            postalCodeContainer.visibility = if(show) View.VISIBLE else View.GONE
+            streetContainer.visibility = if(show) View.VISIBLE else View.GONE
         }
     }
 
-    private fun showUnavailabilityAlertDialog(selectedState: String) {
+    private fun validateMandatoryFeilds(selectedState: String) {
+        val isFormFilledup = checkMandatoryFeilds()
+        if(isFormFilledup) {
+            showUnavailabilityAlertDialog(selectedStateId)
+        } else {
+            showErrorMessage(getString(R.string.missing_feilds_in_address_form),)
+        }
+    }
+
+    private fun showErrorMessage(errorMessage: String) {
+        SnackbarHelper.getSnackbar(
+            this,
+            errorMessage,
+            Snackbar.LENGTH_SHORT,
+            SnackbarHelper.SnackbarType.TYPE_WARNING
+        ).show()
+    }
+
+    private fun showUnavailabilityAlertDialog(unavailableStateId: Any) {
         SweetAlertDialog(this@NewAddressActivity, SweetAlertDialog.WARNING_TYPE)
             .setTitleText(getString(R.string.service_unavailable))
             .setContentText(getString(R.string.service_unavailablity_text))
@@ -259,11 +277,16 @@ class NewAddressActivity : AppCompatActivity() {
             .show()
     }
 
+    private fun checkMandatoryFeilds(): Boolean {
+        return isValid(mBinding!!.nameEt) && isValid(mBinding!!.telephoneEt)
+    }
+
     private fun makeEmptyRequestBody(selectedState: String) {
         addressRequestBody.setName(mBinding!!.nameEt.text.toString())
         addressRequestBody.setPhone(mBinding!!.telephoneEt.text.toString())
         addressRequestBody.setStreet(mBinding!!.streetEt.text.toString())
         addressRequestBody.setState_id(selectedState)
+        addressRequestBody.setZip("")
         addressRequestBody.setDistrict_id("")
         addressRequestBody.setSub_district_id("")
         addressRequestBody.setVillage_id("")
@@ -399,7 +422,7 @@ class NewAddressActivity : AppCompatActivity() {
         val selectedSubDistrict = subDistrictsList[position]
         resetSpinners(RESET_SPINNERS_VILLAGE)
         subDistrictListHashmap[selectedSubDistrict]?.let { fetchVillage(it.id) }
-        addressRequestBody.setVillage_id(villageListHashmap[selectedSubDistrict]?.id.toString())
+        addressRequestBody.setSub_district_id(subDistrictListHashmap[selectedSubDistrict]?.id.toString())
     }
 
 
@@ -509,8 +532,7 @@ class NewAddressActivity : AppCompatActivity() {
 
 
     private fun validateAddressEditTextFeilds() {
-        if (isValid(mBinding!!.nameEt) && isValid(mBinding!!.streetEt) &&
-            isValid(mBinding!!.telephoneEt) && addressRequestBody.village_id != null
+        if (isValid(mBinding!!.nameEt) && isValid(mBinding!!.telephoneEt) && addressRequestBody.village_id != null
         ) {
             makeRequestBody()
         } else {
