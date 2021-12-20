@@ -29,13 +29,13 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_generic"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacing_generic"
-            android:layout_marginTop="@dimen/spacing_generic"
             android:text="@{@string/subheading_shipping_address_X(position+1)}"
             android:textAllCaps="true"
             android:textStyle="italic"
@@ -78,6 +78,11 @@
                 app:underline="@{true}" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/grey_500"
+            android:layout_height="1dp"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

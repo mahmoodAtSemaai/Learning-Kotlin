@@ -114,13 +114,15 @@
 
                         <View
                             style="@style/DividerHorizontal"
-                            android:layout_margin="@dimen/spacing_generic" />
+                            android:layout_marginTop="@dimen/spacing_tiny" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/additional_address_rv"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            tools:listitem="@layout/item_additional_address"
                             android:nestedScrollingEnabled="false"
+                            tools:itemCount="2"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             tools:targetApi="lollipop" />
 
