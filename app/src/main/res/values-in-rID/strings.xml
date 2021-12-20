@@ -126,7 +126,7 @@
     <string name="please_enter_your_phone_number_below_you_will_receive_a_link_to_reset_your_password_">Masukkan alamat phone anda dibawah. Anda akan menerima link untuk melakukan reset password</string>
     <string name="link_to_resend_login_password_send">Kirim link</string>
     <string name="your_email">Email Anda</string>
-    <string name="your_name">Nama Anda</string>
+    <string name="your_name">Nama Anda <font color='#FF0000'>*</font></string>
     <string name="e_g_john_doe">misal: Tarjo Sutarjo</string>
     <string name="login_successful_message">Berhasil masuk</string>
     <string name="skip">Lewatkan</string>
@@ -243,7 +243,7 @@
     <string name="shipping_address">Alamat pengiriman</string>
     <string name="shipping_addresses">Shipping Addresses</string>
     <string name="additional_address">Alamat tambahan</string>
-    <string name="telephone">Telepon</string>
+    <string name="telephone">Telepon <font color='#FF0000'>*</font></string>
     <!--<string name="company">Company</string>-->
     <string name="street">Jalan</string>
     <string name="city">Kabupaten/Kota</string>
@@ -267,7 +267,7 @@
     <string name="address_now">tambahkan sekarang</string>
     <string name="not_now">tidak sekarang</string>
     <string name="no_address_text">Anda tidak memiliki alamat tersimpan</string>
-    <string name="missing_address">Alamat hilang</string>
+    <string name="shipping_missing_address">Alamat pengiriman tidak ada</string>
     <string name="indonesia">Indonesia</string>
     <string name="service_unavailablity_text">Thanks for your interest but we are not yet available in your area. We will get in touch with you when we start operations there.</string>
     <string name="service_unavailable">Layanan tidak tersedia</string>
