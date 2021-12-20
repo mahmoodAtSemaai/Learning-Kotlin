@@ -421,8 +421,12 @@ public class NewAddressFragment extends BaseFragment {
             showUnavailabilityAlertDialog(unavailable_state_id);
         }
         else{
-            SnackbarHelper.getSnackbar(getActivity(), getString(R.string.missing_feilds_in_address_form), Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
+            showErrorMessage(getString(R.string.missing_feilds_in_address_form));
         }
+    }
+
+    private void showErrorMessage(String errorMessage) {
+        SnackbarHelper.getSnackbar(getActivity(), errorMessage, Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
     }
 
     private void showUnavailabilityAlertDialog(String unavailable_state_id){
