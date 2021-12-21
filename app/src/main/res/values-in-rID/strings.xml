@@ -264,10 +264,12 @@
     <string name="missing_feilds_in_address_form">Bidang yang Hilang dalam Formulir Alamat</string>
     <string name="address_added_text">Alamat berhasil ditambahkan</string>
     <string name="address_edit_text">Perubahan yang dilakukan pada alamat disimpan</string>
-    <string name="address_now">tambahkan sekarang</string>
+    <string name="add_now">tambahkan sekarang</string>
     <string name="not_now">tidak sekarang</string>
     <string name="no_address_text">Anda tidak memiliki alamat tersimpan</string>
     <string name="shipping_address_missing">Alamat pengiriman tidak ada</string>
+    <string name="billing_address_missing">Alamat penagihan tidak ada</string>
+    <string name="billing_address_incomplete">Alamat penagihan tidak lengkap</string>
     <string name="indonesia">Indonesia</string>
     <string name="service_unavailablity_text">Terima kasih atas minat Anda. Mohon maaf, layanan kami belum tersedia di wilayah Anda. Kami akan menghubungi Anda saat kami mulai beroperasi di wilayah Anda.</string>
     <string name="service_unavailable">Di luar area jangjauan</string>
