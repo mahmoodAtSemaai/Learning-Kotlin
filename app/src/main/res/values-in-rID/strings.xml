@@ -253,8 +253,8 @@
     <string name="new_address_btn_save_address">Simpan Alamat</string>
     <string name="select_default_shipping_address">Pilih alamat pengiriman default</string>
     <string name="set_default">Tentukan default</string>
-    <string name="province">Propinsi</string>
-    <string name="district">Daerah</string>
+    <string name="province">Provinsi</string>
+    <string name="district">Kabupaten</string>
     <string name="district_city">Daerah / Kota</string>
     <string name="sub_district">Kecamatan</string>
     <string name="village">Desa</string>
@@ -269,15 +269,15 @@
     <string name="no_address_text">Anda tidak memiliki alamat tersimpan</string>
     <string name="shipping_address_missing">Alamat pengiriman tidak ada</string>
     <string name="indonesia">Indonesia</string>
-    <string name="service_unavailablity_text">Thanks for your interest but we are not yet available in your area. We will get in touch with you when we start operations there.</string>
-    <string name="service_unavailable">Layanan tidak tersedia</string>
+    <string name="service_unavailablity_text">Terima kasih atas minat Anda. Mohon maaf, layanan kami belum tersedia di wilayah Anda. Kami akan menghubungi Anda saat kami mulai beroperasi di wilayah Anda.</string>
+    <string name="service_unavailable">Di luar area jangjauan</string>
     <!---->
     <!---->
     <!-- DASHBOARD-->
     <string name="recent_orders">Order baru-baru ini</string>
     <string name="account_information">Informasi Akun</string>
     <string name="contact_information">Informasi Kontak</string>
-    <string name="edit">Edit</string>
+    <string name="edit">Sunting</string>
     <string name="change_password">Ganti Password</string>
     <string name="manage_address">Atur Alamat</string>
     <!---->
