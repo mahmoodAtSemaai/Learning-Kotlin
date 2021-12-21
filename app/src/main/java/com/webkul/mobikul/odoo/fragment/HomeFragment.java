@@ -4,6 +4,7 @@ import static com.webkul.mobikul.odoo.constant.ApplicationConstant.SLIDER_MODE_D
 import static com.webkul.mobikul.odoo.constant.ApplicationConstant.SLIDER_MODE_FIXED;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_URL;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -41,9 +42,14 @@ import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.ViewHelper;
+import com.webkul.mobikul.odoo.model.BaseResponse;
+import com.webkul.mobikul.odoo.model.customer.address.AddressData;
+import com.webkul.mobikul.odoo.model.customer.address.AddressFormResponse;
 import com.webkul.mobikul.odoo.model.customer.address.MyAddressesResponse;
+import com.webkul.mobikul.odoo.model.customer.address.addressResponse.StateListResponse;
 import com.webkul.mobikul.odoo.model.generic.ProductData;
 import com.webkul.mobikul.odoo.model.generic.ProductSliderData;
+import com.webkul.mobikul.odoo.model.generic.StateData;
 import com.webkul.mobikul.odoo.model.home.HomePageResponse;
 import com.webkul.mobikul.odoo.model.request.BaseLazyRequest;
 
@@ -73,6 +79,8 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     public FragmentHomeBinding mBinding;
 
     private int CHECK_FOR_EXISTING_ADDRESS = 1;
+    private int BILLING_ADDRESS_POSITION = 1;
+    private int COMPANY_ID = 1;
 
     public static HomeFragment newInstance(@Nullable HomePageResponse homePageResponse) {
         Bundle args = new Bundle();
@@ -241,11 +249,91 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
             showAlertDialog(getString(R.string.error_login_failure), getString(R.string.access_denied_message));
         } else {
             myAddressesResponse.setContext(getContext());
-            if (myAddressesResponse.getTotalCount() == 1) {
-                showPromptToAddAddress();
+            if (myAddressesResponse.getAddresses().size() == 0) {
+                showMissingBillingAddressPrompt();
+            } else
+                fetchBillingAddressData(myAddressesResponse.getAddresses().get(0));
+        }
+    }
+
+    private void showMissingBillingAddressPrompt() {
+        new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(getString(R.string.billing_address_missing))
+                .setContentText(getString(R.string.no_address_text))
+                .setConfirmText(getString(R.string.add_now))
+                .setConfirmClickListener(sweetAlertDialog -> {
+                    redirectToAddNewBillingAddress();
+                    sweetAlertDialog.dismiss();
+                })
+                .show();
+    }
+
+    private void redirectToAddNewBillingAddress() {
+        startActivity(new Intent(requireActivity(), NewAddressActivity.class));
+    }
+
+    private void fetchBillingAddressData(AddressData addressData) {
+        ApiConnection.getAddressFormData(getContext(), addressData.getUrl()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(getBillingAddressResponse(addressData));
+    }
+
+    private Observer<? super AddressFormResponse> getBillingAddressResponse(AddressData addressData) {
+        return new CustomObserver<AddressFormResponse>(getContext()) {
+            @Override
+            public void onNext(@androidx.annotation.NonNull AddressFormResponse addressFormResponse) {
+                super.onNext(addressFormResponse);
+                fetchStates(addressFormResponse, addressData);
+            }
+        };
+    }
+
+    private void fetchStates(AddressFormResponse addressFormResponse, AddressData addressData) {
+        ApiConnection.getStates(requireContext(), COMPANY_ID).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(getStateListResponse(addressFormResponse, addressData));
+    }
+
+    private Observer<? super StateListResponse> getStateListResponse(AddressFormResponse addressFormResponse, AddressData addressData) {
+        return new CustomObserver<BaseResponse>(getContext()) {
+            @Override
+            public void onNext(@androidx.annotation.NonNull BaseResponse baseResponse) {
+                super.onNext(baseResponse);
+                StateListResponse stateListResponse = (StateListResponse) baseResponse;
+                checkForStateAvailablity(stateListResponse, addressFormResponse, addressData);
+            }
+        };
+    }
+
+    private void checkForStateAvailablity(StateListResponse stateListResponse, AddressFormResponse addressFormResponse, AddressData addressData) {
+        for (StateData stateData : stateListResponse.getResult()) {
+            if (stateData.getId() == Integer.parseInt(addressFormResponse.getStateId()) &&
+                    stateData.isAvailable() && areFeildsNullOrEmpty(addressFormResponse)) {
+                showPromptToCompleteBillingAddress(addressFormResponse,addressData);
             }
         }
     }
+
+    private void showPromptToCompleteBillingAddress(AddressFormResponse addressFormResponse,AddressData addressData) {
+        new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(getString(R.string.billing_address_incomplete))
+                .setContentText(getString(R.string.no_address_text))
+                .setConfirmText(getString(R.string.add_now))
+                .setConfirmClickListener(sweetAlertDialog -> {
+                    redirectToEditExistingBillingAddress(addressData);
+                    sweetAlertDialog.dismiss();
+                })
+                .show();
+    }
+
+    private boolean areFeildsNullOrEmpty(AddressFormResponse addressFormResponse) {
+        return (addressFormResponse.getDistrictId() == null || addressFormResponse.getDistrictId().isEmpty() ||
+                addressFormResponse.getSub_district_id() == null || addressFormResponse.getSub_district_id().isEmpty() ||
+                addressFormResponse.getVillage_id() == null || addressFormResponse.getVillage_id().isEmpty()
+        );
+    }
+
+    private void redirectToEditExistingBillingAddress(AddressData addressData) {
+        startActivity(new Intent(requireActivity(), NewAddressActivity.class)
+                .putExtra(BUNDLE_KEY_URL, addressData.getUrl()));
+    }
+
 
 
     private void showAlertDialog(String title, String message) {
@@ -266,20 +354,6 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         AppSharedPref.clearCustomerData(getContext());
     }
 
-    private void showPromptToAddAddress() {
-        new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
-                .setTitleText(getString(R.string.shipping_address_missing))
-                .setContentText(getString(R.string.no_address_text))
-                .setConfirmText(getString(R.string.address_now))
-                .setCancelText(getString(R.string.not_now))
-                .setConfirmClickListener(sweetAlertDialog -> {
-                    startActivity(new Intent(requireActivity(), NewAddressActivity.class));
-                    sweetAlertDialog.dismiss();
-                })
-                .setCancelClickListener(sweetAlertDialog -> {
-                    sweetAlertDialog.dismiss();
-                })
-                .show();
-    }
+
 
 }
