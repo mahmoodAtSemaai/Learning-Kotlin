@@ -20,6 +20,7 @@ import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl
 import com.webkul.mobikul.odoo.helper.IntentHelper
 import com.webkul.mobikul.odoo.helper.SnackbarHelper
 import com.webkul.mobikul.odoo.model.BaseResponse
+import com.webkul.mobikul.odoo.model.customer.address.AddressFormResponse
 import com.webkul.mobikul.odoo.model.customer.address.AddressRequestBody
 import com.webkul.mobikul.odoo.model.customer.address.addressBodyParams.*
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.DistrictListResponse
@@ -59,13 +60,17 @@ class NewAddressActivity : AppCompatActivity() {
     var isMissingDetails: Boolean = false
     var selectedStateId = ""
 
+    var isEditMode = false
+    var addressUrl : String = ""
+    var STATE_SPINNER_INITIAL_SELECTION = -1
+
     private val RESET_SPINNERS_FROM_STATE_UPTO_VILLAGE = 1
     private val RESET_SPINNERS_FROM_DISTRICT_UPTO_VILLAGE = 2
     private val RESET_SPINNERS_FROM_SUB_DISTRICT_UPTO_VILLAGE = 3
     private val RESET_SPINNERS_VILLAGE = 4
 
     private val COMPANY_ID = 1
-    private val UNSELECTED_STATE = -1
+    private val UNSELECTED_POSITION = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,7 +81,7 @@ class NewAddressActivity : AppCompatActivity() {
 
         mBinding!!.saveAddressBtn.setOnClickListener {
             if (isMissingDetails)
-                showUnavailabilityAlertDialog(selectedStateId)
+                validateMandatoryFeilds(selectedStateId)
             else
                 validateAddressEditTextFeilds()
         }
@@ -94,6 +99,40 @@ class NewAddressActivity : AppCompatActivity() {
             mBinding?.telephoneEt?.setText(intent.extras?.getString(BundleConstant.BUNDLE_KEY_PHONE_NUMBER))
         else
             showTelephoneEt()
+
+        if(intent.hasExtra(BundleConstant.BUNDLE_KEY_URL)) {
+            setEditmodeData()
+        }
+    }
+
+    private fun setEditmodeData() {
+        isEditMode = true
+        addressUrl = intent.extras?.getString(BundleConstant.BUNDLE_KEY_URL) ?: ""
+        fetchCurrentAddress(addressUrl)
+    }
+
+    private fun fetchCurrentAddress(url: String) {
+        ApiConnection.getAddressFormData(this,url).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(getCurrentAddressObserver())
+    }
+
+    private fun getCurrentAddressObserver(): Observer<BaseResponse> {
+        return object : CustomObserver<BaseResponse>(this) {
+            override fun onNext(baseResponse: BaseResponse) {
+                super.onNext(baseResponse)
+                resetSpinners(RESET_SPINNERS_FROM_STATE_UPTO_VILLAGE)
+                val addressFormResponse = baseResponse as AddressFormResponse
+                setDataOnFeilds(addressFormResponse)
+                fetchStates(addressFormResponse.stateId.toInt())
+            }
+        }
+    }
+
+    private fun setDataOnFeilds(addressFormResponse: AddressFormResponse) {
+        mBinding?.apply {
+            nameEt.setText(addressFormResponse.name)
+            telephoneEt.setText(addressFormResponse.phone)
+            STATE_SPINNER_INITIAL_SELECTION = addressFormResponse.stateId.toInt()
+        }
     }
 
     private fun showTelephoneEt() {
@@ -166,9 +205,9 @@ class NewAddressActivity : AppCompatActivity() {
                     position: Int,
                     id: Long
                 ) {
-                    addressRequestBody.setCountry_id(COMPANY_ID.toString())
+                    addressRequestBody.setCompany_id(COMPANY_ID.toString())
                     resetSpinners(RESET_SPINNERS_FROM_STATE_UPTO_VILLAGE)
-                    fetchStates(COMPANY_ID);
+                    fetchStates(UNSELECTED_POSITION);
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -176,13 +215,13 @@ class NewAddressActivity : AppCompatActivity() {
     }
 
 
-    private fun fetchStates(company_id: Int) {
-        ApiConnection.getStates(this, company_id).subscribeOn(Schedulers.io())
+    private fun fetchStates(stateId: Int) {
+        ApiConnection.getStates(this, COMPANY_ID).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : CustomObserver<StateListResponse?>(this) {
                 override fun onNext(stateListResponse: StateListResponse) {
                     super.onNext(stateListResponse)
-                    val pos = refreshStatesData(stateListResponse, company_id)
+                    val pos = refreshStatesData(stateListResponse, stateId)
                     setUpStateSpinner()
                     setSpinnerItemSelection(pos)
                 }
@@ -190,7 +229,7 @@ class NewAddressActivity : AppCompatActivity() {
     }
 
     private fun setSpinnerItemSelection(pos: Int) {
-        if (pos != UNSELECTED_STATE) mBinding!!.provinceSpinner.setSelection(pos)
+        if (pos != UNSELECTED_POSITION) mBinding!!.provinceSpinner.setSelection(pos)
     }
 
     private fun setUpStateSpinner() {
@@ -240,15 +279,33 @@ class NewAddressActivity : AppCompatActivity() {
 
     private fun setSubRegionFieldsVisibility(show: Boolean) {
         mBinding?.apply {
-            districtContainer.visibility = if(show) View.VISIBLE else View.INVISIBLE
-            subDistrictContainer.visibility = if(show) View.VISIBLE else View.INVISIBLE
-            villageContainer.visibility = if(show) View.VISIBLE else View.INVISIBLE
-            postalCodeContainer.visibility = if(show) View.VISIBLE else View.INVISIBLE
-            streetContainer.visibility = if(show) View.VISIBLE else View.INVISIBLE
+            districtContainer.visibility = if(show) View.VISIBLE else View.GONE
+            subDistrictContainer.visibility = if(show) View.VISIBLE else View.GONE
+            villageContainer.visibility = if(show) View.VISIBLE else View.GONE
+            postalCodeContainer.visibility = if(show) View.VISIBLE else View.GONE
+            streetContainer.visibility = if(show) View.VISIBLE else View.GONE
         }
     }
 
-    private fun showUnavailabilityAlertDialog(selectedState: String) {
+    private fun validateMandatoryFeilds(selectedState: String) {
+        val isFormFilledup = checkMandatoryFeilds()
+        if(isFormFilledup) {
+            showUnavailabilityAlertDialog(selectedStateId)
+        } else {
+            showErrorMessage(getString(R.string.missing_feilds_in_address_form))
+        }
+    }
+
+    private fun showErrorMessage(errorMessage: String) {
+        SnackbarHelper.getSnackbar(
+            this,
+            errorMessage,
+            Snackbar.LENGTH_SHORT,
+            SnackbarHelper.SnackbarType.TYPE_WARNING
+        ).show()
+    }
+
+    private fun showUnavailabilityAlertDialog(unavailableStateId: Any) {
         SweetAlertDialog(this@NewAddressActivity, SweetAlertDialog.WARNING_TYPE)
             .setTitleText(getString(R.string.service_unavailable))
             .setContentText(getString(R.string.service_unavailablity_text))
@@ -259,22 +316,27 @@ class NewAddressActivity : AppCompatActivity() {
             .show()
     }
 
+    private fun checkMandatoryFeilds(): Boolean {
+        return isValid(mBinding!!.nameEt) && isValid(mBinding!!.telephoneEt)
+    }
+
     private fun makeEmptyRequestBody(selectedState: String) {
         addressRequestBody.setName(mBinding!!.nameEt.text.toString())
         addressRequestBody.setPhone(mBinding!!.telephoneEt.text.toString())
         addressRequestBody.setStreet(mBinding!!.streetEt.text.toString())
         addressRequestBody.setState_id(selectedState)
+        addressRequestBody.setZip("")
         addressRequestBody.setDistrict_id("")
         addressRequestBody.setSub_district_id("")
         addressRequestBody.setVillage_id("")
-        saveNewAddress(addressRequestBody)
+        saveAddress(addressRequestBody)
     }
 
 
     private fun refreshStatesData(stateListResponse: StateListResponse, stateId: Int): Int {
         statesList.clear()
         stateListHashmap.clear()
-        var pos = UNSELECTED_STATE
+        var pos = UNSELECTED_POSITION
         for (i in stateListResponse.data.indices) {
             val stateData = stateListResponse.data[i]
             statesList.add(stateData.name)
@@ -399,7 +461,7 @@ class NewAddressActivity : AppCompatActivity() {
         val selectedSubDistrict = subDistrictsList[position]
         resetSpinners(RESET_SPINNERS_VILLAGE)
         subDistrictListHashmap[selectedSubDistrict]?.let { fetchVillage(it.id) }
-        addressRequestBody.setVillage_id(villageListHashmap[selectedSubDistrict]?.id.toString())
+        addressRequestBody.setSub_district_id(subDistrictListHashmap[selectedSubDistrict]?.id.toString())
     }
 
 
@@ -509,8 +571,7 @@ class NewAddressActivity : AppCompatActivity() {
 
 
     private fun validateAddressEditTextFeilds() {
-        if (isValid(mBinding!!.nameEt) && isValid(mBinding!!.streetEt) &&
-            isValid(mBinding!!.telephoneEt) && addressRequestBody.village_id != null
+        if (isValid(mBinding!!.nameEt) && isValid(mBinding!!.telephoneEt) && addressRequestBody.village_id != null
         ) {
             makeRequestBody()
         } else {
@@ -532,23 +593,30 @@ class NewAddressActivity : AppCompatActivity() {
         addressRequestBody.setPhone(mBinding!!.telephoneEt.text.toString())
         addressRequestBody.setStreet(mBinding?.streetEt?.text.toString())
         addressRequestBody.setState_id(selectedStateId)
-        saveNewAddress(addressRequestBody)
+        saveAddress(addressRequestBody)
     }
 
-    private fun saveNewAddress(addressRequestBody: AddressRequestBody) {
-        ApiConnection.addNewAddress(this, addressRequestBody.newAddressData)
-            .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-            .subscribe(getAddressResponseObserver())
+    private fun saveAddress(addressRequestBody: AddressRequestBody) {
+        if(isEditMode) {
+            ApiConnection.editAddress(this,addressRequestBody.newAddressData,addressUrl)
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(getAddressResponseObserver(getString(R.string.address_edit_text)))
+        }
+        else {
+            ApiConnection.addNewAddress(this, addressRequestBody.newAddressData)
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(getAddressResponseObserver(getString(R.string.address_added_text)))
+        }
     }
 
-    private fun getAddressResponseObserver(): Observer<BaseResponse> {
+    private fun getAddressResponseObserver(string:String): Observer<BaseResponse> {
         return object : CustomObserver<BaseResponse>(this) {
             override fun onNext(baseResponse: BaseResponse) {
                 super.onNext(baseResponse)
                 if (baseResponse.isSuccess) {
                     Toast.makeText(
                         this@NewAddressActivity,
-                        getString(R.string.address_added_text),
+                        string,
                         Toast.LENGTH_SHORT
                     ).show()
                     if (homePageResponse != null)

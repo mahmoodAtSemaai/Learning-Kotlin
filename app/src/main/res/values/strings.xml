@@ -126,7 +126,7 @@
     <string name="please_enter_your_phone_number_below_you_will_receive_a_link_to_reset_your_password_">Please enter your phone number below. You will receive a link to reset your password.</string>
     <string name="link_to_resend_login_password_send">Link Send</string>
     <string name="your_email">Your Email</string>
-    <string name="your_name">Your Name</string>
+    <string name="your_name">Your Name <font color='#FF0000'>*</font></string>
     <string name="e_g_john_doe">e.g. John Doe</string>
     <string name="login_successful_message">Login Successful</string>
     <string name="skip">Skip</string>
@@ -243,7 +243,7 @@
     <string name="shipping_address">Shipping Address</string>
     <string name="shipping_addresses">Shipping Addresses</string>
     <string name="additional_address">Additional Address</string>
-    <string name="telephone">Telephone</string>
+    <string name="telephone">Telephone <font color='#FF0000'>*</font></string>
     <!--<string name="company">Company</string>-->
     <string name="street">Street</string>
     <string name="city">City</string>
@@ -264,10 +264,12 @@
     <string name="missing_feilds_in_address_form">Missing Feilds in Address Form</string>
     <string name="address_added_text">Address added successfully</string>
     <string name="address_edit_text">Changes made to address saved</string>
-    <string name="address_now">Add now</string>
+    <string name="add_now">Add now</string>
     <string name="not_now">Not now</string>
     <string name="no_address_text">You don\'t have any saved address</string>
-    <string name="missing_address">Address missing</string>
+    <string name="shipping_address_missing">Shipping Address missing</string>
+    <string name="billing_address_missing">Billing Address missing</string>
+    <string name="billing_address_incomplete">Billing Address incomplete</string>
     <string name="indonesia">Indonesia</string>
     <string name="service_unavailablity_text">Thanks for your interest but we are not yet available in your area. We will get in touch with you when we start operations there.</string>
     <string name="service_unavailable">Service Unavailable</string>

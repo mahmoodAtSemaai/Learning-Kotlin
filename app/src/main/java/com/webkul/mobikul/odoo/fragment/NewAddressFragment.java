@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -86,11 +87,14 @@ public class NewAddressFragment extends BaseFragment {
     public ArrayList<String> villagesList = new ArrayList<>();
 
     public AddressRequestBody addressRequestBody = new AddressRequestBody();
+    public AddressFormResponse addressFormResponse = new AddressFormResponse(null);
 
     public boolean isEditMode = false;
     public String addressUrl = "";
     public String selectedStateId = "";
     public boolean isMissingDetails = false;
+    private int FIRST_TIME_SELECTION = 0;
+    private int FILL_UP_FEILDS = 1;
 
     private final int RESET_SPINNERS_FROM_STATE_UPTO_VILLAGE = 1;
     private final int RESET_SPINNERS_FROM_DISTRICT_UPTO_VILLAGE = 2;
@@ -98,7 +102,7 @@ public class NewAddressFragment extends BaseFragment {
     private final int RESET_SPINNERS_VILLAGE = 4;
 
     private final int COMPANY_ID = 1;
-    private final int UNSELECTED_STATE = -1;
+    private final int UNSELECTED_POSITION = -1;
 
     public static NewAddressFragment newInstance(@Nullable String url, String title, AddressType addressType) {
         Bundle args = new Bundle();
@@ -132,16 +136,17 @@ public class NewAddressFragment extends BaseFragment {
         fetchCountry();
         if (url == null) {
             resetSpinners(RESET_SPINNERS_FROM_STATE_UPTO_VILLAGE);
-            fetchStates(UNSELECTED_STATE);
+            fetchStates(UNSELECTED_POSITION);
         } else {
             isEditMode = true;
             addressUrl = url;
+            FIRST_TIME_SELECTION = FILL_UP_FEILDS;
             fetchCurrentAddress(url);
         }
 
         mBinding.saveAddressBtn.setOnClickListener(v -> {
             if(isMissingDetails)
-                showUnavailabilityAlertDialog(selectedStateId);
+                validateMandatoryFeilds(selectedStateId);
             else
                 validateAddressEditTextFeilds();
         });
@@ -153,21 +158,21 @@ public class NewAddressFragment extends BaseFragment {
             public void onNext(@androidx.annotation.NonNull AddressFormResponse addressFormResponse) {
                 super.onNext(addressFormResponse);
                 resetSpinners(RESET_SPINNERS_FROM_STATE_UPTO_VILLAGE);
-                fetchStates(Integer.parseInt(addressFormResponse.getStateId()));
                 setCurrentAddressDetails(addressFormResponse);
+                fetchStates(Integer.parseInt(addressFormResponse.getStateId()));
             }
         });
     }
 
     private void setCurrentAddressDetails(AddressFormResponse addressFormResponse) {
+        this.addressFormResponse = addressFormResponse;
         mBinding.nameEt.setText(addressFormResponse.getName());
         mBinding.telephoneEt.setText(addressFormResponse.getPhone());
         mBinding.streetEt.setText(addressFormResponse.getStreet());
     }
 
     private void validateAddressEditTextFeilds() {
-        if (isValid(mBinding.nameEt) && isValid(mBinding.streetEt) &&
-                isValid(mBinding.telephoneEt) && addressRequestBody.village_id != null) {
+        if (isValid(mBinding.nameEt)  && isValid(mBinding.telephoneEt) && addressRequestBody.village_id != null) {
             makeRequestBody();
         } else {
             SnackbarHelper.getSnackbar(getActivity(), getString(R.string.missing_feilds_in_address_form), Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
@@ -234,7 +239,7 @@ public class NewAddressFragment extends BaseFragment {
         mBinding.countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                addressRequestBody.setCountry_id(String.valueOf(COMPANY_ID));
+                addressRequestBody.setCompany_id(String.valueOf(COMPANY_ID));
             }
 
             @Override
@@ -277,13 +282,13 @@ public class NewAddressFragment extends BaseFragment {
                 super.onNext(stateListResponse);
                 int pos = refreshStatesData(stateListResponse,stateId);
                 setUpStateSpinner();
-                setSpinnerItemSelection(pos);
+                setStateSpinnerItemSelection(pos);
             }
         });
     }
 
-    private void setSpinnerItemSelection(int pos) {
-        if (pos != UNSELECTED_STATE)
+    private void setStateSpinnerItemSelection(int pos) {
+        if (pos != UNSELECTED_POSITION)
             mBinding.provinceSpinner.setSelection(pos);
     }
 
@@ -326,17 +331,17 @@ public class NewAddressFragment extends BaseFragment {
     }
 
     private void setSubRegionFieldsVisibility(boolean show) {
-        mBinding.districtContainer.setVisibility(show? View.VISIBLE : View.INVISIBLE);
-        mBinding.subDistrictContainer.setVisibility(show? View.VISIBLE : View.INVISIBLE);
-        mBinding.villageContainer.setVisibility(show? View.VISIBLE : View.INVISIBLE);
-        mBinding.postalCodeContainer.setVisibility(show? View.VISIBLE : View.INVISIBLE);
-        mBinding.streetContainer.setVisibility(show? View.VISIBLE : View.INVISIBLE);
+        mBinding.districtContainer.setVisibility(show? View.VISIBLE : View.GONE);
+        mBinding.subDistrictContainer.setVisibility(show? View.VISIBLE : View.GONE);
+        mBinding.villageContainer.setVisibility(show? View.VISIBLE : View.GONE);
+        mBinding.postalCodeContainer.setVisibility(show? View.VISIBLE : View.GONE);
+        mBinding.streetContainer.setVisibility(show? View.VISIBLE : View.GONE);
     }
 
     private int refreshStatesData(StateListResponse stateListResponse, int stateId) {
         statesList.clear();
         stateListHashmap.clear();
-        int pos = UNSELECTED_STATE;
+        int pos = UNSELECTED_POSITION;
         for (int i = 0; i < stateListResponse.data.size(); i++) {
             StateData stateData = stateListResponse.data.get(i);
             statesList.add(stateData.getName());
@@ -354,19 +359,31 @@ public class NewAddressFragment extends BaseFragment {
             @Override
             public void onNext(@androidx.annotation.NonNull DistrictListResponse districtListResponse) {
                 super.onNext(districtListResponse);
-                refreshDistrictData(districtListResponse);
+                int pos = refreshDistrictData(districtListResponse);
                 setUpDistrictSpinner();
+                setDistrictSpinnerSelection(pos);
             }
         });
     }
 
-    private void refreshDistrictData(DistrictListResponse districtListResponse) {
+    private void setDistrictSpinnerSelection(int pos) {
+        if(pos != UNSELECTED_POSITION)
+            mBinding.districtSpinner.setSelection(pos);
+    }
+
+    private int refreshDistrictData(DistrictListResponse districtListResponse) {
         districtsList.clear();
         districtListHashmap.clear();
-        for (DistrictData districtData : districtListResponse.data) {
+        int pos = UNSELECTED_POSITION;
+        for (int i = 0; i < districtListResponse.data.size(); i++) {
+            DistrictData districtData = districtListResponse.data.get(i);
             districtsList.add(districtData.getName());
             districtListHashmap.put(districtData.getName(), districtData);
+            if(isEditMode && !addressFormResponse.getDistrictId().isEmpty() && FIRST_TIME_SELECTION == FILL_UP_FEILDS &&
+                    addressFormResponse.getDistrictId().equals(String.valueOf(districtData.getId())))
+                pos = i;
         }
+        return pos;
     }
 
     private void setUpDistrictSpinner() {
@@ -398,7 +415,21 @@ public class NewAddressFragment extends BaseFragment {
         addressRequestBody.setDistrict_id(String.valueOf(districtListHashmap.get(selectedState).getId()));
     }
 
-    private void showUnavailabilityAlertDialog(String unavailable_state_id) {
+    private void validateMandatoryFeilds(String unavailable_state_id) {
+        boolean isFormFilledup = checkMandatoryFeilds();
+        if(isFormFilledup) {
+            showUnavailabilityAlertDialog(unavailable_state_id);
+        }
+        else{
+            showErrorMessage(getString(R.string.missing_feilds_in_address_form));
+        }
+    }
+
+    private void showErrorMessage(String errorMessage) {
+        SnackbarHelper.getSnackbar(getActivity(), errorMessage, Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
+    }
+
+    private void showUnavailabilityAlertDialog(String unavailable_state_id){
         new SweetAlertDialog(requireContext(), SweetAlertDialog.NORMAL_TYPE)
                 .setTitleText(getString(R.string.service_unavailable))
                 .setContentText(getString(R.string.service_unavailablity_text))
@@ -409,6 +440,10 @@ public class NewAddressFragment extends BaseFragment {
                 .show();
     }
 
+    private boolean checkMandatoryFeilds() {
+        return (isValid(mBinding.nameEt) && isValid(mBinding.telephoneEt));
+    }
+
     private void makeEmptyRequestBody(String unavailable_state_id) {
         addressRequestBody.setName(mBinding.nameEt.getText().toString());
         addressRequestBody.setPhone(mBinding.telephoneEt.getText().toString());
@@ -417,6 +452,8 @@ public class NewAddressFragment extends BaseFragment {
         addressRequestBody.setDistrict_id("");
         addressRequestBody.setSub_district_id("");
         addressRequestBody.setVillage_id("");
+        addressRequestBody.setZip("");
+        addressRequestBody.setStreet("");
         callApiToSaveAddress(addressRequestBody);
     }
 
@@ -426,19 +463,31 @@ public class NewAddressFragment extends BaseFragment {
             @Override
             public void onNext(@androidx.annotation.NonNull SubDistrictListResponse subDistrictListResponse) {
                 super.onNext(subDistrictListResponse);
-                refreshSubdistrictData(subDistrictListResponse);
+                int pos = refreshSubdistrictData(subDistrictListResponse);
                 setUpSubdistrictSpinner();
+                setSubDistrictSpinnerSelection(pos);
             }
         });
     }
 
-    private void refreshSubdistrictData(SubDistrictListResponse subDistrictListResponse) {
+    private void setSubDistrictSpinnerSelection(int pos) {
+        if(pos != UNSELECTED_POSITION)
+            mBinding.subDistrictSpinner.setSelection(pos);
+    }
+
+    private int refreshSubdistrictData(SubDistrictListResponse subDistrictListResponse) {
         subDistrictsList.clear();
         subDistrictListHashmap.clear();
-        for (SubDistrictData subDistrictData : subDistrictListResponse.data) {
+        int pos = UNSELECTED_POSITION;
+        for (int i = 0; i< subDistrictListResponse.data.size();i++) {
+            SubDistrictData subDistrictData = subDistrictListResponse.data.get(i);
             subDistrictsList.add(subDistrictData.getName());
             subDistrictListHashmap.put(subDistrictData.getName(), subDistrictData);
+            if(isEditMode && !addressFormResponse.getSub_district_id().isEmpty() && FIRST_TIME_SELECTION == FILL_UP_FEILDS &&
+                    addressFormResponse.getSub_district_id().equals(String.valueOf(subDistrictData.getId())))
+                pos = i;
         }
+        return pos;
     }
 
     private void setUpSubdistrictSpinner() {
@@ -467,7 +516,7 @@ public class NewAddressFragment extends BaseFragment {
         String selectedSubDistrict = subDistrictsList.get(position);
         resetSpinners(RESET_SPINNERS_VILLAGE);
         fetchVillage(subDistrictListHashmap.get(selectedSubDistrict).getId());
-        addressRequestBody.setVillage_id(String.valueOf(subDistrictListHashmap.get(selectedSubDistrict).getId()));
+        addressRequestBody.setSub_district_id(String.valueOf(subDistrictListHashmap.get(selectedSubDistrict).getId()));
     }
 
 
@@ -477,19 +526,31 @@ public class NewAddressFragment extends BaseFragment {
             @Override
             public void onNext(@androidx.annotation.NonNull VillageListResponse villageListResponse) {
                 super.onNext(villageListResponse);
-                refreshVillageData(villageListResponse);
+                int pos = refreshVillageData(villageListResponse);
                 setUpVillageSpinner(villageListResponse);
+                setVillageSpinnerSelection(pos);
             }
         });
     }
 
-    private void refreshVillageData(VillageListResponse villageListResponse) {
+    private void setVillageSpinnerSelection(int pos) {
+        if(pos != UNSELECTED_POSITION)
+            mBinding.villageSpinner.setSelection(pos);
+    }
+
+    private int refreshVillageData(VillageListResponse villageListResponse) {
         villagesList.clear();
         villageListHashmap.clear();
-        for (VillageData villageData : villageListResponse.data) {
+        int  pos = UNSELECTED_POSITION;
+        for (int  i = 0; i < villageListResponse.data.size();i++) {
+            VillageData villageData = villageListResponse.data.get(i);
             villagesList.add(villageData.getName());
             villageListHashmap.put(villageData.getName(), villageData);
+            if(isEditMode && !addressFormResponse.getVillage_id().isEmpty() && FIRST_TIME_SELECTION == FILL_UP_FEILDS &&
+                    addressFormResponse.getVillage_id().equals(String.valueOf(villageData.getId())))
+                pos = i;
         }
+        return pos;
     }
 
     private void setUpVillageSpinner(VillageListResponse villageListResponse) {
@@ -517,6 +578,8 @@ public class NewAddressFragment extends BaseFragment {
     private void onVillageSelected(VillageListResponse villageListResponse, int position) {
         VillageData villageData = villageListResponse.getData().get(position);
         addressRequestBody.setVillage_id(String.valueOf(villageData.getId()));
+        if(FIRST_TIME_SELECTION == FILL_UP_FEILDS)
+            FIRST_TIME_SELECTION++;
         if (villageData.getZip().equalsIgnoreCase(getString(R.string.false_))) {
             setUnavailableVillageData(villageData);
         } else {
