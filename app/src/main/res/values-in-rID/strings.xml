@@ -264,9 +264,9 @@
     <string name="missing_feilds_in_address_form">Bidang yang Hilang dalam Formulir Alamat</string>
     <string name="address_added_text">Alamat berhasil ditambahkan</string>
     <string name="address_edit_text">Perubahan yang dilakukan pada alamat disimpan</string>
-    <string name="add_now">tambahkan sekarang</string>
-    <string name="not_now">tidak sekarang</string>
-    <string name="no_address_text">Anda tidak memiliki alamat tersimpan</string>
+    <string name="add_now">Tambahkan Sekarang</string>
+    <string name="not_now">Nanti</string>
+    <string name="no_address_text">Anda tidak memiliki alamat yang tersimpan</string>
     <string name="shipping_address_missing">Alamat pengiriman tidak ada</string>
     <string name="billing_address_missing">Alamat penagihan tidak ada</string>
     <string name="billing_address_incomplete">Alamat penagihan tidak lengkap</string>

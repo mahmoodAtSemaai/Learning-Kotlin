@@ -64,6 +64,8 @@ class NewAddressActivity : AppCompatActivity() {
     var addressUrl : String = ""
     var STATE_SPINNER_INITIAL_SELECTION = -1
 
+    var alertDialog : SweetAlertDialog? = null
+
     private val RESET_SPINNERS_FROM_STATE_UPTO_VILLAGE = 1
     private val RESET_SPINNERS_FROM_DISTRICT_UPTO_VILLAGE = 2
     private val RESET_SPINNERS_FROM_SUB_DISTRICT_UPTO_VILLAGE = 3
@@ -306,14 +308,15 @@ class NewAddressActivity : AppCompatActivity() {
     }
 
     private fun showUnavailabilityAlertDialog(unavailableStateId: Any) {
-        SweetAlertDialog(this@NewAddressActivity, SweetAlertDialog.WARNING_TYPE)
+        alertDialog = SweetAlertDialog(this@NewAddressActivity, SweetAlertDialog.WARNING_TYPE)
             .setTitleText(getString(R.string.service_unavailable))
             .setContentText(getString(R.string.service_unavailablity_text))
             .setConfirmText(getString(R.string.confirm_small))
             .setConfirmClickListener { sweetAlertDialog: SweetAlertDialog ->
                 makeEmptyRequestBody(selectedStateId)
             }
-            .show()
+
+        alertDialog?.show()
     }
 
     private fun checkMandatoryFeilds(): Boolean {
@@ -621,10 +624,18 @@ class NewAddressActivity : AppCompatActivity() {
                     ).show()
                     if (homePageResponse != null)
                         IntentHelper.continueShopping(this@NewAddressActivity, homePageResponse);
-                    else
+                    else {
                         finish()
+                    }
+                    hideDialog()
                 }
             }
+        }
+    }
+
+    private fun hideDialog() {
+        if(alertDialog?.isShowing == true) {
+            alertDialog?.dismiss()
         }
     }
 

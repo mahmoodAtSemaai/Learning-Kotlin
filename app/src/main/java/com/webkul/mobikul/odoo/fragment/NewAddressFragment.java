@@ -104,6 +104,8 @@ public class NewAddressFragment extends BaseFragment {
     private final int COMPANY_ID = 1;
     private final int UNSELECTED_POSITION = -1;
 
+    private SweetAlertDialog alertDialog;
+
     public static NewAddressFragment newInstance(@Nullable String url, String title, AddressType addressType) {
         Bundle args = new Bundle();
         args.putString(BUNDLE_KEY_URL, url);
@@ -208,6 +210,13 @@ public class NewAddressFragment extends BaseFragment {
     private void showToastAndFinish(String address_edit_text) {
         Toast.makeText(requireContext(), address_edit_text , Toast.LENGTH_SHORT).show();
         requireActivity().finish();
+        hideDialog();
+    }
+
+    private void hideDialog() {
+        if(alertDialog != null && alertDialog.isShowing()) {
+            alertDialog.dismiss();
+        }
     }
 
     private boolean isValid(TextInputEditText etFeild) {
@@ -430,14 +439,14 @@ public class NewAddressFragment extends BaseFragment {
     }
 
     private void showUnavailabilityAlertDialog(String unavailable_state_id){
-        new SweetAlertDialog(requireContext(), SweetAlertDialog.NORMAL_TYPE)
+        alertDialog = new SweetAlertDialog(requireContext(), SweetAlertDialog.NORMAL_TYPE)
                 .setTitleText(getString(R.string.service_unavailable))
                 .setContentText(getString(R.string.service_unavailablity_text))
                 .setConfirmText(getString(R.string.confirm_small))
                 .setConfirmClickListener(sweetAlertDialog -> {
                     makeEmptyRequestBody(unavailable_state_id);
-                })
-                .show();
+                });
+        alertDialog.show();
     }
 
     private boolean checkMandatoryFeilds() {
