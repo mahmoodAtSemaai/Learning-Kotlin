@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -86,6 +85,12 @@ public class NewAddressFragment extends BaseFragment {
     public ArrayList<String> subDistrictsList = new ArrayList<>();
     public ArrayList<String> villagesList = new ArrayList<>();
 
+
+    public boolean statesAvailable = true;
+    public boolean districtsAvailable = true;
+    public boolean subDistrictsAvailable = true;
+    public boolean villagesAvailable = true;
+
     public AddressRequestBody addressRequestBody = new AddressRequestBody();
     public AddressFormResponse addressFormResponse = new AddressFormResponse(null);
 
@@ -138,6 +143,7 @@ public class NewAddressFragment extends BaseFragment {
         fetchCountry();
         if (url == null) {
             resetSpinners(RESET_SPINNERS_FROM_STATE_UPTO_VILLAGE);
+            statesAvailable = false;
             fetchStates(UNSELECTED_POSITION);
         } else {
             isEditMode = true;
@@ -147,11 +153,20 @@ public class NewAddressFragment extends BaseFragment {
         }
 
         mBinding.saveAddressBtn.setOnClickListener(v -> {
-            if(isMissingDetails)
-                validateMandatoryFeilds(selectedStateId);
-            else
-                validateAddressEditTextFeilds();
+            if(checkIfSubRegionsAreLoading()) {
+                if (isMissingDetails)
+                    validateMandatoryFeilds(selectedStateId);
+                else
+                    validateAddressEditTextFeilds();
+            }
+            else{
+                showShortToast(getString(R.string.missing_feilds_in_address_form));
+            }
         });
+    }
+
+    private boolean checkIfSubRegionsAreLoading() {
+        return statesAvailable && districtsAvailable && subDistrictsAvailable && villagesAvailable;
     }
 
     private void fetchCurrentAddress(String url) {
@@ -161,6 +176,7 @@ public class NewAddressFragment extends BaseFragment {
                 super.onNext(addressFormResponse);
                 resetSpinners(RESET_SPINNERS_FROM_STATE_UPTO_VILLAGE);
                 setCurrentAddressDetails(addressFormResponse);
+                statesAvailable = false;
                 fetchStates(Integer.parseInt(addressFormResponse.getStateId()));
             }
         });
@@ -208,7 +224,7 @@ public class NewAddressFragment extends BaseFragment {
     }
 
     private void showToastAndFinish(String address_edit_text) {
-        Toast.makeText(requireContext(), address_edit_text , Toast.LENGTH_SHORT).show();
+        showShortToast(address_edit_text);
         requireActivity().finish();
         hideDialog();
     }
@@ -302,6 +318,7 @@ public class NewAddressFragment extends BaseFragment {
     }
 
     private void setUpStateSpinner() {
+        statesAvailable = true;
         setUpStateSpinnerAdapter();
         setUpStateSpinnerAdapterListener();
     }
@@ -328,6 +345,7 @@ public class NewAddressFragment extends BaseFragment {
         selectedStateId = String.valueOf(stateListHashmap.get(selectedState).getId());
         if(stateListHashmap.get(selectedState).isAvailable()) {
             resetSpinners(RESET_SPINNERS_FROM_DISTRICT_UPTO_VILLAGE);
+            districtsAvailable = false;
             fetchDistricts(stateListHashmap.get(selectedState).getId());
             setSubRegionFieldsVisibility(true);
             isMissingDetails = false;
@@ -396,6 +414,7 @@ public class NewAddressFragment extends BaseFragment {
     }
 
     private void setUpDistrictSpinner() {
+        districtsAvailable = true;
         setUpDistrictSpinnerAdapter();
         setUpDistrictSpinnerAdapterListener();
     }
@@ -420,6 +439,7 @@ public class NewAddressFragment extends BaseFragment {
     private void onDistrictSelected(int position) {
         String selectedState = districtsList.get(position);
         resetSpinners(RESET_SPINNERS_FROM_SUB_DISTRICT_UPTO_VILLAGE);
+        subDistrictsAvailable = false;
         fetchSubDistricts(districtListHashmap.get(selectedState).getId());
         addressRequestBody.setDistrict_id(String.valueOf(districtListHashmap.get(selectedState).getId()));
     }
@@ -500,6 +520,7 @@ public class NewAddressFragment extends BaseFragment {
     }
 
     private void setUpSubdistrictSpinner() {
+        subDistrictsAvailable = true;
         setUpSubdistrictSpinnerAdapter();
         setUpSubdistrictSpinnerAdapterListener();
     }
@@ -524,6 +545,7 @@ public class NewAddressFragment extends BaseFragment {
     private void onSubDistrictSelected(int position) {
         String selectedSubDistrict = subDistrictsList.get(position);
         resetSpinners(RESET_SPINNERS_VILLAGE);
+        villagesAvailable = false;
         fetchVillage(subDistrictListHashmap.get(selectedSubDistrict).getId());
         addressRequestBody.setSub_district_id(String.valueOf(subDistrictListHashmap.get(selectedSubDistrict).getId()));
     }
@@ -563,6 +585,7 @@ public class NewAddressFragment extends BaseFragment {
     }
 
     private void setUpVillageSpinner(VillageListResponse villageListResponse) {
+        villagesAvailable = true;
         setUpVillageSpinnerAdapter();
         setUpVillageSpinnerAdapterListener(villageListResponse);
     }
@@ -605,7 +628,7 @@ public class NewAddressFragment extends BaseFragment {
     private void setUnavailableVillageData(VillageData villageData) {
         addressRequestBody.setVillage_id(String.valueOf(villageData.getId()));
         setUnserviceableAreaDetails();
-        Toast.makeText(getContext(), getString(R.string.service_not_availabe_text), Toast.LENGTH_SHORT).show();
+        showShortToast(getString(R.string.service_not_availabe_text));
         mBinding.villageCodeEt.setText("");
         addressRequestBody.setVillage_id("");
     }
@@ -668,9 +691,13 @@ public class NewAddressFragment extends BaseFragment {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 showMapFragment();
             } else {
-                Toast.makeText(getContext(), getContext().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
+                showShortToast(getString(R.string.permission_denied));
             }
         }
+    }
+
+    private void showShortToast(String string) {
+        Toast.makeText(getContext(), string, Toast.LENGTH_SHORT).show();
     }
 
     private void showMapFragment() {

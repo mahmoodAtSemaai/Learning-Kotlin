@@ -303,14 +303,14 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
     private void checkForStateAvailablity(StateListResponse stateListResponse, AddressFormResponse addressFormResponse, AddressData addressData) {
         for (StateData stateData : stateListResponse.getResult()) {
-            if (stateData.getId() == Integer.parseInt(addressFormResponse.getStateId()) &&
-                    stateData.isAvailable() && areFeildsNullOrEmpty(addressFormResponse)) {
-                showPromptToCompleteBillingAddress(addressFormResponse,addressData);
+            if (areFeildsNullOrEmpty(addressFormResponse) && stateData.isAvailable() &&
+                    stateData.getId() == Integer.parseInt(addressFormResponse.getStateId())) {
+                showPromptToCompleteBillingAddress(addressFormResponse, addressData);
             }
         }
     }
 
-    private void showPromptToCompleteBillingAddress(AddressFormResponse addressFormResponse,AddressData addressData) {
+    private void showPromptToCompleteBillingAddress(AddressFormResponse addressFormResponse, AddressData addressData) {
         new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
                 .setTitleText(getString(R.string.billing_address_incomplete))
                 .setContentText(getString(R.string.no_address_text))
@@ -325,7 +325,8 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     private boolean areFeildsNullOrEmpty(AddressFormResponse addressFormResponse) {
         return (addressFormResponse.getDistrictId() == null || addressFormResponse.getDistrictId().isEmpty() ||
                 addressFormResponse.getSub_district_id() == null || addressFormResponse.getSub_district_id().isEmpty() ||
-                addressFormResponse.getVillage_id() == null || addressFormResponse.getVillage_id().isEmpty()
+                addressFormResponse.getVillage_id() == null || addressFormResponse.getVillage_id().isEmpty() ||
+                addressFormResponse.getStateId() == null || addressFormResponse.getStateId().isEmpty()
         );
     }
 
@@ -333,7 +334,6 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         startActivity(new Intent(requireActivity(), NewAddressActivity.class)
                 .putExtra(BUNDLE_KEY_URL, addressData.getUrl()));
     }
-
 
 
     private void showAlertDialog(String title, String message) {
@@ -353,7 +353,6 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     private void clearCustomerDataFromSharedPref() {
         AppSharedPref.clearCustomerData(getContext());
     }
-
 
 
 }
