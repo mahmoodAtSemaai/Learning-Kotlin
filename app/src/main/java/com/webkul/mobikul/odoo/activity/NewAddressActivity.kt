@@ -54,6 +54,12 @@ class NewAddressActivity : AppCompatActivity() {
     var subDistrictsList = ArrayList<String>()
     var villagesList = ArrayList<String>()
 
+
+    var statesAvailable = true
+    var districtsAvailable = true
+    var subDistrictsAvailable = true
+    var villagesAvailable = true
+
     var addressRequestBody = AddressRequestBody()
 
     var homePageResponse: HomePageResponse? = null
@@ -82,11 +88,24 @@ class NewAddressActivity : AppCompatActivity() {
         fetchCountry()
 
         mBinding!!.saveAddressBtn.setOnClickListener {
-            if (isMissingDetails)
-                validateMandatoryFeilds(selectedStateId)
-            else
-                validateAddressEditTextFeilds()
+            if(checkIfSubRegionsAreLoading()) {
+                if (isMissingDetails)
+                    validateMandatoryFeilds(selectedStateId)
+                else
+                    validateAddressEditTextFeilds()
+            }
+            else{
+                showShortToast(getString(R.string.missing_feilds_in_address_form))
+            }
         }
+    }
+
+    private fun showShortToast(string: String) {
+        Toast.makeText(this, string, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun checkIfSubRegionsAreLoading(): Boolean {
+        return statesAvailable && districtsAvailable && subDistrictsAvailable && villagesAvailable
     }
 
     private fun setBundleData() {
@@ -124,6 +143,7 @@ class NewAddressActivity : AppCompatActivity() {
                 resetSpinners(RESET_SPINNERS_FROM_STATE_UPTO_VILLAGE)
                 val addressFormResponse = baseResponse as AddressFormResponse
                 setDataOnFeilds(addressFormResponse)
+                statesAvailable = false
                 fetchStates(addressFormResponse.stateId.toInt())
             }
         }
@@ -235,6 +255,7 @@ class NewAddressActivity : AppCompatActivity() {
     }
 
     private fun setUpStateSpinner() {
+        statesAvailable = true
         setUpStateSpinnerAdapter()
         setUpStateSpinnerAdapterListener()
     }
@@ -269,6 +290,7 @@ class NewAddressActivity : AppCompatActivity() {
         selectedStateId = stateListHashmap[selectedState]!!.id.toString()
         isMissingDetails = if (stateListHashmap[selectedState]!!.isAvailable) {
             resetSpinners(RESET_SPINNERS_FROM_DISTRICT_UPTO_VILLAGE)
+            districtsAvailable = false
             fetchDistricts(stateListHashmap[selectedState]!!.id)
             setSubRegionFieldsVisibility(true)
             false
@@ -372,6 +394,7 @@ class NewAddressActivity : AppCompatActivity() {
     }
 
     private fun setUpDistrictSpinner() {
+        districtsAvailable = true
         setUpDistrictSpinnerAdapter()
         setUpDistrictSpinnerAdapterListener()
     }
@@ -404,6 +427,7 @@ class NewAddressActivity : AppCompatActivity() {
     private fun onDistrictSelected(position: Int) {
         val selectedState = districtsList[position]
         resetSpinners(RESET_SPINNERS_FROM_SUB_DISTRICT_UPTO_VILLAGE)
+        subDistrictsAvailable = false
         districtListHashmap[selectedState]?.let { fetchSubDistricts(it.id) }
         addressRequestBody.setDistrict_id(districtListHashmap[selectedState]?.id.toString())
     }
@@ -431,6 +455,7 @@ class NewAddressActivity : AppCompatActivity() {
     }
 
     private fun setUpSubdistrictSpinner() {
+        subDistrictsAvailable = true
         setUpSubdistrictSpinnerAdapter()
         setUpSubdistrictSpinnerAdapterListener()
     }
@@ -463,6 +488,7 @@ class NewAddressActivity : AppCompatActivity() {
     private fun onSubDistrictSelected(position: Int) {
         val selectedSubDistrict = subDistrictsList[position]
         resetSpinners(RESET_SPINNERS_VILLAGE)
+        villagesAvailable = false
         subDistrictListHashmap[selectedSubDistrict]?.let { fetchVillage(it.id) }
         addressRequestBody.setSub_district_id(subDistrictListHashmap[selectedSubDistrict]?.id.toString())
     }
@@ -491,6 +517,7 @@ class NewAddressActivity : AppCompatActivity() {
     }
 
     private fun setUpVillageSpinner(villageListResponse: VillageListResponse) {
+        villagesAvailable = true
         setUpVillageSpinnerAdapter()
         setUpVillageSpinnerAdapterListener(villageListResponse)
     }
@@ -540,11 +567,7 @@ class NewAddressActivity : AppCompatActivity() {
     private fun setUnavailableVillageData(villageData: VillageData) {
         addressRequestBody.setVillage_id(villageData.id.toString())
         setUnserviceableAreaDetails()
-        Toast.makeText(
-            this,
-            getString(R.string.service_not_availabe_text),
-            Toast.LENGTH_SHORT
-        ).show()
+        showShortToast(getString(R.string.service_not_availabe_text))
         mBinding!!.villageCodeEt.text = ""
         addressRequestBody.setVillage_id("")
     }
@@ -617,11 +640,7 @@ class NewAddressActivity : AppCompatActivity() {
             override fun onNext(baseResponse: BaseResponse) {
                 super.onNext(baseResponse)
                 if (baseResponse.isSuccess) {
-                    Toast.makeText(
-                        this@NewAddressActivity,
-                        string,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showShortToast(string)
                     if (homePageResponse != null)
                         IntentHelper.continueShopping(this@NewAddressActivity, homePageResponse);
                     else {
