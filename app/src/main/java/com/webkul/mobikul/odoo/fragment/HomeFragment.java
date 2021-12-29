@@ -303,11 +303,15 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
     private void checkForStateAvailablity(StateListResponse stateListResponse, AddressFormResponse addressFormResponse, AddressData addressData) {
         for (StateData stateData : stateListResponse.getResult()) {
-            if (areFeildsNullOrEmpty(addressFormResponse) && stateData.isAvailable() &&
-                    stateData.getId() == Integer.parseInt(addressFormResponse.getStateId())) {
+            if (stateData.isAvailable() && (String.valueOf(stateData.getId()).equals(addressFormResponse.getStateId()) || isStateDataMissing(addressFormResponse)) &&
+                    areFeildsNullOrEmpty(addressFormResponse)) {
                 showPromptToCompleteBillingAddress(addressFormResponse, addressData);
             }
         }
+    }
+
+    private boolean isStateDataMissing(AddressFormResponse addressFormResponse) {
+        return (addressFormResponse.getStateId() == null || addressFormResponse.getStateId().isEmpty());
     }
 
     private void showPromptToCompleteBillingAddress(AddressFormResponse addressFormResponse, AddressData addressData) {
@@ -325,8 +329,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     private boolean areFeildsNullOrEmpty(AddressFormResponse addressFormResponse) {
         return (addressFormResponse.getDistrictId() == null || addressFormResponse.getDistrictId().isEmpty() ||
                 addressFormResponse.getSub_district_id() == null || addressFormResponse.getSub_district_id().isEmpty() ||
-                addressFormResponse.getVillage_id() == null || addressFormResponse.getVillage_id().isEmpty() ||
-                addressFormResponse.getStateId() == null || addressFormResponse.getStateId().isEmpty()
+                addressFormResponse.getVillage_id() == null || addressFormResponse.getVillage_id().isEmpty()
         );
     }
 
