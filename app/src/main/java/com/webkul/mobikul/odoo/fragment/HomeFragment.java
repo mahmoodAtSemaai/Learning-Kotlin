@@ -303,14 +303,18 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
     private void checkForStateAvailablity(StateListResponse stateListResponse, AddressFormResponse addressFormResponse, AddressData addressData) {
         for (StateData stateData : stateListResponse.getResult()) {
-            if (stateData.getId() == Integer.parseInt(addressFormResponse.getStateId()) &&
-                    stateData.isAvailable() && areFeildsNullOrEmpty(addressFormResponse)) {
-                showPromptToCompleteBillingAddress(addressFormResponse,addressData);
+            if (stateData.isAvailable() && (String.valueOf(stateData.getId()).equals(addressFormResponse.getStateId()) || isStateDataMissing(addressFormResponse)) &&
+                    areFeildsNullOrEmpty(addressFormResponse)) {
+                showPromptToCompleteBillingAddress(addressFormResponse, addressData);
             }
         }
     }
 
-    private void showPromptToCompleteBillingAddress(AddressFormResponse addressFormResponse,AddressData addressData) {
+    private boolean isStateDataMissing(AddressFormResponse addressFormResponse) {
+        return (addressFormResponse.getStateId() == null || addressFormResponse.getStateId().isEmpty());
+    }
+
+    private void showPromptToCompleteBillingAddress(AddressFormResponse addressFormResponse, AddressData addressData) {
         new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
                 .setTitleText(getString(R.string.billing_address_incomplete))
                 .setContentText(getString(R.string.no_address_text))
@@ -335,7 +339,6 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     }
 
 
-
     private void showAlertDialog(String title, String message) {
         AlertDialogHelper.showDefaultWarningDialogWithDismissListener(getContext(), title, message, sweetAlertDialog -> {
             sweetAlertDialog.dismiss();
@@ -353,7 +356,6 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     private void clearCustomerDataFromSharedPref() {
         AppSharedPref.clearCustomerData(getContext());
     }
-
 
 
 }
