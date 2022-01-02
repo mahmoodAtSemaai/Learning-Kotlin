@@ -46,8 +46,8 @@ android {
         applicationId "com.semaai.toko"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 3
-        versionName "1.1.0"
+        versionCode 4
+        versionName "1.1.1"
         multiDexEnabled true
         setProperty("archivesBaseName", "${applicationId}-v${versionName}(${versionCode})")
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
