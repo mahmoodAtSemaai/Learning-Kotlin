@@ -100,7 +100,7 @@ public class LoginFragmentHandler {
         }
 
         intent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intents.toArray(new Parcelable[intents.size()]));
-        mContext.startActivity(intent);
+        ((Activity)mContext).startActivity(intent);
     }
 
     public void signIn() {
