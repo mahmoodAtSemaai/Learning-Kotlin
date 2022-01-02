@@ -64,7 +64,7 @@ public class LoginFragment extends BaseFragment {
         loginRequestData.setUsername(BuildConfig.demo_username);
         loginRequestData.setPassword(BuildConfig.demo_password);
         mBinding.setData(loginRequestData);
-        mBinding.setHandler(new LoginFragmentHandler(getContext(), mBinding.getData()));
+        mBinding.setHandler(new LoginFragmentHandler(requireActivity(), mBinding.getData()));
         mBinding.setActivityHandler(((SignInSignUpActivity) getActivity()).mBinding.getHandler());
     }
 
