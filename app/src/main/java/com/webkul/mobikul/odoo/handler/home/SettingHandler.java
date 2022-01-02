@@ -1,5 +1,6 @@
 package com.webkul.mobikul.odoo.handler.home;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -68,7 +69,7 @@ public class SettingHandler {
         }
 
         intent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intents.toArray(new Parcelable[intents.size()]));
-        context.startActivity(intent);
+        ((Activity)context).startActivity(intent);
     }
 
     public void onClickThemeIcon() {

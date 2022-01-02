@@ -144,16 +144,24 @@ class NewAddressActivity : AppCompatActivity() {
                 val addressFormResponse = baseResponse as AddressFormResponse
                 setDataOnFeilds(addressFormResponse)
                 statesAvailable = false
-                fetchStates(addressFormResponse.stateId.toInt())
+                checkIfStateIdMissing(addressFormResponse)
             }
         }
+    }
+
+    private fun checkIfStateIdMissing(addressFormResponse: AddressFormResponse) {
+        if(!addressFormResponse.stateId.isNullOrEmpty())
+            fetchStates(addressFormResponse.stateId.toInt())
+        else
+            fetchStates(UNSELECTED_POSITION)
     }
 
     private fun setDataOnFeilds(addressFormResponse: AddressFormResponse) {
         mBinding?.apply {
             nameEt.setText(addressFormResponse.name)
             telephoneEt.setText(addressFormResponse.phone)
-            STATE_SPINNER_INITIAL_SELECTION = addressFormResponse.stateId.toInt()
+            if(!addressFormResponse.stateId.isNullOrEmpty())
+                STATE_SPINNER_INITIAL_SELECTION = addressFormResponse.stateId.toInt()
         }
     }
 
