@@ -171,7 +171,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
                 }
         );
         /*LEFT CATEGORIES DRAWER*/
-        ((HomeActivity) getActivity()).mBinding.categoryRv.setAdapter(new NavDrawerCategoryStartRvAdapter(getContext(), homePageResponse.getCategories()));
+        ((HomeActivity) getActivity()).mBinding.categoryRv.setAdapter(new NavDrawerCategoryStartRvAdapter(getContext(), homePageResponse.getCategories().get(0).getChildren()));
         if (homePageResponse.getLanguageMap().size() > 0) {
             ((HomeActivity) getActivity()).mBinding.setLanguageData(homePageResponse.getLanguageMap());
         } else {
