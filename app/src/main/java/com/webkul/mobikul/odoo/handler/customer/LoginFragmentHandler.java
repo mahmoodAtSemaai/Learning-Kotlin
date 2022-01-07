@@ -124,7 +124,7 @@ public class LoginFragmentHandler {
                         //#*#*#*#* For Fingerprint Login Permission *#*#*#*#
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             FingerPrintLoginHelper fingerPrintHelper = new FingerPrintLoginHelper();
-                            fingerPrintHelper.askForFingerprintLogin(mContext, loginResponse, mData, null, null);
+                            fingerPrintHelper.askForFingerprintLogin(mContext, loginResponse, mData, null, null,null);
                         } else {
                             goToHomePage(mContext, loginResponse, mData, null, null);
                         }

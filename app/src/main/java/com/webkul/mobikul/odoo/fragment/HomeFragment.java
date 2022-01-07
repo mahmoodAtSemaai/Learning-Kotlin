@@ -22,7 +22,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
 import com.webkul.mobikul.odoo.activity.HomeActivity;
-import com.webkul.mobikul.odoo.activity.NewAddressActivity;
+import com.webkul.mobikul.odoo.activity.UpdateAddressActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.adapter.home.FeaturedCategoriesRvAdapter;
 import com.webkul.mobikul.odoo.adapter.home.HomeBannerAdapter;
@@ -269,7 +269,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     }
 
     private void redirectToAddNewBillingAddress() {
-        startActivity(new Intent(requireActivity(), NewAddressActivity.class));
+        startActivity(new Intent(requireActivity(), UpdateAddressActivity.class));
     }
 
     private void fetchBillingAddressData(AddressData addressData) {
@@ -334,7 +334,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     }
 
     private void redirectToEditExistingBillingAddress(AddressData addressData) {
-        startActivity(new Intent(requireActivity(), NewAddressActivity.class)
+        startActivity(new Intent(requireActivity(), UpdateAddressActivity.class)
                 .putExtra(BUNDLE_KEY_URL, addressData.getUrl()));
     }
 

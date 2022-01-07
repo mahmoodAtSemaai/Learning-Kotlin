@@ -37,7 +37,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.*
 
-class NewAddressActivity : AppCompatActivity() {
+class UpdateAddressActivity : AppCompatActivity() {
 
     private val TAG = "NewAddressFragment"
     private val MAP_PIN_LOCATION_REQUEST_CODE = 103
@@ -338,7 +338,7 @@ class NewAddressActivity : AppCompatActivity() {
     }
 
     private fun showUnavailabilityAlertDialog(unavailableStateId: Any) {
-        alertDialog = SweetAlertDialog(this@NewAddressActivity, SweetAlertDialog.WARNING_TYPE)
+        alertDialog = SweetAlertDialog(this@UpdateAddressActivity, SweetAlertDialog.WARNING_TYPE)
             .setTitleText(getString(R.string.service_unavailable))
             .setContentText(getString(R.string.service_unavailablity_text))
             .setConfirmText(getString(R.string.confirm_small))
@@ -650,7 +650,7 @@ class NewAddressActivity : AppCompatActivity() {
                 if (baseResponse.isSuccess) {
                     showShortToast(string)
                     if (homePageResponse != null)
-                        IntentHelper.continueShopping(this@NewAddressActivity, homePageResponse);
+                        IntentHelper.continueShopping(this@UpdateAddressActivity, homePageResponse);
                     else {
                         finish()
                     }

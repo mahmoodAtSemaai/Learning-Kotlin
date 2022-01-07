@@ -40,7 +40,7 @@
         android:vmSafeMode="true"
         tools:replace="icon,allowBackup">
         <activity
-            android:name=".activity.NewAddressActivity"
+            android:name=".activity.UpdateAddressActivity"
             android:exported="true" />
         <activity
             android:name=".activity.SettingsActivity"
