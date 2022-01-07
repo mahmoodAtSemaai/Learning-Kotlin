@@ -127,10 +127,14 @@ android {
 
     buildTypes {
         debug {
+            buildConfigField "String", "MIXPANEL_TOKEN", "\"${project.MIXPANEL_DEV}\""
+
             debuggable true
             minifyEnabled false
         }
         release {
+            buildConfigField "String", "MIXPANEL_TOKEN", "\"${project.MIXPANEL_PROD}\""
+
             if (project.IS_MARKETPLACE.equalsIgnoreCase("false")) {
                 shrinkResources true
                 minifyEnabled true
@@ -273,6 +277,7 @@ dependencies {
 
     api 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
+    implementation "com.mixpanel.android:mixpanel-android:5.+"
 
 }
 if (project.IS_MARKETPLACE.equalsIgnoreCase("false"))

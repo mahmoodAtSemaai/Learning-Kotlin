@@ -1,7 +1,6 @@
 package com.webkul.mobikul.odoo.helper;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
@@ -15,12 +14,12 @@ import com.bumptech.glide.request.target.ViewTarget;
 //import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.Stetho;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.twitter.sdk.android.core.Twitter;
 import com.webkul.mobikul.helpers.AbandonedCartAlarmHelper;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.ProductActivity;
 import com.webkul.mobikul.odoo.adapter.customer.SignUpHandler;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.databinding.FragmentSignUpBinding;
 import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse;
 import com.webkul.mobikul.odoo.model.customer.signup.SignUpData;
@@ -41,6 +40,7 @@ public class OdooApplication extends MultiDexApplication implements LifecycleObs
 //        FirebaseCrashlytics crashlytics =
         FirebaseApp.initializeApp(this);
         Twitter.initialize(this);
+        AnalyticsImpl.INSTANCE.initialize(this);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         Stetho.initializeWithDefaults(this);
         ViewTarget.setTagId(R.id.glide_tag);
@@ -53,9 +53,9 @@ public class OdooApplication extends MultiDexApplication implements LifecycleObs
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-     void onAppBackgrounded() {
+    void onAppBackgrounded() {
 
-        if (AppSharedPref.getCartCount(this,0) != 0) {
+        if (AppSharedPref.getCartCount(this, 0) != 0) {
             AbandonedCartAlarmHelper.scheduleAlarm(this);
         }
     }
@@ -94,7 +94,7 @@ public class OdooApplication extends MultiDexApplication implements LifecycleObs
     }
 
 
-    public SignUpHandler getSignUpHandler(Context context, SignUpData data, FragmentSignUpBinding mBinding){
-        return  new SignUpHandler(context,data,mBinding);
+    public SignUpHandler getSignUpHandler(Context context, SignUpData data, FragmentSignUpBinding mBinding) {
+        return new SignUpHandler(context, data, mBinding);
     }
 }
