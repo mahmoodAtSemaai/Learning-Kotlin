@@ -23,13 +23,16 @@ import com.webkul.mobikul.odoo.helper.FingerPrintLoginHelper;
 import com.webkul.mobikul.odoo.helper.FragmentHelper;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.SnackbarHelper;
+import com.webkul.mobikul.odoo.model.customer.address.MyAddressesResponse;
 import com.webkul.mobikul.odoo.model.customer.signup.SignUpData;
 import com.webkul.mobikul.odoo.model.customer.signup.SignUpResponse;
 import com.webkul.mobikul.odoo.model.customer.signup.TermAndConditionResponse;
 import com.webkul.mobikul.odoo.model.request.AuthenticationRequest;
+import com.webkul.mobikul.odoo.model.request.BaseLazyRequest;
 import com.webkul.mobikul.odoo.model.request.SignUpRequest;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -103,25 +106,22 @@ public class SignUpHandler {
 
         AppSharedPref.setCustomerLoginBase64Str(mContext, Base64.encodeToString(new AuthenticationRequest(this.mData.getPhoneNumber(), this.mData.getPassword()).toString().getBytes(), Base64.NO_WRAP));
 
-        ApiConnection.signUp(mContext, new SignUpRequest(mContext, this.mData.getName(), this.mData.getPhoneNumber(), this.mData.getPassword(), false, isSeller, this.mData.getProfileURL(), countryId)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<SignUpResponse>(mContext) {
+        callSignUpApi(mContext, new SignUpRequest(mContext, this.mData.getName(), this.mData.getPhoneNumber(), this.mData.getPassword(), false, isSeller, this.mData.getProfileURL(), countryId));
+    }
+
+    private void callSignUpApi(Context mContext, SignUpRequest signUpRequest) {
+        ApiConnection.signUp(mContext, signUpRequest).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(getSignUpResponseObserver(mContext));
+
+    }
+
+    private Observer<? super SignUpResponse> getSignUpResponseObserver(Context mContext) {
+        return new CustomObserver<SignUpResponse>(mContext) {
             @Override
             public void onNext(@NonNull SignUpResponse signUpResponse) {
                 super.onNext(signUpResponse);
                 if (signUpResponse.isSuccess()) {
-                    new SweetAlertDialog(mContext, SweetAlertDialog.SUCCESS_TYPE)
-                            .setTitleText(mContext.getString(R.string.account_created_successfully))
-                            .setContentText(signUpResponse.getMessage())
-                            .setConfirmText(mContext.getString(R.string.continue_shopping))
-                            .setConfirmClickListener(sweetAlertDialog -> {
-                                sweetAlertDialog.dismiss();
-                                FingerPrintLoginHelper fingerPrintLoginHelper = new FingerPrintLoginHelper();
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                    fingerPrintLoginHelper.askForFingerprintLogin(mContext, null, null, signUpResponse, SignUpHandler.this.mData);
-                                } else {
-                                    AppSharedPref.setIsAllowedFingerprintLogin(mContext, false);
-                                    fingerPrintLoginHelper.goToHomePage(mContext, null, null, signUpResponse, SignUpHandler.this.mData);
-                                }
-                            }).show();
+                    fetchBillingAddress(mContext,signUpResponse);
                 } else {
                     AppSharedPref.setCustomerLoginBase64Str(mContext, "");
                     SnackbarHelper.getSnackbar((Activity) mContext, signUpResponse.getMessage(), Snackbar.LENGTH_LONG, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
@@ -132,7 +132,39 @@ public class SignUpHandler {
             public void onComplete() {
 
             }
-        });
+        };
+    }
+
+    private void fetchBillingAddress(Context mContext, SignUpResponse signUpResponse) {
+        ApiConnection.getAddressBookData(mContext, new BaseLazyRequest(0, 1)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(getAddressResponseObserver(mContext,signUpResponse));
+    }
+
+    private Observer<? super MyAddressesResponse> getAddressResponseObserver(Context mContext, SignUpResponse signUpResponse) {
+        return new CustomObserver<MyAddressesResponse>(mContext) {
+            @Override
+            public void onNext(@NonNull MyAddressesResponse myAddressesResponse) {
+                super.onNext(myAddressesResponse);
+                String billingAddressUrl = myAddressesResponse.getAddresses().get(0).getUrl();
+                showAlertDialogForFingerPrintVerification(mContext,signUpResponse,billingAddressUrl);
+            }
+        };
+    }
+
+    private void showAlertDialogForFingerPrintVerification(Context mContext, SignUpResponse signUpResponse, String billingAddressUrl) {
+        new SweetAlertDialog(mContext, SweetAlertDialog.SUCCESS_TYPE)
+                .setTitleText(mContext.getString(R.string.account_created_successfully))
+                .setContentText(signUpResponse.getMessage())
+                .setConfirmText(mContext.getString(R.string.continue_shopping))
+                .setConfirmClickListener(sweetAlertDialog -> {
+                    sweetAlertDialog.dismiss();
+                    FingerPrintLoginHelper fingerPrintLoginHelper = new FingerPrintLoginHelper();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        fingerPrintLoginHelper.askForFingerprintLogin(mContext, null, null, signUpResponse, SignUpHandler.this.mData,billingAddressUrl);
+                    } else {
+                        AppSharedPref.setIsAllowedFingerprintLogin(mContext, false);
+                        fingerPrintLoginHelper.goToHomePage(mContext, null, null, signUpResponse, SignUpHandler.this.mData,billingAddressUrl);
+                    }
+                }).show();
     }
 
     public void viewTermNCond() {

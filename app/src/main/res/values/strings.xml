@@ -273,6 +273,7 @@
     <string name="indonesia">Indonesia</string>
     <string name="service_unavailablity_text">Thanks for your interest but we are not yet available in your area. We will get in touch with you when we start operations there.</string>
     <string name="service_unavailable">Service Unavailable</string>
+    <string name="enter_address">Please enter your Address</string>
     <!---->
     <!---->
     <!-- DASHBOARD-->
