@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import com.muddzdev.styleabletoastlibrary.StyleableToast;
 import com.webkul.mobikul.odoo.R;
-import com.webkul.mobikul.odoo.activity.NewAddressActivity;
+import com.webkul.mobikul.odoo.activity.UpdateAddressActivity;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.handler.fingerprint.FingerprintHandler;
 import com.webkul.mobikul.odoo.model.customer.signin.LoginRequestData;
@@ -52,6 +52,7 @@ import static android.content.Context.KEYGUARD_SERVICE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_NAME;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PHONE_NUMBER;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_URL;
 
 public class FingerPrintLoginHelper {
 
@@ -62,7 +63,7 @@ public class FingerPrintLoginHelper {
     private Cipher cipher;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void askForFingerprintLogin(Context context, LoginResponse loginResponse, LoginRequestData lData, SignUpResponse signUpResponse, SignUpData sData) {
+    public void askForFingerprintLogin(Context context, LoginResponse loginResponse, LoginRequestData lData, SignUpResponse signUpResponse, SignUpData sData, String billingAddressurl) {
 
         // Initializing both Android Keyguard Manager and Fingerprint Manager
         KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(KEYGUARD_SERVICE);
@@ -103,7 +104,7 @@ public class FingerPrintLoginHelper {
                                     AppSharedPref.setCustomerLoginBase64StrForFingerprint(context, AppSharedPref.getCustomerLoginBase64Str(context));
                                 }
 
-                                goToHomePage(context, loginResponse, lData, signUpResponse, sData);
+                                goToHomePage(context, loginResponse, lData, signUpResponse, sData, billingAddressurl);
                             }
                         });
                         sweetAlertDialog1.setCancelable(false);
@@ -117,11 +118,11 @@ public class FingerPrintLoginHelper {
                         } else {
                             StyleableToast.makeText(context, context.getString(R.string.fingerprint_error), Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
                             AppSharedPref.setIsAllowedFingerprintLogin(context, false);
-                            goToHomePage(context, loginResponse, lData, signUpResponse, sData);
+                            goToHomePage(context, loginResponse, lData, signUpResponse, sData, billingAddressurl);
                         }
                     } else {
                         AppSharedPref.setIsAllowedFingerprintLogin(context, false);
-                        goToHomePage(context, loginResponse, lData, signUpResponse, sData);
+                        goToHomePage(context, loginResponse, lData, signUpResponse, sData, billingAddressurl);
                     }
 
                 }
@@ -131,7 +132,7 @@ public class FingerPrintLoginHelper {
                 public void onClick(SweetAlertDialog sweetAlertDialog) {
                     sweetAlertDialog.dismissWithAnimation();
                     AppSharedPref.setIsAllowedFingerprintLogin(context, false);
-                    goToHomePage(context, loginResponse, lData, signUpResponse, sData);
+                    goToHomePage(context, loginResponse, lData, signUpResponse, sData, billingAddressurl);
                 }
             });
             sweetAlertDialog.setCancelable(false);
@@ -146,7 +147,7 @@ public class FingerPrintLoginHelper {
             linearLayout.addView(imageView, index - 1);
         } else {
             AppSharedPref.setIsAllowedFingerprintLogin(context, false);
-            goToHomePage(context, loginResponse, lData, signUpResponse, sData);
+            goToHomePage(context, loginResponse, lData, signUpResponse, sData, billingAddressurl);
         }
 
     }
@@ -185,7 +186,7 @@ public class FingerPrintLoginHelper {
         return false;
     }
 
-    public void goToHomePage(Context mContext, LoginResponse loginResponse, LoginRequestData lData, SignUpResponse signUpResponse, SignUpData sData) {
+    public void goToHomePage(Context mContext, LoginResponse loginResponse, LoginRequestData lData, SignUpResponse signUpResponse, SignUpData sData, String billingAddressUrl) {
         if (loginResponse != null && lData != null) {
             FirebaseAnalyticsImpl.logLoginEvent(mContext, loginResponse.getCustomerId(), AppSharedPref.getCustomerName(mContext));
             loginResponse.updateSharedPref(mContext, lData.getPassword());
@@ -194,11 +195,12 @@ public class FingerPrintLoginHelper {
         } else if (signUpResponse != null) {
             FirebaseAnalyticsImpl.logSignUpEvent(mContext, signUpResponse.getCustomerId(), signUpResponse.getLogin().getCustomerName());
             signUpResponse.getLogin().updateSharedPref(mContext, sData.getPassword());
-            ((Activity) mContext).startActivity(new Intent(mContext, NewAddressActivity.class).
+            ((Activity) mContext).startActivity(new Intent(mContext, UpdateAddressActivity.class).
                     setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
             .putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, signUpResponse.getHomePageResponse())
             .putExtra(BUNDLE_KEY_NAME,sData.getName())
-            .putExtra(BUNDLE_KEY_PHONE_NUMBER,sData.getPhoneNumber()));
+            .putExtra(BUNDLE_KEY_PHONE_NUMBER,sData.getPhoneNumber())
+            .putExtra(BUNDLE_KEY_URL, billingAddressUrl));
 /*
             IntentHelper.continueShopping(mContext, signUpResponse.getHomePageResponse());
 */
