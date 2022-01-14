@@ -37,8 +37,40 @@
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/white"
                         android:gravity="center"
                         android:orientation="vertical">
+
+                        <!--BANNER SLIDERS-->
+
+                        <androidx.viewpager.widget.ViewPager
+                            android:id="@+id/banner_view_pager"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:clipToPadding="true"
+                            android:nestedScrollingEnabled="false"
+                            android:scaleType="fitCenter"
+                            android:visibility="@{data.bannerImages.empty? View.GONE : View.VISIBLE}"
+                            tools:background="@color/badge_background_color"
+                            tools:ignore="UnusedAttribute" />
+
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/banner_dots_tab_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/tab_dot_switcher_height"
+                            android:layout_marginBottom="@dimen/spacing_generic"
+                            android:visibility="@{data.bannerImages.empty? View.GONE : View.VISIBLE}"
+                            app:tabBackground="@drawable/selector_dots_tab_layout"
+                            app:tabGravity="center"
+                            app:tabIndicatorHeight="0dp"
+                            app:tabPaddingStart="@dimen/spacing_generic"
+                            tools:background="@color/bb_tabletRightBorderDark" />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="3dp"
+                            android:background="@color/grey_300"/>
+                        <!--Categories-->
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/featured_categories_rv"
@@ -52,43 +84,16 @@
                             tools:listitem="@layout/item_featured_category"
                             tools:targetApi="lollipop" />
 
-                        <!--BANNER SLIDERS-->
-
-                        <androidx.viewpager.widget.ViewPager
-                            android:id="@+id/banner_view_pager"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/banner_size_generic"
-                            android:clipToPadding="false"
-                            android:nestedScrollingEnabled="false"
-                            android:paddingEnd="@dimen/spacing_generic"
-                            android:paddingLeft="@dimen/spacing_generic"
-                            android:paddingRight="@dimen/spacing_generic"
-                            android:paddingStart="@dimen/spacing_generic"
-                            android:scaleType="fitCenter"
-                            android:visibility="@{data.bannerImages.empty? View.GONE : View.VISIBLE}"
-                            tools:background="@color/badge_background_color"
-                            tools:ignore="UnusedAttribute" />
-
-                        <com.google.android.material.tabs.TabLayout
-                            android:id="@+id/banner_dots_tab_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/tab_dot_switcher_height"
-                            android:layout_marginBottom="@dimen/spacing_generic"
-                            android:visibility="@{data.bannerImages.empty? View.GONE : View.VISIBLE}"
-                            app:tabBackground="@drawable/selector_dots_tab_layout"
-                            app:tabGravity="center"
-                            app:tabIndicatorHeight="0dp"
-                            app:tabPaddingEnd="@dimen/spacing_generic"
-                            app:tabPaddingStart="@dimen/spacing_generic"
-                            tools:background="@color/bb_tabletRightBorderDark" />
-
                         <!--PRODUCT SLIDERS-->
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:id="@+id/product_slider_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical" />
-
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="3dp"
+                            android:background="@color/grey_300"/>
 
                         <LinearLayout
                             android:id="@+id/llRecentViewProducts"
@@ -101,6 +106,7 @@
                                 android:text="@string/recent_view_products"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
                                 android:textStyle="bold"
+                                android:paddingTop="10dp"
                                 android:paddingBottom="@dimen/spacing_tiny"
                                 android:paddingLeft="@dimen/spacing_normal"/>
 

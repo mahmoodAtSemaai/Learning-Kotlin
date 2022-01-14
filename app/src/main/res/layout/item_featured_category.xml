@@ -16,13 +16,12 @@
     </data>
 
 
-    <androidx.cardview.widget.CardView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/spacing_generic"
         android:onClick="@{()->handler.viewCategory()}"
-        android:padding="@dimen/spacing_generic"
-        app:cardBackgroundColor="?attr/colorPrimary">
+        android:background="@color/colorPrimary">
         <!--app:cardCornerRadius="4dp">-->
 
         <LinearLayout
@@ -35,7 +34,6 @@
                 android:layout_width="@dimen/product_image_small"
                 android:layout_height="@dimen/product_image_small"
                 android:background="@color/activityBackground"
-                android:padding="@dimen/spacing_generic"
                 android:scaleType="fitXY"
                 app:imageType="@{ImageType.PRODUCT_TINY}"
                 app:imageUrl="@{data.url}"
@@ -56,7 +54,7 @@
             android:paddingRight="@dimen/spacing_tiny"
             android:paddingStart="@dimen/spacing_tiny"
             android:paddingTop="@dimen/spacing_tiny"
-            android:textAllCaps="true"
+            android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_size_min"
             app:htmlText="@{data.categoryName}"
@@ -65,6 +63,6 @@
         </LinearLayout>
 
 
-    </androidx.cardview.widget.CardView>
+    </LinearLayout>
 
 </layout>

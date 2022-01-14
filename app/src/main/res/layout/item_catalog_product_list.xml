@@ -43,7 +43,7 @@
         android:layout_marginRight="0.5dp"
         android:layout_marginStart="0.5dp"
         android:layout_marginTop="1dp"
-        android:background="@drawable/shape_rectangular_white_bg_grey200_border_half_dp"
+        android:background="@drawable/shape_rectangular_white_bg_grey400_border_half_dp"
         android:clickable="true"
         android:onClick="@{() -> handler.viewProduct()}"
         android:orientation="horizontal">
