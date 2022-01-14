@@ -107,6 +107,7 @@ public class NewAddressFragment extends BaseFragment {
     private final int RESET_SPINNERS_VILLAGE = 4;
 
     private final int COMPANY_ID = 1;
+    private final int COUNTRY_ID = 100;     // For Indonesia
     private final int UNSELECTED_POSITION = -1;
 
     private SweetAlertDialog alertDialog;
@@ -177,7 +178,10 @@ public class NewAddressFragment extends BaseFragment {
                 resetSpinners(RESET_SPINNERS_FROM_STATE_UPTO_VILLAGE);
                 setCurrentAddressDetails(addressFormResponse);
                 statesAvailable = false;
-                fetchStates(Integer.parseInt(addressFormResponse.getStateId()));
+                if(addressFormResponse.getStateId().isEmpty())
+                    fetchStates(UNSELECTED_POSITION);
+                else
+                    fetchStates(Integer.parseInt(addressFormResponse.getStateId()));
             }
         });
     }
@@ -202,6 +206,7 @@ public class NewAddressFragment extends BaseFragment {
         addressRequestBody.setPhone(mBinding.telephoneEt.getText().toString());
         addressRequestBody.setStreet(mBinding.streetEt.getText().toString());
         addressRequestBody.setState_id(selectedStateId);
+        addressRequestBody.setCountry_id(String.valueOf(COUNTRY_ID));
         callApiToSaveAddress(addressRequestBody);
     }
 
@@ -482,6 +487,7 @@ public class NewAddressFragment extends BaseFragment {
         addressRequestBody.setSub_district_id("");
         addressRequestBody.setVillage_id("");
         addressRequestBody.setZip("");
+        addressRequestBody.setCountry_id(String.valueOf(COUNTRY_ID));
         addressRequestBody.setStreet("");
         callApiToSaveAddress(addressRequestBody);
     }

@@ -274,6 +274,7 @@
     <string name="service_unavailablity_text">Terima kasih atas minat Anda. Mohon maaf, layanan kami belum tersedia di wilayah Anda. Kami akan menghubungi Anda saat kami mulai beroperasi di wilayah Anda.</string>
     <string name="service_unavailable">Di luar area jangjauan</string>
     <string name="enter_address">Silahkan masukkan alamat Anda</string>
+    <string name="billing_address_place_holder">Alamat Penagihan</string>
     <!---->
     <!---->
     <!-- DASHBOARD-->
