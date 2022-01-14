@@ -19,24 +19,30 @@
     </data>
 
 
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/spacing_generic"
         android:background="@color/bottomNavigationBackground"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/spacing_normal"
         android:paddingEnd="0dp"
         android:paddingLeft="@dimen/spacing_normal"
         android:paddingRight="0dp"
-        android:paddingStart="@dimen/spacing_normal"
+        android:paddingStart="0dp"
         android:paddingTop="@dimen/spacing_normal">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/grey_300"/>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacing_tiny"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="@dimen/spacing_normal"
+            android:paddingLeft="10dp"
             android:layout_marginRight="@dimen/spacing_normal"
             android:orientation="horizontal">
 
@@ -68,6 +74,7 @@
             android:id="@+id/products_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
             android:nestedScrollingEnabled="false"
             android:background="@color/bottomNavigationBackground"
             android:orientation="horizontal"

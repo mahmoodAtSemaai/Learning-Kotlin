@@ -38,14 +38,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="1dp"
-        android:layout_marginEnd="0.5dp"
-        android:layout_marginLeft="0.5dp"
-        android:layout_marginRight="0.5dp"
-        android:layout_marginStart="0.5dp"
-        android:layout_marginTop="1dp"
+        android:layout_margin="5dp"
         android:background="@drawable/shape_rectangular_white_bg_grey200_border_half_dp"
         android:clickable="true"
+        android:padding="1.5dp"
         android:gravity="center"
         android:onClick="@{() -> handler.viewProduct()}"
         android:orientation="vertical"
@@ -60,11 +56,12 @@
 
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:transitionName="@string/transition"
                 android:id="@+id/product_image"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/product_image_generic"
                 android:layout_centerHorizontal="true"
+                android:padding="5dp"
+                android:transitionName="@string/transition"
                 app:imageType="@{ImageType.PRODUCT_GENERIC}"
                 app:imageUrl="@{data.thumbNail}"
                 app:placeholder="@{@drawable/ic_vector_odoo_placeholder_grey400_48dp}"
@@ -90,6 +87,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical"
+            android:background="@color/white"
             android:padding="@dimen/spacing_tiny">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -102,6 +100,7 @@
                 android:maxLines="3"
                 android:minLines="3"
                 android:text="@{data.name}"
+                android:textStyle="bold"
                 android:textSize="@dimen/text_size_min"
                 tools:text="Mobikul" />
 
