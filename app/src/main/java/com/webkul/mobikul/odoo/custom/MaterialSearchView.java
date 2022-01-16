@@ -243,7 +243,7 @@ public class MaterialSearchView extends FrameLayout {
         CharSequence query = mBinding.etSearch.getText();
         isFromSubmitResult = true;
         Helper.hideKeyboard(mContext);
-        if (query != null && TextUtils.getTrimmedLength(query) > 0) {
+        if (query != null && !query.equals("") && TextUtils.getTrimmedLength(query) > 0) {
 
             saveQueryToDb(query.toString(), System.currentTimeMillis());
 

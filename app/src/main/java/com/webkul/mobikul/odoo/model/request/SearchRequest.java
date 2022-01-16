@@ -1,5 +1,6 @@
 package com.webkul.mobikul.odoo.model.request;
 
+import android.util.Log;
 import com.webkul.mobikul.odoo.helper.CatalogHelper;
 
 import org.json.JSONException;
@@ -35,8 +36,11 @@ public class SearchRequest extends BaseLazyRequest {
     public String toString() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject = new JSONObject(super.toString());
-            jsonObject.put(mCatalogProductRequestType == CatalogHelper.CatalogProductRequestType.SEARCH_DOMAIN ? KEY_DOMAIN : KEY_SEARCH, getSearchKeyword());
+            JSONObject searchJsonObject = new JSONObject(super.toString());
+            searchJsonObject.put(mCatalogProductRequestType == CatalogHelper.CatalogProductRequestType.SEARCH_DOMAIN ? KEY_DOMAIN : KEY_SEARCH, getSearchKeyword());
+            JSONObject dataJsonObject = new JSONObject();
+            dataJsonObject.put("data", searchJsonObject);
+            jsonObject.put("params", dataJsonObject);
         } catch (JSONException e) {
             e.printStackTrace();
         }
