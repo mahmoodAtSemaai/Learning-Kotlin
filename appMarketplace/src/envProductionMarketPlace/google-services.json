@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "780462280408",
+    "project_id": "semaai-production",
+    "storage_bucket": "semaai-production.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:780462280408:android:4b7d0d641634ed747991ad",
+        "android_client_info": {
+          "package_name": "com.semaai.toko"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "780462280408-01s9uj94qtc0bmed0lbb0get0592aadp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbI952G_PAU8ZQEtArs0YMSZYwpORYnWI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "780462280408-01s9uj94qtc0bmed0lbb0get0592aadp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
