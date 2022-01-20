@@ -61,8 +61,6 @@ public class LoginFragment extends BaseFragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(mBinding.toolbar);
 //        BindingAdapterUtils.setHtmlText(mBinding.signUpNow, getString(R.string.signup_text_on_sign_in_page));
         LoginRequestData loginRequestData = new LoginRequestData(getContext());
-        loginRequestData.setUsername(BuildConfig.demo_username);
-        loginRequestData.setPassword(BuildConfig.demo_password);
         mBinding.setData(loginRequestData);
         mBinding.setHandler(new LoginFragmentHandler(requireActivity(), mBinding.getData()));
         mBinding.setActivityHandler(((SignInSignUpActivity) getActivity()).mBinding.getHandler());

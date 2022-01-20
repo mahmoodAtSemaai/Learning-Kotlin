@@ -1,0 +1,19 @@
+android {
+    productFlavors {
+        marketPlace {
+            dimension "appType"
+        }
+        odooBuilder {
+            dimension "appType"
+        }
+        envTesting {
+            dimension "environment"
+        }
+        envStaging {
+            dimension "environment"
+        }
+        envProduction {
+            dimension "environment"
+        }
+    }
+}
