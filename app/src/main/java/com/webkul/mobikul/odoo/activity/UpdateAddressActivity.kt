@@ -78,6 +78,7 @@ class UpdateAddressActivity : AppCompatActivity() {
     private val RESET_SPINNERS_VILLAGE = 4
 
     private val COMPANY_ID = 1
+    private val COUNTRY_ID = 100      // For Indonesia
     private val UNSELECTED_POSITION = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -359,6 +360,7 @@ class UpdateAddressActivity : AppCompatActivity() {
         addressRequestBody.setStreet(mBinding!!.streetEt.text.toString())
         addressRequestBody.setState_id(selectedState)
         addressRequestBody.setZip("")
+        addressRequestBody.setCountry_id(COUNTRY_ID.toString())
         addressRequestBody.setDistrict_id("")
         addressRequestBody.setSub_district_id("")
         addressRequestBody.setVillage_id("")
@@ -627,6 +629,7 @@ class UpdateAddressActivity : AppCompatActivity() {
         addressRequestBody.setPhone(mBinding!!.telephoneEt.text.toString())
         addressRequestBody.setStreet(mBinding?.streetEt?.text.toString())
         addressRequestBody.setState_id(selectedStateId)
+        addressRequestBody.setCountry_id(COUNTRY_ID.toString())
         saveAddress(addressRequestBody)
     }
 

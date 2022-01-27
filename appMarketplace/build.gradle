@@ -3,25 +3,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.firebase.crashlytics'
 
 //apply plugin: 'me.tatarka.retrolambda'
-
+apply from:"marketPlaceSigningConfig.gradle"
+apply from:"appMarketPlaceFlavours.gradle"
 android {
     compileSdkVersion 30
     buildToolsVersion "28.0.3"
-    flavorDimensions "default"
-
-
-    signingConfigs {
-        LiveServerConfigurationMobikul {
-            try {
-                keyAlias project.KEY_ALIAS
-                keyPassword project.KEY_PASSWORD
-                storeFile file(project.KEYSTORE_FILE)
-                storePassword project.KEYSTORE_PASSWORD
-            } catch (ex) {
-                throw new InvalidUserDataException("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties. \n" + ex.getMessage())
-            }
-        }
-    }
+    flavorDimensions "environment", "appType"
 
     bundle {
         language {
@@ -56,20 +43,7 @@ android {
     dataBinding {
         enabled = true
     }
-    buildTypes {
-        release {
-            shrinkResources true
-            minifyEnabled true
-            debuggable false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-    productFlavors {
-        live {
-            dimension "default"
-            signingConfig signingConfigs.LiveServerConfigurationMobikul
-        }
-    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

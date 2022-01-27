@@ -5,8 +5,8 @@
     <!--=============================================================================================================================================================
                                                         Global/General/Base dimensions
     =============================================================================================================================================================-->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_horizontal_margin">10dp</dimen>
+    <dimen name="activity_vertical_margin">10dp</dimen>
     <dimen name="contextual_icon_dimens">48dp</dimen>
 
     <!--=============================================================================================================================================================
@@ -47,11 +47,11 @@
     <!--Product image size-->
     <dimen name="product_image_tiny">50dp</dimen>
     <dimen name="product_image_small">100dp</dimen>
-    <dimen name="product_image_generic">150dp</dimen>
+    <dimen name="product_image_generic">130dp</dimen>
     <dimen name="product_image_large">300dp</dimen>
 
     <!--Product Container size-->
-    <dimen name="product_container_small">150dp</dimen>
+    <dimen name="product_container_small">130dp</dimen>
     <dimen name="product_container_max">500dp</dimen>
 
     <!--GENERIC BUTTON HEIGHT-->

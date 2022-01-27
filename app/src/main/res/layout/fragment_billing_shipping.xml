@@ -197,7 +197,7 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height_generic"
-                android:onClick="@{() -> handler.loadShippingOrPaymentMethods()}"
+                android:onClick="@{() -> handler.loadShippingMethods()}"
                 android:text="@string/continue_"
                 android:textAllCaps="true" />
 
