@@ -453,4 +453,11 @@
     <string name="privacy_policy">Privacy Policy</string>
     <string name="false_">False</string>
     <string name="service_not_availabe_text">Sorry, our services are not available in your village right now.</string>
+    <string name="authorization_is_under_process">Authorization is Under Process</string>
+    <string name="log_out">Log Out</string>
+    <string name="contact_chat_our_admin">Contact/chat our admin</string>
+    <string name="whatsapp_contact">+62811870155</string>
+    <string name="whatsapp_message">Hi</string>
+    <string name="whatsapp_contant_wo_cc">0811870155</string>
+    <string name="open_whatsapp_for_support">https://api.whatsapp.com/send?phone=+62811870155&amp;text=Hi</string>
 </resources>
