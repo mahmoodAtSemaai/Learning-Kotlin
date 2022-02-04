@@ -2,15 +2,11 @@ apply plugin: 'com.android.library'
 
 //version = VERSION_NAME
 //group = GROUP
-
+apply from: "version.gradle"
+apply from: "defaultBuildConfig.gradle"
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.2'
-
-    defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 28
-    }
+    compileSdkVersion COMPILE_SDK_VERSION
+    buildToolsVersion BUILD_TOOLS_VERSION
 
     lintOptions {
         abortOnError false
@@ -18,7 +14,7 @@ android {
 }
 
 dependencies {
-    api 'com.pnikosis:materialish-progress:1.0'
+    api "com.pnikosis:materialish-progress:$MATERIALISH_PROGRESS_VERSION"
 }
 
 //apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'

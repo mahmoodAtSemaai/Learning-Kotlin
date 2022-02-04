@@ -5,9 +5,12 @@ apply plugin: 'com.google.firebase.crashlytics'
 //apply plugin: 'me.tatarka.retrolambda'
 apply from:"marketPlaceSigningConfig.gradle"
 apply from:"appMarketPlaceFlavours.gradle"
+apply from:"appMarketPlaceVersion.gradle"
+apply from:"defaultBuildConfig.gradle"
+
 android {
-    compileSdkVersion 30
-    buildToolsVersion "28.0.3"
+    compileSdkVersion COMPILE_SDK_VERSION
+    buildToolsVersion BUILD_TOOLS_VERSION
     flavorDimensions "environment", "appType"
 
     bundle {
@@ -28,18 +31,6 @@ android {
         }
     }
 
-    defaultConfig {
-        vectorDrawables.useSupportLibrary = true
-        applicationId "com.semaai.toko"
-        minSdkVersion 16
-        targetSdkVersion 30
-        versionCode 2
-        versionName "1.0.1"
-        multiDexEnabled true
-        setProperty("archivesBaseName", "${applicationId}-v${versionName}(${versionCode})")
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
     dataBinding {
         enabled = true
     }
@@ -53,20 +44,20 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 dependencies {
-    api 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
+    api "com.google.android.material:material:$MATERIAL_DESIGN_SUPPORT_VERSION"
+    implementation "androidx.constraintlayout:constraintlayout:$MODULE_CONSTRAINT_LAYOUT_VERSION"
+    androidTestImplementation("androidx.test.espresso:espresso-core:$ESPRESSO_VERSION", {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    androidTestImplementation 'androidx.annotation:annotation:1.0.0'
-    testImplementation 'junit:junit:4.12'
+    androidTestImplementation "androidx.annotation:annotation:$ANDROIDX_ANNOTATION"
+    testImplementation "junit:junit:$MODULE_JUNIT_VERSION"
     implementation project(':app')
-    api 'androidx.multidex:multidex:2.0.1'
+    api "androidx.multidex:multidex:$MULTIDEX_VERSION_2"
 
     // Add the Firebase Crashlytics SDK.
-    api 'com.google.firebase:firebase-crashlytics:17.2.2'
+    api "com.google.firebase:firebase-crashlytics:$FIREBASE_CRASHLYTICS_VERSION"
 
     // Recommended: Add the Google Analytics SDK.
-    api 'com.google.firebase:firebase-analytics:18.0.0'
+    api "com.google.firebase:firebase-analytics:$FIREBASE_ANALYTICS_VERSION"
 }
 apply plugin: 'com.google.gms.google-services'

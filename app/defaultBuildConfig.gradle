@@ -1,0 +1,32 @@
+android {
+    defaultConfig {
+        vectorDrawables.useSupportLibrary = true
+        minSdkVersion MIN_SDK_VERSION
+        targetSdkVersion TARGET_SDK_VERSION
+        testInstrumentationRunner TEST_JUNIT_RUNNER
+        renderscriptTargetApi RENDERS_SCRIPT_TARGET_API
+        renderscriptSupportModeEnabled true
+        multiDexEnabled true
+
+
+        //Replaced from 5 to 1 because iOS app doesn't have such a check and nor do odoo have
+        buildConfigField "int", "MIN_PASSWORD_LENGTH", "1"
+
+        buildConfigField "int", "DEFAULT_BACK_PRESSED_TIME_TO_CLOSE", "2000"
+        buildConfigField "int", "DEFAULT_REDIRECTION_TIME_ON_SPLASH", "2000"
+        buildConfigField "int", "DEFAULT_NO_OF_SEARCH_PRODUCTS", "5"
+        buildConfigField "int", "DEFAULT_MAX_QTY", "7"
+
+        /*RATE APP DIALOG CONSTANTS*/
+        buildConfigField "int", "DEFAULT_DAYS_UNTIL_PROMPT", "3"
+        buildConfigField "int", "DEFAULT_LAUNCHES_UNTIL_PROMPT", "10"
+        buildConfigField "String", "DEFAULT_NAME_CUSTOMER_PROFILE_IMAGE_WITH_EXTENTION", '"profile.jpg"'
+        buildConfigField "int", "DEFAULT_DELAY_LAST_CLICK", "1000"
+        buildConfigField "String", "DEFAULT_STRIPE_CURRENCY", '"eur"'
+        buildConfigField "int", "DEFAULT_ITEM_PER_PAGE", "25"
+
+        buildConfigField "String", "APP_PLAYSTORE_URL", "\"${project.APP_PLAYSTORE_URL}\""
+        buildConfigField "Boolean", "isMarketplace", "true"
+
+    }
+}

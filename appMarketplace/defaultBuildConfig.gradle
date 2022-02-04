@@ -1,0 +1,11 @@
+android {
+    defaultConfig {
+        vectorDrawables.useSupportLibrary = true
+        applicationId "com.semaai.toko"
+        minSdkVersion MIN_SDK_VERSION
+        targetSdkVersion TARGET_SDK_VERSION
+        multiDexEnabled true
+        setProperty("archivesBaseName", "${applicationId}-v${versionName}(${versionCode})")
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+}
