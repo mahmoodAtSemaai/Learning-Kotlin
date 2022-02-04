@@ -26,7 +26,6 @@ import kotlinx.android.synthetic.main.activity_user_approval.*
 
 class UserApprovalActivity : BaseActivity() {
     private lateinit var binding: ActivityUserApprovalBinding
-    private var mBackPressedTime: Long = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user_approval)
