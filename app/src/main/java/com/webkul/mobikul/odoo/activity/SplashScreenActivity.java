@@ -223,7 +223,7 @@ public class SplashScreenActivity extends BaseActivity  {
                         super.onNext(splashScreenResponse);
                         if(!splashScreenResponse.isUserApproved()) {
                             // user not approved => redirect to user unapproved screen
-                            IntentHelper.goToUserUnapporvedScreen(SplashScreenActivity.this);
+                            IntentHelper.goToUserUnapprovedScreen(SplashScreenActivity.this);
                             mBinding.mainProgressBar.setVisibility(View.GONE);
                         } else {
                             // approved => continue as usual

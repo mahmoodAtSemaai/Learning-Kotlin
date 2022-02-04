@@ -33,7 +33,7 @@ public class IntentHelper {
         context.startActivity(intent);
     }
 
-    public static void goToUserUnapporvedScreen(Context context) {
+    public static void goToUserUnapprovedScreen(Context context) {
         context.startActivity(new Intent(context, UserApprovalActivity.class));
     }
 

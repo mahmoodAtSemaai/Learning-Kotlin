@@ -1,6 +1,5 @@
 package com.webkul.mobikul.odoo.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -655,7 +654,7 @@ class UpdateAddressActivity : AppCompatActivity() {
                     showShortToast(string)
                     if (homePageResponse != null) {
                         // user is never approved on this screen so auto intent to user approval activity
-                        IntentHelper.goToUserUnapporvedScreen(this@UpdateAddressActivity)
+                        IntentHelper.goToUserUnapprovedScreen(this@UpdateAddressActivity)
                         finish()
                     }
                     else {
