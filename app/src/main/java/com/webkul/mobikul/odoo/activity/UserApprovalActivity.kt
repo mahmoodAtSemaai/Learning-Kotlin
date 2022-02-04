@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.snackbar.Snackbar
 import com.muddzdev.styleabletoastlibrary.StyleableToast
+import com.webkul.mobikul.odoo.BuildConfig
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.connection.ApiConnection
 import com.webkul.mobikul.odoo.connection.CustomObserver
@@ -25,12 +26,13 @@ import kotlinx.android.synthetic.main.activity_user_approval.*
 
 class UserApprovalActivity : BaseActivity() {
     private lateinit var binding: ActivityUserApprovalBinding
+    private var mBackPressedTime: Long = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user_approval)
         binding.lifecycleOwner = this
         binding.btnLogout.setOnClickListener { signOut() }
-        binding.btnWhatsapp.setOnClickListener { IntentHelper.goToWhatsApp(this) }
+        binding.llWhatsapp.setOnClickListener { IntentHelper.goToWhatsApp(this) }
     }
 
     private fun signOut() {
@@ -75,5 +77,10 @@ class UserApprovalActivity : BaseActivity() {
 
                 override fun onComplete() {}
             })
+    }
+
+    override fun onStop() {
+        super.onStop()
+        finish()
     }
 }

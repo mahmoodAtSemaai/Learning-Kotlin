@@ -69,12 +69,12 @@
             android:fontFamily="@font/roboto"
             android:text="@string/contact_chat_our_admin"
             android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@id/btn_whatsapp"
+            app:layout_constraintBottom_toTopOf="@id/ll_whatsapp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
 
         <LinearLayout
-            android:id="@+id/btn_whatsapp"
+            android:id="@+id/ll_whatsapp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="44dp"
@@ -90,11 +90,12 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:fontFamily="@font/roboto"
                 android:text="@string/whatsapp_contant_wo_cc"
+                android:gravity="center_vertical"
                 android:textSize="14sp" />
 
         </LinearLayout>
