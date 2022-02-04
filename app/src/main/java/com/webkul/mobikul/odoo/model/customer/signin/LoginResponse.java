@@ -51,10 +51,6 @@ public class LoginResponse extends BaseResponse implements Parcelable {
     @Expose
     private String customerPhoneNumber;
 
-    @SerializedName("is_approverd")
-    @Expose
-    private boolean user_approved;
-
     @SerializedName("customerLang")
     @Expose
     private String customerLang;
@@ -174,10 +170,6 @@ public class LoginResponse extends BaseResponse implements Parcelable {
             return "";
         }
         return customerBannerImage;
-    }
-
-    public boolean isUserApproved() {
-        return user_approved;
     }
 
     public boolean isSeller() {
