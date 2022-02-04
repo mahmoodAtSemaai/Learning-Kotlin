@@ -655,7 +655,7 @@ class UpdateAddressActivity : AppCompatActivity() {
                     showShortToast(string)
                     if (homePageResponse != null) {
                         // user is never approved on this screen so auto intent to user approval activity
-                        startActivity(Intent(this@UpdateAddressActivity, UserApprovalActivity::class.java))
+                        IntentHelper.goToUserUnapporvedScreen(this@UpdateAddressActivity)
                         finish()
                     }
                     else {
