@@ -2,12 +2,15 @@ package com.webkul.mobikul.odoo.helper;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 
+import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.BagActivity;
 import com.webkul.mobikul.odoo.activity.CheckoutActivity;
 import com.webkul.mobikul.odoo.activity.HomeActivity;
+import com.webkul.mobikul.odoo.activity.UserApprovalActivity;
 import com.webkul.mobikul.odoo.dialog_frag.ProductAddedToBagDialogFrag;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.model.home.HomePageResponse;
@@ -30,11 +33,23 @@ public class IntentHelper {
         context.startActivity(intent);
     }
 
+    public static void goToUserUnapprovedScreen(Context context) {
+        context.startActivity(new Intent(context, UserApprovalActivity.class));
+    }
+
     public static void continueShopping(Context context, HomePageResponse homePageResponse) {
         Intent intent = new Intent(context, HomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
         context.startActivity(intent);
+    }
+
+    public static void goToWhatsApp(Context context) {
+        String semaaiSupportUrl = String.format(context.getString(R.string.semaai_support_whatsapp_url),
+                context.getString(R.string.whatsapp_contant_wo_cc).replaceFirst("0", "+62"),
+                context.getString(R.string.whatsapp_message));
+        Uri uri = Uri.parse(semaaiSupportUrl);
+        context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
     }
 
     public static void beginCheckout(Context context) {

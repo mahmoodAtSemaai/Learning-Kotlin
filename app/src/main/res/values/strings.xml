@@ -453,4 +453,9 @@
     <string name="privacy_policy">Privacy Policy</string>
     <string name="false_">False</string>
     <string name="service_not_availabe_text">Sorry, our services are not available in your village right now.</string>
+    <string name="authorization_is_under_process">Account Approval Under Process</string>
+    <string name="contact_chat_our_admin">Contact/chat our admin</string>
+    <string name="whatsapp_message">Hi Semaai team, Please approve my account</string>
+    <string name="whatsapp_contant_wo_cc">0811870155</string>
+    <string name="semaai_support_whatsapp_url">https://api.whatsapp.com/send?phone=%s&amp;text=%s</string>
 </resources>
