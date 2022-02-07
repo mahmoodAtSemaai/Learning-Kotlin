@@ -45,7 +45,10 @@ public class IntentHelper {
     }
 
     public static void goToWhatsApp(Context context) {
-        Uri uri = Uri.parse(context.getString(R.string.semaai_support_whatsapp_url));
+        String semaaiSupportUrl = String.format(context.getString(R.string.semaai_support_whatsapp_url),
+                context.getString(R.string.whatsapp_contant_wo_cc).replaceFirst("0", "+62"),
+                context.getString(R.string.whatsapp_message));
+        Uri uri = Uri.parse(semaaiSupportUrl);
         context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
     }
 

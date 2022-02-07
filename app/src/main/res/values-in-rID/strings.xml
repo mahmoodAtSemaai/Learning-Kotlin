@@ -452,7 +452,8 @@
     <string name="privacy_policy">Kebijakan Privasi</string>
     <string name="false_">False</string>
     <string name="service_not_availabe_text">Maaf, tidak pelayanan kami belum tersedia di dalam negeri ini sekarang.</string>
-    <string name="authorization_is_under_process">Otorisasi akun sedang dalam proses</string>
-    <string name="contact_chat_our_admin">Silakan kirim WA ke admin kami untuk bantuan di sini:</string>
+    <string name="authorization_is_under_process">Persetujuan Sedang Dalam Proses</string>
+    <string name="contact_chat_our_admin">Silakan kirim WA ke admin kami untuk bantuan di sini</string>
     <string name="whatsapp_message">Hai tim Semaai, Tolong setujui akun saya</string>
+    <string name="semaai_support_whatsapp_url">https://api.whatsapp.com/send?phone=%s&amp;text=%s</string>
 </resources>
