@@ -179,9 +179,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB7u5Ils3pj6BZecBtudZYgqCZdsWqDkfg" />
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
 
         <receiver
             android:name="com.webkul.mobikul.broadcast_receivers.AbandonedCartAlarmReceiver"
