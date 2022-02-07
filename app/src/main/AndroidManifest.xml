@@ -41,7 +41,6 @@
         tools:replace="icon,allowBackup">
         <activity
             android:name=".activity.UserApprovalActivity"
-            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:exported="true" />
         <activity
