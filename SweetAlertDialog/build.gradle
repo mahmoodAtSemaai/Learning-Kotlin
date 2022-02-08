@@ -4,6 +4,8 @@ apply plugin: 'com.android.library'
 //group = GROUP
 apply from: "version.gradle"
 apply from: "defaultBuildConfig.gradle"
+apply from: "sweetAlertDialogModuleDependencies.gradle"
+
 android {
     compileSdkVersion COMPILE_SDK_VERSION
     buildToolsVersion BUILD_TOOLS_VERSION
@@ -11,10 +13,6 @@ android {
     lintOptions {
         abortOnError false
     }
-}
-
-dependencies {
-    api "com.pnikosis:materialish-progress:$MATERIALISH_PROGRESS_VERSION"
 }
 
 //apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
