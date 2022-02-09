@@ -1,6 +1,0 @@
-android {
-    defaultConfig {
-        minSdkVersion MIN_SDK_VERSION
-        targetSdkVersion TARGET_SDK_VERSION
-    }
-}

@@ -1,3 +1,0 @@
-dependencies {
-    api "com.pnikosis:materialish-progress:$MATERIALISH_PROGRESS_VERSION"
-}

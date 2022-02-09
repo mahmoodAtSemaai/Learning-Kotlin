@@ -1,4 +1,16 @@
-android{
+android {
+    compileSdkVersion DepVersions.compileSdkVersion
+    buildToolsVersion DepVersions.buildToolsVersion
+
+    dataBinding {
+        enabled = true
+    }
+
+    compileOptions {
+        sourceCompatibility = DepVersions.java
+        targetCompatibility = DepVersions.java
+    }
+
     buildTypes {
         debug {
             debuggable true
@@ -11,4 +23,6 @@ android{
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+
 }

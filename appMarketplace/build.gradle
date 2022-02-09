@@ -3,15 +3,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.firebase.crashlytics'
 
 //apply plugin: 'me.tatarka.retrolambda'
+apply from: rootProject.file('modules-common-config.gradle')
 apply from: "marketPlaceSigningConfig.gradle"
-apply from: "appMarketPlaceFlavours.gradle"
 apply from: "appMarketPlaceVersion.gradle"
-apply from: "defaultBuildConfig.gradle"
-apply from: "appMarketplaceDependencies.gradle"
 
 android {
-    compileSdkVersion DepVersions.compileSdkVersion
-    buildToolsVersion DepVersions.buildToolsVersion
 
     bundle {
         language {
@@ -31,17 +27,55 @@ android {
         }
     }
 
-    dataBinding {
-        enabled = true
+    flavorDimensions "environment", "appType"
+    productFlavors {
+        marketPlace {
+            dimension "appType"
+        }
+        odooBuilder {
+            dimension "appType"
+        }
+        envTesting {
+            dimension "environment"
+        }
+        envStaging {
+            dimension "environment"
+        }
+        envProduction {
+            dimension "environment"
+        }
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+    defaultConfig {
+        vectorDrawables.useSupportLibrary = true
+        applicationId "com.semaai.toko"
+        minSdkVersion DepVersions.minSdkVersion
+        targetSdkVersion DepVersions.targetSdkVersion
+        multiDexEnabled true
+        setProperty("archivesBaseName", "${applicationId}-v${versionName}(${versionCode})")
+        testInstrumentationRunner Dependencies.testInstrumentationRunner
     }
 }
 repositories {
     maven { url 'https://maven.fabric.io/public' }
+}
+
+dependencies {
+    api "com.google.android.material:material:$MATERIAL_DESIGN_SUPPORT_VERSION"
+    implementation "androidx.constraintlayout:constraintlayout:$MODULE_CONSTRAINT_LAYOUT_VERSION"
+    androidTestImplementation("androidx.test.espresso:espresso-core:$ESPRESSO_VERSION", {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    androidTestImplementation "androidx.annotation:annotation:$ANDROIDX_ANNOTATION"
+    testImplementation "junit:junit:$MODULE_JUNIT_VERSION"
+    implementation project(':app')
+    api "androidx.multidex:multidex:$MULTIDEX_VERSION_2"
+
+    // Add the Firebase Crashlytics SDK.
+    api "com.google.firebase:firebase-crashlytics:$FIREBASE_CRASHLYTICS_VERSION"
+
+    // Recommended: Add the Google Analytics SDK.
+    api "com.google.firebase:firebase-analytics:$FIREBASE_ANALYTICS_VERSION"
 }
 
 apply plugin: 'com.google.gms.google-services'

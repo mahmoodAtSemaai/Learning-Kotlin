@@ -1,22 +1,10 @@
 android{
     signingConfigs {
-        envTesting {
+        release {
             storeFile file("keystore/key-testing.jks")
             storePassword "semaai_testing"
             keyAlias "semaai_testing"
             keyPassword "semaai_testing"
-        }
-        envStaging {
-            storeFile file("keystore/key-staging.jks")
-            storePassword "semaai_staging"
-            keyAlias "semaai_staging"
-            keyPassword "semaai_staging"
-        }
-        envProduction {
-            storeFile file("keystore/key-production.jks")
-            storePassword "semaai_production"
-            keyAlias "semaai_production"
-            keyPassword "semaai_production"
         }
     }
 }
