@@ -4,16 +4,16 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
-apply from: rootProject.file('modules-common-config.gradle')
+apply from: rootProject.file('library-common-module.gradle')
 
 repositories {
-    maven { url 'https://maven.fabric.io/public' }
+    maven { url Url.maven }
     mavenCentral()
 }
 
 
 android {
-    defaultPublishConfig "release"
+    defaultPublishConfig BuildTypes.release
 
     signingConfigs {
         release {
@@ -26,41 +26,39 @@ android {
 
     lintOptions {
         checkReleaseBuilds false
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
         abortOnError false
     }
 
-    flavorDimensions "environment", "appType"
+    flavorDimensions Flavours.environment, Flavours.appType
     productFlavors {
         marketPlace {
-            dimension "appType"
+            dimension Flavours.appType
             /**For Odoo Marketplace APP */
             versionCode "${project.MARKETPLACE_VERSION_CODE}".toInteger()
             versionName "${project.MARKETPLACE_VERSION_NAME}"
         }
         odooBuilder {
-            dimension "appType"
+            dimension Flavours.appType
             /**Odoo Builder App*/
             versionCode "${project.ODOO_BUILDER_VERSION_CODE}".toInteger()
             versionName "${project.ODOO_BUILDER_VERSION_NAME}"
         }
         envTesting {
-            dimension "environment"
+            dimension Flavours.environment
             /**For Odoo Marketplace APP */
             buildConfigField "String", "BASE_URL", "\"${project.TESTING_BASE_URL}\""
             buildConfigField "String", "BASIC_AUTH_KEY", "\"${project.TESTING_BASIC_AUTH_KEY}\""
             buildConfigField "String", "MIXPANEL_TOKEN", "\"${project.MIXPANEL_TESTING}\""
         }
         envStaging {
-            dimension "environment"
+            dimension Flavours.environment
             /**For Odoo Marketplace APP */
             buildConfigField "String", "BASE_URL", "\"${project.STAGING_BASE_URL}\""
             buildConfigField "String", "BASIC_AUTH_KEY", "\"${project.STAGING_BASIC_AUTH_KEY}\""
             buildConfigField "String", "MIXPANEL_TOKEN", "\"${project.MIX_PANEL_STAGING}\""
         }
         envProduction {
-            dimension "environment"
+            dimension Flavours.environment
             /**For Odoo Marketplace APP */
             buildConfigField "String", "BASE_URL", "\"${project.PRODUCTION_BASE_URL}\""
             buildConfigField "String", "BASIC_AUTH_KEY", "\"${project.PRODUCTION_BASIC_AUTH_KEY}\""
@@ -77,7 +75,7 @@ android {
         renderscriptSupportModeEnabled true
         multiDexEnabled true
 
-        //Replaced from 5 to 1 because iOS app doesn't have such a check and nor do odoo have
+
         buildConfigField("int", "MIN_PASSWORD_LENGTH", "1")
 
         buildConfigField("int", "DEFAULT_BACK_PRESSED_TIME_TO_CLOSE", "2000")
@@ -85,7 +83,6 @@ android {
         buildConfigField("int", "DEFAULT_NO_OF_SEARCH_PRODUCTS", "5")
         buildConfigField("int", "DEFAULT_MAX_QTY", "7")
 
-        /*RATE APP DIALOG CONSTANTS*/
         buildConfigField("int", "DEFAULT_DAYS_UNTIL_PROMPT", "3")
         buildConfigField("int", "DEFAULT_LAUNCHES_UNTIL_PROMPT", "10")
         buildConfigField("String", "DEFAULT_NAME_CUSTOMER_PROFILE_IMAGE_WITH_EXTENTION", '"profile.jpg"')
@@ -99,7 +96,6 @@ android {
     }
 
     packagingOptions {
-        /*This isn't used at runtime so an exclude is fine.*/
         exclude 'META-INF/rxjava.properties'
     }
 }
@@ -164,7 +160,7 @@ dependencies {
             Dependencies.kotlinStdlib,
             Dependencies.lifecycleExtension,
             Dependencies.mixPanel,
-            project(Modules.SweetAlertDialog)
+            project(Modules.sweetAlertDialog)
     )
 
     kapt(

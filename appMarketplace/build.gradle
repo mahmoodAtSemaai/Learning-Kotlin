@@ -1,9 +1,7 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'io.fabric'
 apply plugin: 'com.google.firebase.crashlytics'
 
-//apply plugin: 'me.tatarka.retrolambda'
-apply from: rootProject.file('modules-common-config.gradle')
+apply from: rootProject.file('library-common-module.gradle')
 
 android {
 
@@ -18,38 +16,32 @@ android {
 
     bundle {
         language {
-            // Specifies that the app bundle should not support
-            // configuration APKs for language resources. These
-            // resources are instead packaged with each base and
-            // dynamic feature APK.
             enableSplit = false
         }
         density {
-            // This property is set to true by default.
             enableSplit = true
         }
         abi {
-            // This property is set to true by default.
             enableSplit = true
         }
     }
 
-    flavorDimensions "environment", "appType"
+    flavorDimensions Flavours.environment, Flavours.appType
     productFlavors {
         marketPlace {
-            dimension "appType"
+            dimension Flavours.appType
         }
         odooBuilder {
-            dimension "appType"
+            dimension Flavours.appType
         }
         envTesting {
-            dimension "environment"
+            dimension Flavours.environment
         }
         envStaging {
-            dimension "environment"
+            dimension Flavours.environment
         }
         envProduction {
-            dimension "environment"
+            dimension Flavours.environment
         }
     }
 
@@ -64,7 +56,7 @@ android {
     }
 }
 repositories {
-    maven { url 'https://maven.fabric.io/public' }
+    maven { url Url.maven }
 }
 
 dependencies {

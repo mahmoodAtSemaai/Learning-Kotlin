@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply from: rootProject.file('modules-common-config.gradle')
+apply from: rootProject.file('library-common-module.gradle')
 
 android {
 

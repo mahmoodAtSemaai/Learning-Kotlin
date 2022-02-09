@@ -89,7 +89,31 @@ object DepVersions {
 object Modules{
     const val app = ":app"
     const val appMarketplace = ":appMarketplace"
-    const val SweetAlertDialog = ":SweetAlertDialog"
+    const val sweetAlertDialog = ":SweetAlertDialog"
+}
+
+object Flavours{
+    const val appType = "appType"
+    const val environment = "environment"
+}
+
+object Url{
+    const val maven = "https://maven.fabric.io/public"
+}
+
+object ProGuard{
+    const val androidText = "proguard-android.txt"
+    const val rules = "proguard-rules.pro"
+}
+
+object marketPlaceConstants {
+    const val applicationId = "com.semaai.toko"
+    const val archivesBaseName = "archivesBaseName"
+}
+
+object BuildTypes{
+    const val debug = "debug"
+    const val release = "release"
 }
 
 object Dependencies {
