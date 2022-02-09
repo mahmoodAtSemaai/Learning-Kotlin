@@ -10,8 +10,8 @@ apply from: "defaultBuildConfig.gradle"
 apply from: "appMarketplaceDependencies.gradle"
 
 android {
-    compileSdkVersion COMPILE_SDK_VERSION
-    buildToolsVersion BUILD_TOOLS_VERSION
+    compileSdkVersion DepVersions.compileSdkVersion
+    buildToolsVersion DepVersions.buildToolsVersion
 
     bundle {
         language {
