@@ -71,6 +71,7 @@ object DepVersions {
     const val playServicesAuth = "17.0.0"
 
     const val constraintLayout = "2.0.4"
+    const val constraintLayoutModule = "1.1.3"
     const val screenGrab = "1.0.0"
 
     const val coreKTX = "1.3.2"
@@ -78,6 +79,10 @@ object DepVersions {
 
     //SweetAlertDialog Module
     const val materialishProgress = "1.0"
+
+
+    //appMarketPlace Modules
+    const val jUnit = "4.13.2"
 
 }
 
@@ -156,7 +161,8 @@ object Dependencies {
     const val stetho = "com.facebook.stetho:stetho:${DepVersions.stetho}"
     const val stethoOkHttp = "com.facebook.stetho:stetho-okhttp3:${DepVersions.stetho}"
     const val twitterCore = "com.twitter.sdk.android:twitter-core:${DepVersions.twitterSDK}"
-    const val multidex = "androidx.multidex:multidex:${DepVersions.multidex2}"
+    const val multidex = "androidx.multidex:multidex:${DepVersions.multidex}"
+    const val multidex2 = "androidx.multidex:multidex:${DepVersions.multidex2}"
     const val lottie = "com.airbnb.android:lottie:${DepVersions.lottie}"
     const val imageCropper = "com.theartofdev.edmodo:android-image-cropper:${DepVersions.imageCropper}"
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:${DepVersions.constraintLayout}"
@@ -167,5 +173,14 @@ object Dependencies {
     const val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${DepVersions.kotlin}"
     const val lifecycleExtension = "androidx.lifecycle:lifecycle-extensions:${DepVersions.lifecycleExtension}"
     const val mixPanel = "com.mixpanel.android:mixpanel-android:${DepVersions.mixPanel}"
+
+    //SweetAlertDialog Module
+    const val materialishProgress = "com.pnikosis:materialish-progress:${DepVersions.materialishProgress}"
+
+
+    //appMarketPlace Module
+    const val materialDesignSupport = "com.google.android.material:material:${DepVersions.materialDesignSupport}"
+    const val constraintLayoutModule = "androidx.constraintlayout:constraintlayout:${DepVersions.constraintLayoutModule}"
+    const val jUnit = "junit:junit:${DepVersions.jUnit}"
 
 }
