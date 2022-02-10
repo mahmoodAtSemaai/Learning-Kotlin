@@ -127,8 +127,7 @@ object Dependencies {
     const val buildTools = "com.android.tools.build:gradle:${DepVersions.buildTools}"
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${DepVersions.kotlin}"
     const val googleServices = "com.google.gms:google-services:${DepVersions.googleServices}"
-    const val firebaseCrashlyticsGradle =
-        "com.google.firebase:firebase-crashlytics-gradle:${DepVersions.firebaseCrashlyticsGradle}"
+    const val firebaseCrashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:${DepVersions.firebaseCrashlyticsGradle}"
 
     //App Dependencies
     const val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -136,14 +135,12 @@ object Dependencies {
     // To enable darkmode in webview
     const val webkit = "androidx.webkit:webkit:${DepVersions.webKit}"
 
-    const val daggerAndroidProcessor =
-        "com.google.dagger:dagger-android-processor:${DepVersions.daggerAndroid}"
+    const val daggerAndroidProcessor = "com.google.dagger:dagger-android-processor:${DepVersions.daggerAndroid}"
     const val daggerCompiler = "com.google.dagger:dagger-compiler:${DepVersions.daggerAndroid}"
     const val legacySupport = "androidx.legacy:legacy-support-v4:${DepVersions.legacySupport}"
     const val appCompat = "androidx.appcompat:appcompat:${DepVersions.appCompat}"
     const val espressoCore = "androidx.test.espresso:espresso-core:${DepVersions.espressoCore}"
-    const val androidXAnnotation =
-        "androidx.annotation:annotation:${DepVersions.androidXAnnotation}"
+    const val androidXAnnotation = "androidx.annotation:annotation:${DepVersions.androidXAnnotation}"
 
     //noinspection GradleCompatible
     const val material = "com.google.android.material:material:${DepVersions.material}"
@@ -157,29 +154,19 @@ object Dependencies {
     const val jsoup = "org.jsoup:jsoup:${DepVersions.jsoup}"
 
     const val firebaseCrash = "com.google.firebase:firebase-crash:${DepVersions.firebaseCrash}"
-    const val firebaseMessaging =
-        "com.google.firebase:firebase-messaging:${DepVersions.firebaseMessaging}"
+    const val firebaseMessaging = "com.google.firebase:firebase-messaging:${DepVersions.firebaseMessaging}"
     const val firebaseAuth = "com.google.firebase:firebase-auth:${DepVersions.firebaseAuth}"
-    const val firebaseDatabase =
-        "com.google.firebase:firebase-database:${DepVersions.firebaseDatabase}"
+    const val firebaseDatabase = "com.google.firebase:firebase-database:${DepVersions.firebaseDatabase}"
     const val firebaseCore = "com.google.firebase:firebase-core:${DepVersions.firebaseCore}"
-    const val firebaseMLVision =
-        "com.google.firebase:firebase-ml-vision:${DepVersions.firebaseMLVision}"
-    const val firebaseMLVisionImageLabel =
-        "com.google.firebase:firebase-ml-vision-image-label-model:${DepVersions.firebaseMLVisionImageLabel}"
-    const val firebaseMLModelInterpreter =
-        "com.google.firebase:firebase-ml-model-interpreter:${DepVersions.firebaseMLModelInterpreter}"
-    const val firebaseCrashlytics =
-        "com.google.firebase:firebase-crashlytics:${DepVersions.firebaseCrashlytics}"
-    const val firebaseAnalytics =
-        "com.google.firebase:firebase-analytics:${DepVersions.firebaseAnalytics}"
+    const val firebaseMLVision = "com.google.firebase:firebase-ml-vision:${DepVersions.firebaseMLVision}"
+    const val firebaseMLVisionImageLabel = "com.google.firebase:firebase-ml-vision-image-label-model:${DepVersions.firebaseMLVisionImageLabel}"
+    const val firebaseMLModelInterpreter = "com.google.firebase:firebase-ml-model-interpreter:${DepVersions.firebaseMLModelInterpreter}"
+    const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics:${DepVersions.firebaseCrashlytics}"
+    const val firebaseAnalytics = "com.google.firebase:firebase-analytics:${DepVersions.firebaseAnalytics}"
 
-    const val playServicesLocation =
-        "com.google.android.gms:play-services-location:${DepVersions.playServicesLocation}"
-    const val playServicesMaps =
-        "com.google.android.gms:play-services-maps:${DepVersions.playServicesMaps}"
-    const val playServicesAuth =
-        "com.google.android.gms:play-services-auth:${DepVersions.playServicesAuth}"
+    const val playServicesLocation = "com.google.android.gms:play-services-location:${DepVersions.playServicesLocation}"
+    const val playServicesMaps = "com.google.android.gms:play-services-maps:${DepVersions.playServicesMaps}"
+    const val playServicesAuth = "com.google.android.gms:play-services-auth:${DepVersions.playServicesAuth}"
 
     const val facebookSDK = "com.facebook.android:facebook-android-sdk:${DepVersions.facebookSDK}"
 
@@ -187,20 +174,17 @@ object Dependencies {
     const val retrofit = "com.squareup.retrofit2:retrofit:${DepVersions.retrofit}"
     const val retrofitConverter = "com.squareup.retrofit2:converter-gson:${DepVersions.retrofit}"
     const val okHTTPInterceptor = "com.squareup.okhttp3:logging-interceptor:${DepVersions.okHTTP}"
-    const val okHTTPURLConnection =
-        "com.squareup.okhttp3:okhttp-urlconnection:${DepVersions.okHTTP}"
+    const val okHTTPURLConnection = "com.squareup.okhttp3:okhttp-urlconnection:${DepVersions.okHTTP}"
 
     const val rxAndroid = "io.reactivex.rxjava2:rxandroid:${DepVersions.rxAndroid}"
     const val rxJava = "io.reactivex.rxjava2:rxjava:${DepVersions.rxJava2}"
     const val retrofitRxJava = "com.squareup.retrofit2:adapter-rxjava2:${DepVersions.retrofit}"
-    const val retrofitConverterScalar =
-        "com.squareup.retrofit2:converter-scalars:${DepVersions.retrofit}"
+    const val retrofitConverterScalar = "com.squareup.retrofit2:converter-scalars:${DepVersions.retrofit}"
     const val rxBinding = "com.jakewharton.rxbinding2:rxbinding:${DepVersions.rxBinding}"
 
     const val bottombar = "com.roughike:bottom-bar:${DepVersions.bottombar}"
 
-    const val expandableRecyclerView =
-        "com.bignerdranch.android:expandablerecyclerview:${DepVersions.expandableRecyclerView}"
+    const val expandableRecyclerView = "com.bignerdranch.android:expandablerecyclerview:${DepVersions.expandableRecyclerView}"
     const val stylableToast = "com.muddzdev:styleabletoast:${DepVersions.stylableToast}"
     const val flexbox = "com.google.android:flexbox:${DepVersions.flexbox}"
 
@@ -210,29 +194,24 @@ object Dependencies {
     const val multidex = "androidx.multidex:multidex:${DepVersions.multidex}"
     const val multidex2 = "androidx.multidex:multidex:${DepVersions.multidex2}"
     const val lottie = "com.airbnb.android:lottie:${DepVersions.lottie}"
-    const val imageCropper =
-        "com.theartofdev.edmodo:android-image-cropper:${DepVersions.imageCropper}"
-    const val constraintLayout =
-        "androidx.constraintlayout:constraintlayout:${DepVersions.constraintLayout}"
+    const val imageCropper = "com.theartofdev.edmodo:android-image-cropper:${DepVersions.imageCropper}"
+    const val constraintLayout = "androidx.constraintlayout:constraintlayout:${DepVersions.constraintLayout}"
     const val screenGrab = "tools.fastlane:screengrab:${DepVersions.screenGrab}"
 
     const val espressoContrib = "androidx.test.espresso:espresso-contrib:${DepVersions.espresso}"
     const val coreKTX = "androidx.core:core-ktx:${DepVersions.coreKTX}"
     const val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${DepVersions.kotlin}"
-    const val lifecycleExtension =
-        "androidx.lifecycle:lifecycle-extensions:${DepVersions.lifecycleExtension}"
+    const val lifecycleExtension = "androidx.lifecycle:lifecycle-extensions:${DepVersions.lifecycleExtension}"
     const val mixPanel = "com.mixpanel.android:mixpanel-android:${DepVersions.mixPanel}"
 
     //SweetAlertDialog Module
-    const val materialishProgress =
-        "com.pnikosis:materialish-progress:${DepVersions.materialishProgress}"
+    const val materialishProgress = "com.pnikosis:materialish-progress:${DepVersions.materialishProgress}"
 
 
     //appMarketPlace Module
     const val materialDesignSupport =
         "com.google.android.material:material:${DepVersions.materialDesignSupport}"
-    const val constraintLayoutModule =
-        "androidx.constraintlayout:constraintlayout:${DepVersions.constraintLayoutModule}"
+    const val constraintLayoutModule = "androidx.constraintlayout:constraintlayout:${DepVersions.constraintLayoutModule}"
     const val jUnit = "junit:junit:${DepVersions.jUnit}"
 
 }
