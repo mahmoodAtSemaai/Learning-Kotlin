@@ -86,12 +86,6 @@ object DepVersions {
 
 }
 
-object Version {
-    const val code = 5
-    const val name = "1.1.2"
-}
-
-
 object Modules {
     const val app = ":app"
     const val appMarketplace = ":appMarketplace"
