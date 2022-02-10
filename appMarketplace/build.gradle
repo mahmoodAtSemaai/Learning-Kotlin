@@ -1,72 +1,83 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'io.fabric'
 apply plugin: 'com.google.firebase.crashlytics'
 
-//apply plugin: 'me.tatarka.retrolambda'
-apply from:"marketPlaceSigningConfig.gradle"
-apply from:"appMarketPlaceFlavours.gradle"
+apply from: rootProject.file('library-common-module.gradle')
+
 android {
-    compileSdkVersion 30
-    buildToolsVersion "28.0.3"
-    flavorDimensions "environment", "appType"
+
+    signingConfigs {
+        release {
+            storeFile file("keystore/key-testing.jks")
+            storePassword "semaai_testing"
+            keyAlias "semaai_testing"
+            keyPassword "semaai_testing"
+        }
+    }
 
     bundle {
         language {
-            // Specifies that the app bundle should not support
-            // configuration APKs for language resources. These
-            // resources are instead packaged with each base and
-            // dynamic feature APK.
             enableSplit = false
         }
         density {
-            // This property is set to true by default.
             enableSplit = true
         }
         abi {
-            // This property is set to true by default.
             enableSplit = true
+        }
+    }
+
+    flavorDimensions Flavours.environment, Flavours.appType
+    productFlavors {
+        marketPlace {
+            dimension Flavours.appType
+        }
+        odooBuilder {
+            dimension Flavours.appType
+        }
+        envTesting {
+            dimension Flavours.environment
+        }
+        envStaging {
+            dimension Flavours.environment
+        }
+        envProduction {
+            dimension Flavours.environment
         }
     }
 
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
         applicationId "com.semaai.toko"
-        minSdkVersion 16
-        targetSdkVersion 30
-        versionCode 2
-        versionName "1.0.1"
+        minSdkVersion DepVersions.minSdkVersion
+        targetSdkVersion DepVersions.targetSdkVersion
         multiDexEnabled true
         setProperty("archivesBaseName", "${applicationId}-v${versionName}(${versionCode})")
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    dataBinding {
-        enabled = true
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        testInstrumentationRunner Dependencies.testInstrumentationRunner
     }
 }
 repositories {
-    maven { url 'https://maven.fabric.io/public' }
+    maven { url Url.maven }
 }
+
 dependencies {
-    api 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
+    implementation(
+            Dependencies.constraintLayoutModule,
+            project(Modules.app)
+    )
+
+    androidTestImplementation(Dependencies.androidXAnnotation)
+
+    api(
+            Dependencies.materialDesignSupport,
+            Dependencies.multidex2,
+            Dependencies.firebaseCrashlytics,
+            Dependencies.firebaseAnalytics
+    )
+    androidTestImplementation(Dependencies.espressoCore, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    androidTestImplementation 'androidx.annotation:annotation:1.0.0'
-    testImplementation 'junit:junit:4.12'
-    implementation project(':app')
-    api 'androidx.multidex:multidex:2.0.1'
+    testImplementation(Dependencies.jUnit)
 
-    // Add the Firebase Crashlytics SDK.
-    api 'com.google.firebase:firebase-crashlytics:17.2.2'
-
-    // Recommended: Add the Google Analytics SDK.
-    api 'com.google.firebase:firebase-analytics:18.0.0'
 }
+
 apply plugin: 'com.google.gms.google-services'
