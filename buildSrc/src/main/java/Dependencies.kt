@@ -97,6 +97,11 @@ object Flavours {
     const val environment = "environment"
 }
 
+object Version {
+    const val code = 6
+    const val name = "1.1.3"
+}
+
 object Url {
     const val maven = "https://maven.fabric.io/public"
 }

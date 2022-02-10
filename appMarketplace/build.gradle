@@ -30,15 +30,9 @@ android {
     productFlavors {
         marketPlace {
             dimension Flavours.appType
-            versionName "1.1.3"
-            versionCode 6
-            setProperty("archivesBaseName", "com.semaai.toko-v${versionName}(${versionCode})")
         }
         odooBuilder {
             dimension Flavours.appType
-            versionName "1.1.2"
-            versionCode 5
-            setProperty("archivesBaseName", "com.semaai.toko-v${versionName}(${versionCode})")
         }
         envTesting {
             dimension Flavours.environment
@@ -54,11 +48,12 @@ android {
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
         applicationId "com.semaai.toko"
-        versionName "1.0.0"
-        versionCode 1
+        versionName Version.name
+        versionCode Version.code
         minSdkVersion DepVersions.minSdkVersion
         targetSdkVersion DepVersions.targetSdkVersion
         multiDexEnabled true
+        setProperty("archivesBaseName", "$applicationId-v$versionName($versionCode)")
         testInstrumentationRunner Dependencies.testInstrumentationRunner
     }
 }
