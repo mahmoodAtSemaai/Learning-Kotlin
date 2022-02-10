@@ -86,22 +86,28 @@ object DepVersions {
 
 }
 
-object Modules{
+object Version {
+    const val code = 5
+    const val name = "1.1.2"
+}
+
+
+object Modules {
     const val app = ":app"
     const val appMarketplace = ":appMarketplace"
     const val sweetAlertDialog = ":SweetAlertDialog"
 }
 
-object Flavours{
+object Flavours {
     const val appType = "appType"
     const val environment = "environment"
 }
 
-object Url{
+object Url {
     const val maven = "https://maven.fabric.io/public"
 }
 
-object ProGuard{
+object ProGuard {
     const val androidText = "proguard-android.txt"
     const val rules = "proguard-rules.pro"
 }
@@ -111,7 +117,7 @@ object marketPlaceConstants {
     const val archivesBaseName = "archivesBaseName"
 }
 
-object BuildTypes{
+object BuildTypes {
     const val debug = "debug"
     const val release = "release"
 }
@@ -127,25 +133,25 @@ object Dependencies {
     const val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
     // To enable darkmode in webview
-    const val webkit =  "androidx.webkit:webkit:${DepVersions.webKit}"
+    const val webkit = "androidx.webkit:webkit:${DepVersions.webKit}"
 
-    const val daggerAndroidProcessor =  "com.google.dagger:dagger-android-processor:${DepVersions.daggerAndroid}"
-    const val daggerCompiler =  "com.google.dagger:dagger-compiler:${DepVersions.daggerAndroid}"
-    const val legacySupport =  "androidx.legacy:legacy-support-v4:${DepVersions.legacySupport}"
-    const val appCompat =  "androidx.appcompat:appcompat:${DepVersions.appCompat}"
-    const val espressoCore =  "androidx.test.espresso:espresso-core:${DepVersions.espressoCore}"
+    const val daggerAndroidProcessor = "com.google.dagger:dagger-android-processor:${DepVersions.daggerAndroid}"
+    const val daggerCompiler = "com.google.dagger:dagger-compiler:${DepVersions.daggerAndroid}"
+    const val legacySupport = "androidx.legacy:legacy-support-v4:${DepVersions.legacySupport}"
+    const val appCompat = "androidx.appcompat:appcompat:${DepVersions.appCompat}"
+    const val espressoCore = "androidx.test.espresso:espresso-core:${DepVersions.espressoCore}"
     const val androidXAnnotation = "androidx.annotation:annotation:${DepVersions.androidXAnnotation}"
 
     //noinspection GradleCompatible
-    const val material =  "com.google.android.material:material:${DepVersions.material}"
-    const val cardview =  "androidx.cardview:cardview:${DepVersions.cardview}"
+    const val material = "com.google.android.material:material:${DepVersions.material}"
+    const val cardview = "androidx.cardview:cardview:${DepVersions.cardview}"
     const val viewpager = "androidx.viewpager:viewpager:${DepVersions.viewpager}"
 
     const val glide = "com.github.bumptech.glide:glide:${DepVersions.glide}"
     const val glideCompiler = "com.github.bumptech.glide:compiler:${DepVersions.glide}"
 
-    const val circleImageView =  "de.hdodenhof:circleimageview:${DepVersions.circleImageView}"
-    const val jsoup =  "org.jsoup:jsoup:${DepVersions.jsoup}"
+    const val circleImageView = "de.hdodenhof:circleimageview:${DepVersions.circleImageView}"
+    const val jsoup = "org.jsoup:jsoup:${DepVersions.jsoup}"
 
     const val firebaseCrash = "com.google.firebase:firebase-crash:${DepVersions.firebaseCrash}"
     const val firebaseMessaging = "com.google.firebase:firebase-messaging:${DepVersions.firebaseMessaging}"
@@ -203,7 +209,8 @@ object Dependencies {
 
 
     //appMarketPlace Module
-    const val materialDesignSupport = "com.google.android.material:material:${DepVersions.materialDesignSupport}"
+    const val materialDesignSupport =
+        "com.google.android.material:material:${DepVersions.materialDesignSupport}"
     const val constraintLayoutModule = "androidx.constraintlayout:constraintlayout:${DepVersions.constraintLayoutModule}"
     const val jUnit = "junit:junit:${DepVersions.jUnit}"
 
