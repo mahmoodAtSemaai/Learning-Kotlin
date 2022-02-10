@@ -50,6 +50,8 @@ android {
         applicationId "com.semaai.toko"
         minSdkVersion DepVersions.minSdkVersion
         targetSdkVersion DepVersions.targetSdkVersion
+        versionCode 5
+        versionName "1.1.2"
         multiDexEnabled true
         setProperty("archivesBaseName", "${applicationId}-v${versionName}(${versionCode})")
         testInstrumentationRunner Dependencies.testInstrumentationRunner
