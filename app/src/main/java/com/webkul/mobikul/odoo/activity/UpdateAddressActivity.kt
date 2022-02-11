@@ -652,8 +652,11 @@ class UpdateAddressActivity : AppCompatActivity() {
                 super.onNext(baseResponse)
                 if (baseResponse.isSuccess) {
                     showShortToast(string)
-                    if (homePageResponse != null)
-                        IntentHelper.continueShopping(this@UpdateAddressActivity, homePageResponse);
+                    if (homePageResponse != null) {
+                        // user is never approved on this screen so auto intent to user approval activity
+                        IntentHelper.goToUserUnapprovedScreen(this@UpdateAddressActivity)
+                        finish()
+                    }
                     else {
                         finish()
                     }

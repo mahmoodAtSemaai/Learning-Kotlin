@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.webkul.mobikul.odoo.BuildConfig;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.adapter.catalog.CatalogProductListRvAdapter;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
@@ -239,6 +240,13 @@ public class CatalogProductActivity extends BaseActivity {
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        //catching intents in singleTop activities
+        setIntent(intent);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
 
@@ -306,6 +314,7 @@ public class CatalogProductActivity extends BaseActivity {
         mIsFirstCall = true;
         mBinding.setData(new CatalogProductResponse());
         mBinding.getData().setLazyLoading(true);
+        AppSharedPref.setItemsPerPage(this, BuildConfig.DEFAULT_ITEM_PER_PAGE);
     }
 
     private void showPositionToast(int lastVisibleItemPosition) {

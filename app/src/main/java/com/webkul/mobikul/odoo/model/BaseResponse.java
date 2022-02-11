@@ -74,6 +74,10 @@ public class BaseResponse extends BaseObservable implements Parcelable {
     @Expose
     private AddOns addons;
 
+    @SerializedName("is_approved")
+    @Expose
+    private boolean user_approved;
+
     @SerializedName("accessDenied")
     @Expose
     private boolean accessDenied;
@@ -143,6 +147,10 @@ public class BaseResponse extends BaseObservable implements Parcelable {
     @SuppressWarnings({"WeakerAccess", "unused"})
     public int getItemsPerPage() {
         return itemsPerPage;
+    }
+
+    public boolean isUserApproved() {
+        return user_approved;
     }
 
     public void setItemsPerPage(int itemsPerPage) {

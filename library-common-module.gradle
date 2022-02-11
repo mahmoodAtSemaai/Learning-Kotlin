@@ -1,0 +1,28 @@
+android {
+    compileSdkVersion DepVersions.compileSdkVersion
+    buildToolsVersion DepVersions.buildToolsVersion
+
+    dataBinding {
+        enabled = true
+    }
+
+    compileOptions {
+        sourceCompatibility = DepVersions.java
+        targetCompatibility = DepVersions.java
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+        }
+        release {
+            shrinkResources false
+            minifyEnabled true
+            debuggable false
+            proguardFiles getDefaultProguardFile(ProGuard.androidText), ProGuard.rules
+        }
+    }
+
+
+}

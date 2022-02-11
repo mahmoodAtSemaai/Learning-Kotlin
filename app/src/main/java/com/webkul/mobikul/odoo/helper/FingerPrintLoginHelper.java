@@ -1,5 +1,12 @@
 package com.webkul.mobikul.odoo.helper;
 
+import static android.content.Context.FINGERPRINT_SERVICE;
+import static android.content.Context.KEYGUARD_SERVICE;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_NAME;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PHONE_NUMBER;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_URL;
+
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -13,16 +20,18 @@ import android.os.Build;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyPermanentlyInvalidatedException;
 import android.security.keystore.KeyProperties;
-import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+
 import com.muddzdev.styleabletoastlibrary.StyleableToast;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.UpdateAddressActivity;
+import com.webkul.mobikul.odoo.activity.UserApprovalActivity;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.handler.fingerprint.FingerprintHandler;
 import com.webkul.mobikul.odoo.model.customer.signin.LoginRequestData;
@@ -46,13 +55,6 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-
-import static android.content.Context.FINGERPRINT_SERVICE;
-import static android.content.Context.KEYGUARD_SERVICE;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_NAME;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PHONE_NUMBER;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_URL;
 
 public class FingerPrintLoginHelper {
 
@@ -191,8 +193,16 @@ public class FingerPrintLoginHelper {
             FirebaseAnalyticsImpl.logLoginEvent(mContext, loginResponse.getCustomerId(), AppSharedPref.getCustomerName(mContext));
             loginResponse.updateSharedPref(mContext, lData.getPassword());
             StyleableToast.makeText(mContext, mContext.getString(R.string.login_successful_message), Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
-            ApiRequestHelper.callHomePageApi(mContext);
-        } else if (signUpResponse != null) {
+            //ApiRequestHelper.callHomePageApi(mContext); // add if condition for user approved or not, get value from login response
+            if(loginResponse.isUserApproved()) {
+                // user is approved => call Home page api
+                ApiRequestHelper.callHomePageApi(mContext);
+            } else {
+                // user is not approved => redirect to User Unapproved Screen
+                ((Activity) mContext).startActivity(new Intent(mContext, UserApprovalActivity.class));
+                ((Activity) mContext).finish();
+            }
+        } else if (signUpResponse != null) { // run as it is as it has to goto update address activity
             FirebaseAnalyticsImpl.logSignUpEvent(mContext, signUpResponse.getCustomerId(), signUpResponse.getLogin().getCustomerName());
             signUpResponse.getLogin().updateSharedPref(mContext, sData.getPassword());
             ((Activity) mContext).startActivity(new Intent(mContext, UpdateAddressActivity.class).
