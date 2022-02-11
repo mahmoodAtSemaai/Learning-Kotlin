@@ -48,12 +48,12 @@ android {
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
         applicationId "com.semaai.toko"
+        versionName Version.name
+        versionCode Version.code
         minSdkVersion DepVersions.minSdkVersion
         targetSdkVersion DepVersions.targetSdkVersion
-        versionCode Version.code
-        versionName Version.name
         multiDexEnabled true
-        setProperty("archivesBaseName", "${applicationId}-v${versionName}(${versionCode})")
+        setProperty("archivesBaseName", "$applicationId-v$versionName($versionCode)")
         testInstrumentationRunner Dependencies.testInstrumentationRunner
     }
 }
