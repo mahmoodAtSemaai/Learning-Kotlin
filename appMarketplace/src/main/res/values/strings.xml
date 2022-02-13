@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Semaai_Application</string>
+    <string name="app_name">Semaai</string>
     <string name="mobikul" translatable="false">Semaai</string>
     <string name="deeplinking_host" translatable="false">mpdemo.webkul.com</string>
 
