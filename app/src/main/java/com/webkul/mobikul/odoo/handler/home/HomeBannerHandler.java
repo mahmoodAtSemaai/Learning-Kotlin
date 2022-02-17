@@ -3,7 +3,9 @@ package com.webkul.mobikul.odoo.handler.home;
 import android.content.Context;
 import android.content.Intent;
 
+import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.helper.CatalogHelper;
 import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.model.generic.BannerImageData;
@@ -40,7 +42,8 @@ public class HomeBannerHandler {
 
     public void onClickBanner() {
         Intent intent = null;
-
+        AnalyticsImpl.INSTANCE.trackPromotionalBannerSelected(mData.getId(),
+                mData.getBannerName(), mContext.getString(R.string.home), 0);
         switch (mData.getBannerType()) {
             case TYPE_CUSTOM:
                 intent = new Intent(mContext, CatalogProductActivity.class);

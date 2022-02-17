@@ -20,6 +20,7 @@ import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.database.SaveData;
 import com.webkul.mobikul.odoo.databinding.FragmentNotificationBinding;
+import com.webkul.mobikul.odoo.handler.home.FragmentNotifier;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.FragmentHelper;
@@ -34,6 +35,8 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
+
+import org.greenrobot.eventbus.EventBus;
 
 
 /**
@@ -166,5 +169,18 @@ public class NotificationFragment extends BaseFragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(getContext());
+        EventBus.getDefault().post(FragmentNotifier.HomeActivityFragments.NOTIFICATION_FRAGMENT);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(getContext());
     }
 }

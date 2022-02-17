@@ -8,6 +8,7 @@ import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.BagActivity;
 import com.webkul.mobikul.odoo.activity.BaseActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.custom.CustomToast;
@@ -62,6 +63,7 @@ public class BagItemsRecyclerHandler implements ChangeQtyDialogFragment.OnQtyCha
     }
 
     public void deleteItem() {
+        AnalyticsImpl.INSTANCE.trackRemoveItemSelected(mData.getLineId(), mData.getName(), mData.getPriceUnit());
         ((BaseActivity) mContext).mSweetAlertDialog = new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE)
                 .setTitleText(mContext.getString(R.string.msg_are_you_sure))
                 .setContentText(mContext.getString(R.string.ques_want_to_delete_this_product))
@@ -87,9 +89,11 @@ public class BagItemsRecyclerHandler implements ChangeQtyDialogFragment.OnQtyCha
                                 });
                             }else {
                                 if (baseResponse.isSuccess()) {
+                                    AnalyticsImpl.INSTANCE.trackRemoveItemSuccessful(mData.getLineId(), mData.getName(), mData.getPriceUnit());
                                     ((BagActivity) mContext).getCartData();
                                     CustomToast.makeText(mContext, baseResponse.getMessage(), Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
                                 } else {
+                                    AnalyticsImpl.INSTANCE.trackRemoveItemFailed(baseResponse.getMessage(), baseResponse.getResponseCode(), "");
                                     AlertDialogHelper.showDefaultWarningDialog(mContext, mData.getName(), baseResponse.getMessage());
                                 }
                             }
@@ -114,6 +118,7 @@ public class BagItemsRecyclerHandler implements ChangeQtyDialogFragment.OnQtyCha
 
 
     public void changeQty() {
+        AnalyticsImpl.INSTANCE.trackItemQuantitySelected(mData.getLineId(), mData.getName(), mData.getQty());
         ChangeQtyDialogFragment.newInstance(this, mData.getQty()).show(((BaseActivity) mContext).mSupportFragmentManager, ChangeQtyDialogFragment.class.getSimpleName());
     }
 
@@ -143,8 +148,10 @@ public class BagItemsRecyclerHandler implements ChangeQtyDialogFragment.OnQtyCha
                     });
                 }
                 if (baseResponse.isSuccess()) {
+                    AnalyticsImpl.INSTANCE.trackItemQuantityChangeSuccessful(mData.getLineId(), mData.getName(), qty);
                     ((BagActivity) mContext).getCartData();
                 } else {
+                    AnalyticsImpl.INSTANCE.trackItemQuantityChangeFailed(baseResponse.getMessage(), baseResponse.getResponseCode(), "");
                     AlertDialogHelper.showDefaultErrorDialog(mContext, mContext.getString(R.string.error_something_went_wrong), baseResponse.getMessage());
                 }
             }
@@ -157,6 +164,7 @@ public class BagItemsRecyclerHandler implements ChangeQtyDialogFragment.OnQtyCha
     }
 
     public void addToWishlist() {
+        AnalyticsImpl.INSTANCE.trackMoveToWishlistSelected(mData.getLineId(), mData.getName(), mData.getPriceUnit());
         ApiConnection.cartToWishlist(mContext, new CartToWishlistRequest(mData.getLineId())).subscribeOn(Schedulers
                 .io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -181,11 +189,13 @@ public class BagItemsRecyclerHandler implements ChangeQtyDialogFragment.OnQtyCha
                                     mContext.startActivity(i);
                                 }
                             });
-                        }else {
+                        } else {
                             if (response.isSuccess()) {
+                                AnalyticsImpl.INSTANCE.trackMoveToWishlistSuccessful(mData.getLineId(), mData.getName(), mData.getPriceUnit());
                                 ((BagActivity) mContext).getCartData();
                                 CustomToast.makeText(mContext, response.getMessage(), Toast.LENGTH_LONG, R.style.GenericStyleableToast).show();
                             } else {
+                                AnalyticsImpl.INSTANCE.trackMoveToWishlistFailed(response.getMessage(), response.getResponseCode(), "");
                                 AlertDialogHelper.showDefaultErrorDialog(mContext, mContext.getString(
                                         R.string.move_to_wishlist), response.getMessage());
                             }

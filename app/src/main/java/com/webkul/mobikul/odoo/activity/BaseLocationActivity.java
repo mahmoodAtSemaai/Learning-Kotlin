@@ -161,10 +161,10 @@ public abstract class BaseLocationActivity extends BaseActivity implements Googl
 //                checkPermission(RC_ACCESS_FINE_LOCATION_NEW_ADDRESS);
 //            }
 //        } else {
-            if (mRequestingLocationUpdates) {
-                PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, mLocationSettingsRequest);
-                result.setResultCallback(this);
-            }
+        if (mRequestingLocationUpdates) {
+            PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, mLocationSettingsRequest);
+            result.setResultCallback(this);
+        }
 //        }
     }
 

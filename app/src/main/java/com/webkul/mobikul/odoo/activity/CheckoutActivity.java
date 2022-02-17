@@ -1,9 +1,12 @@
 package com.webkul.mobikul.odoo.activity;
 
 import androidx.databinding.DataBindingUtil;
+
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
 import android.view.Menu;
 import android.view.View;
 
@@ -20,21 +23,14 @@ import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.model.checkout.CheckoutActivityData;
 
 /**
-
  * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
+ *
  * @author Webkul <support@webkul.com>
-
+ * @package Mobikul App
+ * @Category Mobikul
  * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
  * @license https://store.webkul.com/license.html ASL Licence
-
  * @link https://store.webkul.com/license.html
-
  */
 public class CheckoutActivity extends BaseLocationActivity implements FragmentManager.OnBackStackChangedListener {
     private ActivityCheckoutBinding mBinding;

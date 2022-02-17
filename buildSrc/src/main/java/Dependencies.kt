@@ -84,6 +84,8 @@ object DepVersions {
     //appMarketPlace Modules
     const val jUnit = "4.13.2"
 
+    const val greenRobot="3.3.1"
+
 }
 
 object Modules {
@@ -98,8 +100,8 @@ object Flavours {
 }
 
 object Version {
-    const val code = 9
-    const val name = "1.1.6"
+    const val code = 10
+    const val name = "1.1.7"
 }
 
 object Url {
@@ -203,6 +205,7 @@ object Dependencies {
     const val lifecycleExtension = "androidx.lifecycle:lifecycle-extensions:${DepVersions.lifecycleExtension}"
     const val mixPanel = "com.mixpanel.android:mixpanel-android:${DepVersions.mixPanel}"
 
+    const val greenRobot= "org.greenrobot:eventbus:${DepVersions.greenRobot}"
     //SweetAlertDialog Module
     const val materialishProgress = "com.pnikosis:materialish-progress:${DepVersions.materialishProgress}"
 

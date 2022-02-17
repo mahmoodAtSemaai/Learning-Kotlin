@@ -1,11 +1,12 @@
 package com.webkul.mobikul.odoo.adapter.home;
 
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
-import androidx.viewpager.widget.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.viewpager.widget.PagerAdapter;
 
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.databinding.ItemViewPagerHomeBannerBinding;
@@ -66,5 +67,4 @@ public class HomeBannerAdapter extends PagerAdapter {
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
     }
-
 }

@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.jakewharton.rxbinding2.widget.TextViewTextChangeEvent;
@@ -29,6 +30,7 @@ import com.webkul.mobikul.odoo.activity.BaseActivity;
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
 import com.webkul.mobikul.odoo.adapter.extra.SearchHistoryAdapter;
 import com.webkul.mobikul.odoo.adapter.extra.SearchSuggestionProductAdapter;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.connection.RetrofitClient;

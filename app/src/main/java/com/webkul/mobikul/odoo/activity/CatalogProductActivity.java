@@ -2,14 +2,18 @@ package com.webkul.mobikul.odoo.activity;
 
 import android.app.SearchManager;
 import android.content.Intent;
+
 import androidx.databinding.DataBindingUtil;
+
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+
 import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +24,7 @@ import android.widget.Toast;
 import com.webkul.mobikul.odoo.BuildConfig;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.adapter.catalog.CatalogProductListRvAdapter;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.constant.BundleConstant;
@@ -35,6 +40,7 @@ import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.CatalogHelper;
 import com.webkul.mobikul.odoo.helper.EndlessRecyclerViewScrollListener;
+import com.webkul.mobikul.odoo.helper.ErrorConstants;
 import com.webkul.mobikul.odoo.helper.FragmentHelper;
 import com.webkul.mobikul.odoo.helper.NetworkHelper;
 import com.webkul.mobikul.odoo.helper.OdooApplication;
@@ -45,6 +51,7 @@ import com.webkul.mobikul.odoo.model.request.ProductSliderRequest;
 import com.webkul.mobikul.odoo.model.request.SearchRequest;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.Observable;
@@ -59,22 +66,16 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGOR
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_SEARCH_DOMAIN;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_SELLER_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_URL;
+
 /**
-
  * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
+ *
  * @author Webkul <support@webkul.com>
-
+ * @package Mobikul App
+ * @Category Mobikul
  * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
  * @license https://store.webkul.com/license.html ASL Licence
-
  * @link https://store.webkul.com/license.html
-
  */
 
 public class CatalogProductActivity extends BaseActivity {
@@ -117,7 +118,6 @@ public class CatalogProductActivity extends BaseActivity {
                 mBinding.getData().setLazyLoading(false);
 
                 if (mIsFirstCall) {
-                    Log.i(TAG, "onNext: first call");
                     mBinding.setData(catalogProductResponse);
                     mBinding.executePendingBindings();
                     catalogProductResponse.setWishlistData();
@@ -131,25 +131,27 @@ public class CatalogProductActivity extends BaseActivity {
                             requestTypeIdentifier = "ProductSlider" + getIntent().getExtras().getString(BUNDLE_KEY_URL);
                             break;
                         case SELLER_PRODUCTS:
-                            requestTypeIdentifier = "SellerCollection"+getIntent().getExtras().getString(BUNDLE_KEY_SELLER_ID);
+                            requestTypeIdentifier = "SellerCollection" + getIntent().getExtras().getString(BUNDLE_KEY_SELLER_ID);
                             break;
 
                         case FEATURED_CATEGORY:
                         case GENERAL_CATEGORY:
                         case BANNER_CATEGORY:
-                            requestTypeIdentifier = "CategoryRequest" +getIntent().getExtras().getString(BUNDLE_KEY_CATEGORY_ID);
+                            requestTypeIdentifier = "CategoryRequest" + getIntent().getExtras().getString(BUNDLE_KEY_CATEGORY_ID);
                             break;
 
                         case SEARCH_QUERY:
-                            requestTypeIdentifier = "SearchRequestQuery" +getIntent().getExtras().getString(SearchManager.QUERY);
-                            FirebaseAnalyticsImpl.logSearchEvent(CatalogProductActivity.this,getIntent().getExtras().getString(SearchManager.QUERY));
+                            AnalyticsImpl.INSTANCE.trackItemSearchSuccessful(getIntent().getExtras().getString(SearchManager.QUERY),
+                                    catalogProductResponse.getTotalCount());
+                            requestTypeIdentifier = "SearchRequestQuery" + getIntent().getExtras().getString(SearchManager.QUERY);
+                            FirebaseAnalyticsImpl.logSearchEvent(CatalogProductActivity.this, getIntent().getExtras().getString(SearchManager.QUERY));
                             break;
 
                         case SEARCH_DOMAIN:
-                            requestTypeIdentifier = "SearchRequestDomain" +getIntent().getExtras().getString(BUNDLE_KEY_SEARCH_DOMAIN);
+                            requestTypeIdentifier = "SearchRequestDomain" + getIntent().getExtras().getString(BUNDLE_KEY_SEARCH_DOMAIN);
                             break;
                     }
-                    new SaveData(CatalogProductActivity.this,catalogProductResponse,requestTypeIdentifier);
+                    new SaveData(CatalogProductActivity.this, catalogProductResponse, requestTypeIdentifier);
 
 
                     if (mBinding.getData().getProducts().isEmpty()) {
@@ -167,7 +169,6 @@ public class CatalogProductActivity extends BaseActivity {
                     }
                 } else {
                     /*update offset from new response*/
-                    Log.i(TAG, "onNext: not first call");
                     catalogProductResponse.setWishlistData();
                     mBinding.getData().setOffset(catalogProductResponse.getOffset());
                     mBinding.getData().setLimit(catalogProductResponse.getLimit());
@@ -181,13 +182,14 @@ public class CatalogProductActivity extends BaseActivity {
 
         @Override
         public void onError(@NonNull Throwable t) {
+
             /* this might not be true for Rx Callbacks..*/
             // onFailure can be called if the activity is sudden closed, thus dispatcher calls the cancel which result in calling of onFailure..
             if (mBinding.getData() != null) {
                 mBinding.getData().setLazyLoading(false);
             }
 
-            if (!NetworkHelper.isNetworkAvailable(CatalogProductActivity.this)){
+            if (!NetworkHelper.isNetworkAvailable(CatalogProductActivity.this)) {
                 SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(CatalogProductActivity.this);
                 CatalogHelper.CatalogProductRequestType catalogProductRequestType = (CatalogHelper.CatalogProductRequestType) getIntent().getSerializableExtra(BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE);
                 String requestTypeIdentifier = "";
@@ -196,35 +198,37 @@ public class CatalogProductActivity extends BaseActivity {
                         requestTypeIdentifier = "ProductSlider" + getIntent().getExtras().getString(BUNDLE_KEY_URL);
                         break;
                     case SELLER_PRODUCTS:
-                        requestTypeIdentifier = "SellerCollection"+getIntent().getExtras().getString(BUNDLE_KEY_SELLER_ID);
+                        requestTypeIdentifier = "SellerCollection" + getIntent().getExtras().getString(BUNDLE_KEY_SELLER_ID);
                         break;
 
                     case FEATURED_CATEGORY:
                     case GENERAL_CATEGORY:
                     case BANNER_CATEGORY:
-                        requestTypeIdentifier = "CategoryRequest" +getIntent().getExtras().getString(BUNDLE_KEY_CATEGORY_ID);
+                        requestTypeIdentifier = "CategoryRequest" + getIntent().getExtras().getString(BUNDLE_KEY_CATEGORY_ID);
                         break;
 
                     case SEARCH_QUERY:
-                        requestTypeIdentifier = "SearchRequestQuery" +getIntent().getExtras().getString(SearchManager.QUERY);
+                        AnalyticsImpl.INSTANCE.trackItemSearchFailed(getIntent().getExtras().getString(SearchManager.QUERY),
+                                ErrorConstants.APIError.INSTANCE.getErrorMessage(), 400, "");
+                        requestTypeIdentifier = "SearchRequestQuery" + getIntent().getExtras().getString(SearchManager.QUERY);
                         break;
 
                     case SEARCH_DOMAIN:
-                        requestTypeIdentifier = "SearchRequestDomain" +getIntent().getExtras().getString(BUNDLE_KEY_SEARCH_DOMAIN);
+                        requestTypeIdentifier = "SearchRequestDomain" + getIntent().getExtras().getString(BUNDLE_KEY_SEARCH_DOMAIN);
                         break;
                 }
                 CatalogProductResponse dbResponse = sqlLiteDbHelper.getCatalogProductData(requestTypeIdentifier);
 
-                if (mIsFirstCall){
-                    if (dbResponse != null){
+                if (mIsFirstCall) {
+                    if (dbResponse != null) {
                         onNext(dbResponse);
-                    }else {
+                    } else {
                         super.onError(t);
                     }
-                }else {
+                } else {
                     super.onError(t);
                 }
-            }else {
+            } else {
                 super.onError(t);
             }
         }
@@ -263,7 +267,6 @@ public class CatalogProductActivity extends BaseActivity {
         int offset = 0;
         if (!mIsFirstCall) {
             offset = mBinding.getData().getOffset() + AppSharedPref.getItemsPerPage(this);
-            Log.i(TAG, "callApi: "+offset + " "+ AppSharedPref.getItemsPerPage(this));
         }
         CatalogHelper.CatalogProductRequestType catalogProductRequestType = (CatalogHelper.CatalogProductRequestType) getIntent().getSerializableExtra(BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE);
         Observable<CatalogProductResponse> catalogProductDataObservable = null;
@@ -334,15 +337,12 @@ public class CatalogProductActivity extends BaseActivity {
         mBinding.productCatalogRv.setAdapter(new CatalogProductListRvAdapter(this, mBinding.getData().getProducts(), VIEW_TYPE_LIST));
 
         if (AppSharedPref.isGridview(this)) {
-            Log.i(TAG, "initProductCatalogRv: 1");
             int spanCount = ViewHelper.getSpanCount(this);
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, spanCount);
             gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
-                        Log.i(TAG, "getSpanSize: "+spanCount);
-                    if(position == mBinding.getData().getProducts().size()) {
-                        Log.i(TAG, "getSpanSize: 2-> "+position);
+                    if (position == mBinding.getData().getProducts().size()) {
                         return spanCount;
                     }
                     return 1;
@@ -363,7 +363,6 @@ public class CatalogProductActivity extends BaseActivity {
             });
 
         } else {
-            Log.i(TAG, "initProductCatalogRv: 2");
             mBinding.productCatalogRv.setLayoutManager(new LinearLayoutManager(this));
             mBinding.floatingButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_vector_grid));
 
@@ -385,22 +384,20 @@ public class CatalogProductActivity extends BaseActivity {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (recyclerView.getLayoutManager() instanceof GridLayoutManager) {
                     int lastVisibleItemPosition = ((GridLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-                    Log.i(TAG, "onScrollStateChanged: -> "+lastVisibleItemPosition);
 
-                    if(mBinding.getData().getProducts().size()<=9){
+                    if (mBinding.getData().getProducts().size() <= 9) {
                         if ((lastVisibleItemPosition + 1) == mBinding.getData().getTotalCount()) {
-                        mBinding.footerTv.setVisibility(View.VISIBLE);
-                        }
-                        else {
+                            mBinding.footerTv.setVisibility(View.VISIBLE);
+                        } else {
                             mBinding.footerTv.setVisibility(View.GONE);
                         }
-                        showPositionToast(lastVisibleItemPosition+1);
-                    } if(mBinding.getData().getProducts().size()>9){
+                        showPositionToast(lastVisibleItemPosition + 1);
+                    }
+                    if (mBinding.getData().getProducts().size() > 9) {
 
-                        if ((lastVisibleItemPosition ) == mBinding.getData().getTotalCount()) {
+                        if ((lastVisibleItemPosition) == mBinding.getData().getTotalCount()) {
                             mBinding.footerTv.setVisibility(View.VISIBLE);
-                        }
-                        else {
+                        } else {
                             mBinding.footerTv.setVisibility(View.GONE);
                         }
                         showPositionToast(lastVisibleItemPosition);
@@ -409,20 +406,18 @@ public class CatalogProductActivity extends BaseActivity {
 
                 } else {
                     int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-                    Log.i(TAG, "onScrollStateChanged: -> "+lastVisibleItemPosition);
-                    if(mBinding.getData().getProducts().size()<=5){
+                    if (mBinding.getData().getProducts().size() <= 5) {
                         if ((lastVisibleItemPosition + 1) == mBinding.getData().getTotalCount()) {
                             mBinding.footerTv.setVisibility(View.VISIBLE);
-                        }
-                        else {
+                        } else {
                             mBinding.footerTv.setVisibility(View.GONE);
                         }
-                        showPositionToast(lastVisibleItemPosition+1);
-                    } if(mBinding.getData().getProducts().size()>5){
-                        if ((lastVisibleItemPosition ) == mBinding.getData().getTotalCount()) {
+                        showPositionToast(lastVisibleItemPosition + 1);
+                    }
+                    if (mBinding.getData().getProducts().size() > 5) {
+                        if ((lastVisibleItemPosition) == mBinding.getData().getTotalCount()) {
                             mBinding.footerTv.setVisibility(View.VISIBLE);
-                        }
-                        else {
+                        } else {
                             mBinding.footerTv.setVisibility(View.GONE);
                         }
                         showPositionToast(lastVisibleItemPosition);
@@ -496,7 +491,7 @@ public class CatalogProductActivity extends BaseActivity {
             gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
-                    if(position == mBinding.getData().getProducts().size()) {
+                    if (position == mBinding.getData().getProducts().size()) {
                         return spanCount;
                     }
                     return 1;
@@ -509,15 +504,15 @@ public class CatalogProductActivity extends BaseActivity {
             mBinding.floatingButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_vector_list));
         }
     }
+
     public void onClickBackToTop(View view) {
-        Log.i(TAG, "onClickBackToTop: ");
-        if(mBinding.productCatalogRv.getLayoutManager() instanceof GridLayoutManager){
+        if (mBinding.productCatalogRv.getLayoutManager() instanceof GridLayoutManager) {
             GridLayoutManager gridLayoutManager = (GridLayoutManager) mBinding.productCatalogRv.getLayoutManager();
-            gridLayoutManager.scrollToPositionWithOffset(0,0);
+            gridLayoutManager.scrollToPositionWithOffset(0, 0);
             mBinding.footerTv.setVisibility(View.GONE);
-        }else{
+        } else {
             LinearLayoutManager linearLayoutManager = (LinearLayoutManager) mBinding.productCatalogRv.getLayoutManager();
-            linearLayoutManager.scrollToPositionWithOffset(0,0);
+            linearLayoutManager.scrollToPositionWithOffset(0, 0);
             mBinding.footerTv.setVisibility(View.GONE);
         }
     }

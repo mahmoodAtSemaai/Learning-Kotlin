@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.helper.CatalogHelper;
+import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.model.generic.FeaturedCategoryData;
 
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE;
@@ -26,6 +28,8 @@ public class FeaturedCategoryHandler {
     }
 
     public void viewCategory() {
+        AnalyticsImpl.INSTANCE.trackProductCategorySelected(mFeaturedCategotyData.getCategoryId(),
+                mFeaturedCategotyData.getCategoryName(), Helper.getScreenName(mContext));
         Intent intent = new Intent(mContext, CatalogProductActivity.class);
         intent.putExtra(BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE, CatalogHelper.CatalogProductRequestType.FEATURED_CATEGORY);
         intent.putExtra(BUNDLE_KEY_CATEGORY_ID, mFeaturedCategotyData.getCategoryId());

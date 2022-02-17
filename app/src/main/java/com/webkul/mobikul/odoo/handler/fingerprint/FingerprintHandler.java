@@ -7,13 +7,16 @@ import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
 import android.os.CancellationSignal;
+import android.widget.Toast;
+
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
-import android.widget.Toast;
 
 import com.muddzdev.styleabletoastlibrary.StyleableToast;
 import com.webkul.mobikul.odoo.R;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
+import com.webkul.mobikul.odoo.helper.ErrorConstants;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -101,10 +104,13 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
 
         StyleableToast.makeText(mContext, e, Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
         if (success) {
-            if (!AppSharedPref.getIsAllowedFingerprintLogin(mContext))
+            if (!AppSharedPref.getIsAllowedFingerprintLogin(mContext)) {
+                AnalyticsImpl.INSTANCE.trackUserOptsIntoFingerPrintLoginSetupSuccessfull();
                 AppSharedPref.setIsAllowedFingerprintLogin(mContext, true);
+            }
             mCallback.onAuthenticated();
         } else {
+            AnalyticsImpl.INSTANCE.trackUserOptsIntoFingerPrintLoginSetupFailed(ErrorConstants.FingerPrintSetupError.INSTANCE.getErrorCode(), ErrorConstants.FingerPrintSetupError.INSTANCE.getErrorType(), ErrorConstants.FingerPrintSetupError.INSTANCE.getErrorMessage());
             mCallback.onError();
         }
 

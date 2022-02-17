@@ -1,9 +1,13 @@
 package com.webkul.mobikul.odoo.fragment;
 
 import android.content.Intent;
+
 import androidx.databinding.DataBindingUtil;
+
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,21 +37,14 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING
 
 
 /**
-
  * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
+ *
  * @author Webkul <support@webkul.com>
-
+ * @package Mobikul App
+ * @Category Mobikul
  * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
  * @license https://store.webkul.com/license.html ASL Licence
-
  * @link https://store.webkul.com/license.html
-
  */
 public class DashboardFragment extends BaseFragment {
 
@@ -117,7 +114,7 @@ public class DashboardFragment extends BaseFragment {
                     });
                 } else {
                     mBinding.setData(dashboardData);
-                    mBinding.recentOrderRv.setAdapter(new OrderRvAdapter(getContext(), mBinding.getData().getRecentOrders()));
+                    mBinding.recentOrderRv.setAdapter(new OrderRvAdapter(getContext(), mBinding.getData().getRecentOrders(), TAG));
                 }
             }
 

@@ -3,9 +3,10 @@ package com.webkul.mobikul.odoo.handler.customer;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import com.google.android.material.snackbar.Snackbar;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.webkul.mobikul.odoo.R;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
@@ -20,21 +21,14 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
 
 /**
-
  * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
+ *
  * @author Webkul <support@webkul.com>
-
+ * @package Mobikul App
+ * @Category Mobikul
  * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
  * @license https://store.webkul.com/license.html ASL Licence
-
  * @link https://store.webkul.com/license.html
-
  */
 
 public class ForgotPasswordDialogHandler {
@@ -55,6 +49,7 @@ public class ForgotPasswordDialogHandler {
         if (mData.getUsername().isEmpty()) {
             SnackbarHelper.getSnackbar((Activity) mContext, "Enter username or email address.", Snackbar.LENGTH_LONG, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
         } else {
+            AnalyticsImpl.INSTANCE.trackResetPasswordSelected(mData.getUsername());
             AlertDialogHelper.showDefaultProgressDialog(mContext);
             ApiConnection.forgotSignInPassword(mContext
                     , mData.getUsername())
@@ -66,6 +61,10 @@ public class ForgotPasswordDialogHandler {
                             super.onNext(resetPasswordResponse);
 
                             if (resetPasswordResponse.isSuccess()) {
+                                AnalyticsImpl.INSTANCE.trackResetPasswordRequestSuccessfull(
+                                        mData.getUsername()
+                                );
+
                                 new SweetAlertDialog(mContext, SweetAlertDialog.SUCCESS_TYPE)
                                         .setTitleText(mContext.getString(R.string.link_to_resend_login_password_send))
                                         .setContentText(resetPasswordResponse.getMessage())
@@ -73,6 +72,9 @@ public class ForgotPasswordDialogHandler {
                                 dismissDialog();
 
                             } else {
+                                AnalyticsImpl.INSTANCE.trackResetPasswordFailed((long) resetPasswordResponse.getResponseCode(),
+                                        resetPasswordResponse.getMessage(), resetPasswordResponse.getMessage()
+                                );
                                 //dismissDialog();
                                 SnackbarHelper.getSnackbar((Activity) mContext, resetPasswordResponse.getMessage(), Snackbar.LENGTH_LONG, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
                             }

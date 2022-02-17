@@ -1,31 +1,32 @@
 package com.webkul.mobikul.odoo.handler.home;
 
+import static com.webkul.mobikul.odoo.BuildConfig.APP_PLAYSTORE_URL;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatDelegate;
-
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.BaseActivity;
 import com.webkul.mobikul.odoo.activity.HomeActivity;
 import com.webkul.mobikul.odoo.activity.SettingsActivity;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.dialog_frag.RateAppDialogFragm;
-import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
+import com.webkul.mobikul.odoo.helper.ErrorConstants;
 import com.webkul.mobikul.odoo.helper.OdooApplication;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.webkul.mobikul.odoo.BuildConfig.APP_PLAYSTORE_URL;
 
 /**
  * Created by shubham.agarwal on 27/5/17.
@@ -61,21 +62,24 @@ public class HomeActivityHandler {
     }
 
     public void onClickMarketplaceIcon() {
+        String SourceScreen = mContext.getString(R.string.sourceScreen);
+        AnalyticsImpl.INSTANCE.trackMarketPlaceClick(SourceScreen);
         Intent intent = new Intent(mContext, ((OdooApplication) mContext.getApplicationContext()).getMarketplaceLandingPage());
         mContext.startActivity(intent);
     }
-    public void onClickThemeIcon(){
+
+    public void onClickThemeIcon() {
         String themePreference = "isDark";
         int isDark = mContext.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         SharedPreferences.Editor editor = AppSharedPref.getSharedPreferenceEditor(mContext, themePreference);
-        if(Configuration.UI_MODE_NIGHT_NO == isDark) {
+        if (Configuration.UI_MODE_NIGHT_NO == isDark) {
 //            ((HomeActivity) mContext).mBinding.themeTextView.setText(R.string.darkMode);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             editor.putBoolean("DARK", true);
             editor.apply();
             editor.commit();
         }
-        if(Configuration.UI_MODE_NIGHT_YES == isDark) {
+        if (Configuration.UI_MODE_NIGHT_YES == isDark) {
 //            ((HomeActivity) mContext).mBinding.themeTextView.setText(R.string.lightMode);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             editor.putBoolean("DARK", false);
@@ -97,24 +101,31 @@ public class HomeActivityHandler {
                 group.addView(button);
                 if (pair.getKey().equals(AppSharedPref.getLanguageCode(mContext))) {
                     group.check(button.getId());
+                    AnalyticsImpl.INSTANCE.trackLanguageClick(AppSharedPref.getLanguageCode(mContext));
                 }
             }
             group.setOnCheckedChangeListener((group1, checkedId) -> {
                 RadioButton selectedButton = group1.findViewById(checkedId);
                 String selectedLang = (String) selectedButton.getTag();
-                if (!selectedLang.equals(AppSharedPref.getLanguageCode(mContext))) {
-                    AppSharedPref.setLanguageCode(mContext, selectedLang);
-                    AppSharedPref.setIsLanguageChange(mContext, true);
-                    // delete product data
+                try {
+                    if (!selectedLang.equals(AppSharedPref.getLanguageCode(mContext))) {
+                        AppSharedPref.setLanguageCode(mContext, selectedLang);
+                        AppSharedPref.setIsLanguageChange(mContext, true);
+                        AnalyticsImpl.INSTANCE.trackLanguageChangeSuccess(selectedLang);
+                        // delete product data
 
-                    SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(mContext);
-                    sqlLiteDbHelper.deleteAllProductData();
+                        SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(mContext);
+                        sqlLiteDbHelper.deleteAllProductData();
 
-                    if (languageDialog != null) {
-                        languageDialog.dismiss();
+                        if (languageDialog != null) {
+                            languageDialog.dismiss();
+                        }
+                        BaseActivity.setLocale(mContext, true);
                     }
-                    BaseActivity.setLocale(mContext, true);
+                } catch (Exception e) {
+                    AnalyticsImpl.INSTANCE.trackLanguageChangeFail(selectedLang, ErrorConstants.LanguageChangeError.INSTANCE.getErrorCode(), ErrorConstants.LanguageChangeError.INSTANCE.getErrorMessage());
                 }
+
             });
 
             languageDialog = new AlertDialog.Builder(mContext).setTitle(R.string.language)
@@ -122,7 +133,8 @@ public class HomeActivityHandler {
             languageDialog.show();
         }
     }
-    public void onClickSettings(){
+
+    public void onClickSettings() {
         Intent intent = new Intent(mContext, SettingsActivity.class);
         mContext.startActivity(intent);
 

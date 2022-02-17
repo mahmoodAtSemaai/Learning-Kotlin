@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.databinding.DataBindingUtil;
 
 import com.webkul.mobikul.odoo.R;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.database.SaveData;
@@ -39,9 +40,11 @@ import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.IntentHelper;
 import com.webkul.mobikul.odoo.helper.NetworkHelper;
 import com.webkul.mobikul.odoo.helper.OdooApplication;
+import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
 import com.webkul.mobikul.odoo.model.extra.SplashScreenActivityData;
 import com.webkul.mobikul.odoo.model.extra.SplashScreenResponse;
 import com.webkul.mobikul.odoo.model.home.HomePageResponse;
+import com.webkul.mobikul.odoo.model.user.UserModel;
 
 import java.util.Map;
 
@@ -86,22 +89,52 @@ public class SplashScreenActivity extends BaseActivity  {
         if (!AppSharedPref.getLanguageCode(this).isEmpty()) {
             BaseActivity.setLocale(this, false);
         }
+        if (AppSharedPref.getUserAnalyticsId(this) == null) {
 
-        int darkModeFlag = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        boolean isDark = AppSharedPref.isDarkMode(this);
-        if (isDark || darkModeFlag == Configuration.UI_MODE_NIGHT_YES) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            AppSharedPref.setDarkMode(this, true);
+            ApiConnection.getUserAnalytics(this).subscribeOn(Schedulers.io()).subscribe(new CustomObserver<UserAnalyticsResponse>(this) {
+                @Override
+                public void onNext(@androidx.annotation.NonNull UserAnalyticsResponse userAnalyticsResponse) {
+
+                    AnalyticsImpl.INSTANCE.initUserTracking(new UserModel(
+                            userAnalyticsResponse.getEmail(),
+                            userAnalyticsResponse.getAnalyticsId(),
+                            userAnalyticsResponse.getName(),
+                            userAnalyticsResponse.isSeller()
+                    ));
+                    AppSharedPref.setUserAnalyticsId(getBaseContext(), userAnalyticsResponse.getAnalyticsId());
+                    callApi();
+                    super.onNext(userAnalyticsResponse);
+                }
+
+                @Override
+                public void onError(@androidx.annotation.NonNull Throwable t) {
+                    super.onError(t);
+                    AnalyticsImpl.INSTANCE.trackAnalyticsFailure();
+                    callApi();
+                }
+            });
         }
-        else{
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        else
+        {
+            int darkModeFlag = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            boolean isDark = AppSharedPref.isDarkMode(this);
+            if (isDark || darkModeFlag == Configuration.UI_MODE_NIGHT_YES) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                AppSharedPref.setDarkMode(this, true);
+            }
+            else{
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+
+            Helper.logIntentBundleData(getIntent());
+            mBinding = DataBindingUtil.setContentView(this, R.layout.activity_splash_screen);
+            mBinding.setData(new SplashScreenActivityData());    // starting progressBar
+            FirebaseAnalyticsImpl.logAppOpenEvent(this);
+
+            callApi();
         }
 
-        Helper.logIntentBundleData(getIntent());
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_splash_screen);
-        mBinding.setData(new SplashScreenActivityData());    // starting progressBar
-        FirebaseAnalyticsImpl.logAppOpenEvent(this);
-        callApi();
+
     }
 
 

@@ -2,9 +2,12 @@ package com.webkul.mobikul.odoo.adapter.home;
 
 import android.content.Context;
 import android.content.Intent;
+
 import androidx.databinding.DataBindingUtil;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +16,9 @@ import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
 import com.webkul.mobikul.odoo.activity.HomeActivity;
 import com.webkul.mobikul.odoo.activity.SubCategoryActivity;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.databinding.ItemDrawerStartCategoryBinding;
+import com.webkul.mobikul.odoo.generated.callback.OnClickListener;
 import com.webkul.mobikul.odoo.helper.CatalogHelper;
 import com.webkul.mobikul.odoo.model.generic.CategoryData;
 
@@ -23,31 +28,27 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATALOG
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGORY_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGORY_NAME;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGORY_OBJECT;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PARENT_CATEGORY;
 
 /**
-
  * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
+ *
  * @author Webkul <support@webkul.com>
-
+ * @package Mobikul App
+ * @Category Mobikul
  * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
  * @license https://store.webkul.com/license.html ASL Licence
-
  * @link https://store.webkul.com/license.html
-
  */
 public class NavDrawerCategoryStartRvAdapter extends RecyclerView.Adapter<NavDrawerCategoryStartRvAdapter.CategoryParentViewHolder> {
     private final Context mContext;
     private List<CategoryData> mCategoriesData;
+    private final String mParentCategory;
 
-    public NavDrawerCategoryStartRvAdapter(Context context, List<CategoryData> categoriesData) {
+    public NavDrawerCategoryStartRvAdapter(Context context, List<CategoryData> categoriesData, String parentCategory) {
         mContext = context;
         mCategoriesData = categoriesData;
+        mParentCategory = parentCategory;
     }
 
     @NonNull
@@ -80,15 +81,18 @@ public class NavDrawerCategoryStartRvAdapter extends RecyclerView.Adapter<NavDra
 
     private void onClickParentCategoryItem(CategoryData parentCategoryData) {
         if (parentCategoryData.getChildren().isEmpty()) {
+            AnalyticsImpl.INSTANCE.trackSubCategoryItemSelect(mParentCategory, parentCategoryData.getName(), parentCategoryData.getCategoryId());
             Intent intent = new Intent(mContext, CatalogProductActivity.class);
             intent.putExtra(BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE, CatalogHelper.CatalogProductRequestType.GENERAL_CATEGORY);
             intent.putExtra(BUNDLE_KEY_CATEGORY_ID, parentCategoryData.getCategoryId());
             intent.putExtra(BUNDLE_KEY_CATEGORY_NAME, parentCategoryData.getName());
             mContext.startActivity(intent);
         } else {
-            Intent intent = new Intent(mContext, SubCategoryActivity.class);
-            intent.putExtra(BUNDLE_KEY_CATEGORY_OBJECT, parentCategoryData);
-            mContext.startActivity(intent);
+            AnalyticsImpl.INSTANCE.trackDynamicParentItemSelect(parentCategoryData.getName());
+            Intent subCategoryIntent = new Intent(mContext, SubCategoryActivity.class);
+            subCategoryIntent.putExtra(BUNDLE_KEY_PARENT_CATEGORY, parentCategoryData.getName());
+            subCategoryIntent.putExtra(BUNDLE_KEY_CATEGORY_OBJECT, parentCategoryData);
+            mContext.startActivity(subCategoryIntent);
         }
         if (mContext instanceof HomeActivity) {
             ((HomeActivity) mContext).mBinding.drawerLayout.closeDrawers();

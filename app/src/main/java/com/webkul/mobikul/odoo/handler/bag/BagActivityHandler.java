@@ -7,10 +7,12 @@ import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.BagActivity;
 import com.webkul.mobikul.odoo.activity.BaseActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
+import com.webkul.mobikul.odoo.helper.IntentHelper;
 import com.webkul.mobikul.odoo.model.BaseResponse;
 import com.webkul.mobikul.odoo.model.cart.BagResponse;
 
@@ -21,6 +23,9 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -54,7 +59,18 @@ public class BagActivityHandler {
         mData = data;
     }
 
+    public void beginCheckout() {
+        List<String> nameList = new ArrayList<>();
+        for(int i=0; i < mData.getItems().size(); i++) {
+            nameList.add(mData.getItems().get(i).getName());
+        }
+        AnalyticsImpl.INSTANCE.trackProceedToCheckoutSelected(mData.getGrandTotal().getValue(), mData.getTax().getValue(),
+                nameList);
+        IntentHelper.beginCheckout(mContext);
+    }
+
     public void emptyCart() {
+        AnalyticsImpl.INSTANCE.trackEmptyShoppingBagSelected();
         ((BaseActivity) mContext).mSweetAlertDialog = new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE)
                 .setTitleText(mContext.getString(R.string.msg_are_you_sure))
                 .setContentText(mContext.getString(R.string.question_want_to_empty_bag))
@@ -83,10 +99,12 @@ public class BagActivityHandler {
                                         mContext.startActivity(i);
                                     }
                                 });
-                            }else {
+                            } else {
                                 if (baseResponse.isSuccess()) {
+                                    AnalyticsImpl.INSTANCE.trackEmptyShoppingBagSuccessful();
                                     ((BagActivity) mContext).getCartData();
                                 } else {
+                                    AnalyticsImpl.INSTANCE.trackEmptyShoppingBagFailed(baseResponse.getMessage(), baseResponse.getResponseCode(), "");
                                     AlertDialogHelper.showDefaultWarningDialog(mContext, mContext.getString(R.string.bag), baseResponse.getMessage());
                                 }
                             }

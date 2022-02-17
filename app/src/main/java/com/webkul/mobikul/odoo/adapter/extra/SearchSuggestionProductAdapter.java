@@ -1,11 +1,12 @@
 package com.webkul.mobikul.odoo.adapter.extra;
 
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.databinding.ItemSearchSuggestionProductBinding;
