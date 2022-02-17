@@ -136,7 +136,7 @@ public class LoginFragmentHandler {
                             fingerPrintHelper.askForFingerprintLogin(mContext, loginResponse, mData, null, null, null);
                         } else {
                             if (AppSharedPref.getUserAnalyticsId(mContext) == null) {
-                                ApiConnection.getUserAnalytics(mContext).subscribeOn(Schedulers.io()).subscribe(new CustomObserver<UserAnalyticsResponse>(mContext) {
+                                ApiConnection.getUserAnalytics(mContext).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<UserAnalyticsResponse>(mContext) {
                                     @Override
                                     public void onNext(@androidx.annotation.NonNull UserAnalyticsResponse userAnalyticsResponse) {
                                         super.onNext(userAnalyticsResponse);
@@ -154,6 +154,7 @@ public class LoginFragmentHandler {
                                     @Override
                                     public void onError(@androidx.annotation.NonNull Throwable t) {
                                         super.onError(t);
+
                                         AnalyticsImpl.INSTANCE.trackAnalyticsFailure();
                                         goToHomePage(mContext, loginResponse, mData, null, null);
                                     }

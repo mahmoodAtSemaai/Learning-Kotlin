@@ -61,6 +61,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 public class FingerPrintLoginHelper {
 
@@ -200,7 +201,7 @@ public class FingerPrintLoginHelper {
     }
 
     public void navigateToHomeAfterAnalyticsSetup(Context mContext, LoginResponse loginResponse, LoginRequestData lData, SignUpResponse signUpResponse, SignUpData sData, String billingAddressUrl) {
-        ApiConnection.getUserAnalytics(mContext).subscribeOn(Schedulers.io()).subscribe(new CustomObserver<UserAnalyticsResponse>(mContext) {
+        ApiConnection.getUserAnalytics(mContext).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<UserAnalyticsResponse>(mContext) {
             @Override
             public void onNext(@androidx.annotation.NonNull UserAnalyticsResponse userAnalyticsResponse) {
                 super.onNext(userAnalyticsResponse);
@@ -211,7 +212,6 @@ public class FingerPrintLoginHelper {
                         userAnalyticsResponse.isSeller()
                 ));
                 AppSharedPref.setUserAnalyticsId(mContext, userAnalyticsResponse.getAnalyticsId());
-
                 goToHomePage(mContext, loginResponse, lData, signUpResponse, sData, billingAddressUrl);
             }
 
