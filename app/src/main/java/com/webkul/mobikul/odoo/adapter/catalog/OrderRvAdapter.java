@@ -1,8 +1,10 @@
 package com.webkul.mobikul.odoo.adapter.catalog;
 
 import android.content.Context;
+
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,21 +17,14 @@ import com.webkul.mobikul.odoo.model.customer.order.OrderData;
 import java.util.List;
 
 /**
-
  * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
+ *
  * @author Webkul <support@webkul.com>
-
+ * @package Mobikul App
+ * @Category Mobikul
  * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
  * @license https://store.webkul.com/license.html ASL Licence
-
  * @link https://store.webkul.com/license.html
-
  */
 
 public class OrderRvAdapter extends RecyclerView.Adapter<OrderRvAdapter.ViewHolder> {
@@ -38,10 +33,12 @@ public class OrderRvAdapter extends RecyclerView.Adapter<OrderRvAdapter.ViewHold
 
     private final Context mContext;
     private final List<OrderData> mOrderDatas;
+    private final String mSourceActivity;
 
-    public OrderRvAdapter(Context context, List<OrderData> orderDatas) {
+    public OrderRvAdapter(Context context, List<OrderData> orderDatas, String sourceActivity) {
         mContext = context;
         mOrderDatas = orderDatas;
+        mSourceActivity = sourceActivity;
     }
 
     public void updateOrderData(List<OrderData> orderDatas) {
@@ -59,7 +56,7 @@ public class OrderRvAdapter extends RecyclerView.Adapter<OrderRvAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         final OrderData orderData = mOrderDatas.get(position);
         holder.mBinding.setData(orderData);
-        holder.mBinding.setHandler(new OrderItemHandler(mContext, orderData));
+        holder.mBinding.setHandler(new OrderItemHandler(mContext, orderData, mSourceActivity));
         holder.mBinding.executePendingBindings();
     }
 

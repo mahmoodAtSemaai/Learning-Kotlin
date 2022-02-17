@@ -9,9 +9,11 @@ import android.util.Log;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.webkul.mobikul.odoo.BuildConfig;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.model.BaseResponse;
 import com.webkul.mobikul.odoo.model.request.AuthenticationRequest;
+import com.webkul.mobikul.odoo.model.user.UserModel;
 
 /**
  * Created by shubham.agarwal on 17/5/17.

@@ -22,6 +22,7 @@ import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.databinding.FragmentAccountBinding;
 import com.webkul.mobikul.odoo.dialog_frag.ProfilePictureDialogFragment;
 import com.webkul.mobikul.odoo.handler.customer.AccountFragmentHandler;
+import com.webkul.mobikul.odoo.handler.home.FragmentNotifier;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.Helper;
@@ -37,6 +38,8 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
 import static com.webkul.mobikul.odoo.helper.ImageHelper.encodeImage;
+
+import org.greenrobot.eventbus.EventBus;
 
 
 /**
@@ -334,5 +337,18 @@ public class AccountFragment extends BaseFragment {
             ImageHelper.load(mBinding.profileBanner, "", null, DiskCacheStrategy.NONE, true, ImageHelper.ImageType.BANNER_SIZE_LARGE);
 
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(getContext());
+        EventBus.getDefault().post(FragmentNotifier.HomeActivityFragments.ACCOUNT_FRAGMENT);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(getContext());
     }
 }

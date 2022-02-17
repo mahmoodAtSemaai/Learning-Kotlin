@@ -103,7 +103,8 @@ dependencies {
             Dependencies.flexbox,
             Dependencies.stetho,
             Dependencies.stethoOkHttp,
-            Dependencies.coreKTX
+            Dependencies.coreKTX,
+            Dependencies.greenRobot
     )
 
     androidTestImplementation(
@@ -159,7 +160,6 @@ dependencies {
             Dependencies.daggerCompiler,
             Dependencies.glideCompiler
     )
-
     androidTestImplementation(Dependencies.espressoCore, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

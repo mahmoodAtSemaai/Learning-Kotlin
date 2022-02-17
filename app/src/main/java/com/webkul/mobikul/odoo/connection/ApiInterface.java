@@ -1,6 +1,7 @@
 package com.webkul.mobikul.odoo.connection;
 
 import com.webkul.mobikul.odoo.model.BaseResponse;
+import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
 import com.webkul.mobikul.odoo.model.cart.BagResponse;
 import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse;
 import com.webkul.mobikul.odoo.model.checkout.OrderPlaceResponse;
@@ -10,7 +11,6 @@ import com.webkul.mobikul.odoo.model.checkout.ShippingMethodResponse;
 import com.webkul.mobikul.odoo.model.customer.ResetPasswordResponse;
 import com.webkul.mobikul.odoo.model.customer.account.SaveCustomerDetailResponse;
 import com.webkul.mobikul.odoo.model.customer.address.AddressFormResponse;
-import com.webkul.mobikul.odoo.model.customer.address.AddressRequestBody;
 import com.webkul.mobikul.odoo.model.customer.address.addressBodyParams.AddressAPIConstants;
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.DistrictListResponse;
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.StateListResponse;
@@ -97,6 +97,9 @@ public interface ApiInterface {
     String MOBIKUL_DELETE_PRODUCT_FROM_WISHLIST = "my/removeFromWishlist/{product_id}";
     String MOBIKUL_CART_TO_WHISHLIST = "my/cartToWishlist";
     String MOBIKUL_SEND_EMAIL_VERIFICATION_LINK = "send/verifyEmail";
+
+    /*Analytics*/
+     String MOBIKUL_ANALYTICS = "/mobikul/analytics";
 
     /*Extras*/
     String MOBIKUL_EXTRAS_SPLASH_PAGE_DATA = "mobikul/splashPageData";
@@ -363,6 +366,12 @@ public interface ApiInterface {
 
     @GET(MOBIKUL_TERM_AND_CONDITION)
     Observable<TermAndConditionResponse> getTermAndCondition();
+
+
+    /*  Analytics API */
+    @POST(MOBIKUL_ANALYTICS)
+    Observable<UserAnalyticsResponse> getUserAnalyticsDetails(@Body String registerDeviceTokenRequestStr);
+
 
     /*-----------------------------------------------------------------------------------------------------------------------------------------------------------
        OTHER API's

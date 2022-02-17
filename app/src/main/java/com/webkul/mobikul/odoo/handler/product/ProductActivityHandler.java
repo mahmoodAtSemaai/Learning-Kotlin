@@ -19,6 +19,7 @@ import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.BaseActivity;
 import com.webkul.mobikul.odoo.activity.ProductActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.custom.CustomToast;
@@ -30,6 +31,7 @@ import com.webkul.mobikul.odoo.fragment.ProductReviewFragment;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.FragmentHelper;
+import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.IntentHelper;
 import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.helper.SnackbarHelper;
@@ -154,6 +156,14 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
                             });
                         }else {
                             FirebaseAnalyticsImpl.logAddToCartEvent(mContext,productId,addToCartResponse.getProductName());
+                            if(addToCartResponse.isSuccess()) {
+                                AnalyticsImpl.INSTANCE.trackAddItemToBagSuccessful(mData.getQuantity(),
+                                        mData.getProductId(), mData.getSeller().getMarketplaceSellerId(),
+                                        mData.getName());
+                            } else {
+                                AnalyticsImpl.INSTANCE.trackAddItemToBagFailed(addToCartResponse.getMessage(),
+                                        addToCartResponse.getResponseCode(), "");
+                            }
                             if (isBuyNow) {
                                 if (addToCartResponse.isSuccess()) {
                                     IntentHelper.beginCheckout(mContext);
@@ -213,6 +223,7 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
     }
 
     public void shareProduct() {
+        AnalyticsImpl.INSTANCE.trackShareButtonSelected(mData.getProductId(), mData.getName());
         Intent sendIntent = new Intent();
         FirebaseAnalyticsImpl.logShareEvent(mContext,mData.getProductId(),mData.getName());
         sendIntent.setAction(Intent.ACTION_SEND);
@@ -343,6 +354,9 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
     }
 
     public void onClickSellerName(String sellerID) {
+        AnalyticsImpl.INSTANCE.trackSellerProfileSelected(Helper.getScreenName(mContext),
+                mData.getSeller().getMarketplaceSellerId(), (int) mData.getSeller().getAverageRating(),
+                mData.getSeller().getSellerName());
         Intent intent = new Intent(mContext, ((OdooApplication) mContext.getApplicationContext()).getSellerProfileActivity());
         intent.putExtra(BUNDLE_KEY_SELLER_ID, sellerID);
         mContext.startActivity(intent);

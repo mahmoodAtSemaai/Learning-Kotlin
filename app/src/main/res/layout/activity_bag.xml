@@ -265,7 +265,7 @@
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/button_height_generic"
-                    android:onClick="@{()->IntentHelper.beginCheckout(context)}"
+                    android:onClick="@{()-> handler.beginCheckout()}"
                     android:text="@string/proceed_to_checkout"
                     android:textAllCaps="true" />
 

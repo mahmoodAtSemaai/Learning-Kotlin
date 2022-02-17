@@ -26,11 +26,14 @@ import androidx.databinding.DataBindingUtil;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.webkul.mobikul.odoo.R;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
+import com.webkul.mobikul.odoo.analytics.models.AnalyticsAddressDataModel;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.databinding.FragmentNewAddressBinding;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
+import com.webkul.mobikul.odoo.helper.ErrorConstants;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.SnackbarHelper;
 import com.webkul.mobikul.odoo.model.BaseResponse;
@@ -92,6 +95,7 @@ public class NewAddressFragment extends BaseFragment {
     public boolean villagesAvailable = true;
 
     public AddressRequestBody addressRequestBody = new AddressRequestBody();
+    AnalyticsAddressDataModel analyticsAddressDataModel = new AnalyticsAddressDataModel();
     public AddressFormResponse addressFormResponse = new AddressFormResponse(null);
 
     public boolean isEditMode = false;
@@ -154,13 +158,12 @@ public class NewAddressFragment extends BaseFragment {
         }
 
         mBinding.saveAddressBtn.setOnClickListener(v -> {
-            if(checkIfSubRegionsAreLoading()) {
+            if (checkIfSubRegionsAreLoading()) {
                 if (isMissingDetails)
                     validateMandatoryFeilds(selectedStateId);
                 else
                     validateAddressEditTextFeilds();
-            }
-            else{
+            } else {
                 showShortToast(getString(R.string.missing_feilds_in_address_form));
             }
         });
@@ -194,7 +197,7 @@ public class NewAddressFragment extends BaseFragment {
     }
 
     private void validateAddressEditTextFeilds() {
-        if (isValid(mBinding.nameEt)  && isValid(mBinding.telephoneEt) && addressRequestBody.village_id != null) {
+        if (isValid(mBinding.nameEt) && isValid(mBinding.telephoneEt) && addressRequestBody.village_id != null) {
             makeRequestBody();
         } else {
             SnackbarHelper.getSnackbar(getActivity(), getString(R.string.missing_feilds_in_address_form), Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
@@ -211,12 +214,21 @@ public class NewAddressFragment extends BaseFragment {
     }
 
     private void callApiToSaveAddress(AddressRequestBody addressRequestBody) {
+
         if (isEditMode) {
+            AnalyticsImpl.INSTANCE.trackAddressUpdateSubmitted(analyticsAddressDataModel);
             ApiConnection.editAddress(getContext(), addressRequestBody.getNewAddressData(), addressUrl).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(getAddressResponseObserver(getString(R.string.address_edit_text)));
         } else {
+            AnalyticsImpl.INSTANCE.trackAddressAdded(analyticsAddressDataModel);
             ApiConnection.addNewAddress(getContext(), addressRequestBody.getNewAddressData()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(getAddressResponseObserver(getString(R.string.address_added_text)));
         }
     }
+
+//    private AnalyticsAddressDataModel getAnalyticsAddressDataModelFromAddressBody(AddressRequestBody addressRequestBody)
+//    {
+//        AnalyticsAddressDataModel temp= new AnalyticsAddressDataModel();
+//     temp.setProvince();
+//    }
 
     private Observer<? super BaseResponse> getAddressResponseObserver(String string) {
         return new CustomObserver<BaseResponse>(getContext()) {
@@ -224,6 +236,17 @@ public class NewAddressFragment extends BaseFragment {
             public void onNext(@androidx.annotation.NonNull BaseResponse baseResponse) {
                 super.onNext(baseResponse);
                 showToastAndFinish(string);
+                if (baseResponse.isSuccess())
+                    AnalyticsImpl.INSTANCE.trackAddressUpdateSuccessfull(analyticsAddressDataModel);
+                else
+                    AnalyticsImpl.INSTANCE.trackAddressUpdateFailed(analyticsAddressDataModel, baseResponse.getResponseCode(),  ErrorConstants.AddressUpdateError.INSTANCE.getErrorType(), baseResponse.getMessage());
+            }
+
+            @Override
+            public void onError(@androidx.annotation.NonNull Throwable t) {
+                super.onError(t);
+                AnalyticsImpl.INSTANCE.trackAddressUpdateFailed(analyticsAddressDataModel, ErrorConstants.AddressUpdateError.INSTANCE.getErrorCode(), ErrorConstants.AddressUpdateError.INSTANCE.getErrorType(), null);
+
             }
         };
     }
@@ -235,7 +258,7 @@ public class NewAddressFragment extends BaseFragment {
     }
 
     private void hideDialog() {
-        if(alertDialog != null && alertDialog.isShowing()) {
+        if (alertDialog != null && alertDialog.isShowing()) {
             alertDialog.dismiss();
         }
     }
@@ -243,8 +266,6 @@ public class NewAddressFragment extends BaseFragment {
     private boolean isValid(TextInputEditText etFeild) {
         return (etFeild.getText() != null && etFeild.getText().length() > 0);
     }
-
-
 
 
     private void fetchCountry() {
@@ -310,7 +331,7 @@ public class NewAddressFragment extends BaseFragment {
             @Override
             public void onNext(@NonNull StateListResponse stateListResponse) {
                 super.onNext(stateListResponse);
-                int pos = refreshStatesData(stateListResponse,stateId);
+                int pos = refreshStatesData(stateListResponse, stateId);
                 setUpStateSpinner();
                 setStateSpinnerItemSelection(pos);
             }
@@ -339,6 +360,7 @@ public class NewAddressFragment extends BaseFragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 onStateSelected(position);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -347,15 +369,15 @@ public class NewAddressFragment extends BaseFragment {
 
     private void onStateSelected(int position) {
         String selectedState = statesList.get(position);
+        analyticsAddressDataModel.setProvince(selectedState);
         selectedStateId = String.valueOf(stateListHashmap.get(selectedState).getId());
-        if(stateListHashmap.get(selectedState).isAvailable()) {
+        if (stateListHashmap.get(selectedState).isAvailable()) {
             resetSpinners(RESET_SPINNERS_FROM_DISTRICT_UPTO_VILLAGE);
             districtsAvailable = false;
             fetchDistricts(stateListHashmap.get(selectedState).getId());
             setSubRegionFieldsVisibility(true);
             isMissingDetails = false;
-        }
-        else{
+        } else {
             resetSpinners(RESET_SPINNERS_FROM_DISTRICT_UPTO_VILLAGE);
             setSubRegionFieldsVisibility(false);
             isMissingDetails = true;
@@ -363,11 +385,11 @@ public class NewAddressFragment extends BaseFragment {
     }
 
     private void setSubRegionFieldsVisibility(boolean show) {
-        mBinding.districtContainer.setVisibility(show? View.VISIBLE : View.GONE);
-        mBinding.subDistrictContainer.setVisibility(show? View.VISIBLE : View.GONE);
-        mBinding.villageContainer.setVisibility(show? View.VISIBLE : View.GONE);
-        mBinding.postalCodeContainer.setVisibility(show? View.VISIBLE : View.GONE);
-        mBinding.streetContainer.setVisibility(show? View.VISIBLE : View.GONE);
+        mBinding.districtContainer.setVisibility(show ? View.VISIBLE : View.GONE);
+        mBinding.subDistrictContainer.setVisibility(show ? View.VISIBLE : View.GONE);
+        mBinding.villageContainer.setVisibility(show ? View.VISIBLE : View.GONE);
+        mBinding.postalCodeContainer.setVisibility(show ? View.VISIBLE : View.GONE);
+        mBinding.streetContainer.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     private int refreshStatesData(StateListResponse stateListResponse, int stateId) {
@@ -385,7 +407,6 @@ public class NewAddressFragment extends BaseFragment {
     }
 
 
-
     private void fetchDistricts(int state_id) {
         ApiConnection.getDistricts(getContext(), state_id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<DistrictListResponse>(getContext()) {
             @Override
@@ -399,7 +420,7 @@ public class NewAddressFragment extends BaseFragment {
     }
 
     private void setDistrictSpinnerSelection(int pos) {
-        if(pos != UNSELECTED_POSITION)
+        if (pos != UNSELECTED_POSITION)
             mBinding.districtSpinner.setSelection(pos);
     }
 
@@ -411,7 +432,7 @@ public class NewAddressFragment extends BaseFragment {
             DistrictData districtData = districtListResponse.data.get(i);
             districtsList.add(districtData.getName());
             districtListHashmap.put(districtData.getName(), districtData);
-            if(isEditMode && !addressFormResponse.getDistrictId().isEmpty() && FIRST_TIME_SELECTION == FILL_UP_FEILDS &&
+            if (isEditMode && !addressFormResponse.getDistrictId().isEmpty() && FIRST_TIME_SELECTION == FILL_UP_FEILDS &&
                     addressFormResponse.getDistrictId().equals(String.valueOf(districtData.getId())))
                 pos = i;
         }
@@ -435,6 +456,7 @@ public class NewAddressFragment extends BaseFragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 onDistrictSelected(position);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -443,6 +465,7 @@ public class NewAddressFragment extends BaseFragment {
 
     private void onDistrictSelected(int position) {
         String selectedState = districtsList.get(position);
+        analyticsAddressDataModel.setDistrict(selectedState);
         resetSpinners(RESET_SPINNERS_FROM_SUB_DISTRICT_UPTO_VILLAGE);
         subDistrictsAvailable = false;
         fetchSubDistricts(districtListHashmap.get(selectedState).getId());
@@ -451,10 +474,10 @@ public class NewAddressFragment extends BaseFragment {
 
     private void validateMandatoryFeilds(String unavailable_state_id) {
         boolean isFormFilledup = checkMandatoryFeilds();
-        if(isFormFilledup) {
+        if (isFormFilledup) {
+            analyticsAddressDataModel.setServicable(false);
             showUnavailabilityAlertDialog(unavailable_state_id);
-        }
-        else{
+        } else {
             showErrorMessage(getString(R.string.missing_feilds_in_address_form));
         }
     }
@@ -463,7 +486,7 @@ public class NewAddressFragment extends BaseFragment {
         SnackbarHelper.getSnackbar(getActivity(), errorMessage, Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
     }
 
-    private void showUnavailabilityAlertDialog(String unavailable_state_id){
+    private void showUnavailabilityAlertDialog(String unavailable_state_id) {
         alertDialog = new SweetAlertDialog(requireContext(), SweetAlertDialog.NORMAL_TYPE)
                 .setTitleText(getString(R.string.service_unavailable))
                 .setContentText(getString(R.string.service_unavailablity_text))
@@ -506,7 +529,7 @@ public class NewAddressFragment extends BaseFragment {
     }
 
     private void setSubDistrictSpinnerSelection(int pos) {
-        if(pos != UNSELECTED_POSITION)
+        if (pos != UNSELECTED_POSITION)
             mBinding.subDistrictSpinner.setSelection(pos);
     }
 
@@ -514,11 +537,11 @@ public class NewAddressFragment extends BaseFragment {
         subDistrictsList.clear();
         subDistrictListHashmap.clear();
         int pos = UNSELECTED_POSITION;
-        for (int i = 0; i< subDistrictListResponse.data.size();i++) {
+        for (int i = 0; i < subDistrictListResponse.data.size(); i++) {
             SubDistrictData subDistrictData = subDistrictListResponse.data.get(i);
             subDistrictsList.add(subDistrictData.getName());
             subDistrictListHashmap.put(subDistrictData.getName(), subDistrictData);
-            if(isEditMode && !addressFormResponse.getSub_district_id().isEmpty() && FIRST_TIME_SELECTION == FILL_UP_FEILDS &&
+            if (isEditMode && !addressFormResponse.getSub_district_id().isEmpty() && FIRST_TIME_SELECTION == FILL_UP_FEILDS &&
                     addressFormResponse.getSub_district_id().equals(String.valueOf(subDistrictData.getId())))
                 pos = i;
         }
@@ -542,6 +565,7 @@ public class NewAddressFragment extends BaseFragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 onSubDistrictSelected(position);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -550,6 +574,7 @@ public class NewAddressFragment extends BaseFragment {
 
     private void onSubDistrictSelected(int position) {
         String selectedSubDistrict = subDistrictsList.get(position);
+        analyticsAddressDataModel.setSubDistrict(selectedSubDistrict);
         resetSpinners(RESET_SPINNERS_VILLAGE);
         villagesAvailable = false;
         fetchVillage(subDistrictListHashmap.get(selectedSubDistrict).getId());
@@ -571,19 +596,19 @@ public class NewAddressFragment extends BaseFragment {
     }
 
     private void setVillageSpinnerSelection(int pos) {
-        if(pos != UNSELECTED_POSITION)
+        if (pos != UNSELECTED_POSITION)
             mBinding.villageSpinner.setSelection(pos);
     }
 
     private int refreshVillageData(VillageListResponse villageListResponse) {
         villagesList.clear();
         villageListHashmap.clear();
-        int  pos = UNSELECTED_POSITION;
-        for (int  i = 0; i < villageListResponse.data.size();i++) {
+        int pos = UNSELECTED_POSITION;
+        for (int i = 0; i < villageListResponse.data.size(); i++) {
             VillageData villageData = villageListResponse.data.get(i);
             villagesList.add(villageData.getName());
             villageListHashmap.put(villageData.getName(), villageData);
-            if(isEditMode && !addressFormResponse.getVillage_id().isEmpty() && FIRST_TIME_SELECTION == FILL_UP_FEILDS &&
+            if (isEditMode && !addressFormResponse.getVillage_id().isEmpty() && FIRST_TIME_SELECTION == FILL_UP_FEILDS &&
                     addressFormResponse.getVillage_id().equals(String.valueOf(villageData.getId())))
                 pos = i;
         }
@@ -605,8 +630,9 @@ public class NewAddressFragment extends BaseFragment {
         mBinding.villageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                onVillageSelected(villageListResponse,position);
+                onVillageSelected(villageListResponse, position);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -615,8 +641,9 @@ public class NewAddressFragment extends BaseFragment {
 
     private void onVillageSelected(VillageListResponse villageListResponse, int position) {
         VillageData villageData = villageListResponse.getData().get(position);
+        analyticsAddressDataModel.setVillage(villageData.getName());
         addressRequestBody.setVillage_id(String.valueOf(villageData.getId()));
-        if(FIRST_TIME_SELECTION == FILL_UP_FEILDS)
+        if (FIRST_TIME_SELECTION == FILL_UP_FEILDS)
             FIRST_TIME_SELECTION++;
         if (villageData.getZip().equalsIgnoreCase(getString(R.string.false_))) {
             setUnavailableVillageData(villageData);
@@ -644,11 +671,11 @@ public class NewAddressFragment extends BaseFragment {
         String missingDistrict = districtListHashmap.get(addressRequestBody.getDistrict_id()).getName();
         String missingSubDistrict = subDistrictListHashmap.get(addressRequestBody.getSub_district_id()).getName();
         String missingVillage = villageListHashmap.get(addressRequestBody.getSub_district_id()).getName();
-        logFirebaseEvent(missingState,missingDistrict,missingSubDistrict,missingVillage);
+        logFirebaseEvent(missingState, missingDistrict, missingSubDistrict, missingVillage);
     }
 
     private void logFirebaseEvent(String missingState, String missingDistrict, String missingSubDistrict, String missingVillage) {
-        FirebaseAnalyticsImpl.logPostalCodeUnavailable(requireContext(), missingState,missingDistrict,missingSubDistrict,missingVillage);
+        FirebaseAnalyticsImpl.logPostalCodeUnavailable(requireContext(), missingState, missingDistrict, missingSubDistrict, missingVillage);
     }
 
 

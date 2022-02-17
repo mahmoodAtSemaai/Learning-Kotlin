@@ -1,30 +1,29 @@
 package com.webkul.mobikul.odoo.activity;
 
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.fragment.app.FragmentManager;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+
 import com.webkul.mobikul.odoo.R;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.RetrofitClient;
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
-import com.webkul.mobikul.odoo.helper.CustomerHelper;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.IntentHelper;
 
@@ -32,9 +31,6 @@ import java.util.Locale;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.disposables.CompositeDisposable;
-
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CUSTOMER_FRAG_TYPE;
 
 /**
  * Webkul Software.
@@ -93,6 +89,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         mSupportFragmentManager = getSupportFragmentManager();
         SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(this);
         mSqLiteDatabase = sqlLiteDbHelper.getWritableDatabase();
+        AnalyticsImpl.INSTANCE.trackActivityOpened(getTitle().toString());
     }
 
     protected void showBackButton(boolean show) {
@@ -130,16 +127,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         int i = item.getItemId();
         if (i == android.R.id.home) {
             onBackPressed();
-
-        } else if (i == R.id.menu_item_bag) {
-            IntentHelper.goToBag(this);
         }
-        else if (i == R.id.menu_item_wishlist) {
-            Intent intent = new Intent(this, CustomerBaseActivity.class);
-            intent.putExtra(BUNDLE_KEY_CUSTOMER_FRAG_TYPE, CustomerHelper.CustomerFragType.TYPE_WISHLIST);
-            startActivity(intent);
-
-        }
+        // all [else] codeblock shifted to @HomeActivity @CustomerBaseActivity for code uniformity & analytics
         return super.onOptionsItemSelected(item);
     }
 
@@ -192,6 +181,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onStop();
         mCompositeDisposable.clear();
         RetrofitClient.getDispatcher().cancelAll();
+        AnalyticsImpl.INSTANCE.trackActivityClosed(getTitle().toString());
     }
 
     @Override
@@ -199,5 +189,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onDestroy();
         mSqLiteDatabase.close();
         AlertDialogHelper.dismiss(this);
+
     }
+
 }

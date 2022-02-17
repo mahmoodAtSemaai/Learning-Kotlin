@@ -56,7 +56,7 @@ public class SettingsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(AppSharedPref.isDarkChange(this)){
+        if (AppSharedPref.isDarkChange(this)) {
             AppSharedPref.setIsDarkChange(this, false);
             BaseActivity.setLocale(this, false);
         }
@@ -65,17 +65,18 @@ public class SettingsActivity extends BaseActivity {
         setActionbarTitle(this.getResources().getString(R.string.setting));
         showBackButton(true);
         setDataOnToggle();
-        mBinding.setHandler( new SettingHandler(mBinding,this));
-        if(AppSharedPref.isDarkMode(this))
+        mBinding.setHandler(new SettingHandler(mBinding, this));
+        if (AppSharedPref.isDarkMode(this))
             mBinding.themeTextView.setText(R.string.lightMode);
         else
             mBinding.themeTextView.setText(R.string.darkMode);
     }
-    private void setDataOnToggle(){
+
+    private void setDataOnToggle() {
 
         if (AppSharedPref.isRecentViewEnable(this)) {
             mBinding.showRecentView.setChecked(true);
-        }else {
+        } else {
             mBinding.showRecentView.setChecked(false);
         }
     }
@@ -85,7 +86,7 @@ public class SettingsActivity extends BaseActivity {
         super.onResume();
         if (NotificationManagerCompat.from(this).areNotificationsEnabled()) {
             mBinding.showNotification.setChecked(true);
-        }else {
+        } else {
             mBinding.showNotification.setChecked(false);
         }
     }

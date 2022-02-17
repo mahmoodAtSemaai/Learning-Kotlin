@@ -27,7 +27,10 @@ import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.custom.BadgeDrawable;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -186,6 +189,12 @@ public class Helper {
         }
     }
 
+    public static String getStringDateAndTime()
+    {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+        return simpleDateFormat.format(new Date());
+    }
+
 
     public static boolean hasCamera(Context context) {
         PackageManager pm = context.getPackageManager();
@@ -202,6 +211,10 @@ public class Helper {
             if (AppSharedPref.isDarkMode(context))
                 WebSettingsCompat.setForceDark(webview.getSettings(), WebSettingsCompat.FORCE_DARK_ON);
         }
+    }
+
+    public static String getScreenName(Context context) {
+        return context.getApplicationContext().getClass().getSimpleName().replaceAll("Activity|Fragment", "");
     }
 
 }

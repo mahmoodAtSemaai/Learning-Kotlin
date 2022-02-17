@@ -67,7 +67,7 @@ public class AppSharedPref {
     private static final String KEY_IS_RECENT_ENABLE = "KEY_IS_RECENT_ENABLE";
     private static final String KEY_IS_SEARCH_ENABLE = "KEY_IS_SEARCH_ENABLE";
     private static final String PRIVACY_POLICY_URL = "PRIVACY_POLICY_URL";
-
+    private static final String ANALYTICS_ID = "ANALYTICS_ID";
 
 
     /*SHARED PREF AND EDITOR*/
@@ -87,8 +87,8 @@ public class AppSharedPref {
     }
 
     /*IS SOCIAL LOGIN*/
-    public static void setDarkMode(Context context,boolean isDarkMode) {
-         getSharedPreferenceEditor(context,SPLASH_PREF).putBoolean(DARK_MODE, isDarkMode).apply();
+    public static void setDarkMode(Context context, boolean isDarkMode) {
+        getSharedPreferenceEditor(context, SPLASH_PREF).putBoolean(DARK_MODE, isDarkMode).apply();
     }
 
     /*Customer*/
@@ -206,6 +206,12 @@ public class AppSharedPref {
     public static void clearCustomerData(Context context) {
         AppSharedPref.getSharedPreferenceEditor(context, CUSTOMER_PREF).clear().apply();
     }
+
+    public static void clearUserAnalytics(Context context) {
+        AppSharedPref.getSharedPreferenceEditor(context, SPLASH_PREF).clear().apply();
+    }
+
+
 
 
     /*SPLASH PERSISITANCE DATA*/
@@ -403,6 +409,7 @@ public class AppSharedPref {
     public static void setIsLanguageChange(Context context, boolean value) {
         getSharedPreferenceEditor(context, SPLASH_PREF).putBoolean(KEY_IS_LANGUAGE_CHANGE, value).apply();
     }
+
     public static void setIsDarkChange(Context context, boolean value) {
         getSharedPreferenceEditor(context, SPLASH_PREF).putBoolean(KEY_IS_DARK_CHANGE, value).apply();
     }
@@ -425,6 +432,7 @@ public class AppSharedPref {
     public static void setRecentViewEnable(Context context, boolean value) {
         getSharedPreferenceEditor(context, SPLASH_PREF).putBoolean(KEY_IS_RECENT_ENABLE, value).apply();
     }
+
     public static boolean isSearchEnable(Context context) {
         return getSharedPreference(context, SPLASH_PREF).getBoolean(KEY_IS_SEARCH_ENABLE, false);
     }
@@ -440,5 +448,13 @@ public class AppSharedPref {
 
     public static String getPrivacyURL(Context context) {
         return getSharedPreference(context, SPLASH_PREF).getString(PRIVACY_POLICY_URL, null);
+    }
+
+    public static void setUserAnalyticsId(Context context, String analyticsId) {
+        getSharedPreferenceEditor(context, SPLASH_PREF).putString(ANALYTICS_ID, analyticsId).apply();
+    }
+
+    public static String getUserAnalyticsId(Context context) {
+       return getSharedPreference(context, SPLASH_PREF).getString(ANALYTICS_ID, null);
     }
 }

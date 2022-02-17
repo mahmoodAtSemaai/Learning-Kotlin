@@ -1,6 +1,7 @@
 package com.webkul.mobikul.odoo.handler.customer;
 
 import android.content.Context;
+
 import androidx.fragment.app.FragmentManager;
 
 import com.webkul.mobikul.odoo.R;
@@ -14,23 +15,15 @@ import com.webkul.mobikul.odoo.helper.FragmentHelper;
 import com.webkul.mobikul.odoo.model.customer.dashboard.DashboardData;
 
 
-
 /**
-
  * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
+ *
  * @author Webkul <support@webkul.com>
-
+ * @package Mobikul App
+ * @Category Mobikul
  * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
  * @license https://store.webkul.com/license.html ASL Licence
-
  * @link https://store.webkul.com/license.html
-
  */
 
 public class DashboardFragmentHandler {
