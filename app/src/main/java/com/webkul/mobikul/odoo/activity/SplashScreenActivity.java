@@ -89,9 +89,9 @@ public class SplashScreenActivity extends BaseActivity  {
         if (!AppSharedPref.getLanguageCode(this).isEmpty()) {
             BaseActivity.setLocale(this, false);
         }
-        if (AppSharedPref.getUserAnalyticsId(this) == null) {
+        if (AppSharedPref.getUserAnalyticsId(this) == null && AppSharedPref.isLoggedIn(SplashScreenActivity.this) ) {
 
-            ApiConnection.getUserAnalytics(this).subscribeOn(Schedulers.io()).subscribe(new CustomObserver<UserAnalyticsResponse>(this) {
+            ApiConnection.getUserAnalytics(this).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()) .subscribe(new CustomObserver<UserAnalyticsResponse>(this) {
                 @Override
                 public void onNext(@androidx.annotation.NonNull UserAnalyticsResponse userAnalyticsResponse) {
 
@@ -101,7 +101,7 @@ public class SplashScreenActivity extends BaseActivity  {
                             userAnalyticsResponse.getName(),
                             userAnalyticsResponse.isSeller()
                     ));
-                    AppSharedPref.setUserAnalyticsId(getBaseContext(), userAnalyticsResponse.getAnalyticsId());
+                   AppSharedPref.setUserAnalyticsId(getBaseContext(), userAnalyticsResponse.getAnalyticsId());
                     callApi();
                     super.onNext(userAnalyticsResponse);
                 }
