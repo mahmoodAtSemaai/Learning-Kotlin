@@ -68,16 +68,7 @@ import java.util.ArrayList;
 
 import io.reactivex.schedulers.Schedulers;
 
-/**
- * Webkul Software.
- *
- * @author Webkul <support@webkul.com>
- * @package Mobikul App
- * @Category Mobikul
- * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
- * @license https://store.webkul.com/license.html ASL Licence
- * @link https://store.webkul.com/license.html
- */
+
 
 
 public class HomeActivity extends BaseActivity implements OnTabSelectListener,/* OnTabReselectListener,*/FragmentManager.OnBackStackChangedListener, OnTabReselectListener {
@@ -94,6 +85,11 @@ public class HomeActivity extends BaseActivity implements OnTabSelectListener,/*
     private ActionBarDrawerToggle mDrawerToggle;
     private long mBackPressedTime;
     private String currentFragmentDisplayed = "";
+
+    @Override
+    public String getScreenTitle() {
+        return TAG;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -507,5 +503,6 @@ public class HomeActivity extends BaseActivity implements OnTabSelectListener,/*
                 currentFragmentDisplayed = getString(R.string.account);
         }
     }
+
 
 }

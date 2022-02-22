@@ -97,4 +97,9 @@ public class SettingsActivity extends BaseActivity {
         return true;
     }
 
+    @Override
+    public String getScreenTitle() {
+        return TAG;
+    }
+
 }

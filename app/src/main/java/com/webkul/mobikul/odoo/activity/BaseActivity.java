@@ -32,16 +32,7 @@ import java.util.Locale;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.disposables.CompositeDisposable;
 
-/**
- * Webkul Software.
- *
- * @author Webkul <support@webkul.com>
- * @package Mobikul App
- * @Category Mobikul
- * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
- * @license https://store.webkul.com/license.html ASL Licence
- * @link https://store.webkul.com/license.html
- */
+
 
 public abstract class BaseActivity extends AppCompatActivity {
     @SuppressWarnings("unused")
@@ -81,6 +72,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    public abstract String getScreenTitle();
+
     @SuppressLint("CommitPrefEdits")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +82,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         mSupportFragmentManager = getSupportFragmentManager();
         SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(this);
         mSqLiteDatabase = sqlLiteDbHelper.getWritableDatabase();
-        AnalyticsImpl.INSTANCE.trackActivityOpened(getTitle().toString());
+        AnalyticsImpl.INSTANCE.trackActivityOpened(Helper.getScreenName(getScreenTitle()));
     }
 
     protected void showBackButton(boolean show) {
@@ -181,8 +174,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onStop();
         mCompositeDisposable.clear();
         RetrofitClient.getDispatcher().cancelAll();
-        AnalyticsImpl.INSTANCE.trackActivityClosed(getTitle().toString());
+        AnalyticsImpl.INSTANCE.trackActivityClosed(Helper.getScreenName(getScreenTitle()));
     }
+
+
 
     @Override
     protected void onDestroy() {

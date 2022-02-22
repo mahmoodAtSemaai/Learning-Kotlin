@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.databinding.DataBindingUtil
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -25,7 +24,6 @@ import com.webkul.mobikul.odoo.helper.SnackbarHelper
 import com.webkul.mobikul.odoo.model.BaseResponse
 import com.webkul.mobikul.odoo.model.customer.address.AddressFormResponse
 import com.webkul.mobikul.odoo.model.customer.address.AddressRequestBody
-import com.webkul.mobikul.odoo.model.customer.address.addressBodyParams.*
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.DistrictListResponse
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.StateListResponse
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.SubDistrictListResponse
@@ -38,9 +36,8 @@ import com.webkul.mobikul.odoo.model.home.HomePageResponse
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.util.*
 
-class UpdateAddressActivity : AppCompatActivity() {
+class UpdateAddressActivity : BaseActivity() {
 
     private val TAG = "NewAddressFragment"
     private val MAP_PIN_LOCATION_REQUEST_CODE = 103
@@ -698,6 +695,10 @@ class UpdateAddressActivity : AppCompatActivity() {
         if (alertDialog?.isShowing == true) {
             alertDialog?.dismiss()
         }
+    }
+
+    override fun getScreenTitle(): String {
+        return TAG
     }
 
 }

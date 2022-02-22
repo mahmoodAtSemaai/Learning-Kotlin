@@ -75,4 +75,9 @@ public class BecomeSellerActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
+
+    @Override
+    public String getScreenTitle() {
+        return TAG;
+    }
 }

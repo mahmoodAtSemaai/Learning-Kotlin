@@ -86,6 +86,7 @@ public class SignInSignUpActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(TAG);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in_sign_up);
 
         /*blur image*/
@@ -167,6 +168,11 @@ public class SignInSignUpActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
+    }
+
+    @Override
+    public String getScreenTitle() {
+        return TAG;
     }
 
 }

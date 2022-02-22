@@ -1,5 +1,6 @@
 package com.webkul.mobikul.odoo.fragment;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -73,5 +74,14 @@ public class EmptyFragment extends BaseFragment {
         TYPE_NOTIFICATION, TYPE_CART, TYPE_CATALOG_PRODUCT, TYPE_WISHLIST, TYPE_ORDER
     }
 
+    @NonNull
+    @Override
+    public String getTitle() {
+        return this.getClass().getSimpleName();
+    }
 
+    @Override
+    public void setTitle(@NonNull String title) {
+
+    }
 }

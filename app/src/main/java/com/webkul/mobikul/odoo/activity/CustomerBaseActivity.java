@@ -170,4 +170,9 @@ public class CustomerBaseActivity extends BaseLocationActivity implements Fragme
         }
     }
 
+    @Override
+    public String getScreenTitle() {
+        return TAG;
+    }
+
 }

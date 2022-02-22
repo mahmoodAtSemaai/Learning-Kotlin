@@ -548,5 +548,10 @@ public class ProductActivity extends BaseActivity {
         mBinding.rvAlternativeProduct.setAdapter(new AlternativeProductsRvAdapter(this, mBinding.getData().getAlternativeProducts(), false));
     }
 
+    @Override
+    public String getScreenTitle() {
+        return TAG;
+    }
+
 
 }

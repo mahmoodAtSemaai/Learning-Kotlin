@@ -1,5 +1,6 @@
 package com.webkul.mobikul.odoo.fragment;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -51,5 +52,16 @@ public class AccountInfoFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         mBinding.setData(new AccountInforData(getContext()));
         mBinding.setHandler(new AccountInfoFragmentHandler(getContext(), mBinding.getData(), mBinding));
+    }
+
+    @NonNull
+    @Override
+    public String getTitle() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public void setTitle(@NonNull String title) {
+
     }
 }

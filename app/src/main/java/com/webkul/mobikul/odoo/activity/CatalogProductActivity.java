@@ -516,4 +516,10 @@ public class CatalogProductActivity extends BaseActivity {
             mBinding.footerTv.setVisibility(View.GONE);
         }
     }
+
+    @Override
+    public String getScreenTitle() {
+        return TAG;
+    }
+
 }

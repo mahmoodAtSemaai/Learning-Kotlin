@@ -778,5 +778,14 @@ public class NewAddressFragment extends BaseFragment {
         TYPE_BILLING, TYPE_SHIPPING, TYPE_ADDITIONAL, TYPE_NEW, TYPE_BILLING_CHECKOUT
     }
 
+    @androidx.annotation.NonNull
+    @Override
+    public String getTitle() {
+        return this.getClass().getSimpleName();
+    }
 
+    @Override
+    public void setTitle(@androidx.annotation.NonNull String title) {
+
+    }
 }

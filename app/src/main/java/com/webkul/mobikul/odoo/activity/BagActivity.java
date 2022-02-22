@@ -58,6 +58,11 @@ public class BagActivity extends BaseActivity implements FragmentManager.OnBackS
         mSupportFragmentManager.addOnBackStackChangedListener(this);
     }
 
+    @Override
+    public String getScreenTitle() {
+        return TAG;
+    }
+
 
     @Override
     protected void onResume() {

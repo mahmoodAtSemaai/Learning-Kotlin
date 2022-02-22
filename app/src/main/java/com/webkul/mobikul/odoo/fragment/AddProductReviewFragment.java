@@ -1,5 +1,6 @@
 package com.webkul.mobikul.odoo.fragment;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -31,7 +32,7 @@ import com.webkul.mobikul.odoo.model.product.Review;
  * @link https://store.webkul.com/license.html
 
  */
-public class AddProductReviewFragment extends Fragment {
+public class AddProductReviewFragment extends BaseFragment {
 
     private static final String TAG = "AddProductReviewFragment";
     private static final String TEMPLATE_ID = "templateId";
@@ -57,5 +58,16 @@ public class AddProductReviewFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+
+    @NonNull
+    @Override
+    public String getTitle() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public void setTitle(@NonNull String title) {
+
     }
 }

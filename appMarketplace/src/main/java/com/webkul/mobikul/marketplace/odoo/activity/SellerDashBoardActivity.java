@@ -88,4 +88,9 @@ public class SellerDashBoardActivity extends BaseActivity {
         });
 
     }
+
+    @Override
+    public String getScreenTitle() {
+        return TAG;
+    }
 }

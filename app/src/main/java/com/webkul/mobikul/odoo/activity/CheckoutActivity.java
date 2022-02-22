@@ -34,6 +34,7 @@ import com.webkul.mobikul.odoo.model.checkout.CheckoutActivityData;
  */
 public class CheckoutActivity extends BaseLocationActivity implements FragmentManager.OnBackStackChangedListener {
     private ActivityCheckoutBinding mBinding;
+    public static final String TAG = "CheckoutActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +124,11 @@ public class CheckoutActivity extends BaseLocationActivity implements FragmentMa
             return;
 
         }
+    }
+
+    @Override
+    public String getScreenTitle() {
+        return TAG;
     }
 
 }

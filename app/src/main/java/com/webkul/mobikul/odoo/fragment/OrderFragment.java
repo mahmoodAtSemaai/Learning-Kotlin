@@ -60,6 +60,8 @@ public class OrderFragment extends BaseFragment {
 
     private FragmentOrderBinding mBinding;
 
+    public static final String TAG = "OrderFragment";
+
     public static OrderFragment newInstance(String url) {
         Bundle args = new Bundle();
         args.putString(BUNDLE_KEY_URL, url);
@@ -130,5 +132,16 @@ public class OrderFragment extends BaseFragment {
         if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
             mBinding.getHandler().onClickDownloadDeliveryOrder(mBinding.getData().getDeliveryOrders().get(0).getReportUrl(), mBinding.getData().getName());
         }
+    }
+
+    @androidx.annotation.NonNull
+    @Override
+    public String getTitle() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public void setTitle(@androidx.annotation.NonNull String title) {
+
     }
 }

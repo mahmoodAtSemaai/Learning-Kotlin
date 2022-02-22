@@ -217,4 +217,8 @@ public class Helper {
         return context.getApplicationContext().getClass().getSimpleName().replaceAll("Activity|Fragment", "");
     }
 
+    public static String getScreenName(String fragmentOrActivityName) {
+        return fragmentOrActivityName.replaceAll("Activity|Fragment", "");
+    }
+
 }
