@@ -76,4 +76,10 @@ public class OrderPlacedActivity extends BaseActivity implements FragmentManager
             setTitle(R.string.title_activity_order_placed);
         }
     }
+
+    @Override
+    public String getScreenTitle() {
+        return TAG;
+    }
+
 }

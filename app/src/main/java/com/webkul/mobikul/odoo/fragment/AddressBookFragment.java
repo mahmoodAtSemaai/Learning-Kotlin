@@ -115,4 +115,15 @@ public class AddressBookFragment extends BaseFragment implements AdditionalAddre
     public void onAdditionalAddressDeleted() {
         callApi();
     }
+
+    @androidx.annotation.NonNull
+    @Override
+    public String getTitle() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public void setTitle(@androidx.annotation.NonNull String title) {
+
+    }
 }

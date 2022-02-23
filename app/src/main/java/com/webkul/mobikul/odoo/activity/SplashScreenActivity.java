@@ -398,4 +398,9 @@ public class SplashScreenActivity extends BaseActivity  {
         return intent;
 
     }
+
+    @Override
+    public String getScreenTitle() {
+        return TAG;
+    }
 }

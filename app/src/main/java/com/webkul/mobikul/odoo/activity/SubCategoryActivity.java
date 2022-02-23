@@ -105,4 +105,9 @@ public class SubCategoryActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public String getScreenTitle() {
+        return TAG;
+    }
+
 }

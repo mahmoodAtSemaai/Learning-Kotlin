@@ -1,5 +1,6 @@
 package com.webkul.mobikul.odoo.fragment;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -77,6 +78,17 @@ public class LoginFragment extends BaseFragment {
         super.onDestroyView();
 
         Helper.hideKeyboard(getContext());
+
+    }
+
+    @NonNull
+    @Override
+    public String getTitle() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public void setTitle(@NonNull String title) {
 
     }
 }

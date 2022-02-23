@@ -13,7 +13,6 @@ class MixPanelAnalytics(val context: Context) : BaseAnalytics {
 
 
     override fun initUserTracking(userModel: UserModel) {
-        mixpanel.alias(userModel.analyticsId, mixpanel.distinctId)
         mixpanel.people.identify(userModel.analyticsId)
         mixpanel.identify(userModel.analyticsId)
         val props = JSONObject()

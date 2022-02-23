@@ -1,5 +1,6 @@
 package com.webkul.mobikul.odoo.fragment;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -41,6 +42,8 @@ public class OrderReviewFragment extends BaseFragment {
 
     public FragmentCheckoutOrderReviewBinding mBinding;
 
+    public static final String TAG = "OrderReviewFragment";
+
     public static OrderReviewFragment newInstance(OrderReviewResponse orderReviewRequestData) {
         OrderReviewFragment OrderReviewFragment = new OrderReviewFragment();
         Bundle args = new Bundle();
@@ -72,5 +75,16 @@ public class OrderReviewFragment extends BaseFragment {
                         }
                     });
         }
+    }
+
+    @NonNull
+    @Override
+    public String getTitle() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public void setTitle(@NonNull String title) {
+
     }
 }

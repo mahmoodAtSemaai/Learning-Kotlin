@@ -1,5 +1,6 @@
 package com.webkul.mobikul.odoo.fragment;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -43,6 +44,7 @@ public class FullScreenImageScrollFragment extends BaseFragment {
 
     private FragmentFullScreenImageScrollBinding mBinding;
     private ArrayList<String> mImages;
+    public static final String TAG = "FullScreenImageScrollFragment";
 
     public static FullScreenImageScrollFragment newInstance(int position, ArrayList<String> images) {
 
@@ -94,6 +96,17 @@ public class FullScreenImageScrollFragment extends BaseFragment {
         public boolean isViewFromObject(View view, Object object) {
             return view == object;
         }
+
+    }
+
+    @NonNull
+    @Override
+    public String getTitle() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public void setTitle(@NonNull String title) {
 
     }
 }

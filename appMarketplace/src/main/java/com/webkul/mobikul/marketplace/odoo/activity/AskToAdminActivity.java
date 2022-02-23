@@ -41,4 +41,9 @@ public class AskToAdminActivity extends BaseActivity {
         mBinding.setTitle(getString(R.string.ask_to_admin));
         mBinding.setHandler(new AskToAdminActivityHandler(this, mBinding));
     }
+
+    @Override
+    public String getScreenTitle() {
+        return TAG;
+    }
 }

@@ -2,14 +2,11 @@ package com.webkul.mobikul.odoo.activity
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.snackbar.Snackbar
 import com.muddzdev.styleabletoastlibrary.StyleableToast
-import com.webkul.mobikul.odoo.BuildConfig
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.connection.ApiConnection
 import com.webkul.mobikul.odoo.connection.CustomObserver
@@ -22,10 +19,10 @@ import com.webkul.mobikul.odoo.model.BaseResponse
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_user_approval.*
 
 class UserApprovalActivity : BaseActivity() {
     private lateinit var binding: ActivityUserApprovalBinding
+    private val TAG = "UserApprovalActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user_approval)
@@ -81,5 +78,9 @@ class UserApprovalActivity : BaseActivity() {
     override fun onStop() {
         super.onStop()
         finish()
+    }
+
+    override fun getScreenTitle(): String {
+        return TAG
     }
 }

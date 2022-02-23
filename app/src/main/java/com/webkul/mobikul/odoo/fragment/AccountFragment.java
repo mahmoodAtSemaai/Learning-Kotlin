@@ -351,4 +351,15 @@ public class AccountFragment extends BaseFragment {
         super.onStop();
         EventBus.getDefault().unregister(getContext());
     }
+
+    @NonNull
+    @Override
+    public String getTitle() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public void setTitle(@NonNull String title) {
+
+    }
 }

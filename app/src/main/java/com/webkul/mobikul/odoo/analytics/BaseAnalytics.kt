@@ -25,6 +25,18 @@ interface BaseAnalytics {
         trackAnyEvent(AnalyticsConstants.EVENT_ACTIVITYCLOSED, tempMap)
 
     }
+    fun trackFragmentOpened(fragmentTitle: String) {
+        val tempMap = HashMap<String, String>()
+        tempMap["title"] = fragmentTitle
+        trackAnyEvent(AnalyticsConstants.EVENT_FRAGMENTOPENED, tempMap)
+    }
+
+    fun trackFragmentClosed(fragmentTitle: String) {
+        val tempMap = HashMap<String, String>()
+        tempMap["title"] = fragmentTitle
+        trackAnyEvent(AnalyticsConstants.EVENT_FRAGMENTCLOSED, tempMap)
+
+    }
 
     fun trackAnalyticsFailure()
     {

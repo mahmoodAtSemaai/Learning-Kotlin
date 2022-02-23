@@ -187,4 +187,8 @@ public class SellerProductsListActivity extends BaseActivity {
         });
 
     }
+    @Override
+    public String getScreenTitle() {
+        return TAG;
+    }
 }
