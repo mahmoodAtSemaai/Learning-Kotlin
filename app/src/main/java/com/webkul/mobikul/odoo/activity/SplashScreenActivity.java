@@ -76,6 +76,7 @@ public class SplashScreenActivity extends BaseActivity  {
     @SuppressWarnings("unused")
     private static final String TAG = "SplashScreenActivity";
     private static final int RC_UPDATE_APP_FROM_PLAYSTORE = 1;
+    CustomObserver<SplashScreenResponse> splashSubscriber;
     private ActivitySplashScreenBinding mBinding;
 
     @Override
@@ -257,7 +258,7 @@ public class SplashScreenActivity extends BaseActivity  {
                         if(!splashScreenResponse.isUserApproved()) {
                             // user not approved => redirect to user unapproved screen
                             IntentHelper.goToUserUnapprovedScreen(SplashScreenActivity.this);
-                            mBinding.mainProgressBar.setVisibility(View.GONE);
+                            finish();
                         } else {
                             // approved => continue as usual
                             initHomeScreenAPI(splashScreenResponse);
@@ -329,40 +330,45 @@ public class SplashScreenActivity extends BaseActivity  {
     }
 
     public void getSplashPageData(Intent intent) {
+
+        splashSubscriber = new CustomObserver<SplashScreenResponse>(this) {
+
+            @Override
+            public void onNext(@NonNull SplashScreenResponse splashScreenResponse) {
+                super.onNext(splashScreenResponse);
+                /* SAVE/UPDATE GLOBAL DATA */
+                splashScreenResponse.updateSharedPref(SplashScreenActivity.this);
+                new SaveData(SplashScreenActivity.this, splashScreenResponse);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+                if (!NetworkHelper.isNetworkAvailable(SplashScreenActivity.this)) {
+                    SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(SplashScreenActivity.this);
+                    SplashScreenResponse dbResponse = sqlLiteDbHelper.getSplashScreenData();
+                    if (dbResponse == null) {
+                        super.onError(e);
+                    } else {
+                        onComplete();
+                    }
+                } else {
+                    super.onError(e);
+                }
+                mBinding.mainProgressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onComplete() {
+                startActivity(intent);
+            }
+        };
+
         ApiConnection.getSplashPageData(this).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new CustomObserver<SplashScreenResponse>(this) {
-
-                    @Override
-                    public void onNext(@NonNull SplashScreenResponse splashScreenResponse) {
-                        super.onNext(splashScreenResponse);
-                        /* SAVE/UPDATE GLOBAL DATA */
-                        splashScreenResponse.updateSharedPref(SplashScreenActivity.this);
-                        new SaveData(SplashScreenActivity.this, splashScreenResponse);
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                        if (!NetworkHelper.isNetworkAvailable(SplashScreenActivity.this)){
-                            SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(SplashScreenActivity.this);
-                            SplashScreenResponse dbResponse =  sqlLiteDbHelper.getSplashScreenData();
-                            if (dbResponse == null){
-                                super.onError(e);
-                            }else {
-                                onComplete();
-                            }
-                        }else {
-                            super.onError(e);
-                        }
-                        mBinding.mainProgressBar.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        startActivity(intent);
-                    }
-                });
+                .subscribe(splashSubscriber);
     }
+
+
 
     private Intent getNotificationIntent() {
         Intent intent = null;
