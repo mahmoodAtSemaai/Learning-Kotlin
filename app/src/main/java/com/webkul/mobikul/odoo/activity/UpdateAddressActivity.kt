@@ -5,24 +5,25 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.databinding.DataBindingUtil
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.webkul.mobikul.odoo.R
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl
+import com.webkul.mobikul.odoo.analytics.models.AnalyticsAddressDataModel
 import com.webkul.mobikul.odoo.connection.ApiConnection
 import com.webkul.mobikul.odoo.connection.CustomObserver
 import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.databinding.ActivityNewAddressBinding
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl
+import com.webkul.mobikul.odoo.helper.ErrorConstants
 import com.webkul.mobikul.odoo.helper.IntentHelper
 import com.webkul.mobikul.odoo.helper.SnackbarHelper
 import com.webkul.mobikul.odoo.model.BaseResponse
 import com.webkul.mobikul.odoo.model.customer.address.AddressFormResponse
 import com.webkul.mobikul.odoo.model.customer.address.AddressRequestBody
-import com.webkul.mobikul.odoo.model.customer.address.addressBodyParams.*
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.DistrictListResponse
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.StateListResponse
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.SubDistrictListResponse
@@ -35,42 +36,42 @@ import com.webkul.mobikul.odoo.model.home.HomePageResponse
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.util.*
 
-class UpdateAddressActivity : AppCompatActivity() {
+class UpdateAddressActivity : BaseActivity() {
 
     private val TAG = "NewAddressFragment"
     private val MAP_PIN_LOCATION_REQUEST_CODE = 103
-    var mBinding: ActivityNewAddressBinding? = null
-    var countryListHashmap = HashMap<String, Int>()
-    var stateListHashmap = HashMap<String, StateData>()
-    var districtListHashmap = HashMap<String, DistrictData>()
-    var subDistrictListHashmap = HashMap<String, SubDistrictData>()
-    var villageListHashmap = HashMap<String, VillageData>()
+    private var mBinding: ActivityNewAddressBinding? = null
+    private var countryListHashmap = HashMap<String, Int>()
+    private var stateListHashmap = HashMap<String, StateData>()
+    private var districtListHashmap = HashMap<String, DistrictData>()
+    private var subDistrictListHashmap = HashMap<String, SubDistrictData>()
+    private var villageListHashmap = HashMap<String, VillageData>()
 
-    var countryList = ArrayList<String>()
-    var statesList = ArrayList<String>()
-    var districtsList = ArrayList<String>()
-    var subDistrictsList = ArrayList<String>()
-    var villagesList = ArrayList<String>()
+    private var countryList = ArrayList<String>()
+    private var statesList = ArrayList<String>()
+    private var districtsList = ArrayList<String>()
+    private var subDistrictsList = ArrayList<String>()
+    private var villagesList = ArrayList<String>()
 
 
-    var statesAvailable = true
-    var districtsAvailable = true
-    var subDistrictsAvailable = true
-    var villagesAvailable = true
+    private var statesAvailable = true
+    private var districtsAvailable = true
+    private var subDistrictsAvailable = true
+    private var villagesAvailable = true
 
-    var addressRequestBody = AddressRequestBody()
+    private var addressRequestBody = AddressRequestBody()
+    private val analyticsModel = AnalyticsAddressDataModel()
 
-    var homePageResponse: HomePageResponse? = null
-    var isMissingDetails: Boolean = false
-    var selectedStateId = ""
+    private var homePageResponse: HomePageResponse? = null
+    private var isMissingDetails: Boolean = false
+    private var selectedStateId = ""
 
-    var isEditMode = false
-    var addressUrl : String = ""
-    var STATE_SPINNER_INITIAL_SELECTION = -1
+    private var isEditMode = false
+    private var addressUrl: String = ""
+    private var STATE_SPINNER_INITIAL_SELECTION = -1
 
-    var alertDialog : SweetAlertDialog? = null
+    private var alertDialog: SweetAlertDialog? = null
 
     private val RESET_SPINNERS_FROM_STATE_UPTO_VILLAGE = 1
     private val RESET_SPINNERS_FROM_DISTRICT_UPTO_VILLAGE = 2
@@ -89,13 +90,12 @@ class UpdateAddressActivity : AppCompatActivity() {
         fetchCountry()
 
         mBinding!!.saveAddressBtn.setOnClickListener {
-            if(checkIfSubRegionsAreLoading()) {
+            if (checkIfSubRegionsAreLoading()) {
                 if (isMissingDetails)
                     validateMandatoryFeilds(selectedStateId)
                 else
                     validateAddressEditTextFeilds()
-            }
-            else{
+            } else {
                 showShortToast(getString(R.string.missing_feilds_in_address_form))
             }
         }
@@ -122,7 +122,7 @@ class UpdateAddressActivity : AppCompatActivity() {
         else
             showTelephoneEt()
 
-        if(intent.hasExtra(BundleConstant.BUNDLE_KEY_URL)) {
+        if (intent.hasExtra(BundleConstant.BUNDLE_KEY_URL)) {
             setEditmodeData()
         }
     }
@@ -134,7 +134,8 @@ class UpdateAddressActivity : AppCompatActivity() {
     }
 
     private fun fetchCurrentAddress(url: String) {
-        ApiConnection.getAddressFormData(this,url).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(getCurrentAddressObserver())
+        ApiConnection.getAddressFormData(this, url).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe(getCurrentAddressObserver())
     }
 
     private fun getCurrentAddressObserver(): Observer<BaseResponse> {
@@ -151,7 +152,7 @@ class UpdateAddressActivity : AppCompatActivity() {
     }
 
     private fun checkIfStateIdMissing(addressFormResponse: AddressFormResponse) {
-        if(!addressFormResponse.stateId.isNullOrEmpty())
+        if (!addressFormResponse.stateId.isNullOrEmpty())
             fetchStates(addressFormResponse.stateId.toInt())
         else
             fetchStates(UNSELECTED_POSITION)
@@ -161,7 +162,7 @@ class UpdateAddressActivity : AppCompatActivity() {
         mBinding?.apply {
             nameEt.setText(addressFormResponse.name)
             telephoneEt.setText(addressFormResponse.phone)
-            if(!addressFormResponse.stateId.isNullOrEmpty())
+            if (!addressFormResponse.stateId.isNullOrEmpty())
                 STATE_SPINNER_INITIAL_SELECTION = addressFormResponse.stateId.toInt()
         }
     }
@@ -236,6 +237,7 @@ class UpdateAddressActivity : AppCompatActivity() {
                     position: Int,
                     id: Long
                 ) {
+                    // Set Country here for Analytics
                     addressRequestBody.setCompany_id(COMPANY_ID.toString())
                     resetSpinners(RESET_SPINNERS_FROM_STATE_UPTO_VILLAGE)
                     fetchStates(UNSELECTED_POSITION);
@@ -297,6 +299,7 @@ class UpdateAddressActivity : AppCompatActivity() {
     private fun onStateSelected(position: Int) {
         val selectedState = statesList[position]
         selectedStateId = stateListHashmap[selectedState]!!.id.toString()
+        analyticsModel.province = selectedState
         isMissingDetails = if (stateListHashmap[selectedState]!!.isAvailable) {
             resetSpinners(RESET_SPINNERS_FROM_DISTRICT_UPTO_VILLAGE)
             districtsAvailable = false
@@ -312,17 +315,18 @@ class UpdateAddressActivity : AppCompatActivity() {
 
     private fun setSubRegionFieldsVisibility(show: Boolean) {
         mBinding?.apply {
-            districtContainer.visibility = if(show) View.VISIBLE else View.GONE
-            subDistrictContainer.visibility = if(show) View.VISIBLE else View.GONE
-            villageContainer.visibility = if(show) View.VISIBLE else View.GONE
-            postalCodeContainer.visibility = if(show) View.VISIBLE else View.GONE
-            streetContainer.visibility = if(show) View.VISIBLE else View.GONE
+            districtContainer.visibility = if (show) View.VISIBLE else View.GONE
+            subDistrictContainer.visibility = if (show) View.VISIBLE else View.GONE
+            villageContainer.visibility = if (show) View.VISIBLE else View.GONE
+            postalCodeContainer.visibility = if (show) View.VISIBLE else View.GONE
+            streetContainer.visibility = if (show) View.VISIBLE else View.GONE
         }
     }
 
     private fun validateMandatoryFeilds(selectedState: String) {
         val isFormFilledup = checkMandatoryFeilds()
-        if(isFormFilledup) {
+        if (isFormFilledup) {
+            analyticsModel.isServicable = false
             showUnavailabilityAlertDialog(selectedStateId)
         } else {
             showErrorMessage(getString(R.string.missing_feilds_in_address_form))
@@ -436,6 +440,7 @@ class UpdateAddressActivity : AppCompatActivity() {
 
     private fun onDistrictSelected(position: Int) {
         val selectedState = districtsList[position]
+        analyticsModel.district = selectedState
         resetSpinners(RESET_SPINNERS_FROM_SUB_DISTRICT_UPTO_VILLAGE)
         subDistrictsAvailable = false
         districtListHashmap[selectedState]?.let { fetchSubDistricts(it.id) }
@@ -497,6 +502,7 @@ class UpdateAddressActivity : AppCompatActivity() {
 
     private fun onSubDistrictSelected(position: Int) {
         val selectedSubDistrict = subDistrictsList[position]
+        analyticsModel.subDistrict = selectedSubDistrict
         resetSpinners(RESET_SPINNERS_VILLAGE)
         villagesAvailable = false
         subDistrictListHashmap[selectedSubDistrict]?.let { fetchVillage(it.id) }
@@ -561,6 +567,7 @@ class UpdateAddressActivity : AppCompatActivity() {
     private fun onVillageSelected(villageListResponse: VillageListResponse, position: Int) {
         val villageData = villageListResponse.getData()[position]
         addressRequestBody.setVillage_id(villageData.id.toString())
+        analyticsModel.village = villageData.name
         if (villageData.zip.equals(getString(R.string.false_), ignoreCase = true)) {
             setUnavailableVillageData(villageData)
         } else {
@@ -585,9 +592,13 @@ class UpdateAddressActivity : AppCompatActivity() {
     private fun setUnserviceableAreaDetails() {
         val missingState = stateListHashmap[addressRequestBody.getState_id()]!!.name
         val missingDistrict = districtListHashmap[addressRequestBody.getDistrict_id()]!!.name
-        val missingSubDistrict = subDistrictListHashmap[addressRequestBody.getSub_district_id()]!!.name
+        val missingSubDistrict =
+            subDistrictListHashmap[addressRequestBody.getSub_district_id()]!!.name
         val missingVillage = villageListHashmap[addressRequestBody.getSub_district_id()]!!.name
         logFirebaseEvent(missingState, missingDistrict, missingSubDistrict, missingVillage)
+        AnalyticsImpl.trackUnServicedAddress(
+            missingState, missingDistrict, missingSubDistrict, missingVillage
+        )
     }
 
     private fun logFirebaseEvent(
@@ -634,23 +645,29 @@ class UpdateAddressActivity : AppCompatActivity() {
     }
 
     private fun saveAddress(addressRequestBody: AddressRequestBody) {
-        if(isEditMode) {
-            ApiConnection.editAddress(this,addressRequestBody.newAddressData,addressUrl)
+        if (isEditMode) {
+            AnalyticsImpl.trackAddressUpdateSubmitted(
+                analyticsModel
+            )
+            ApiConnection.editAddress(this, addressRequestBody.newAddressData, addressUrl)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(getAddressResponseObserver(getString(R.string.address_edit_text)))
-        }
-        else {
+        } else {
+            AnalyticsImpl.trackAddressAdded(
+                analyticsModel
+            )
             ApiConnection.addNewAddress(this, addressRequestBody.newAddressData)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(getAddressResponseObserver(getString(R.string.address_added_text)))
         }
     }
 
-    private fun getAddressResponseObserver(string:String): Observer<BaseResponse> {
+    private fun getAddressResponseObserver(string: String): Observer<BaseResponse> {
         return object : CustomObserver<BaseResponse>(this) {
             override fun onNext(baseResponse: BaseResponse) {
                 super.onNext(baseResponse)
                 if (baseResponse.isSuccess) {
+                    AnalyticsImpl.trackAddressUpdateSuccessfull(analyticsModel)
                     showShortToast(string)
                     if (homePageResponse != null) {
                         // user is never approved on this screen so auto intent to user approval activity
@@ -661,15 +678,27 @@ class UpdateAddressActivity : AppCompatActivity() {
                         finish()
                     }
                     hideDialog()
+                } else {
+                    AnalyticsImpl.trackAddressUpdateFailed(
+                        analyticsModel,
+                        baseResponse.responseCode,
+                        ErrorConstants.AddressUpdateError.errorType,
+                        baseResponse.message
+
+                    )
                 }
             }
         }
     }
 
     private fun hideDialog() {
-        if(alertDialog?.isShowing == true) {
+        if (alertDialog?.isShowing == true) {
             alertDialog?.dismiss()
         }
+    }
+
+    override fun getScreenTitle(): String {
+        return TAG
     }
 
 }

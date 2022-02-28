@@ -8,6 +8,7 @@ import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.BaseActivity;
 import com.webkul.mobikul.odoo.activity.CustomerBaseActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.custom.CustomToast;
@@ -15,6 +16,7 @@ import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.fragment.WishlistFragment;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
+import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.model.BaseResponse;
 import com.webkul.mobikul.odoo.model.customer.wishlist.WishListData;
@@ -59,6 +61,7 @@ public class WishlistProductInfoItemHandler {
     }
 
     public void viewProduct() {
+        AnalyticsImpl.INSTANCE.trackWishlistedItemSelected(mData.getId(), mData.getName(), mData.getPriceUnit());
         Intent intent = new Intent(mContext, ((OdooApplication) mContext.getApplicationContext()).getProductActivity());
         intent.putExtra(BUNDLE_KEY_PRODUCT_ID, mData.getTemplateId());
         intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, mData.getName());
@@ -66,6 +69,9 @@ public class WishlistProductInfoItemHandler {
     }
 
     public void addProductToBag() {
+        AnalyticsImpl.INSTANCE.trackMoveToBagSelected(mData.getId(), mData.getName(), mData.getPriceUnit(),
+                Helper.getScreenName(mContext),
+                "");
         ApiConnection.wishlistToCart(mContext, new WishListToCartRequest(mData.getId()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -93,10 +99,14 @@ public class WishlistProductInfoItemHandler {
                         }else {
                             FirebaseAnalyticsImpl.logAddToCartEvent(mContext,mData.getProductId(),mData.getName());
                             if (wishlistToCartResponse.isSuccess()) {
+                                AnalyticsImpl.INSTANCE.trackMoveItemToBagSuccessful(mData.getId(), mData.getName(), mData.getPriceUnit(),
+                                        Helper.getScreenName(mContext),
+                                        "");
                                 (((CustomerBaseActivity) mContext).getSupportFragmentManager().findFragmentByTag(WishlistFragment
                                         .class.getSimpleName())).onResume();
                                 AlertDialogHelper.showDefaultSuccessOneLinerDialog(mContext, wishlistToCartResponse.getMessage());
                             } else {
+                                AnalyticsImpl.INSTANCE.trackMoveItemToBagFailed(wishlistToCartResponse.getMessage(), wishlistToCartResponse.getResponseCode(), "");
                                 AlertDialogHelper.showDefaultErrorDialog(mContext, mContext.getString(R.string.add_to_bag),
                                         wishlistToCartResponse.getMessage());
                             }
@@ -138,10 +148,12 @@ public class WishlistProductInfoItemHandler {
                             });
                         }else {
                             if (baseResponse.isSuccess()) {
+                                AnalyticsImpl.INSTANCE.trackItemRemovedFromWishlist(mData.getId(), mData.getName(), mData.getPriceUnit());
                                 (((CustomerBaseActivity) mContext).getSupportFragmentManager().findFragmentByTag(WishlistFragment
                                         .class.getSimpleName())).onResume();
                                 CustomToast.makeText(mContext, baseResponse.getMessage(), Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
                             } else {
+                                AnalyticsImpl.INSTANCE.trackItemRemoveFromWishlistFailed(baseResponse.getMessage(), baseResponse.getResponseCode(), "");
                                 AlertDialogHelper.showDefaultWarningDialog(mContext, mData.getName(), baseResponse.getMessage());
                             }
                         }

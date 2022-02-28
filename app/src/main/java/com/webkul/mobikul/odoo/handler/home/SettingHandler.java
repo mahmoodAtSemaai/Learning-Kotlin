@@ -15,13 +15,16 @@ import android.os.Parcelable;
 import android.provider.Settings;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.BaseActivity;
 import com.webkul.mobikul.odoo.activity.HomeActivity;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.databinding.ActivitySettingsBinding;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
+import com.webkul.mobikul.odoo.helper.ErrorConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +36,12 @@ public class SettingHandler {
     private ActivitySettingsBinding mBinding;
     private Context context;
     private SweetAlertDialog mSweetAlertDialog;
+    private String source;
 
     public SettingHandler(ActivitySettingsBinding mBinding, Context context) {
         this.mBinding = mBinding;
         this.context = context;
+        source = "Setting";
     }
 
     public String getCurrentVersion() {
@@ -50,6 +55,7 @@ public class SettingHandler {
     }
 
     public void onPrivacyPolicyClick() {
+        AnalyticsImpl.INSTANCE.trackPrivacyPolicyClick(source);
         PackageManager pm = context.getPackageManager();
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppSharedPref.getPrivacyURL(context)));
         List<Intent> intents = new ArrayList<>();
@@ -69,7 +75,7 @@ public class SettingHandler {
         }
 
         intent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intents.toArray(new Parcelable[intents.size()]));
-        ((Activity)context).startActivity(intent);
+        ((Activity) context).startActivity(intent);
     }
 
     public void onClickThemeIcon() {
@@ -89,7 +95,6 @@ public class SettingHandler {
     }
 
     public void oNClickedClearRecentView() {
-
         mSweetAlertDialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
         mSweetAlertDialog.setCancelable(true);
         mSweetAlertDialog.setTitleText(context.getString(R.string.clearrecent))
@@ -97,7 +102,12 @@ public class SettingHandler {
                 .setConfirmText(context.getString(R.string.ok))
                 .setConfirmClickListener(sDialog -> {
                     SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(context);
-                    sqlLiteDbHelper.deleteAllProductData();
+                    try {
+                        AnalyticsImpl.INSTANCE.trackClearRecentViewProductListSuccess();
+                        sqlLiteDbHelper.deleteAllProductData();
+                    } catch (Exception e) {
+                        AnalyticsImpl.INSTANCE.trackClearRecentViewProductListFailed(ErrorConstants.ClearRecentViewError.INSTANCE.getErrorCode(), ErrorConstants.ClearRecentViewError.INSTANCE.getErrorMessage());
+                    }
                     mSweetAlertDialog.dismiss();
                 })
                 .setCancelText(context.getString(R.string.cancel_small))
@@ -106,18 +116,24 @@ public class SettingHandler {
     }
 
     public void onClickedShowRecentView() {
-        if (mBinding.showRecentView.isChecked()) {
-            System.out.println("TestingShowRecentView==> Checked");
-            AppSharedPref.setRecentViewEnable(context, true);
+        try {
+            if (mBinding.showRecentView.isChecked()) {
+                System.out.println("TestingShowRecentView==> Checked");
+                AppSharedPref.setRecentViewEnable(context, true);
+                AnalyticsImpl.INSTANCE.trackShowRecentViewProductListToggleSuccess(true);
 
-        } else {
-            System.out.println("TestingShowRecentView==> UnChecked");
-            AppSharedPref.setRecentViewEnable(context, false);
+            } else {
+                System.out.println("TestingShowRecentView==> UnChecked");
+                AppSharedPref.setRecentViewEnable(context, false);
+                AnalyticsImpl.INSTANCE.trackShowRecentViewProductListToggleSuccess(false);
+            }
+        } catch (Exception e) {
+            AnalyticsImpl.INSTANCE.trackShowRecentViewProductListToggleFailed(ErrorConstants.RecentViewToggleError.INSTANCE.getErrorCode(), ErrorConstants.RecentViewToggleError.INSTANCE.getErrorMessage());
         }
+
     }
 
     public void onClickedClearSearchHistory() {
-
         mSweetAlertDialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
         mSweetAlertDialog.setCancelable(true);
         mSweetAlertDialog.setTitleText(context.getString(R.string.clearsearch))
@@ -125,13 +141,17 @@ public class SettingHandler {
                 .setConfirmText(context.getString(R.string.ok))
                 .setConfirmClickListener(sDialog -> {
                     SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(context);
-                    sqlLiteDbHelper.deleteAllSearchData();
+                    try {
+                        AnalyticsImpl.INSTANCE.trackClearSearchHistorySuccess();
+                        sqlLiteDbHelper.deleteAllSearchData();
+                    } catch (Exception e) {
+                        AnalyticsImpl.INSTANCE.trackClearSearchHistoryFailed(ErrorConstants.ClearSearchHistoryError.INSTANCE.getErrorCode(), ErrorConstants.ClearSearchHistoryError.INSTANCE.getErrorMessage());
+                    }
                     mSweetAlertDialog.dismiss();
                 })
                 .setCancelText(context.getString(R.string.cancel_small))
                 .setCancelClickListener(Dialog::dismiss)
                 .show();
-
     }
 
     public void onClickNotification() {
@@ -139,20 +159,31 @@ public class SettingHandler {
     }
 
     private void gotoNotificationPage() {
-        Intent intent = new Intent();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
-            intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.getPackageName());
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
-            intent.putExtra("app_package", context.getPackageName());
-            intent.putExtra("app_uid", context.getApplicationInfo().uid);
-        } else {
-            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            intent.addCategory(Intent.CATEGORY_DEFAULT);
-            intent.setData(Uri.parse("package:" + context.getPackageName()));
+        try {
+            Intent intent = new Intent();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+                intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.getPackageName());
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+                intent.putExtra("app_package", context.getPackageName());
+                intent.putExtra("app_uid", context.getApplicationInfo().uid);
+            } else {
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent.addCategory(Intent.CATEGORY_DEFAULT);
+                intent.setData(Uri.parse("package:" + context.getPackageName()));
+            }
+
+            if (NotificationManagerCompat.from(context).areNotificationsEnabled()) {
+                AnalyticsImpl.INSTANCE.trackShowNotificationToggleSuccess(true);
+            } else {
+                AnalyticsImpl.INSTANCE.trackShowNotificationToggleSuccess(false);
+            }
+
+            context.startActivity(intent);
+        } catch (Exception e) {
+            AnalyticsImpl.INSTANCE.trackShowNotificationToggleFailed(ErrorConstants.NotificationToggleError.INSTANCE.getErrorCode(), ErrorConstants.NotificationToggleError.INSTANCE.getErrorMessage());
         }
-        context.startActivity(intent);
     }
 
 }

@@ -48,6 +48,7 @@ import io.reactivex.schedulers.Schedulers;
 
 
 public class BillingShippingFragment extends BaseFragment {
+    public static final String TAG = "BillingShippingFragment";
     public FragmentBillingShippingBinding mBinding;
 
     public ArrayList<Boolean> isAddressValid = new ArrayList<>();
@@ -149,5 +150,16 @@ public class BillingShippingFragment extends BaseFragment {
                 startActivity(signInSignUpIntent);
             }
         });
+    }
+
+    @androidx.annotation.NonNull
+    @Override
+    public String getTitle() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public void setTitle(@androidx.annotation.NonNull String title) {
+
     }
 }

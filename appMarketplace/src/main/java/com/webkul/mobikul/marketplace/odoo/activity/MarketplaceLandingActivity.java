@@ -85,6 +85,11 @@ public class MarketplaceLandingActivity extends BaseActivity {
     }
 
     @Override
+    public String getScreenTitle() {
+        return TAG;
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }

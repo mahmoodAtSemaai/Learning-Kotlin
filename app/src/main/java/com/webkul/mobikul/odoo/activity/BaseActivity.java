@@ -1,5 +1,7 @@
 package com.webkul.mobikul.odoo.activity;
 
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -17,12 +19,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+
 import com.webkul.mobikul.odoo.R;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.RetrofitClient;
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
-import com.webkul.mobikul.odoo.helper.CustomerHelper;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.IntentHelper;
 import com.webkul.mobikul.odoo.updates.ForceUpdateManager;
@@ -32,19 +38,7 @@ import java.util.Locale;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.disposables.CompositeDisposable;
 
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CUSTOMER_FRAG_TYPE;
 
-/**
- * Webkul Software.
- *
- * @author Webkul <support@webkul.com>
- * @package Mobikul App
- * @Category Mobikul
- * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
- * @license https://store.webkul.com/license.html ASL Licence
- * @link https://store.webkul.com/license.html
- */
 
 public abstract class BaseActivity extends AppCompatActivity {
     @SuppressWarnings("unused")
@@ -84,6 +78,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    public abstract String getScreenTitle();
+
     @SuppressLint("CommitPrefEdits")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +92,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         && !(this instanceof ProductActivity)) {
             ForceUpdateManager.init(this);
         }
+        AnalyticsImpl.INSTANCE.trackActivityOpened(Helper.getScreenName(getScreenTitle()));
     }
 
     protected void showBackButton(boolean show) {
@@ -133,16 +130,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         int i = item.getItemId();
         if (i == android.R.id.home) {
             onBackPressed();
-
-        } else if (i == R.id.menu_item_bag) {
-            IntentHelper.goToBag(this);
         }
-        else if (i == R.id.menu_item_wishlist) {
-            Intent intent = new Intent(this, CustomerBaseActivity.class);
-            intent.putExtra(BUNDLE_KEY_CUSTOMER_FRAG_TYPE, CustomerHelper.CustomerFragType.TYPE_WISHLIST);
-            startActivity(intent);
-
-        }
+        // all [else] codeblock shifted to @HomeActivity @CustomerBaseActivity for code uniformity & analytics
         return super.onOptionsItemSelected(item);
     }
 
@@ -195,12 +184,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onStop();
         mCompositeDisposable.clear();
         RetrofitClient.getDispatcher().cancelAll();
+        AnalyticsImpl.INSTANCE.trackActivityClosed(Helper.getScreenName(getScreenTitle()));
     }
+
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mSqLiteDatabase.close();
         AlertDialogHelper.dismiss(this);
+
     }
+
 }

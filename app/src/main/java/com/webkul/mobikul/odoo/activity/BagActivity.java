@@ -1,10 +1,14 @@
 package com.webkul.mobikul.odoo.activity;
 
 import android.content.Intent;
+
 import androidx.databinding.DataBindingUtil;
+
 import android.os.Bundle;
+
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -30,21 +34,14 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CUSTOMER_FRAG_TYPE;
 
 /**
-
  * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
+ *
  * @author Webkul <support@webkul.com>
-
+ * @package Mobikul App
+ * @Category Mobikul
  * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
  * @license https://store.webkul.com/license.html ASL Licence
-
  * @link https://store.webkul.com/license.html
-
  */
 
 public class BagActivity extends BaseActivity implements FragmentManager.OnBackStackChangedListener {
@@ -61,6 +58,11 @@ public class BagActivity extends BaseActivity implements FragmentManager.OnBackS
         mSupportFragmentManager.addOnBackStackChangedListener(this);
     }
 
+    @Override
+    public String getScreenTitle() {
+        return TAG;
+    }
+
 
     @Override
     protected void onResume() {
@@ -74,7 +76,7 @@ public class BagActivity extends BaseActivity implements FragmentManager.OnBackS
             @Override
             public void onNext(@NonNull BagResponse bagResponse) {
                 super.onNext(bagResponse);
-                if (bagResponse.isAccessDenied()){
+                if (bagResponse.isAccessDenied()) {
                     AlertDialogHelper.showDefaultWarningDialogWithDismissListener(BagActivity.this, getString(R.string.error_login_failure), getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
@@ -85,7 +87,7 @@ public class BagActivity extends BaseActivity implements FragmentManager.OnBackS
                             startActivity(i);
                         }
                     });
-                }else {
+                } else {
                     mBinding.setData(bagResponse);
                     mBinding.setHandler(new BagActivityHandler(BagActivity.this, bagResponse));
 

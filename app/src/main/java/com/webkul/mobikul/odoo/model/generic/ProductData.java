@@ -1,13 +1,15 @@
 package com.webkul.mobikul.odoo.model.generic;
 
-import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.webkul.mobikul.odoo.BR;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.model.Seller;
 
 import java.util.ArrayList;
@@ -294,6 +296,7 @@ public class ProductData extends BaseObservable implements Parcelable {
             return;
         }
         this.quantity = quantity;
+        AnalyticsImpl.INSTANCE.trackItemQuantitySelected(quantity, productId, name);
         notifyPropertyChanged(BR.quantity);
     }
 

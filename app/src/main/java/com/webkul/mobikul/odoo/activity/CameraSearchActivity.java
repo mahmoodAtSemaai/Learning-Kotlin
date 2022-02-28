@@ -46,21 +46,14 @@ import java.util.Random;
 import static com.webkul.mobikul.odoo.activity.HomeActivity.RC_CAMERA;
 
 /**
-
  * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
+ *
  * @author Webkul <support@webkul.com>
-
+ * @package Mobikul App
+ * @Category Mobikul
  * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
  * @license https://store.webkul.com/license.html ASL Licence
-
  * @link https://store.webkul.com/license.html
-
  */
 
 public class CameraSearchActivity extends AppCompatActivity {
@@ -105,9 +98,7 @@ public class CameraSearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_camera_search);
 
         if (getIntent().hasExtra(BundleConstant.CAMERA_SELECTED_MODEL)) {
-            Log.i(TAG, "onCreate: 1");
             selectedModel = getIntent().getStringExtra(BundleConstant.CAMERA_SELECTED_MODEL);
-            Log.i(TAG, "onCreate: 2"+ selectedModel);
         }
 
         if (getSupportActionBar() != null) {
@@ -125,8 +116,7 @@ public class CameraSearchActivity extends AppCompatActivity {
         displayAdapter = new CameraSearchResultAdapter(CameraSearchActivity.this, displayList);
         resultSpinner.setAdapter(displayAdapter);
         resultContainer = (LinearLayout) findViewById(R.id.resultsContainer);
-        resultContainer.getLayoutParams().height = (int) (Resources.getSystem().getDisplayMetrics().heightPixels* 0.50);
-
+        resultContainer.getLayoutParams().height = (int) (Resources.getSystem().getDisplayMetrics().heightPixels * 0.50);
 
 
         resultNumberTv = (TextView) findViewById(R.id.resultsMessageTv);
@@ -167,7 +157,6 @@ public class CameraSearchActivity extends AppCompatActivity {
         }
 
 
-
         hasFlash = getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
         ToggleButton flashButton = (ToggleButton) findViewById(R.id.flashSwitch);
 
@@ -187,7 +176,7 @@ public class CameraSearchActivity extends AppCompatActivity {
                         }
                         camera.setParameters(parameters);
                     } else {
-                        Toast.makeText(CameraSearchActivity.this,  getString(R.string.error_while_using_flash), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CameraSearchActivity.this, getString(R.string.error_while_using_flash), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -301,7 +290,7 @@ public class CameraSearchActivity extends AppCompatActivity {
                 AlertDialogHelper.showPermissionDialog(this, this.getResources().getString(R.string.permission_confirmation), this.getResources().getString(R.string.camera_search), listener);
                 return;
             }
-           
+
         }
     }
 
@@ -321,7 +310,7 @@ public class CameraSearchActivity extends AppCompatActivity {
             resultList.add(visionLabel);
         }
 
-        if (!showResults){
+        if (!showResults) {
             resultNumberTv.setText(getString(R.string.x_results_found, displayList.size()));
             displayAdapter.notifyDataSetChanged();
         }
@@ -348,13 +337,13 @@ public class CameraSearchActivity extends AppCompatActivity {
         List<FirebaseVisionText.TextBlock> blocks = textresults.getTextBlocks();
         for (FirebaseVisionText.TextBlock eachBlock : blocks) {
             for (FirebaseVisionText.Line eachLine : eachBlock.getLines()) {
-                if (!displayList.contains(eachLine.getText())){
+                if (!displayList.contains(eachLine.getText())) {
                     displayList.add(eachLine.getText());
                 }
             }
         }
 
-        if (!showResults){
+        if (!showResults) {
             resultNumberTv.setText(getString(R.string.x_results_found, displayList.size()));
             displayAdapter.notifyDataSetChanged();
         }

@@ -5,11 +5,20 @@ Please read and follow these guidelines to make our development space more clean
 
 TLDR; //loom video
 
-### Branches
-We have three type of branches
+### Branch rules
 1. **Master** branch will be the release/production/deployment branch. Only admins will have the access
-2. **Development** branch. This will act as master for developers all the feature branch code will be merged here. Later moved to actual master for deployment/release.
-3. **Feature** branch. Each feature specific development will be done on feature branches. A feature branch should always be created from developement branch only.
+
+2. **Development branch** The development branch is the default branch of the source repository. Any new addition in terms of features/bug-fixes should raise a pull request to the development branch.
+
+3. **Release branch** During making a release to production environment, development branch will be checkout out to a new branch named release/version-name. The release/* branch can be created & pushed only by Maintainers. In the release branch, we will make a version commit & raise a pull request to the master branch.
+
+4. **Create a Release Tag**- git tag -a vx.xx -m "change"; git push origin --tags
+Live branch The master branch will contain the source code of the present/active release. Once a push is made to the master branch, we will release the code to the production environment.
+
+5. **Feature development** For any new feature development, checkout the source from the default branch (development) & create your branch in form of the syntax: feature-feature-name
+
+6. **Bug fixes / Enhancements** For any bug fixes or enhancements, checkout the source from the default branch (development) & create your branch in form of the syntax: enhancement-enhancement-name./bug-fix-bug-fix-name)
+
 
 ### Creating a new branch?
 All Feature branches must be created under *feat* folder and all release branches should be created under *release* folder.

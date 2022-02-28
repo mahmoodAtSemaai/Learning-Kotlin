@@ -19,6 +19,7 @@ import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.BaseActivity;
 import com.webkul.mobikul.odoo.activity.ProductActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.databinding.ItemCatalogProductListBinding;
@@ -26,6 +27,7 @@ import com.webkul.mobikul.odoo.databinding.ItemProductGridBinding;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
+import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.helper.SnackbarHelper;
 import com.webkul.mobikul.odoo.model.BaseResponse;
@@ -43,7 +45,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import androidx.core.util.Pair;
 
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
@@ -77,17 +78,18 @@ public class ProductHandler {
     }
 
     public void viewProduct() {
+        AnalyticsImpl.INSTANCE.trackProductItemSelected(Helper.getScreenName(mContext),
+                mData.getProductId(), mData.getName());
         Intent intent = new Intent(mContext, ((OdooApplication) mContext.getApplicationContext()).getProductActivity());
         intent.putExtra(BUNDLE_KEY_PRODUCT_ID, mData.getTemplateId());
         intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, mData.getName());
 //        Pair<View, String> p1 = Pair.create((View)mProductDefaultBinding.productImage, "product_image");
-        Log.i(TAG, "viewProduct: "+ mContext);
+
         String transitionName = mContext.getString(R.string.transition);
         if(mProductDefaultBinding !=null) {
             imageView = mProductDefaultBinding.productImage;
         }else
             imageView = mProductListtBinding.productImage;
-        Log.i(TAG, "viewProduct: "+imageView);
         ActivityOptionsCompat options = ActivityOptionsCompat.
                 makeSceneTransitionAnimation((Activity)mContext, imageView,transitionName);
 //        mContext.startActivity(intent, options.toBundle());

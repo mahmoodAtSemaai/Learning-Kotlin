@@ -29,4 +29,6 @@ class PrivacyPolicyFragment : Fragment(R.layout.fragment_privacy_policy) {
             return PrivacyPolicyFragment()
         }
     }
+
+
 }

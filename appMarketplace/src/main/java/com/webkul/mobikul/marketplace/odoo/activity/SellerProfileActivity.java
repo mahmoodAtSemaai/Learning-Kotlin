@@ -117,4 +117,9 @@ public class SellerProfileActivity extends BaseActivity {
             }
         }
     }
+
+    @Override
+    public String getScreenTitle() {
+        return TAG;
+    }
 }

@@ -1,5 +1,6 @@
 package com.webkul.mobikul.marketplace.odoo.fragment;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -51,6 +52,17 @@ public class StorePolicyFragment extends BaseFragment {
         storePolicyViewPagerAdapter.addFragment(WebviewFragment.newInstance(getArguments().getString(BUNDLE_KEY_SHIPPING_POLICY), null)
                 , getString(R.string.shipping_policy));
         mBinding.viewpager.setAdapter(storePolicyViewPagerAdapter);
+    }
+
+    @NonNull
+    @Override
+    public String getTitle() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public void setTitle(@NonNull String title) {
+
     }
 
 }

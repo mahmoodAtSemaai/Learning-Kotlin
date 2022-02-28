@@ -3,26 +3,31 @@ package com.webkul.mobikul.odoo.adapter.customer;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.webkul.mobikul.odoo.BuildConfig;
 import com.webkul.mobikul.odoo.R;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
+import com.webkul.mobikul.odoo.analytics.AnalyticsSourceConstants;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.databinding.FragmentSignUpBinding;
 import com.webkul.mobikul.odoo.fragment.LoginFragment;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
+import com.webkul.mobikul.odoo.helper.ErrorConstants;
 import com.webkul.mobikul.odoo.helper.FingerPrintLoginHelper;
 import com.webkul.mobikul.odoo.helper.FragmentHelper;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.SnackbarHelper;
+import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
 import com.webkul.mobikul.odoo.model.customer.address.MyAddressesResponse;
 import com.webkul.mobikul.odoo.model.customer.signup.SignUpData;
 import com.webkul.mobikul.odoo.model.customer.signup.SignUpResponse;
@@ -30,6 +35,7 @@ import com.webkul.mobikul.odoo.model.customer.signup.TermAndConditionResponse;
 import com.webkul.mobikul.odoo.model.request.AuthenticationRequest;
 import com.webkul.mobikul.odoo.model.request.BaseLazyRequest;
 import com.webkul.mobikul.odoo.model.request.SignUpRequest;
+import com.webkul.mobikul.odoo.model.user.UserModel;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.Observer;
@@ -39,21 +45,14 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
-
  * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
+ *
  * @author Webkul <support@webkul.com>
-
+ * @package Mobikul App
+ * @Category Mobikul
  * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
  * @license https://store.webkul.com/license.html ASL Licence
-
  * @link https://store.webkul.com/license.html
-
  */
 
 public class SignUpHandler {
@@ -81,13 +80,13 @@ public class SignUpHandler {
             if (AppSharedPref.isTermAndCondition(mContext)) {
                 if (isTermAndCondition) {
 
-                    if (BuildConfig.isMarketplace && isSeller){
-                        if (isMarketplaceTermAndCondition){
+                    if (BuildConfig.isMarketplace && isSeller) {
+                        if (isMarketplaceTermAndCondition) {
                             handleSignUp(mData);
-                        }else {
+                        } else {
                             SnackbarHelper.getSnackbar((Activity) mContext, mContext.getString(R.string.plese_accept_tnc), Snackbar.LENGTH_LONG).show();
                         }
-                    }else {
+                    } else {
                         handleSignUp(mData);
                     }
                 } else {
@@ -103,9 +102,9 @@ public class SignUpHandler {
 
     public void handleSignUp(SignUpData mData) {
         AlertDialogHelper.showDefaultProgressDialog(mContext);
-
         AppSharedPref.setCustomerLoginBase64Str(mContext, Base64.encodeToString(new AuthenticationRequest(this.mData.getPhoneNumber(), this.mData.getPassword()).toString().getBytes(), Base64.NO_WRAP));
-
+        AnalyticsImpl.INSTANCE.trackSignupSelected(AnalyticsSourceConstants.EVENT_SOURCE_SIGNUP,
+                AnalyticsSourceConstants.EVENT_SOURCE_PROPERTY_MOBILE, mData.getName(), Helper.getStringDateAndTime(), isSeller, countryId);
         callSignUpApi(mContext, new SignUpRequest(mContext, this.mData.getName(), this.mData.getPhoneNumber(), this.mData.getPassword(), false, isSeller, this.mData.getProfileURL(), countryId));
     }
 
@@ -121,8 +120,18 @@ public class SignUpHandler {
             public void onNext(@NonNull SignUpResponse signUpResponse) {
                 super.onNext(signUpResponse);
                 if (signUpResponse.isSuccess()) {
-                    fetchBillingAddress(mContext,signUpResponse);
+                    AnalyticsImpl.INSTANCE.trackSignupSuccessfull(AnalyticsSourceConstants.EVENT_SOURCE_SIGNUP,
+                            AnalyticsSourceConstants.EVENT_SOURCE_PROPERTY_MOBILE,
+                            mData.getName(),
+                            Helper.getStringDateAndTime(),
+                            isSeller,
+                            countryId);
+
+                    fetchBillingAddress(mContext, signUpResponse);
                 } else {
+                    AnalyticsImpl.INSTANCE.trackSignupFailed(
+                            (long) signUpResponse.getResponseCode(), ErrorConstants.SignupError.INSTANCE.getErrorType(), signUpResponse.getMessage()
+                    );
                     AppSharedPref.setCustomerLoginBase64Str(mContext, "");
                     SnackbarHelper.getSnackbar((Activity) mContext, signUpResponse.getMessage(), Snackbar.LENGTH_LONG, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
                 }
@@ -132,11 +141,21 @@ public class SignUpHandler {
             public void onComplete() {
 
             }
+
+            @Override
+            public void onError(@androidx.annotation.NonNull Throwable t) {
+                super.onError(t);
+                AnalyticsImpl.INSTANCE.trackSignupFailed(
+                        (long) ErrorConstants.SignupError.INSTANCE.getErrorCode(),
+                        ErrorConstants.SignupError.INSTANCE.getErrorType(),
+                        ErrorConstants.SignupError.INSTANCE.getErrorMessage()
+                );
+            }
         };
     }
 
     private void fetchBillingAddress(Context mContext, SignUpResponse signUpResponse) {
-        ApiConnection.getAddressBookData(mContext, new BaseLazyRequest(0, 1)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(getAddressResponseObserver(mContext,signUpResponse));
+        ApiConnection.getAddressBookData(mContext, new BaseLazyRequest(0, 1)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(getAddressResponseObserver(mContext, signUpResponse));
     }
 
     private Observer<? super MyAddressesResponse> getAddressResponseObserver(Context mContext, SignUpResponse signUpResponse) {
@@ -145,7 +164,7 @@ public class SignUpHandler {
             public void onNext(@NonNull MyAddressesResponse myAddressesResponse) {
                 super.onNext(myAddressesResponse);
                 String billingAddressUrl = myAddressesResponse.getAddresses().get(0).getUrl();
-                showAlertDialogForFingerPrintVerification(mContext,signUpResponse,billingAddressUrl);
+                showAlertDialogForFingerPrintVerification(mContext, signUpResponse, billingAddressUrl);
             }
         };
     }
@@ -159,10 +178,10 @@ public class SignUpHandler {
                     sweetAlertDialog.dismiss();
                     FingerPrintLoginHelper fingerPrintLoginHelper = new FingerPrintLoginHelper();
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        fingerPrintLoginHelper.askForFingerprintLogin(mContext, null, null, signUpResponse, SignUpHandler.this.mData,billingAddressUrl);
+                        fingerPrintLoginHelper.askForFingerprintLogin(mContext, null, null, signUpResponse, SignUpHandler.this.mData, billingAddressUrl);
                     } else {
                         AppSharedPref.setIsAllowedFingerprintLogin(mContext, false);
-                        fingerPrintLoginHelper.goToHomePage(mContext, null, null, signUpResponse, SignUpHandler.this.mData,billingAddressUrl);
+                        fingerPrintLoginHelper.navigateToHomeAfterAnalyticsSetup(mContext, null, null, signUpResponse, SignUpHandler.this.mData, billingAddressUrl);
                     }
                 }).show();
     }
@@ -223,9 +242,9 @@ public class SignUpHandler {
         if (seller) {
             mBinding.countryLayout.setVisibility(View.VISIBLE);
             mBinding.urlLayout.setVisibility(View.VISIBLE);
-            if (AppSharedPref.isTermAndCondition(mContext)){
+            if (AppSharedPref.isTermAndCondition(mContext)) {
                 mBinding.marketplaceTncLayout.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 mBinding.marketplaceTncLayout.setVisibility(View.GONE);
             }
 
@@ -248,7 +267,7 @@ public class SignUpHandler {
         isTermAndCondition = termAndCondition;
     }
 
-    public void viewMarketplaceTermNCond(){
+    public void viewMarketplaceTermNCond() {
 
     }
 

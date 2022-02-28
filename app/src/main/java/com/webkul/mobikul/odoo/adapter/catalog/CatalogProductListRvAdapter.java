@@ -1,12 +1,14 @@
 package com.webkul.mobikul.odoo.adapter.catalog;
 
 import android.content.Context;
+
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,21 +30,14 @@ import static com.webkul.mobikul.odoo.activity.CatalogProductActivity.VIEW_TYPE_
 import static com.webkul.mobikul.odoo.activity.CatalogProductActivity.VIEW_TYPE_LIST;
 
 /**
-
  * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
+ *
  * @author Webkul <support@webkul.com>
-
+ * @package Mobikul App
+ * @Category Mobikul
  * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
  * @license https://store.webkul.com/license.html ASL Licence
-
  * @link https://store.webkul.com/license.html
-
  */
 public class CatalogProductListRvAdapter extends RecyclerView.Adapter<CatalogProductListRvAdapter.ViewHolder> {
     @SuppressWarnings("unused")
@@ -63,7 +58,7 @@ public class CatalogProductListRvAdapter extends RecyclerView.Adapter<CatalogPro
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         Log.d(TAG, "onCreateViewHolderviewType: " + viewType);
-        if(viewType == VIEW_TYPE_BACK_TO_TOP){
+        if (viewType == VIEW_TYPE_BACK_TO_TOP) {
 //            if(((CatalogProductActivity) mContext).mBinding.productCatalogRv.getLayoutManager() instanceof GridLayoutManager && mProductDatas.size()<=9){
 //                return null;
 //            }
@@ -72,14 +67,14 @@ public class CatalogProductListRvAdapter extends RecyclerView.Adapter<CatalogPro
         if (viewType == VIEW_TYPE) {
             return new ViewHolder(inflater.inflate(R.layout.item_catalog_product_list, parent, false));
         } else {
-        return new ViewHolder(inflater.inflate(R.layout.item_product_grid, parent, false));
+            return new ViewHolder(inflater.inflate(R.layout.item_product_grid, parent, false));
         }
     }
 
     @Override
     public void onBindViewHolder(CatalogProductListRvAdapter.ViewHolder holder, int position) {
         Log.i(TAG, "onBindViewHolder: ");
-        if(position < mProductDatas.size()) {
+        if (position < mProductDatas.size()) {
             final ProductData productData = mProductDatas.get(position);
 //        productData.setContext(mContext);
             if (getItemViewType(position) == VIEW_TYPE) {
@@ -102,26 +97,26 @@ public class CatalogProductListRvAdapter extends RecyclerView.Adapter<CatalogPro
     @Override
     public int getItemViewType(int position) {
         boolean isLinearLayoutManager = ((CatalogProductActivity) mContext).mBinding.productCatalogRv.getLayoutManager() instanceof LinearLayoutManager;
-        Log.i(TAG, "getItemViewType: "+AppSharedPref.isGridview(mContext));
-        if(position == mProductDatas.size()){
+        Log.i(TAG, "getItemViewType: " + AppSharedPref.isGridview(mContext));
+        if (position == mProductDatas.size()) {
             Log.i(TAG, "getItemViewType: buttonToTop");
             return VIEW_TYPE_BACK_TO_TOP;
         }
         if (AppSharedPref.isGridview(mContext)) {
             return VIEW_TYPE_GRID;
-        } else{
+        } else {
             return VIEW_TYPE_LIST;
         }
     }
 
     @Override
     public int getItemCount() {
-        Log.i(TAG, "getItemCount: "+ mProductDatas.size());
-        if(mProductDatas.size()<=9 && AppSharedPref.isGridview(mContext))
+        Log.i(TAG, "getItemCount: " + mProductDatas.size());
+        if (mProductDatas.size() <= 9 && AppSharedPref.isGridview(mContext))
             return mProductDatas.size();
-        if(mProductDatas.size()<=5)
+        if (mProductDatas.size() <= 5)
             return mProductDatas.size();
-        return mProductDatas.size()+1;
+        return mProductDatas.size() + 1;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

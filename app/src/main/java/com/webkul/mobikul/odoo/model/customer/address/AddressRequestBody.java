@@ -141,7 +141,6 @@ public class AddressRequestBody {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.i(TAG, "getNewAddressData: " + bodyParams.toString());
         return bodyParams.toString();
     }
 }

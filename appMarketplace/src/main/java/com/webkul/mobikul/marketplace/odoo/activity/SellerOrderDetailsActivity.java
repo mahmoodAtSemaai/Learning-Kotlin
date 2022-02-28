@@ -81,4 +81,9 @@ public class SellerOrderDetailsActivity extends BaseActivity {
             }
         });
     }
+
+    @Override
+    public String getScreenTitle() {
+        return TAG;
+    }
 }

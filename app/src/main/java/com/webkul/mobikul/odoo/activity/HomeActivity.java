@@ -1,5 +1,12 @@
 package com.webkul.mobikul.odoo.activity;
 
+import static com.webkul.mobikul.odoo.BuildConfig.DEFAULT_BACK_PRESSED_TIME_TO_CLOSE;
+import static com.webkul.mobikul.odoo.BuildConfig.DEFAULT_DAYS_UNTIL_PROMPT;
+import static com.webkul.mobikul.odoo.BuildConfig.DEFAULT_LAUNCHES_UNTIL_PROMPT;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CUSTOMER_FRAG_TYPE;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -12,6 +19,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.IdRes;
@@ -20,6 +28,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -30,6 +39,9 @@ import com.roughike.bottombar.OnTabSelectListener;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.webkul.mobikul.odoo.R;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
+import com.webkul.mobikul.odoo.connection.ApiConnection;
+import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.constant.BundleConstant;
 import com.webkul.mobikul.odoo.custom.MaterialSearchView;
 import com.webkul.mobikul.odoo.databinding.ActivityHomeBinding;
@@ -38,30 +50,25 @@ import com.webkul.mobikul.odoo.fragment.AccountFragment;
 import com.webkul.mobikul.odoo.fragment.EmptyFragment;
 import com.webkul.mobikul.odoo.fragment.HomeFragment;
 import com.webkul.mobikul.odoo.fragment.NotificationFragment;
+import com.webkul.mobikul.odoo.handler.home.FragmentNotifier;
 import com.webkul.mobikul.odoo.handler.home.HomeActivityHandler;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
+import com.webkul.mobikul.odoo.helper.CustomerHelper;
 import com.webkul.mobikul.odoo.helper.FragmentHelper;
+import com.webkul.mobikul.odoo.helper.IntentHelper;
 import com.webkul.mobikul.odoo.helper.SnackbarHelper;
+import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
+import com.webkul.mobikul.odoo.model.user.UserModel;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
-import static com.webkul.mobikul.odoo.BuildConfig.DEFAULT_BACK_PRESSED_TIME_TO_CLOSE;
-import static com.webkul.mobikul.odoo.BuildConfig.DEFAULT_DAYS_UNTIL_PROMPT;
-import static com.webkul.mobikul.odoo.BuildConfig.DEFAULT_LAUNCHES_UNTIL_PROMPT;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
+import io.reactivex.schedulers.Schedulers;
 
-/**
- * Webkul Software.
- *
- * @author Webkul <support@webkul.com>
- * @package Mobikul App
- * @Category Mobikul
- * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
- * @license https://store.webkul.com/license.html ASL Licence
- * @link https://store.webkul.com/license.html
- */
+
 
 
 public class HomeActivity extends BaseActivity implements OnTabSelectListener,/* OnTabReselectListener,*/FragmentManager.OnBackStackChangedListener, OnTabReselectListener {
@@ -77,6 +84,12 @@ public class HomeActivity extends BaseActivity implements OnTabSelectListener,/*
     public SwipeRefreshLayout swipeRefreshLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private long mBackPressedTime;
+    private String currentFragmentDisplayed = "";
+
+    @Override
+    public String getScreenTitle() {
+        return TAG;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +104,28 @@ public class HomeActivity extends BaseActivity implements OnTabSelectListener,/*
 
         mSupportFragmentManager.addOnBackStackChangedListener(this);
         mBinding.setHandler(new HomeActivityHandler(this));
-
         AppSharedPref.setLaunchcount(this, AppSharedPref.getLaunchCount(this) + 1);
+        mBinding.drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View view, float v) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View view) {
+                AnalyticsImpl.INSTANCE.trackDrawerHamburgerSelected(currentFragmentDisplayed);
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View view) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int i) {
+
+            }
+        });
         // Get date of first launch
         long firstLaunchDate = AppSharedPref.getFirstLaunchDate(this);
 //        Log.i(TAG, "onCreate: FirstLaunchDate "+ firstLaunchDate);
@@ -108,6 +141,8 @@ public class HomeActivity extends BaseActivity implements OnTabSelectListener,/*
                 RateAppDialogFragm.newInstance().show(mSupportFragmentManager, RateAppDialogFragm.class.getSimpleName());
             }
         }
+
+
     }
 
     public ActionBarDrawerToggle setupDrawerToggle(Toolbar toolbar) {
@@ -124,9 +159,18 @@ public class HomeActivity extends BaseActivity implements OnTabSelectListener,/*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_item_search) {
+            AnalyticsImpl.INSTANCE.trackSearchSelected(currentFragmentDisplayed);
             mBinding.bottomNavigation.selectTabWithId(R.id.navigation_search);
-        }
+        } else if (item.getItemId() == R.id.menu_item_bag) {
+            AnalyticsImpl.INSTANCE.trackWishlistSelected(currentFragmentDisplayed);
+            IntentHelper.goToBag(this);
+        } else if (item.getItemId() == R.id.menu_item_wishlist) {
+            AnalyticsImpl.INSTANCE.trackShoppingCartSelected(currentFragmentDisplayed);
+            Intent intent = new Intent(this, CustomerBaseActivity.class);
+            intent.putExtra(BUNDLE_KEY_CUSTOMER_FRAG_TYPE, CustomerHelper.CustomerFragType.TYPE_WISHLIST);
+            startActivity(intent);
 
+        }
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
@@ -160,11 +204,7 @@ public class HomeActivity extends BaseActivity implements OnTabSelectListener,/*
         Log.i(TAG, "updateAccount: ");
         boolean isEmailVerified = AppSharedPref.isEmailVerified(this);
         boolean isLoggedIn = AppSharedPref.isLoggedIn(this);
-        if (isLoggedIn && !isEmailVerified) {
-            mBinding.bottomNavigation.getTabWithId(R.id.navigation_account).setActivated(true);
-        } else {
-            mBinding.bottomNavigation.getTabWithId(R.id.navigation_account).setActivated(false);
-        }
+        mBinding.bottomNavigation.getTabWithId(R.id.navigation_account).setActivated(isLoggedIn && !isEmailVerified);
     }
 
 
@@ -182,7 +222,6 @@ public class HomeActivity extends BaseActivity implements OnTabSelectListener,/*
 
 
     public void showHomeFrag() {
-//            Log.i(TAG, "showHomeFrag: 1");
         if (!mSupportFragmentManager.popBackStackImmediate(HomeFragment.class.getSimpleName(), 0)) { // fragment not in back stack, create it.
             Log.i(TAG, "showHomeFrag: 2");
             FragmentHelper.replaceFragment(R.id.container, this, HomeFragment.newInstance(getIntent().getParcelableExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE)), HomeFragment.class.getSimpleName(), true, true);
@@ -191,14 +230,12 @@ public class HomeActivity extends BaseActivity implements OnTabSelectListener,/*
 
     private void showNotificationFrag() {
         if (!mSupportFragmentManager.popBackStackImmediate(NotificationFragment.class.getSimpleName(), 0)) { //fragment not in back stack, create it.
-//            Log.i(TAG, "showNotificationFrag: ");
             FragmentHelper.replaceFragment(R.id.container, this, NotificationFragment.newInstance(), NotificationFragment.class.getSimpleName(), true, true);
         }
     }
 
     private void showAccountFrag() {
         if (!mSupportFragmentManager.popBackStackImmediate(AccountFragment.class.getSimpleName(), 0)) { //fragment not in back stack, create it.
-//            Log.i(TAG, "showAccountFrag: ");
             FragmentHelper.replaceFragment(R.id.container, this, AccountFragment.newInstance(), AccountFragment.class.getSimpleName(), true, true);
         }
     }
@@ -452,5 +489,20 @@ public class HomeActivity extends BaseActivity implements OnTabSelectListener,/*
         String path = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "Title", null);
         return Uri.parse(path);
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onFragmentNotifier(FragmentNotifier.HomeActivityFragments currentFragment) {
+        switch (currentFragment) {
+            case HOME_FRAGMENT:
+                currentFragmentDisplayed = getString(R.string.home);
+                break;
+            case NOTIFICATION_FRAGMENT:
+                currentFragmentDisplayed = getString(R.string.notification);
+                break;
+            case ACCOUNT_FRAGMENT:
+                currentFragmentDisplayed = getString(R.string.account);
+        }
+    }
+
 
 }

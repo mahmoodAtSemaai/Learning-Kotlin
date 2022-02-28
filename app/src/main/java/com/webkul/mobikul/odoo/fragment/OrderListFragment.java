@@ -1,11 +1,16 @@
 package com.webkul.mobikul.odoo.fragment;
 
 import android.content.Intent;
+
 import androidx.databinding.DataBindingUtil;
+
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,23 +38,15 @@ import io.reactivex.schedulers.Schedulers;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
 
 
-
 /**
-
  * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
+ *
  * @author Webkul <support@webkul.com>
-
+ * @package Mobikul App
+ * @Category Mobikul
  * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
  * @license https://store.webkul.com/license.html ASL Licence
-
  * @link https://store.webkul.com/license.html
-
  */
 public class OrderListFragment extends BaseFragment {
     @SuppressWarnings("unused")
@@ -118,7 +115,7 @@ public class OrderListFragment extends BaseFragment {
                                     }
                                 }
                             });
-                            mBinding.orderRv.setAdapter(new OrderRvAdapter(getContext(), mBinding.getData().getOrders()));
+                            mBinding.orderRv.setAdapter(new OrderRvAdapter(getContext(), mBinding.getData().getOrders(), TAG));
                         }
                     } else {
                         mBinding.getData().setLazyLoading(false);
@@ -150,6 +147,17 @@ public class OrderListFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+
+    @androidx.annotation.NonNull
+    @Override
+    public String getTitle() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public void setTitle(@androidx.annotation.NonNull String title) {
+
     }
 
 }

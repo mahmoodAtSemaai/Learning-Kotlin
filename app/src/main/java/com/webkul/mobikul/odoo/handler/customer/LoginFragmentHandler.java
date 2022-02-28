@@ -19,6 +19,8 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.snackbar.Snackbar;
 import com.muddzdev.styleabletoastlibrary.StyleableToast;
 import com.webkul.mobikul.odoo.R;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
+import com.webkul.mobikul.odoo.analytics.AnalyticsSourceConstants;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.dialog_frag.ForgotPasswordDialogFragment;
@@ -27,16 +29,19 @@ import com.webkul.mobikul.odoo.fragment.SignUpFragment;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.ApiRequestHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
+import com.webkul.mobikul.odoo.helper.ErrorConstants;
 import com.webkul.mobikul.odoo.helper.FingerPrintLoginHelper;
 import com.webkul.mobikul.odoo.helper.FragmentHelper;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.IntentHelper;
 import com.webkul.mobikul.odoo.helper.SnackbarHelper;
+import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
 import com.webkul.mobikul.odoo.model.customer.signin.LoginRequestData;
 import com.webkul.mobikul.odoo.model.customer.signin.LoginResponse;
 import com.webkul.mobikul.odoo.model.customer.signup.SignUpData;
 import com.webkul.mobikul.odoo.model.customer.signup.SignUpResponse;
 import com.webkul.mobikul.odoo.model.request.AuthenticationRequest;
+import com.webkul.mobikul.odoo.model.user.UserModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +74,7 @@ public class LoginFragmentHandler {
     }
 
     public void forgetPassword() {
+        AnalyticsImpl.INSTANCE.trackForgotPasswordSelected(AnalyticsSourceConstants.EVENT_SOURCE_LOGIN);
         FragmentManager fragmentManager = ((AppCompatActivity) mContext).getSupportFragmentManager();
         ForgotPasswordDialogFragment forgotPasswordDialogFragment = ForgotPasswordDialogFragment.newInstance(mData.getUsername().toLowerCase());
         forgotPasswordDialogFragment.show(fragmentManager, ForgotPasswordDialogFragment.class.getSimpleName());
@@ -100,12 +106,13 @@ public class LoginFragmentHandler {
         }
 
         intent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intents.toArray(new Parcelable[intents.size()]));
-        ((Activity)mContext).startActivity(intent);
+        ((Activity) mContext).startActivity(intent);
     }
 
     public void signIn() {
         Helper.hideKeyboard((AppCompatActivity) mContext);
         if (mData.isFormValidated()) {
+            AnalyticsImpl.INSTANCE.trackLoginDetailsSubmitted(AnalyticsSourceConstants.EVENT_SOURCE_PROPERTY_MOBILE, AnalyticsSourceConstants.EVENT_SOURCE_LOGIN);
             AppSharedPref.setCustomerLoginBase64Str(mContext, Base64.encodeToString(new AuthenticationRequest(mData.getUsername(), mData.getPassword()).toString().getBytes(), Base64.NO_WRAP));
 
             ApiConnection.signIn(mContext).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<LoginResponse>(mContext) {
@@ -120,16 +127,44 @@ public class LoginFragmentHandler {
                     super.onNext(loginResponse);
                     if (loginResponse.isSuccess()) {
 
+                        AnalyticsImpl.INSTANCE.trackLoginSuccessfull(AnalyticsSourceConstants.EVENT_SOURCE_PROPERTY_MOBILE, AnalyticsSourceConstants.EVENT_SOURCE_LOGIN);
+
 
                         //#*#*#*#* For Fingerprint Login Permission *#*#*#*#
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             FingerPrintLoginHelper fingerPrintHelper = new FingerPrintLoginHelper();
-                            fingerPrintHelper.askForFingerprintLogin(mContext, loginResponse, mData, null, null,null);
+                            fingerPrintHelper.askForFingerprintLogin(mContext, loginResponse, mData, null, null, null);
                         } else {
-                            goToHomePage(mContext, loginResponse, mData, null, null);
+                            if (AppSharedPref.getUserAnalyticsId(mContext) == null) {
+                                ApiConnection.getUserAnalytics(mContext).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<UserAnalyticsResponse>(mContext) {
+                                    @Override
+                                    public void onNext(@androidx.annotation.NonNull UserAnalyticsResponse userAnalyticsResponse) {
+                                        super.onNext(userAnalyticsResponse);
+                                        AnalyticsImpl.INSTANCE.initUserTracking(new UserModel(
+                                                userAnalyticsResponse.getEmail(),
+                                                userAnalyticsResponse.getAnalyticsId(),
+                                                userAnalyticsResponse.getName(),
+                                                userAnalyticsResponse.isSeller()
+                                        ));
+                                        AppSharedPref.setUserAnalyticsId(mContext, userAnalyticsResponse.getAnalyticsId());
+                                        goToHomePage(mContext, loginResponse, mData, null, null);
+
+                                    }
+
+                                    @Override
+                                    public void onError(@androidx.annotation.NonNull Throwable t) {
+                                        super.onError(t);
+
+                                        AnalyticsImpl.INSTANCE.trackAnalyticsFailure();
+                                        goToHomePage(mContext, loginResponse, mData, null, null);
+                                    }
+                                });
+                            }
+
                         }
 
                     } else {
+                        AnalyticsImpl.INSTANCE.trackLoginFailed((long) ErrorConstants.LoginError.INSTANCE.getErrorCode(), ErrorConstants.LoginError.INSTANCE.getErrorType(), loginResponse.getMessage());
                         AlertDialogHelper.showDefaultWarningDialog(mContext, mContext.getString(R.string.error_login_failure), loginResponse.getMessage());
                         AppSharedPref.setCustomerLoginBase64Str(mContext, "");
                     }
@@ -137,6 +172,7 @@ public class LoginFragmentHandler {
 
                 @Override
                 public void onError(@NonNull Throwable t) {
+                    AnalyticsImpl.INSTANCE.trackLoginFailed((long) ErrorConstants.LoginError.INSTANCE.getErrorCode(), ErrorConstants.LoginError.INSTANCE.getErrorType(), ErrorConstants.LoginError.INSTANCE.getErrorMessage());
                     super.onError(t);
                 }
 

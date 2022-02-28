@@ -10,14 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.databinding.ItemAlternativeProductBinding;
-import com.webkul.mobikul.odoo.databinding.ItemFeaturedCategoryBinding;
-import com.webkul.mobikul.odoo.handler.home.FeaturedCategoryHandler;
 import com.webkul.mobikul.odoo.handler.product.AlternativeProductHandler;
-import com.webkul.mobikul.odoo.model.generic.FeaturedCategoryData;
 import com.webkul.mobikul.odoo.model.generic.ProductData;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
 

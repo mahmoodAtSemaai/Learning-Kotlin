@@ -1,16 +1,22 @@
 package com.webkul.mobikul.odoo.activity;
 
 import android.content.Intent;
+
 import androidx.databinding.DataBindingUtil;
+
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.webkul.mobikul.odoo.R;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.custom.MaterialSearchView;
 import com.webkul.mobikul.odoo.databinding.ActivityCustomerBaseBinding;
 import com.webkul.mobikul.odoo.fragment.AccountInfoFragment;
@@ -21,29 +27,24 @@ import com.webkul.mobikul.odoo.fragment.OrderFragment;
 import com.webkul.mobikul.odoo.fragment.OrderListFragment;
 import com.webkul.mobikul.odoo.fragment.WishlistFragment;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
+import com.webkul.mobikul.odoo.helper.CustomerHelper;
 import com.webkul.mobikul.odoo.helper.CustomerHelper.CustomerFragType;
 import com.webkul.mobikul.odoo.helper.FragmentHelper;
+import com.webkul.mobikul.odoo.helper.IntentHelper;
 
 import java.util.ArrayList;
 
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CUSTOMER_FRAG_TYPE;
 
 /**
-
  * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
+ *
  * @author Webkul <support@webkul.com>
-
+ * @package Mobikul App
+ * @Category Mobikul
  * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
  * @license https://store.webkul.com/license.html ASL Licence
-
  * @link https://store.webkul.com/license.html
-
  */
 
 public class CustomerBaseActivity extends BaseLocationActivity implements FragmentManager.OnBackStackChangedListener {
@@ -93,6 +94,13 @@ public class CustomerBaseActivity extends BaseLocationActivity implements Fragme
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_item_search) {
             mBinding.searchView.openSearch();
+        } else if (item.getItemId() == R.id.menu_item_bag) {
+            IntentHelper.goToBag(this);
+        } else if (item.getItemId() == R.id.menu_item_wishlist) {
+            Intent intent = new Intent(this, CustomerBaseActivity.class);
+            intent.putExtra(BUNDLE_KEY_CUSTOMER_FRAG_TYPE, CustomerHelper.CustomerFragType.TYPE_WISHLIST);
+            startActivity(intent);
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -160,6 +168,11 @@ public class CustomerBaseActivity extends BaseLocationActivity implements Fragme
                         break;
                 }
         }
+    }
+
+    @Override
+    public String getScreenTitle() {
+        return TAG;
     }
 
 }

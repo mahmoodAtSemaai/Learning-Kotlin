@@ -11,7 +11,6 @@ object AnalyticsImpl : BaseAnalytics {
 
 
     fun initialize(context: Context) {
-        list.add(FirebaseAnalytics(context = context))
         list.add(MixPanelAnalytics.getInstance(context = context))
     }
 
@@ -22,10 +21,14 @@ object AnalyticsImpl : BaseAnalytics {
         }
     }
 
-    override fun trackAnyEvent(eventName: String, value: Map<String, Any>) {
+    override fun trackAnyEvent(eventName: String, eventProperties: Map<String, Any?>) {
         list.forEach {
-            it.trackAnyEvent(eventName, value)
+            it.trackAnyEvent(eventName, eventProperties)
         }
+    }
+
+    override fun trackAnyEvent(eventName: String) {
+        trackAnyEvent(eventName, mapOf())
     }
 
     override fun close() {
@@ -34,3 +37,9 @@ object AnalyticsImpl : BaseAnalytics {
         }
     }
 }
+
+
+// Steps to Add Tracking for any Event
+// 1- Create anlytics constant
+// 2- Create a function in Base Analytics
+// 3- Invoke the function with correct metaData / Params

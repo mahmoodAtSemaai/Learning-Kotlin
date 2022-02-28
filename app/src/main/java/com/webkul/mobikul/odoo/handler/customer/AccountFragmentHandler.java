@@ -21,12 +21,15 @@ import com.webkul.mobikul.odoo.activity.CustomerBaseActivity;
 import com.webkul.mobikul.odoo.activity.HomeActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.activity.SplashScreenActivity;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
+import com.webkul.mobikul.odoo.analytics.BaseAnalytics;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.fragment.AccountFragment;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.CustomerHelper;
+import com.webkul.mobikul.odoo.helper.ErrorConstants;
 import com.webkul.mobikul.odoo.helper.ImageHelper;
 import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.helper.SnackbarHelper;
@@ -79,6 +82,7 @@ public class AccountFragmentHandler {
     }
 
     public void showDashboard() {
+        AnalyticsImpl.INSTANCE.trackDashboardSelected();
         Intent intent = new Intent(mContext, CustomerBaseActivity.class);
         intent.putExtra(BUNDLE_KEY_CUSTOMER_FRAG_TYPE, CustomerHelper.CustomerFragType.TYPE_DASHBOARD);
         mContext.startActivity(intent);
@@ -106,30 +110,36 @@ public class AccountFragmentHandler {
     }
 
     public void showAccountInfo() {
+        AnalyticsImpl.INSTANCE.trackAccountInfoSelected();
         Intent intent = new Intent(mContext, CustomerBaseActivity.class);
         intent.putExtra(BUNDLE_KEY_CUSTOMER_FRAG_TYPE, CustomerHelper.CustomerFragType.TYPE_ACCOUNT_INFO);
         mContext.startActivity(intent);
     }
 
     public void viewAddressBook() {
+        AnalyticsImpl.INSTANCE.trackAddressBookSelected();
         Intent intent = new Intent(mContext, CustomerBaseActivity.class);
         intent.putExtra(BUNDLE_KEY_CUSTOMER_FRAG_TYPE, CustomerHelper.CustomerFragType.TYPE_ADDRESS_BOOK);
         mContext.startActivity(intent);
     }
 
     public void viewAllOrder() {
+        AnalyticsImpl.INSTANCE.trackAllOrdersSelected();
         Intent intent = new Intent(mContext, CustomerBaseActivity.class);
         intent.putExtra(BUNDLE_KEY_CUSTOMER_FRAG_TYPE, CustomerHelper.CustomerFragType.TYPE_ORDER_LIST);
         mContext.startActivity(intent);
     }
 
     public void viewWishlist() {
+        String sourceScreen = mContext.getString(R.string.accountScreen);
+        AnalyticsImpl.INSTANCE.trackWishlistSelected(sourceScreen);
         Intent intent = new Intent(mContext, CustomerBaseActivity.class);
         intent.putExtra(BUNDLE_KEY_CUSTOMER_FRAG_TYPE, CustomerHelper.CustomerFragType.TYPE_WISHLIST);
         mContext.startActivity(intent);
     }
 
     public void signOut() {
+        AnalyticsImpl.INSTANCE.close();
         ApiConnection.signOut(mContext).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<BaseResponse>(mContext) {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
@@ -141,18 +151,22 @@ public class AccountFragmentHandler {
             public void onNext(@NonNull BaseResponse baseResponse) {
                 super.onNext(baseResponse);
                 if (baseResponse.isSuccess()) {
+                    AnalyticsImpl.INSTANCE.trackSignoutSuccess();
                     StyleableToast.makeText(mContext, baseResponse.getMessage(), Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
                     AppSharedPref.clearCustomerData(mContext);
+                    AppSharedPref.clearUserAnalytics(mContext);
                     Intent intent = new Intent(mContext, SplashScreenActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     mContext.startActivity(intent);
                 } else {
+                    AnalyticsImpl.INSTANCE.trackSignoutFailed(baseResponse.getResponseCode(), baseResponse.getMessage());
                     SnackbarHelper.getSnackbar((Activity) mContext, baseResponse.getMessage(), Snackbar.LENGTH_LONG, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
                 }
             }
 
             @Override
             public void onError(@NonNull Throwable t) {
+                AnalyticsImpl.INSTANCE.trackSignoutFailed(ErrorConstants.SignOutError.INSTANCE.getErrorCode(), ErrorConstants.SignOutError.INSTANCE.getErrorMessage());
                 super.onError(t);
             }
 

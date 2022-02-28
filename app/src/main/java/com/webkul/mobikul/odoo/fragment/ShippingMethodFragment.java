@@ -1,5 +1,6 @@
 package com.webkul.mobikul.odoo.fragment;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -43,6 +44,8 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_ACTIVE_
 public class ShippingMethodFragment extends BaseFragment {
 
     public FragmentShippingMethodBinding mBinding;
+
+    public static final String TAG = "ShippingMethodFragment";
 
     public static ShippingMethodFragment newInstance(List<ActiveShippingMethod> shippingMethods) {
         Bundle args = new Bundle();
@@ -106,5 +109,16 @@ public class ShippingMethodFragment extends BaseFragment {
             mBinding.setHandler(new ShippingMethodFragmentHandler(getContext()));
 
         }
+    }
+
+    @NonNull
+    @Override
+    public String getTitle() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public void setTitle(@NonNull String title) {
+
     }
 }

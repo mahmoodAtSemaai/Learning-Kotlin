@@ -18,7 +18,9 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
 import com.webkul.mobikul.odoo.activity.HomeActivity;
@@ -38,6 +40,7 @@ import com.webkul.mobikul.odoo.databinding.FragmentHomeBinding;
 import com.webkul.mobikul.odoo.databinding.ItemProductSliderDefaultStyleBinding;
 import com.webkul.mobikul.odoo.databinding.ItemProductSliderFixedStyleBinding;
 import com.webkul.mobikul.odoo.handler.generic.ProductSliderHandler;
+import com.webkul.mobikul.odoo.handler.home.FragmentNotifier;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.Helper;
@@ -52,6 +55,8 @@ import com.webkul.mobikul.odoo.model.generic.ProductSliderData;
 import com.webkul.mobikul.odoo.model.generic.StateData;
 import com.webkul.mobikul.odoo.model.home.HomePageResponse;
 import com.webkul.mobikul.odoo.model.request.BaseLazyRequest;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
@@ -171,7 +176,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
                 }
         );
         /*LEFT CATEGORIES DRAWER*/
-        ((HomeActivity) getActivity()).mBinding.categoryRv.setAdapter(new NavDrawerCategoryStartRvAdapter(getContext(), homePageResponse.getCategories().get(0).getChildren()));
+        ((HomeActivity) getActivity()).mBinding.categoryRv.setAdapter(new NavDrawerCategoryStartRvAdapter(getContext(), homePageResponse.getCategories().get(0).getChildren(),""));
         if (homePageResponse.getLanguageMap().size() > 0) {
             ((HomeActivity) getActivity()).mBinding.setLanguageData(homePageResponse.getLanguageMap());
         } else {
@@ -357,5 +362,28 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         AppSharedPref.clearCustomerData(getContext());
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(getContext());
+        EventBus.getDefault().post(FragmentNotifier.HomeActivityFragments.HOME_FRAGMENT);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(getContext());
+    }
+
+    @androidx.annotation.NonNull
+    @Override
+    public String getTitle() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public void setTitle(@androidx.annotation.NonNull String title) {
+
+    }
 
 }

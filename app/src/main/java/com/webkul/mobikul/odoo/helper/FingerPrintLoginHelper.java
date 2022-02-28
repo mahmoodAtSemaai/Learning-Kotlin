@@ -32,12 +32,18 @@ import com.muddzdev.styleabletoastlibrary.StyleableToast;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.UpdateAddressActivity;
 import com.webkul.mobikul.odoo.activity.UserApprovalActivity;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
+import com.webkul.mobikul.odoo.analytics.AnalyticsSourceConstants;
+import com.webkul.mobikul.odoo.connection.ApiConnection;
+import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.handler.fingerprint.FingerprintHandler;
+import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
 import com.webkul.mobikul.odoo.model.customer.signin.LoginRequestData;
 import com.webkul.mobikul.odoo.model.customer.signin.LoginResponse;
 import com.webkul.mobikul.odoo.model.customer.signup.SignUpData;
 import com.webkul.mobikul.odoo.model.customer.signup.SignUpResponse;
+import com.webkul.mobikul.odoo.model.user.UserModel;
 
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
@@ -55,7 +61,8 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 public class FingerPrintLoginHelper {
 
     // Variable used for storing the key in the Android Keystore container
@@ -84,6 +91,7 @@ public class FingerPrintLoginHelper {
                 @Override
                 public void onClick(SweetAlertDialog sweetAlertDialog) {
 
+                    AnalyticsImpl.INSTANCE.trackUserOptsIntoFingerPrintLogin(AnalyticsSourceConstants.EVENT_SOURCE_LOGIN);
                     sweetAlertDialog.dismissWithAnimation();
 
                     if (checkFingerprintLoginPermissions(context)) {
@@ -101,12 +109,14 @@ public class FingerPrintLoginHelper {
                             @Override
                             public void onDismiss(DialogInterface dialog) {
                                 if (!AppSharedPref.getIsAllowedFingerprintLogin(context)) {
+
                                     helper.stopListening();
                                 } else {
                                     AppSharedPref.setCustomerLoginBase64StrForFingerprint(context, AppSharedPref.getCustomerLoginBase64Str(context));
                                 }
 
-                                goToHomePage(context, loginResponse, lData, signUpResponse, sData, billingAddressurl);
+
+                                navigateToHomeAfterAnalyticsSetup(context, loginResponse, lData, signUpResponse, sData, billingAddressurl);
                             }
                         });
                         sweetAlertDialog1.setCancelable(false);
@@ -118,13 +128,14 @@ public class FingerPrintLoginHelper {
 
                             sweetAlertDialog1.show();
                         } else {
+
                             StyleableToast.makeText(context, context.getString(R.string.fingerprint_error), Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
                             AppSharedPref.setIsAllowedFingerprintLogin(context, false);
-                            goToHomePage(context, loginResponse, lData, signUpResponse, sData, billingAddressurl);
+                            navigateToHomeAfterAnalyticsSetup(context, loginResponse, lData, signUpResponse, sData, billingAddressurl);
                         }
                     } else {
                         AppSharedPref.setIsAllowedFingerprintLogin(context, false);
-                        goToHomePage(context, loginResponse, lData, signUpResponse, sData, billingAddressurl);
+                        navigateToHomeAfterAnalyticsSetup(context, loginResponse, lData, signUpResponse, sData, billingAddressurl);
                     }
 
                 }
@@ -132,9 +143,10 @@ public class FingerPrintLoginHelper {
             sweetAlertDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
                 @Override
                 public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    AnalyticsImpl.INSTANCE.trackUserOptsIntoFingerPrintLoginNotEnrolled();
                     sweetAlertDialog.dismissWithAnimation();
                     AppSharedPref.setIsAllowedFingerprintLogin(context, false);
-                    goToHomePage(context, loginResponse, lData, signUpResponse, sData, billingAddressurl);
+                    navigateToHomeAfterAnalyticsSetup(context, loginResponse, lData, signUpResponse, sData, billingAddressurl);
                 }
             });
             sweetAlertDialog.setCancelable(false);
@@ -149,7 +161,7 @@ public class FingerPrintLoginHelper {
             linearLayout.addView(imageView, index - 1);
         } else {
             AppSharedPref.setIsAllowedFingerprintLogin(context, false);
-            goToHomePage(context, loginResponse, lData, signUpResponse, sData, billingAddressurl);
+            navigateToHomeAfterAnalyticsSetup(context, loginResponse, lData, signUpResponse, sData, billingAddressurl);
         }
 
     }
@@ -186,6 +198,32 @@ public class FingerPrintLoginHelper {
         }
 
         return false;
+    }
+
+    public void navigateToHomeAfterAnalyticsSetup(Context mContext, LoginResponse loginResponse, LoginRequestData lData, SignUpResponse signUpResponse, SignUpData sData, String billingAddressUrl) {
+        ApiConnection.getUserAnalytics(mContext).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<UserAnalyticsResponse>(mContext) {
+            @Override
+            public void onNext(@androidx.annotation.NonNull UserAnalyticsResponse userAnalyticsResponse) {
+                super.onNext(userAnalyticsResponse);
+                AnalyticsImpl.INSTANCE.initUserTracking(new UserModel(
+                        userAnalyticsResponse.getEmail(),
+                        userAnalyticsResponse.getAnalyticsId(),
+                        userAnalyticsResponse.getName(),
+                        userAnalyticsResponse.isSeller()
+                ));
+                AppSharedPref.setUserAnalyticsId(mContext, userAnalyticsResponse.getAnalyticsId());
+                goToHomePage(mContext, loginResponse, lData, signUpResponse, sData, billingAddressUrl);
+            }
+
+            @Override
+            public void onError(@androidx.annotation.NonNull Throwable t) {
+                super.onError(t);
+                AnalyticsImpl.INSTANCE.trackAnalyticsFailure();
+                goToHomePage(mContext, loginResponse, lData, signUpResponse, sData, billingAddressUrl);
+            }
+        });
+
+
     }
 
     public void goToHomePage(Context mContext, LoginResponse loginResponse, LoginRequestData lData, SignUpResponse signUpResponse, SignUpData sData, String billingAddressUrl) {

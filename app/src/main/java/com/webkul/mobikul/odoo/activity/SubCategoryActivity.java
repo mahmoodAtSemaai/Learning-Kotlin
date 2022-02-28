@@ -20,23 +20,17 @@ import com.webkul.mobikul.odoo.model.generic.CategoryData;
 import java.util.ArrayList;
 
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGORY_OBJECT;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PARENT_CATEGORY;
 
 /**
-
  * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
+ *
  * @author Webkul <support@webkul.com>
-
+ * @package Mobikul App
+ * @Category Mobikul
  * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
  * @license https://store.webkul.com/license.html ASL Licence
-
  * @link https://store.webkul.com/license.html
-
  */
 
 public class SubCategoryActivity extends BaseActivity {
@@ -51,9 +45,10 @@ public class SubCategoryActivity extends BaseActivity {
         if (getIntent().getExtras() != null) {
             if (getIntent().getExtras().containsKey(BUNDLE_KEY_CATEGORY_OBJECT)) {
                 CategoryData data = getIntent().getExtras().getParcelable(BUNDLE_KEY_CATEGORY_OBJECT);
+                String parentCategory = getIntent().getExtras().getString(BUNDLE_KEY_PARENT_CATEGORY);
                 if (data != null) {
                     mBinding.setTitle(data.getName());
-                    mBinding.subCategoryRecyclerView.setAdapter(new NavDrawerCategoryStartRvAdapter(this, data.getChildren()));
+                    mBinding.subCategoryRecyclerView.setAdapter(new NavDrawerCategoryStartRvAdapter(this, data.getChildren(), parentCategory));
                 }
             }
         }
@@ -108,6 +103,11 @@ public class SubCategoryActivity extends BaseActivity {
             mBinding.searchView.openSearch();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public String getScreenTitle() {
+        return TAG;
     }
 
 }

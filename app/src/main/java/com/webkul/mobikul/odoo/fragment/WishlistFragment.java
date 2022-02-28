@@ -124,6 +124,17 @@ public class WishlistFragment extends BaseFragment {
         setHasOptionsMenu(true);
     }
 
+    @androidx.annotation.NonNull
+    @Override
+    public String getTitle() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public void setTitle(@androidx.annotation.NonNull String title) {
+
+    }
+
 }
 
 

@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.databinding.DataBindingUtil;
 
 import com.webkul.mobikul.odoo.R;
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.database.SaveData;
@@ -39,9 +40,11 @@ import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.IntentHelper;
 import com.webkul.mobikul.odoo.helper.NetworkHelper;
 import com.webkul.mobikul.odoo.helper.OdooApplication;
+import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
 import com.webkul.mobikul.odoo.model.extra.SplashScreenActivityData;
 import com.webkul.mobikul.odoo.model.extra.SplashScreenResponse;
 import com.webkul.mobikul.odoo.model.home.HomePageResponse;
+import com.webkul.mobikul.odoo.model.user.UserModel;
 
 import java.util.Map;
 
@@ -73,6 +76,7 @@ public class SplashScreenActivity extends BaseActivity  {
     @SuppressWarnings("unused")
     private static final String TAG = "SplashScreenActivity";
     private static final int RC_UPDATE_APP_FROM_PLAYSTORE = 1;
+    CustomObserver<SplashScreenResponse> splashSubscriber;
     private ActivitySplashScreenBinding mBinding;
 
     @Override
@@ -86,22 +90,52 @@ public class SplashScreenActivity extends BaseActivity  {
         if (!AppSharedPref.getLanguageCode(this).isEmpty()) {
             BaseActivity.setLocale(this, false);
         }
+        if (AppSharedPref.getUserAnalyticsId(this) == null && AppSharedPref.isLoggedIn(SplashScreenActivity.this) ) {
 
-        int darkModeFlag = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        boolean isDark = AppSharedPref.isDarkMode(this);
-        if (isDark || darkModeFlag == Configuration.UI_MODE_NIGHT_YES) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            AppSharedPref.setDarkMode(this, true);
+            ApiConnection.getUserAnalytics(this).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()) .subscribe(new CustomObserver<UserAnalyticsResponse>(this) {
+                @Override
+                public void onNext(@androidx.annotation.NonNull UserAnalyticsResponse userAnalyticsResponse) {
+
+                    AnalyticsImpl.INSTANCE.initUserTracking(new UserModel(
+                            userAnalyticsResponse.getEmail(),
+                            userAnalyticsResponse.getAnalyticsId(),
+                            userAnalyticsResponse.getName(),
+                            userAnalyticsResponse.isSeller()
+                    ));
+                   AppSharedPref.setUserAnalyticsId(getBaseContext(), userAnalyticsResponse.getAnalyticsId());
+                    callApi();
+                    super.onNext(userAnalyticsResponse);
+                }
+
+                @Override
+                public void onError(@androidx.annotation.NonNull Throwable t) {
+                    super.onError(t);
+                    AnalyticsImpl.INSTANCE.trackAnalyticsFailure();
+                    callApi();
+                }
+            });
         }
-        else{
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        else
+        {
+            int darkModeFlag = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            boolean isDark = AppSharedPref.isDarkMode(this);
+            if (isDark || darkModeFlag == Configuration.UI_MODE_NIGHT_YES) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                AppSharedPref.setDarkMode(this, true);
+            }
+            else{
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+
+            Helper.logIntentBundleData(getIntent());
+            mBinding = DataBindingUtil.setContentView(this, R.layout.activity_splash_screen);
+            mBinding.setData(new SplashScreenActivityData());    // starting progressBar
+            FirebaseAnalyticsImpl.logAppOpenEvent(this);
+
+            callApi();
         }
 
-        Helper.logIntentBundleData(getIntent());
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_splash_screen);
-        mBinding.setData(new SplashScreenActivityData());    // starting progressBar
-        FirebaseAnalyticsImpl.logAppOpenEvent(this);
-        callApi();
+
     }
 
 
@@ -224,7 +258,7 @@ public class SplashScreenActivity extends BaseActivity  {
                         if(!splashScreenResponse.isUserApproved()) {
                             // user not approved => redirect to user unapproved screen
                             IntentHelper.goToUserUnapprovedScreen(SplashScreenActivity.this);
-                            mBinding.mainProgressBar.setVisibility(View.GONE);
+                            finish();
                         } else {
                             // approved => continue as usual
                             initHomeScreenAPI(splashScreenResponse);
@@ -296,40 +330,45 @@ public class SplashScreenActivity extends BaseActivity  {
     }
 
     public void getSplashPageData(Intent intent) {
+
+        splashSubscriber = new CustomObserver<SplashScreenResponse>(this) {
+
+            @Override
+            public void onNext(@NonNull SplashScreenResponse splashScreenResponse) {
+                super.onNext(splashScreenResponse);
+                /* SAVE/UPDATE GLOBAL DATA */
+                splashScreenResponse.updateSharedPref(SplashScreenActivity.this);
+                new SaveData(SplashScreenActivity.this, splashScreenResponse);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+                if (!NetworkHelper.isNetworkAvailable(SplashScreenActivity.this)) {
+                    SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(SplashScreenActivity.this);
+                    SplashScreenResponse dbResponse = sqlLiteDbHelper.getSplashScreenData();
+                    if (dbResponse == null) {
+                        super.onError(e);
+                    } else {
+                        onComplete();
+                    }
+                } else {
+                    super.onError(e);
+                }
+                mBinding.mainProgressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onComplete() {
+                startActivity(intent);
+            }
+        };
+
         ApiConnection.getSplashPageData(this).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new CustomObserver<SplashScreenResponse>(this) {
-
-                    @Override
-                    public void onNext(@NonNull SplashScreenResponse splashScreenResponse) {
-                        super.onNext(splashScreenResponse);
-                        /* SAVE/UPDATE GLOBAL DATA */
-                        splashScreenResponse.updateSharedPref(SplashScreenActivity.this);
-                        new SaveData(SplashScreenActivity.this, splashScreenResponse);
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                        if (!NetworkHelper.isNetworkAvailable(SplashScreenActivity.this)){
-                            SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(SplashScreenActivity.this);
-                            SplashScreenResponse dbResponse =  sqlLiteDbHelper.getSplashScreenData();
-                            if (dbResponse == null){
-                                super.onError(e);
-                            }else {
-                                onComplete();
-                            }
-                        }else {
-                            super.onError(e);
-                        }
-                        mBinding.mainProgressBar.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        startActivity(intent);
-                    }
-                });
+                .subscribe(splashSubscriber);
     }
+
+
 
     private Intent getNotificationIntent() {
         Intent intent = null;
@@ -364,5 +403,10 @@ public class SplashScreenActivity extends BaseActivity  {
         }
         return intent;
 
+    }
+
+    @Override
+    public String getScreenTitle() {
+        return TAG;
     }
 }

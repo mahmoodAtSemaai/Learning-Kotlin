@@ -98,4 +98,15 @@ public class SellerReviewFragment extends BaseFragment {
             }
         });
     }
+
+    @androidx.annotation.NonNull
+    @Override
+    public String getTitle() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public void setTitle(@androidx.annotation.NonNull String title) {
+
+    }
 }
