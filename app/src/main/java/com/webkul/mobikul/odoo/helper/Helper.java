@@ -204,14 +204,15 @@ public class Helper {
         }
     }
 
-    public static int getVersionInt(String version) {
-        int integerVersionNumber = Integer.MAX_VALUE;
-        try {
-            integerVersionNumber = Integer.parseInt(version.replaceAll("\\.", ""));
-        } catch(NumberFormatException e) {
-            e.printStackTrace();
-            Log.i(TAG, "Parsing failed with exception " + e.getMessage());
+    public static boolean isRemoteVersionHigher(String remoteVersion, String currentVersion) {
+        if(currentVersion.isEmpty()) return false;
+        Log.d(TAG, "remote = " + remoteVersion + " current = " + currentVersion);
+        String[] remoteVersionArray = remoteVersion.split("\\."),
+                currentVersionArray = currentVersion.split("\\.");
+        for(int i=0; i < remoteVersionArray.length; i++) {
+            if(Integer.parseInt(remoteVersionArray[i]) > Integer.parseInt(currentVersionArray[i]))
+                return true;
         }
-        return integerVersionNumber;
+        return false;
     }
 }

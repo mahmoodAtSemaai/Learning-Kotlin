@@ -32,6 +32,5 @@ object AppUpdateHelper {
 
     private val remoteAppVersion = Firebase.remoteConfig[KEY_APP_REMOTE_VERSION].asString()
 
-    @JvmStatic val isUpdateAvailable =
-        Helper.getVersionInt(remoteAppVersion) > Helper.getVersionInt(currentAppVersion)
+    @JvmStatic val isUpdateAvailable = Helper.isRemoteVersionHigher(remoteAppVersion, currentAppVersion)
 }

@@ -94,7 +94,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         mSupportFragmentManager = getSupportFragmentManager();
         SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(this);
         mSqLiteDatabase = sqlLiteDbHelper.getWritableDatabase();
-        if(!(this instanceof SplashScreenActivity) && !(this instanceof CheckoutActivity)) {
+        if(!(this instanceof SplashScreenActivity) && !(this instanceof CheckoutActivity)
+        && !(this instanceof ProductActivity)) {
             CheckForUpdates.initUpdateChecker(this);
         }
     }
