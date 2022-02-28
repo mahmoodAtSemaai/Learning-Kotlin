@@ -9,14 +9,14 @@ import androidx.appcompat.app.AlertDialog
 import com.webkul.mobikul.odoo.BuildConfig
 import com.webkul.mobikul.odoo.R
 
-object CheckForUpdates {
+object ForceUpdateManager {
     private const val alertTitle = "New Version Available"
     private const val alertDescription = "Please update to new version to continue using the app"
     private const val alertNegativeButtonTitle = "No, Thanks"
     private const val alertPositiveButtonTitle = "Update"
 
     @JvmStatic
-    fun initUpdateChecker(context: Context) {
+    fun init(context: Context) {
         if (AppUpdateHelper.isUpdateAvailable) {
             showAlertDialog(context)
         }

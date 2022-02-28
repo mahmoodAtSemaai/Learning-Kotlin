@@ -24,6 +24,7 @@ import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewFeature;
 
 import com.webkul.mobikul.odoo.R;
+import com.webkul.mobikul.odoo.constant.Delimitter;
 import com.webkul.mobikul.odoo.custom.BadgeDrawable;
 
 import java.math.BigDecimal;
@@ -207,8 +208,8 @@ public class Helper {
     public static boolean isRemoteVersionHigher(String remoteVersion, String currentVersion) {
         if(currentVersion.isEmpty()) return false;
         Log.d(TAG, "remote = " + remoteVersion + " current = " + currentVersion);
-        String[] remoteVersionArray = remoteVersion.split("\\."),
-                currentVersionArray = currentVersion.split("\\.");
+        String[] remoteVersionArray = remoteVersion.split(Delimitter.DOT),
+                currentVersionArray = currentVersion.split(Delimitter.DOT);
         for(int i=0; i < remoteVersionArray.length; i++) {
             if(Integer.parseInt(remoteVersionArray[i]) > Integer.parseInt(currentVersionArray[i]))
                 return true;

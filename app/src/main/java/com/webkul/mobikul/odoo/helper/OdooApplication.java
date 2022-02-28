@@ -44,7 +44,7 @@ public class OdooApplication extends MultiDexApplication implements LifecycleObs
         AnalyticsImpl.INSTANCE.initialize(this);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         Stetho.initializeWithDefaults(this);
-        AppUpdateHelper.initialize();
+        AppUpdateHelper.init();
         ViewTarget.setTagId(R.id.glide_tag);
     }
 

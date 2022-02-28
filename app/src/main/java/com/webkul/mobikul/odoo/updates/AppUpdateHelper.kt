@@ -28,7 +28,7 @@ object AppUpdateHelper {
         firebaseRemoteConfig.fetchAndActivate()
     }
 
-    @JvmStatic fun initialize() = Unit
+    @JvmStatic fun init() = Unit
 
     private val remoteAppVersion = Firebase.remoteConfig[KEY_APP_REMOTE_VERSION].asString()
 

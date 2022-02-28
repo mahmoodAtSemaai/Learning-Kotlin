@@ -3,7 +3,6 @@ package com.webkul.mobikul.odoo.activity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.LayerDrawable;
@@ -11,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,7 +25,7 @@ import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.CustomerHelper;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.IntentHelper;
-import com.webkul.mobikul.odoo.updates.CheckForUpdates;
+import com.webkul.mobikul.odoo.updates.ForceUpdateManager;
 
 import java.util.Locale;
 
@@ -96,7 +94,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         mSqLiteDatabase = sqlLiteDbHelper.getWritableDatabase();
         if(!(this instanceof SplashScreenActivity) && !(this instanceof CheckoutActivity)
         && !(this instanceof ProductActivity)) {
-            CheckForUpdates.initUpdateChecker(this);
+            ForceUpdateManager.init(this);
         }
     }
 
