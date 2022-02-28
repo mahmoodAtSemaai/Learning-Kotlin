@@ -77,6 +77,9 @@ object DepVersions {
     const val coreKTX = "1.3.2"
     const val mixPanel = "5.+"
 
+    const val remoteConfig = "21.0.1"
+    const val remoteConfigKTX = "21.0.1"
+
     //SweetAlertDialog Module
     const val materialishProgress = "1.0"
 
@@ -202,6 +205,9 @@ object Dependencies {
     const val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${DepVersions.kotlin}"
     const val lifecycleExtension = "androidx.lifecycle:lifecycle-extensions:${DepVersions.lifecycleExtension}"
     const val mixPanel = "com.mixpanel.android:mixpanel-android:${DepVersions.mixPanel}"
+
+    const val remoteConfig = "com.google.firebase:firebase-config:${DepVersions.remoteConfig}"
+    const val remoteConfigKTX = "com.google.firebase:firebase-config-ktx:${DepVersions.remoteConfigKTX}"
 
     //SweetAlertDialog Module
     const val materialishProgress = "com.pnikosis:materialish-progress:${DepVersions.materialishProgress}"

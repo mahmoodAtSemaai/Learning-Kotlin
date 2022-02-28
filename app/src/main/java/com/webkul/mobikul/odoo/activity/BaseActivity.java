@@ -27,6 +27,7 @@ import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.CustomerHelper;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.IntentHelper;
+import com.webkul.mobikul.odoo.updates.CheckForUpdates;
 
 import java.util.Locale;
 
@@ -93,6 +94,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         mSupportFragmentManager = getSupportFragmentManager();
         SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(this);
         mSqLiteDatabase = sqlLiteDbHelper.getWritableDatabase();
+        if(!(this instanceof SplashScreenActivity) && !(this instanceof CheckoutActivity)) {
+            CheckForUpdates.initUpdateChecker(this);
+        }
     }
 
     protected void showBackButton(boolean show) {

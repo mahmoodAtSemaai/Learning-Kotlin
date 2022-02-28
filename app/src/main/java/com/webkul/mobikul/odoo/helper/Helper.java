@@ -204,4 +204,14 @@ public class Helper {
         }
     }
 
+    public static int getVersionInt(String version) {
+        int integerVersionNumber = Integer.MAX_VALUE;
+        try {
+            integerVersionNumber = Integer.parseInt(version.replaceAll("\\.", ""));
+        } catch(NumberFormatException e) {
+            e.printStackTrace();
+            Log.i(TAG, "Parsing failed with exception " + e.getMessage());
+        }
+        return integerVersionNumber;
+    }
 }

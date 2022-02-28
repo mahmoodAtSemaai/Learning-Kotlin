@@ -80,6 +80,8 @@ android {
         buildConfigField("int", "DEFAULT_DELAY_LAST_CLICK", "1000")
         buildConfigField("String", "DEFAULT_STRIPE_CURRENCY", '"eur"')
         buildConfigField("int", "DEFAULT_ITEM_PER_PAGE", "25")
+        buildConfigField("long", "REMOTE_CONFIG_MIN_FETCH_INTERVAL_SECONDS", "60")
+        buildConfigField("String", "CURRENT_APP_VERSION", "\"${Version.name}\"")
 
         buildConfigField("String", "APP_PLAYSTORE_URL", "\"${project.APP_PLAYSTORE_URL}\"")
         buildConfigField("Boolean", "isMarketplace", "true")
@@ -103,7 +105,9 @@ dependencies {
             Dependencies.flexbox,
             Dependencies.stetho,
             Dependencies.stethoOkHttp,
-            Dependencies.coreKTX
+            Dependencies.coreKTX,
+            Dependencies.remoteConfig,
+            Dependencies.remoteConfigKTX
     )
 
     androidTestImplementation(
