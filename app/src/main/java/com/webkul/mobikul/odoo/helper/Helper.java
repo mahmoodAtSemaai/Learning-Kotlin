@@ -24,7 +24,6 @@ import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewFeature;
 
 import com.webkul.mobikul.odoo.R;
-import com.webkul.mobikul.odoo.constant.Delimitter;
 import com.webkul.mobikul.odoo.custom.BadgeDrawable;
 
 import java.math.BigDecimal;
@@ -39,6 +38,10 @@ import java.util.regex.Pattern;
 public class Helper {
 
     private static final String TAG = "Helper";
+
+    private static final class Delimitter {
+        private static final String DOT = "\\.";
+    }
 
     @SuppressWarnings({"unused", "WeakerAccess"})
     public static int getScreenWidth() {
