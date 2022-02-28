@@ -10,6 +10,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +31,7 @@ import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.IntentHelper;
+import com.webkul.mobikul.odoo.updates.ForceUpdateManager;
 
 import java.util.Locale;
 
@@ -82,6 +88,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         mSupportFragmentManager = getSupportFragmentManager();
         SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(this);
         mSqLiteDatabase = sqlLiteDbHelper.getWritableDatabase();
+        if(!(this instanceof SplashScreenActivity) && !(this instanceof CheckoutActivity)
+        && !(this instanceof ProductActivity)) {
+            ForceUpdateManager.init(this);
+        }
         AnalyticsImpl.INSTANCE.trackActivityOpened(Helper.getScreenName(getScreenTitle()));
     }
 

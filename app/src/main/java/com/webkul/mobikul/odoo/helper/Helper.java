@@ -42,6 +42,10 @@ public class Helper {
 
     private static final String TAG = "Helper";
 
+    private static final class Delimitter {
+        private static final String DOT = "\\.";
+    }
+
     @SuppressWarnings({"unused", "WeakerAccess"})
     public static int getScreenWidth() {
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
@@ -211,6 +215,18 @@ public class Helper {
             if (AppSharedPref.isDarkMode(context))
                 WebSettingsCompat.setForceDark(webview.getSettings(), WebSettingsCompat.FORCE_DARK_ON);
         }
+    }
+
+    public static boolean isRemoteVersionHigher(String remoteVersion, String currentVersion) {
+        if(currentVersion.isEmpty()) return false;
+        Log.d(TAG, "remote = " + remoteVersion + " current = " + currentVersion);
+        String[] remoteVersionArray = remoteVersion.split(Delimitter.DOT),
+                currentVersionArray = currentVersion.split(Delimitter.DOT);
+        for(int i=0; i < remoteVersionArray.length; i++) {
+            if(Integer.parseInt(remoteVersionArray[i]) > Integer.parseInt(currentVersionArray[i]))
+                return true;
+        }
+        return false;
     }
 
     public static String getScreenName(Context context) {
