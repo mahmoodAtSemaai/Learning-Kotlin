@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <defaultsMap>
     <entry>
-        <key>forceUpdateRequired</key>
-        <value>false</value>
-    </entry>
-    <entry>
         <key>remoteAppVersion</key>
         <value>1.0.0</value>
     </entry>
