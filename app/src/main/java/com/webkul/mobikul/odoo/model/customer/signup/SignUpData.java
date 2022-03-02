@@ -1,6 +1,7 @@
 package com.webkul.mobikul.odoo.model.customer.signup;
 
 import android.content.Context;
+
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.fragment.app.Fragment;
@@ -70,6 +71,9 @@ public class SignUpData extends BaseObservable {
 
     @Bindable
     public String getPhoneNumber() {
+        if (phoneNumber == null || phoneNumber.isEmpty()) {
+            return "";
+        }
         return phoneNumber;
     }
 
