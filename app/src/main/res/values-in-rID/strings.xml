@@ -458,6 +458,6 @@
     <string name="semaai_support_whatsapp_url">https://api.whatsapp.com/send?phone=%s&amp;text=%s</string>
     <string name="app_update_alert_title">Versi Baru Tersedia</string>
     <string name="app_update_alert_description">Harap perbarui aplikasi Anda untuk terus menggunakannya</string>
-    <string name="app_update_alert_negative_button_title">No, Thanks</string>
-    <string name="app_update_alert_positive_button_title">Update</string>
+    <string name="app_update_alert_negative_button_title">Tidak, Terima kasih</string>
+    <string name="app_update_alert_positive_button_title">Perbaruan</string>
 </resources>
