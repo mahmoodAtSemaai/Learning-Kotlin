@@ -461,4 +461,8 @@
     <string name="whatsapp_contant_wo_cc">0811870155</string>
     <string name="semaai_support_whatsapp_url">https://api.whatsapp.com/send?phone=%s&amp;text=%s</string>
     <string name="network_error">API Error</string>
+    <string name="app_update_alert_title">New Version Available</string>
+    <string name="app_update_alert_description">Please update your app to continue using it</string>
+    <string name="app_update_alert_negative_button_title">No, Thanks</string>
+    <string name="app_update_alert_positive_button_title">Update</string>
 </resources>

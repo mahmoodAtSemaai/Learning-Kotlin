@@ -456,4 +456,8 @@
     <string name="contact_chat_our_admin">Silakan kirim WA ke admin kami untuk bantuan di sini</string>
     <string name="whatsapp_message">Hai tim Semaai, Tolong setujui akun saya</string>
     <string name="semaai_support_whatsapp_url">https://api.whatsapp.com/send?phone=%s&amp;text=%s</string>
+    <string name="app_update_alert_title">Versi Baru Tersedia</string>
+    <string name="app_update_alert_description">Harap perbarui aplikasi Anda untuk terus menggunakannya</string>
+    <string name="app_update_alert_negative_button_title">No, Thanks</string>
+    <string name="app_update_alert_positive_button_title">Update</string>
 </resources>
