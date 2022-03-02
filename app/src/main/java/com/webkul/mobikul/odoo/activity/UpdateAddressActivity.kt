@@ -233,7 +233,7 @@ class UpdateAddressActivity : BaseActivity() {
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
-                    view: View,
+                    view: View?,
                     position: Int,
                     id: Long
                 ) {
@@ -285,7 +285,7 @@ class UpdateAddressActivity : BaseActivity() {
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
-                    view: View,
+                    view: View?,
                     position: Int,
                     id: Long
                 ) {
@@ -361,7 +361,7 @@ class UpdateAddressActivity : BaseActivity() {
     private fun makeEmptyRequestBody(selectedState: String) {
         addressRequestBody.setName(mBinding!!.nameEt.text.toString())
         addressRequestBody.setPhone(mBinding!!.telephoneEt.text.toString())
-        addressRequestBody.setStreet(mBinding!!.streetEt.text.toString())
+        addressRequestBody.setStreet(mBinding?.streetEt?.text.toString())
         addressRequestBody.setState_id(selectedState)
         addressRequestBody.setZip("")
         addressRequestBody.setCountry_id(COUNTRY_ID.toString())
@@ -427,7 +427,7 @@ class UpdateAddressActivity : BaseActivity() {
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
-                    view: View,
+                    view: View?,
                     position: Int,
                     id: Long
                 ) {
@@ -489,7 +489,7 @@ class UpdateAddressActivity : BaseActivity() {
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
-                    view: View,
+                    view: View?,
                     position: Int,
                     id: Long
                 ) {
@@ -552,7 +552,7 @@ class UpdateAddressActivity : BaseActivity() {
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
-                    view: View,
+                    view: View?,
                     position: Int,
                     id: Long
                 ) {
