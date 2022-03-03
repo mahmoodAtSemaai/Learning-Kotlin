@@ -25,7 +25,7 @@ object ForceUpdateManager {
 
     private fun showAlertDialog(context: Context) {
         val dialog = AlertDialog.Builder(
-            ContextThemeWrapper(context, R.style.Theme_AppCompat_Light)
+            ContextThemeWrapper(context, R.style.Theme_AppCompat_Light_NoActionBar)
         )
             .setTitle(alertTitle)
             .setMessage(alertDescription)

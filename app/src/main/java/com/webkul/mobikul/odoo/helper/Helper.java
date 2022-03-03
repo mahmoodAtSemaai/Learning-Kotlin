@@ -218,8 +218,7 @@ public class Helper {
     }
 
     public static boolean isRemoteVersionHigher(String remoteVersion, String currentVersion) {
-        if(currentVersion.isEmpty()) return false;
-        Log.d(TAG, "remote = " + remoteVersion + " current = " + currentVersion);
+        if(currentVersion.isEmpty() || remoteVersion.isEmpty()) return false;
         String[] remoteVersionArray = remoteVersion.split(Delimitter.DOT),
                 currentVersionArray = currentVersion.split(Delimitter.DOT);
         for(int i=0; i < remoteVersionArray.length; i++) {
