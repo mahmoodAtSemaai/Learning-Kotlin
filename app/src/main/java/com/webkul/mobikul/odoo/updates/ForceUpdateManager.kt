@@ -10,21 +10,22 @@ import com.webkul.mobikul.odoo.BuildConfig
 import com.webkul.mobikul.odoo.R
 
 object ForceUpdateManager {
-    private const val alertTitle = "New Version Available"
-    private const val alertDescription = "Please update to new version to continue using the app"
-    private const val alertNegativeButtonTitle = "No, Thanks"
-    private const val alertPositiveButtonTitle = "Update"
+    private lateinit var alertTitle: String
+    private lateinit var alertDescription: String
+    private lateinit var alertNegativeButtonTitle: String
+    private lateinit var alertPositiveButtonTitle: String
 
     @JvmStatic
     fun init(context: Context) {
         if (AppUpdateHelper.isUpdateAvailable) {
+            setStringValues(context)
             showAlertDialog(context)
         }
     }
 
     private fun showAlertDialog(context: Context) {
         val dialog = AlertDialog.Builder(
-            ContextThemeWrapper(context, R.style.Theme_AppCompat_Light)
+            ContextThemeWrapper(context, R.style.Theme_AppCompat_Light_NoActionBar)
         )
             .setTitle(alertTitle)
             .setMessage(alertDescription)
@@ -46,5 +47,12 @@ object ForceUpdateManager {
                 .apply {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 })
+    }
+
+    private fun setStringValues(context: Context) {
+        alertTitle = context.getString(R.string.app_update_alert_title)
+        alertDescription = context.getString(R.string.app_update_alert_description)
+        alertNegativeButtonTitle = context.getString(R.string.app_update_alert_negative_button_title)
+        alertPositiveButtonTitle = context.getString(R.string.app_update_alert_positive_button_title)
     }
 }
