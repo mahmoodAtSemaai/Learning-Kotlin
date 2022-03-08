@@ -193,8 +193,7 @@ public class Helper {
         }
     }
 
-    public static String getStringDateAndTime()
-    {
+    public static String getStringDateAndTime() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
         return simpleDateFormat.format(new Date());
     }
@@ -218,12 +217,16 @@ public class Helper {
     }
 
     public static boolean isRemoteVersionHigher(String remoteVersion, String currentVersion) {
-        if(currentVersion.isEmpty() || remoteVersion.isEmpty()) return false;
+        if (currentVersion.isEmpty() || remoteVersion.isEmpty()) return false;
         String[] remoteVersionArray = remoteVersion.split(Delimitter.DOT),
                 currentVersionArray = currentVersion.split(Delimitter.DOT);
-        for(int i=0; i < remoteVersionArray.length; i++) {
-            if(Integer.parseInt(remoteVersionArray[i]) > Integer.parseInt(currentVersionArray[i]))
+        for (int i = 0; i < remoteVersionArray.length; i++) {
+            int remoteVersionInt = Integer.parseInt(remoteVersionArray[i]),
+                    currentVersionInt = Integer.parseInt(currentVersionArray[i]);
+            if (remoteVersionInt > currentVersionInt)
                 return true;
+            else if (remoteVersionInt < currentVersionInt)
+                return false;
         }
         return false;
     }
