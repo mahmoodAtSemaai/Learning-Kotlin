@@ -157,7 +157,7 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
                         }else {
                             FirebaseAnalyticsImpl.logAddToCartEvent(mContext,productId,addToCartResponse.getProductName());
                             if(addToCartResponse.isSuccess()) {
-                                String marketplaceSellerId = mData.getSeller().getMarketplaceSellerId() == null ? "" : mData.getSeller().getMarketplaceSellerId();
+                                String marketplaceSellerId = mData.getSeller() == null ? "" : (mData.getSeller().getMarketplaceSellerId() == null ? "" : mData.getSeller().getMarketplaceSellerId());
                                 AnalyticsImpl.INSTANCE.trackAddItemToBagSuccessful(mData.getQuantity(),
                                         mData.getProductId(),marketplaceSellerId ,
                                         mData.getName());
