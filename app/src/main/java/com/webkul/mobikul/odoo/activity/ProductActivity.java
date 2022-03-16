@@ -17,6 +17,7 @@ import android.speech.RecognizerIntent;
 import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.text.TextUtils;
@@ -32,6 +33,8 @@ import android.widget.RadioGroup;
 
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.adapter.product.AlternativeProductsRvAdapter;
+import com.webkul.mobikul.odoo.adapter.product.MobikulCategoryDetails;
+import com.webkul.mobikul.odoo.adapter.product.ProductDetailsAdapter;
 import com.webkul.mobikul.odoo.adapter.product.ProductImageAdapter;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
@@ -56,10 +59,10 @@ import com.webkul.mobikul.odoo.model.generic.ProductData;
 import com.webkul.mobikul.odoo.model.generic.ProductVariant;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -69,6 +72,7 @@ import io.reactivex.schedulers.Schedulers;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_NAME;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID;
 import static com.webkul.mobikul.odoo.helper.FontHelper.FONT_PATH_1;
 import static com.webkul.mobikul.odoo.helper.ProductHelper.ATTR_TYPE_COLOR;
 import static com.webkul.mobikul.odoo.helper.ProductHelper.ATTR_TYPE_HIDDEN;
@@ -143,7 +147,66 @@ public class ProductActivity extends BaseActivity {
         loadProductAttributes(productData);
         updatePrices(productData);
         setAlternativeProductData();
+        setProductDetails(productData);
 
+    }
+
+    private void setProductDetails(ProductData productData) {
+        ArrayList<ArrayList<String>> productDetails = getMobikulDetails(productData);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        mBinding.rvProductDetails.setLayoutManager(linearLayoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mBinding.rvProductDetails.getContext(), LinearLayoutManager.VERTICAL);
+        mBinding.rvProductDetails.addItemDecoration(dividerItemDecoration);
+        mBinding.rvProductDetails.setHasFixedSize(true);
+        mBinding.rvProductDetails.setAdapter(new ProductDetailsAdapter(this, productDetails));
+    }
+
+    private ArrayList<ArrayList<String>> getMobikulDetails(ProductData productData) {
+        ArrayList<ArrayList<String>> details = new ArrayList<>();
+        details.add(new ArrayList<>(Arrays.asList("Brand", productData.getBrandName())));
+        MobikulCategoryDetails mobikulCategoryDetails = productData.getMobikulCategoryDetails();
+
+        String crops = "";
+        for(int currentCrop = 0; currentCrop < mobikulCategoryDetails.getCrops().size(); currentCrop++){
+            crops += mobikulCategoryDetails.getCrops().get(currentCrop);
+            if(currentCrop != mobikulCategoryDetails.getCrops().size()-1){
+                crops += ", ";
+            }
+        }
+
+        details.add(new ArrayList<>(Arrays.asList("Category", String.valueOf(mobikulCategoryDetails.getCategory()))));
+        if(mobikulCategoryDetails.isOrganic()){
+            details.add(new ArrayList<>(Arrays.asList("Organic", "Yes")));
+        }else{
+            details.add(new ArrayList<>(Arrays.asList("Organic", "No")));
+        }
+        details.add(new ArrayList<>(Arrays.asList("Crops", String.valueOf(crops))));
+        details.add(new ArrayList<>(Arrays.asList("Weight", String.valueOf(mobikulCategoryDetails.getWeight()))));
+        details.add(new ArrayList<>(Arrays.asList("Additional Information", String.valueOf(mobikulCategoryDetails.getAdditionalInformation()))));
+        details.add(new ArrayList<>(Arrays.asList("MRP", String.valueOf(mobikulCategoryDetails.getMrp()))));
+        details.add(new ArrayList<>(Arrays.asList("Planting Method", String.valueOf(mobikulCategoryDetails.getPlantingMethod()))));
+        details.add(new ArrayList<>(Arrays.asList("Planting Spacing", String.valueOf(mobikulCategoryDetails.getPlantSpacing()))));
+        details.add(new ArrayList<>(Arrays.asList("Active Ingredients", String.valueOf(mobikulCategoryDetails.getActiveIngredients()))));
+        details.add(new ArrayList<>(Arrays.asList("Dosage", String.valueOf(mobikulCategoryDetails.getDosage()))));
+        details.add(new ArrayList<>(Arrays.asList("Application Method", String.valueOf(mobikulCategoryDetails.getApplicationMethod()))));
+        details.add(new ArrayList<>(Arrays.asList("Frequency of Application", String.valueOf(mobikulCategoryDetails.getFrequencyOfApplication()))));
+        details.add(new ArrayList<>(Arrays.asList("Pests and Diseases", String.valueOf(mobikulCategoryDetails.getPestsAndDiseases()))));
+        details.add(new ArrayList<>(Arrays.asList("Duration of Effect", String.valueOf(mobikulCategoryDetails.getDurationOfEffect()))));
+
+        ArrayList<ArrayList<String>> detailsUpdated = new ArrayList<>();
+
+        for(int currKeyValuePair = 0; currKeyValuePair < details.size(); currKeyValuePair++){
+            if(!isKeyValuePairEmpty(details.get(currKeyValuePair))){
+                detailsUpdated.add(details.get(currKeyValuePair));
+            }
+        }
+
+        return detailsUpdated;
+    }
+
+    boolean isKeyValuePairEmpty(List<String> keyValuePair){
+        return keyValuePair.get(1).equals("0.0") || keyValuePair.get(1).equals("");
     }
 
     //    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -159,7 +222,7 @@ public class ProductActivity extends BaseActivity {
 //                callback.onSuccess(homePageResponse);
                 setDataAfterFetchData(productData);
             } else {
-                ApiConnection.getProductData(this, getIntent().getExtras().getString(BUNDLE_KEY_PRODUCT_ID)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(mProductDataCustomObserver);
+                ApiConnection.getProductData(this, getIntent().getExtras().getString(BUNDLE_KEY_PRODUCT_ID), getIntent().getExtras().getString(BUNDLE_KEY_PRODUCT_TEMPLATE_ID)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(mProductDataCustomObserver);
             }
 
         } else {

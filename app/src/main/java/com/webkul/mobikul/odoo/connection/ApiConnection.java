@@ -122,9 +122,9 @@ public class ApiConnection {
         });
     }
 
-    public static Observable<ProductData> getProductData(Context context, String productId) {
+    public static Observable<ProductData> getProductData(Context context, String productId, String productTemplateId) {
 
-        return RetrofitClient.getClient(context).create(ApiInterface.class).getProductData(productId);
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getProductData(productId, productTemplateId);
 
 
     }

@@ -49,6 +49,7 @@ import io.reactivex.schedulers.Schedulers;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_NAME;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID;
 import static com.webkul.mobikul.odoo.helper.ProductHelper.ATTR_TYPE_COLOR;
 import static com.webkul.mobikul.odoo.helper.ProductHelper.ATTR_TYPE_HIDDEN;
 import static com.webkul.mobikul.odoo.helper.ProductHelper.ATTR_TYPE_RADIO;
@@ -81,7 +82,8 @@ public class ProductHandler {
         AnalyticsImpl.INSTANCE.trackProductItemSelected(Helper.getScreenName(mContext),
                 mData.getProductId(), mData.getName());
         Intent intent = new Intent(mContext, ((OdooApplication) mContext.getApplicationContext()).getProductActivity());
-        intent.putExtra(BUNDLE_KEY_PRODUCT_ID, mData.getTemplateId());
+        intent.putExtra(BUNDLE_KEY_PRODUCT_ID, mData.getProductId());
+        intent.putExtra(BUNDLE_KEY_PRODUCT_TEMPLATE_ID, mData.getTemplateId());
         intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, mData.getName());
 //        Pair<View, String> p1 = Pair.create((View)mProductDefaultBinding.productImage, "product_image");
 

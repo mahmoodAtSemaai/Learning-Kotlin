@@ -104,7 +104,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
-
                             <com.webkul.mobikul.odoo.custom.WrapContentViewPager
                                 android:id="@+id/product_slider_view_pager"
                                 android:layout_width="match_parent"
@@ -112,7 +111,6 @@
                                 android:background="@color/bottomNavigationBackground"
                                 android:clickable="true"
                                 android:nestedScrollingEnabled="false"
-                                android:paddingTop="@dimen/spacing_generic"
                                 android:scaleType="fitCenter"
                                 tools:ignore="UnusedAttribute" />
 
@@ -149,19 +147,17 @@
                         <com.google.android.material.tabs.TabLayout
                             android:id="@+id/product_slider_dots_tab_layout"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/tab_dot_switcher_height"
+                            android:layout_height="@dimen/spacing_generic"
                             android:visibility="@{data.images.size() &lt; 2 ? View.INVISIBLE: View.VISIBLE}"
                             app:tabBackground="@drawable/selector_dots_tab_layout"
                             app:tabGravity="center"
                             app:tabIndicatorHeight="0dp" />
-
 
                         <!--MAIN LAYOUT CONTAINER-->
 
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/activity_horizontal_margin"
                             android:background="@color/activityBackground"
                             android:orientation="vertical"
                             android:padding="@dimen/activity_horizontal_margin"
@@ -199,7 +195,6 @@
                                     android:textSize="12sp"
                                     android:visibility="@{appSharedPref.isAllowedReview(context) &amp;&amp; data.totalreviewsAvailable &gt; 0 ? View.VISIBLE : View.GONE}"
                                     tools:text="3.5 / 5" />
-
 
                             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -289,7 +284,6 @@
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
                             android:visibility="@{data.seller!=null ? View.VISIBLE : View.GONE}"
                             app:contentPadding="10dp">
@@ -364,15 +358,69 @@
 
                         </androidx.cardview.widget.CardView>
 
-                        <androidx.appcompat.widget.AppCompatTextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_normal"
-                            android:background="@color/activityBackground"
-                            android:padding="@dimen/spacing_normal"
-                            android:text="@{data.description}"
+                            android:orientation="vertical"
                             app:visibility="@{!data.description.empty}"
-                            tools:text="Short Description" />
+                            android:layout_marginBottom="@dimen/spacing_generic"
+                            android:background="@color/activityBackground"
+                            android:padding="@dimen/spacing_normal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="#000000"
+                                android:textStyle="bold"
+                                android:layout_marginBottom="@dimen/spacing_generic"
+                                android:text="Summary"/>
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@{data.description}"
+                                tools:text="Short Description" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/product_details_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginBottom="@dimen/spacing_generic"
+                            android:background="@color/activityBackground"
+                            android:padding="@dimen/spacing_normal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="#000000"
+                                android:textStyle="bold"
+                                android:layout_marginBottom="@dimen/spacing_generic"
+                                android:text="Product Details"/>
+
+                            <androidx.core.widget.NestedScrollView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/rvProductDetails"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:overScrollMode="never"/>
+
+                                </LinearLayout>
+
+                            </androidx.core.widget.NestedScrollView>
+
+                        </LinearLayout>
+
 
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="match_parent"
