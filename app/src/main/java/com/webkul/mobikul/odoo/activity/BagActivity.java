@@ -46,7 +46,7 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CUSTOME
 
 public class BagActivity extends BaseActivity implements FragmentManager.OnBackStackChangedListener {
     @SuppressWarnings("unused")
-    private static final String TAG = "BagActivity";
+    private static final String TAG = "ShoppingCartActivity";
     private ActivityBagBinding mBinding;
 
     @Override

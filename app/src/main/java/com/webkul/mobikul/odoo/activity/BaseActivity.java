@@ -39,7 +39,6 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.disposables.CompositeDisposable;
 
 
-
 public abstract class BaseActivity extends AppCompatActivity {
     @SuppressWarnings("unused")
     public static final String TAG = "BaseActivity";
@@ -88,11 +87,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         mSupportFragmentManager = getSupportFragmentManager();
         SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(this);
         mSqLiteDatabase = sqlLiteDbHelper.getWritableDatabase();
-        if(!(this instanceof SplashScreenActivity) && !(this instanceof CheckoutActivity)
-        && !(this instanceof ProductActivity)) {
+        if (!(this instanceof SplashScreenActivity) && !(this instanceof CheckoutActivity)
+                && !(this instanceof ProductActivity)) {
             ForceUpdateManager.init(this);
         }
-        AnalyticsImpl.INSTANCE.trackActivityOpened(Helper.getScreenName(getScreenTitle()));
+        trackActivityOpened();
+
     }
 
     protected void showBackButton(boolean show) {
@@ -184,9 +184,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onStop();
         mCompositeDisposable.clear();
         RetrofitClient.getDispatcher().cancelAll();
-        AnalyticsImpl.INSTANCE.trackActivityClosed(Helper.getScreenName(getScreenTitle()));
+        trackActivityClosed();
     }
-
 
 
     @Override
@@ -195,6 +194,24 @@ public abstract class BaseActivity extends AppCompatActivity {
         mSqLiteDatabase.close();
         AlertDialogHelper.dismiss(this);
 
+    }
+
+    private void trackActivityOpened() {
+        if ((this instanceof BagActivity || this instanceof CatalogProductActivity ||
+                this instanceof ProductActivity || this instanceof SettingsActivity ||
+                this instanceof SplashScreenActivity || this instanceof SubCategoryActivity ||
+                this instanceof UpdateAddressActivity || this instanceof UserApprovalActivity) &&
+                !getScreenTitle().equals(TAG))
+            AnalyticsImpl.INSTANCE.trackActivityOpened(Helper.getScreenName(getScreenTitle()));
+    }
+
+    private void trackActivityClosed() {
+        if ((this instanceof BagActivity || this instanceof CatalogProductActivity ||
+                this instanceof ProductActivity || this instanceof SettingsActivity ||
+                this instanceof SplashScreenActivity || this instanceof SubCategoryActivity ||
+                this instanceof UpdateAddressActivity || this instanceof UserApprovalActivity) &&
+                !getScreenTitle().equals(TAG))
+            AnalyticsImpl.INSTANCE.trackActivityClosed(Helper.getScreenName(getScreenTitle()));
     }
 
 }

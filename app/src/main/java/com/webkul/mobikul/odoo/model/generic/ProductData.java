@@ -9,6 +9,7 @@ import androidx.databinding.Bindable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.webkul.mobikul.odoo.BR;
+import com.webkul.mobikul.odoo.adapter.product.MobikulCategoryDetails;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.model.Seller;
 
@@ -85,6 +86,12 @@ public class ProductData extends BaseObservable implements Parcelable {
     @SerializedName("qty")
     @Expose
     private String forecastQuantity;
+    @SerializedName("mobikul_category_details")
+    @Expose
+    private MobikulCategoryDetails mobikulCategoryDetails;
+    @SerializedName("brand_name")
+    @Expose
+    private String brandName;
 
     private boolean inStock;
 
@@ -178,6 +185,22 @@ public class ProductData extends BaseObservable implements Parcelable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public MobikulCategoryDetails getMobikulCategoryDetails() {
+        return mobikulCategoryDetails;
+    }
+
+    public void setMobikulCategoryDetails(MobikulCategoryDetails mobikulCategoryDetails) {
+        this.mobikulCategoryDetails = mobikulCategoryDetails;
+    }
+
+    public String getBrandName() {
+        return brandName;
+    }
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
     }
 
     public String getImage() {

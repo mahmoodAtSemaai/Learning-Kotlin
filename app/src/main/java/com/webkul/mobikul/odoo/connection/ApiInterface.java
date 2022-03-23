@@ -63,7 +63,7 @@ public interface ApiInterface {
 
     /*Catalog*/
     String MOBIKUL_CATALOG_HOME_PAGE_DATA = "mobikul/homepage";
-    String MOBIKUL_CATALOG_PRODUCT_TEMPLATE_DATA = "mobikul/template/{product_id}";
+    String MOBIKUL_CATALOG_PRODUCT_TEMPLATE_DATA = "product-products/{product_id}/product-templates/{product_template_id}";
     String MOBIKUL_PRODUCT_REVIEWS = "product/reviews";
     String MOBIKUL_ADD_PRODUCT_REVIEWS = "my/saveReview";
     String MOBIKUL_REVIEW_LIKE_DISLIKE = "review/likeDislike";
@@ -131,9 +131,10 @@ public interface ApiInterface {
     Observable<HomePageResponse> getHomePageData(@Body String registerDeviceTokenRequestStr);
 
 
-    @POST(MOBIKUL_CATALOG_PRODUCT_TEMPLATE_DATA)
+    @GET(MOBIKUL_CATALOG_PRODUCT_TEMPLATE_DATA)
     Observable<ProductData> getProductData(
-            @Path("product_id") String productId
+            @Path("product_id") String productId,
+            @Path("product_template_id") String productTemplateId
     );
 
     @POST

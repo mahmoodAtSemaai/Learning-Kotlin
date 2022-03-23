@@ -103,8 +103,8 @@ object Flavours {
 }
 
 object Version {
-    const val code = 15
-    const val name = "1.2.1"
+    const val code = 16
+    const val name = "1.2.2"
 }
 
 object Url {
