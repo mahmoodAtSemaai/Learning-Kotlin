@@ -222,7 +222,7 @@ public class ProductActivity extends BaseActivity {
 //                callback.onSuccess(homePageResponse);
                 setDataAfterFetchData(productData);
             } else {
-                ApiConnection.getProductData(this, getIntent().getExtras().getString(BUNDLE_KEY_PRODUCT_ID), getIntent().getExtras().getString(BUNDLE_KEY_PRODUCT_TEMPLATE_ID)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(mProductDataCustomObserver);
+                ApiConnection.getProductData(this, getIntent().getExtras().getString(BUNDLE_KEY_PRODUCT_ID)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(mProductDataCustomObserver);
             }
 
         } else {
