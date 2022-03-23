@@ -460,4 +460,21 @@
     <string name="app_update_alert_description">Harap perbarui aplikasi Anda untuk terus menggunakannya</string>
     <string name="app_update_alert_negative_button_title">Tidak, Terima kasih</string>
     <string name="app_update_alert_positive_button_title">Perbaruan</string>
+
+    <!-- Product Activity and product details -->
+    <string name="product_details_category" translatable="true">Kategori</string>
+    <string name="product_details_organic">Organik</string>
+    <string name="product_details_crops">Tanaman-tanaman</string>
+    <string name="product_details_weight">Berat</string>
+    <string name="product_details_additional_information">Informasi Tambahan</string>
+    <string name="product_details_mrp">MRP</string>
+    <string name="product_details_planting_method">Metode Tanam</string>
+    <string name="product_details_planting_spacing">Jarak tanam</string>
+    <string name="product_details_active_ingredients">Bahan Aktif</string>
+    <string name="product_details_dosage">Dosis</string>
+    <string name="product_details_application_method">Metode penerapan</string>
+    <string name="product_details_frequency_of_application">Dosis pakai</string>
+    <string name="product_details_pests_and_diseases">hama dan penyakit</string>
+    <string name="product_details_duration_of_effect">Durasi efek</string>
+
 </resources>
