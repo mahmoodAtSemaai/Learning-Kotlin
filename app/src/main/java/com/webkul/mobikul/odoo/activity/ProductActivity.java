@@ -175,24 +175,24 @@ public class ProductActivity extends BaseActivity {
             }
         }
 
-        details.add(new ArrayList<>(Arrays.asList("Category", String.valueOf(mobikulCategoryDetails.getCategory()))));
+        details.add(new ArrayList<>(Arrays.asList(this.getString(R.string.product_details_category), String.valueOf(mobikulCategoryDetails.getCategory()))));
         if(mobikulCategoryDetails.isOrganic()){
-            details.add(new ArrayList<>(Arrays.asList("Organic", "Yes")));
+            details.add(new ArrayList<>(Arrays.asList(this.getString(R.string.product_details_organic), "Yes")));
         }else{
-            details.add(new ArrayList<>(Arrays.asList("Organic", "No")));
+            details.add(new ArrayList<>(Arrays.asList(this.getString(R.string.product_details_organic), "No")));
         }
-        details.add(new ArrayList<>(Arrays.asList("Crops", String.valueOf(crops))));
-        details.add(new ArrayList<>(Arrays.asList("Weight", String.valueOf(mobikulCategoryDetails.getWeight()))));
-        details.add(new ArrayList<>(Arrays.asList("Additional Information", String.valueOf(mobikulCategoryDetails.getAdditionalInformation()))));
-        details.add(new ArrayList<>(Arrays.asList("MRP", String.valueOf(mobikulCategoryDetails.getMrp()))));
-        details.add(new ArrayList<>(Arrays.asList("Planting Method", String.valueOf(mobikulCategoryDetails.getPlantingMethod()))));
-        details.add(new ArrayList<>(Arrays.asList("Planting Spacing", String.valueOf(mobikulCategoryDetails.getPlantSpacing()))));
-        details.add(new ArrayList<>(Arrays.asList("Active Ingredients", String.valueOf(mobikulCategoryDetails.getActiveIngredients()))));
-        details.add(new ArrayList<>(Arrays.asList("Dosage", String.valueOf(mobikulCategoryDetails.getDosage()))));
-        details.add(new ArrayList<>(Arrays.asList("Application Method", String.valueOf(mobikulCategoryDetails.getApplicationMethod()))));
-        details.add(new ArrayList<>(Arrays.asList("Frequency of Application", String.valueOf(mobikulCategoryDetails.getFrequencyOfApplication()))));
-        details.add(new ArrayList<>(Arrays.asList("Pests and Diseases", String.valueOf(mobikulCategoryDetails.getPestsAndDiseases()))));
-        details.add(new ArrayList<>(Arrays.asList("Duration of Effect", String.valueOf(mobikulCategoryDetails.getDurationOfEffect()))));
+        details.add(new ArrayList<>(Arrays.asList(this.getString(R.string.product_details_crops), String.valueOf(crops))));
+        details.add(new ArrayList<>(Arrays.asList(this.getString(R.string.product_details_weight), String.valueOf(mobikulCategoryDetails.getWeight()))));
+        details.add(new ArrayList<>(Arrays.asList(this.getString(R.string.product_details_additional_information), String.valueOf(mobikulCategoryDetails.getAdditionalInformation()))));
+        details.add(new ArrayList<>(Arrays.asList(this.getString(R.string.product_details_mrp), String.valueOf(mobikulCategoryDetails.getMrp()))));
+        details.add(new ArrayList<>(Arrays.asList(this.getString(R.string.product_details_planting_method), String.valueOf(mobikulCategoryDetails.getPlantingMethod()))));
+        details.add(new ArrayList<>(Arrays.asList(this.getString(R.string.product_details_planting_spacing), String.valueOf(mobikulCategoryDetails.getPlantSpacing()))));
+        details.add(new ArrayList<>(Arrays.asList(this.getString(R.string.product_details_active_ingredients), String.valueOf(mobikulCategoryDetails.getActiveIngredients()))));
+        details.add(new ArrayList<>(Arrays.asList(this.getString(R.string.product_details_dosage), String.valueOf(mobikulCategoryDetails.getDosage()))));
+        details.add(new ArrayList<>(Arrays.asList(this.getString(R.string.product_details_application_method), String.valueOf(mobikulCategoryDetails.getApplicationMethod()))));
+        details.add(new ArrayList<>(Arrays.asList(this.getString(R.string.product_details_frequency_of_application), String.valueOf(mobikulCategoryDetails.getFrequencyOfApplication()))));
+        details.add(new ArrayList<>(Arrays.asList(this.getString(R.string.product_details_pests_and_diseases), String.valueOf(mobikulCategoryDetails.getPestsAndDiseases()))));
+        details.add(new ArrayList<>(Arrays.asList(this.getString(R.string.product_details_duration_of_effect), String.valueOf(mobikulCategoryDetails.getDurationOfEffect()))));
 
         ArrayList<ArrayList<String>> detailsUpdated = new ArrayList<>();
 

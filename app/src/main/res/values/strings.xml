@@ -465,4 +465,21 @@
     <string name="app_update_alert_description">Please update your app to continue using it</string>
     <string name="app_update_alert_negative_button_title">No, Thanks</string>
     <string name="app_update_alert_positive_button_title">Update</string>
+
+    <!-- Product Activity and product details -->
+    <string name="product_details_category" >Category</string>
+    <string name="product_details_organic" >Organic</string>
+    <string name="product_details_crops">Crops</string>
+    <string name="product_details_weight">Weight</string>
+    <string name="product_details_additional_information">Additional Information</string>
+    <string name="product_details_mrp">MRP</string>
+    <string name="product_details_planting_method">Planting Method</string>
+    <string name="product_details_planting_spacing">Planting Spacing</string>
+    <string name="product_details_active_ingredients">Active Ingredients</string>
+    <string name="product_details_dosage">Dosage</string>
+    <string name="product_details_application_method">Application Method</string>
+    <string name="product_details_frequency_of_application">Frequency of Application</string>
+    <string name="product_details_pests_and_diseases">Pests and Diseases</string>
+    <string name="product_details_duration_of_effect">Duration of Effect</string>
+
 </resources>
