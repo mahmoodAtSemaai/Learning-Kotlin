@@ -39,6 +39,9 @@ public class OrderItem {
     @Expose
     private String priceSubtotal;
 
+    @SerializedName("product_id")
+    @Expose
+    private String productId;
     @SerializedName("templateId")
     @Expose
     private String templateId;
@@ -121,6 +124,13 @@ public class OrderItem {
         return priceSubtotal;
     }
 
+
+    public String getProductId() {
+        if (productId == null) {
+            return "";
+        }
+        return productId;
+    }
 
     public String getTemplateId() {
         if (templateId == null) {

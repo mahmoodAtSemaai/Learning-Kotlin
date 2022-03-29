@@ -296,8 +296,8 @@
     <!---->
     <!--PRODUCT PAGE..-->
     <string name="guest_user">Guest User</string>
-    <string name="add_to_bag">Add To Bag</string>
-    <string name="go_to_bag">Go To Bag</string>
+    <string name="add_to_bag">Add to Bag</string>
+    <string name="go_to_bag">Go to Bag</string>
     <string name="buy_now">Buy Now</string>
     <string name="qty">Qty:</string>
     <string name="qty_x_int">Qty: %d </string>
@@ -377,7 +377,7 @@
 
     <!--Customization-->
     <string name="forecast_quantity_x">%1$d products Available</string>
-    <string name="out_of_stock">Out of Stock.</string>
+    <string name="out_of_stock">Out of Stock</string>
     <string name="product_not_available_in_this_quantity">Product not available in this quantity.</string>
     <string name="product_not_available_in_this_combination">Product not available</string>
     <string name="profile_url">Profile URL</string>
@@ -389,6 +389,10 @@
     <string name="lightMode">Light Mode</string>
     <string name="darkMode">Dark Mode</string>
     <string name="setting">Settings</string>
+    <string name="in_stock">In Stock</string>
+    <string name="in_stock_quantity_x">Stock: %1$d </string>
+    <string name="quantity_exceeding">Your order quantity exceeds the stock</string>
+    <string name="product_already_added">products already added in bag</string>
 
     <!--Fingerprint-->
     <string name="fingerprint_login_header">Fingerprint Login</string>

@@ -62,14 +62,14 @@ import retrofit2.http.Url;
 public interface ApiInterface {
 
     /*Catalog*/
-    String MOBIKUL_CATALOG_HOME_PAGE_DATA = "mobikul/homepage";
-    String MOBIKUL_CATALOG_PRODUCT_TEMPLATE_DATA = "product-templates/{product_template_id}";
+    String MOBIKUL_CATALOG_HOME_PAGE_DATA = "home-page";
+    String MOBIKUL_CATALOG_PRODUCT_TEMPLATE_DATA = "product-products/{product_id}/product-templates/{product_template_id}";
     String MOBIKUL_PRODUCT_REVIEWS = "product/reviews";
     String MOBIKUL_ADD_PRODUCT_REVIEWS = "my/saveReview";
     String MOBIKUL_REVIEW_LIKE_DISLIKE = "review/likeDislike";
 
     /*Checkout*/
-    String MOBIKUL_CHECKOUT_MY_CART = "mobikul/mycart";
+    String MY_CART = "cart";
     String MOBIKUL_CHECKOUT_UPDATE_MY_CART = "mobikul/mycart/{line_id}";
     String MOBIKUL_CHECKOUT_DELETE_CART_ITEM = "mobikul/mycart/{line_id}";
 
@@ -109,6 +109,9 @@ public interface ApiInterface {
     String MOBIKUL_EXTRAS_SUB_DISTRICT_DATA = "/subdistricts";
     String MOBIKUL_EXTRAS_VILLAGE_DATA = "/villages";
     String MOBIKUL_EXTRAS_SEARCH = "mobikul/search";
+    String PRODUCTS_SEARCH = "product-templates";
+    String PRODUCT_SLIDER_DATA = "product-products";
+
     String MOBIKUL_EXTRAS_REGISTER_FCM_TOKEN = "mobikul/registerFcmToken";
     String MOBIKUL_EXTRAS_NOTIFICATION_MESSAGES = "mobikul/notificationMessages";
     String MOBIKUL_EXTRAS_NOTIFICATION_MESSAGE = "mobikul/notificationMessage/{notification_id}";
@@ -127,24 +130,28 @@ public interface ApiInterface {
         CATALOG API's
      ------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-    @POST(MOBIKUL_CATALOG_HOME_PAGE_DATA)
-    Observable<HomePageResponse> getHomePageData(@Body String registerDeviceTokenRequestStr);
+    @GET(MOBIKUL_CATALOG_HOME_PAGE_DATA)
+    Observable<HomePageResponse> getHomePageData();
 
 
     @GET(MOBIKUL_CATALOG_PRODUCT_TEMPLATE_DATA)
     Observable<ProductData> getProductData(
+            @Path("product_id") String productId,
             @Path("product_template_id") String productTemplateId
     );
 
-    @POST
+    @GET(PRODUCT_SLIDER_DATA)
     Observable<CatalogProductResponse> getProductSliderData(
-            @Url String url
-            , @Body String productSliderRequestJsonStr
+            @Query("slider_id") int sliderId
+            , @Query("offset") int offset
+            , @Query("limit") int limit
     );
 
-    @POST(MOBIKUL_EXTRAS_SEARCH)
+    @GET(PRODUCTS_SEARCH)
     Observable<CatalogProductResponse> getCategoryProducts(
-            @Body String categoryRequestJsonDataStr
+            @Query("cid") String categoryId,
+            @Query("offset") int offset,
+            @Query("limit") int limit
     );
 
     @POST(MOBIKUL_PRODUCT_REVIEWS)
@@ -253,7 +260,7 @@ public interface ApiInterface {
      ------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 
-    @POST(MOBIKUL_CHECKOUT_MY_CART)
+    @GET(MY_CART)
     Observable<BagResponse> getCartData();
 
     @PUT(MOBIKUL_CHECKOUT_UPDATE_MY_CART)
@@ -344,9 +351,11 @@ public interface ApiInterface {
     Observable<VillageListResponse> getVillages(@Query(AddressAPIConstants.SUBDISTRICT_ID) int sub_district_id);
 
 
-    @POST(MOBIKUL_EXTRAS_SEARCH)
+    @GET(PRODUCTS_SEARCH)
     Observable<CatalogProductResponse> getSearchResponse(
-            @Body String searchJsonStr
+            @Query("search") String keyword,
+            @Query("offset") int offset,
+            @Query("limit") int limit
     );
 
     @POST(MOBIKUL_EXTRAS_NOTIFICATION_MESSAGES)

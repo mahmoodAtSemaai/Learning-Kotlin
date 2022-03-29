@@ -80,6 +80,21 @@
                 android:visibility="@{isLoggedIn &amp;&amp; wishlistEnabled ? View.VISIBLE : View.GONE}"
                 app:srcCompat="@{data.addedToWishlist ? @drawable/ic_vector_wishlist_red_24dp : @drawable/ic_vector_wishlist_grey_24dp}"
                 tools:src="@drawable/ic_vector_wishlist_grey_24dp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/product_image_small"
+                    android:layout_marginHorizontal="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_min"
+                    android:background="@drawable/bg_out_of_stock"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center"
+                    android:text="@string/out_of_stock"
+                    android:textSize="@dimen/text_size_min"
+                    android:textColor="@color/white"
+                    android:visibility="@{data.inStock ? View.GONE : View.VISIBLE}"/>
+
         </RelativeLayout>
 
         <androidx.appcompat.widget.LinearLayoutCompat

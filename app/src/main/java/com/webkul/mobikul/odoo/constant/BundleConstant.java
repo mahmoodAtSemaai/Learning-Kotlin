@@ -48,6 +48,7 @@ public interface BundleConstant {
 
     /*generic*/
     String BUNDLE_KEY_URL = "URL";
+    String BUNDLE_KEY_SLIDER_ID = "SLIDER_ID";
     String BUNDLE_KEY_TITLE = "TITLE";
     String BUNDLE_KEY_REQ_CODE = "REQUEST_CODE";
     String BUNDLE_KEY_CALLING_ACTIVITY = "CALLING_ACTIVITY";
