@@ -17,8 +17,8 @@ class AlternativeProductHandler(var context: Context) {
             productData.productId, productData.name
         )
         val intent = Intent(context, (context.getApplicationContext() as OdooApplication).productActivity)
-        intent.putExtra(BUNDLE_KEY_PRODUCT_ID, productData.getTemplateId())
-        //intent.putExtra(BUNDLE_KEY_PRODUCT_TEMPLATE_ID, productData.getTemplateId())
+        intent.putExtra(BUNDLE_KEY_PRODUCT_ID, productData.getProductId())
+        intent.putExtra(BUNDLE_KEY_PRODUCT_TEMPLATE_ID, productData.getTemplateId())
         intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, productData.getName())
         context.startActivity(intent)
 

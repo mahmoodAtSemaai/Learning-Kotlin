@@ -65,7 +65,7 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGOR
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGORY_NAME;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_SEARCH_DOMAIN;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_SELLER_ID;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_URL;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_SLIDER_ID;
 
 /**
  * Webkul Software.
@@ -128,7 +128,7 @@ public class CatalogProductActivity extends BaseActivity {
 
                     switch (catalogProductRequestType) {
                         case PRODUCT_SLIDER:
-                            requestTypeIdentifier = "ProductSlider" + getIntent().getExtras().getString(BUNDLE_KEY_URL);
+                            requestTypeIdentifier = "ProductSlider" + getIntent().getExtras().getString(BUNDLE_KEY_SLIDER_ID);
                             break;
                         case SELLER_PRODUCTS:
                             requestTypeIdentifier = "SellerCollection" + getIntent().getExtras().getString(BUNDLE_KEY_SELLER_ID);
@@ -195,7 +195,7 @@ public class CatalogProductActivity extends BaseActivity {
                 String requestTypeIdentifier = "";
                 switch (catalogProductRequestType) {
                     case PRODUCT_SLIDER:
-                        requestTypeIdentifier = "ProductSlider" + getIntent().getExtras().getString(BUNDLE_KEY_URL);
+                        requestTypeIdentifier = "ProductSlider" + getIntent().getExtras().getString(BUNDLE_KEY_SLIDER_ID);
                         break;
                     case SELLER_PRODUCTS:
                         requestTypeIdentifier = "SellerCollection" + getIntent().getExtras().getString(BUNDLE_KEY_SELLER_ID);
@@ -272,7 +272,7 @@ public class CatalogProductActivity extends BaseActivity {
         Observable<CatalogProductResponse> catalogProductDataObservable = null;
         switch (catalogProductRequestType) {
             case PRODUCT_SLIDER:
-                catalogProductDataObservable = ApiConnection.getProductSliderData(this, new ProductSliderRequest(this, getIntent().getExtras().getString(BUNDLE_KEY_URL), offset));
+                catalogProductDataObservable = ApiConnection.getProductSliderData(this, getIntent().getExtras().getInt(BUNDLE_KEY_SLIDER_ID), offset, AppSharedPref.getItemsPerPage(this));
                 break;
             case SELLER_PRODUCTS:
                 catalogProductDataObservable = ((OdooApplication) getApplicationContext()).getSellerCollection(getIntent().getExtras().getString(BUNDLE_KEY_SELLER_ID), offset, AppSharedPref.getItemsPerPage(this));
@@ -281,15 +281,15 @@ public class CatalogProductActivity extends BaseActivity {
             case FEATURED_CATEGORY:
             case GENERAL_CATEGORY:
             case BANNER_CATEGORY:
-                catalogProductDataObservable = ApiConnection.getCategoryProducts(this, new CategoryRequest(getIntent().getExtras().getString(BUNDLE_KEY_CATEGORY_ID), offset, AppSharedPref.getItemsPerPage(this)));
+                catalogProductDataObservable = ApiConnection.getCategoryProducts(this, getIntent().getExtras().getString(BUNDLE_KEY_CATEGORY_ID), offset, AppSharedPref.getItemsPerPage(this));
                 break;
 
             case SEARCH_QUERY:
-                catalogProductDataObservable = ApiConnection.getSearchResponse(this, new SearchRequest(getIntent().getExtras().getString(SearchManager.QUERY), offset, AppSharedPref.getItemsPerPage(this), CatalogHelper.CatalogProductRequestType.SEARCH_QUERY));
+                catalogProductDataObservable = ApiConnection.getSearchResponse(this, getIntent().getExtras().getString(SearchManager.QUERY), offset, AppSharedPref.getItemsPerPage(this));
                 break;
 
             case SEARCH_DOMAIN:
-                catalogProductDataObservable = ApiConnection.getSearchResponse(this, new SearchRequest(getIntent().getExtras().getString(BUNDLE_KEY_SEARCH_DOMAIN), offset, AppSharedPref.getItemsPerPage(this), CatalogHelper.CatalogProductRequestType.SEARCH_DOMAIN));
+                catalogProductDataObservable = ApiConnection.getSearchResponse(this, getIntent().getExtras().getString(BUNDLE_KEY_SEARCH_DOMAIN), offset, AppSharedPref.getItemsPerPage(this));
                 break;
         }
 

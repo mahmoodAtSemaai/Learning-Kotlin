@@ -60,9 +60,15 @@ public class BagItemData extends BaseObservable implements Parcelable {
     @SerializedName("templateId")
     @Expose
     private String templateId;
+    @SerializedName("product_id")
+    @Expose
+    private String productId;
     @SerializedName("message")
     @Expose
     private String message;
+    @SerializedName("available_quantity")
+    @Expose
+    private int availableQuantity;
 
     protected BagItemData(Parcel in) {
         priceUnit = in.readString();
@@ -75,7 +81,9 @@ public class BagItemData extends BaseObservable implements Parcelable {
         productName = in.readString();
         thumbNail = in.readString();
         templateId = in.readString();
+        productId = in.readString();
         message = in.readString();
+        availableQuantity = in.readInt();
     }
 
     @Override
@@ -90,7 +98,9 @@ public class BagItemData extends BaseObservable implements Parcelable {
         dest.writeString(productName);
         dest.writeString(thumbNail);
         dest.writeString(templateId);
+        dest.writeString(productId);
         dest.writeString(message);
+        dest.writeInt(availableQuantity);
     }
 
     @Override
@@ -173,7 +183,18 @@ public class BagItemData extends BaseObservable implements Parcelable {
         return templateId;
     }
 
+    public String getProductId() {
+        if (productId == null) {
+            return "";
+        }
+        return productId;
+    }
+
     public String getMessage() {
         return message;
+    }
+
+    public int getAvailableQuantity() {
+        return availableQuantity;
     }
 }

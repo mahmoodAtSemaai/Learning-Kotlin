@@ -11,6 +11,7 @@ import com.google.gson.annotations.SerializedName;
 import com.webkul.mobikul.odoo.BR;
 import com.webkul.mobikul.odoo.adapter.product.MobikulCategoryDetails;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
+import com.webkul.mobikul.odoo.constant.ApplicationConstant;
 import com.webkul.mobikul.odoo.model.Seller;
 
 import java.util.ArrayList;
@@ -104,6 +105,17 @@ public class ProductData extends BaseObservable implements Parcelable {
     @Expose
     private ArrayList<ProductData> alternativeProducts;
 
+    @SerializedName("inventory_availability")
+    @Expose
+    private String inventoryAvailability;
+
+    @SerializedName("available_quantity")
+    @Expose
+    private int availableQuantity;
+
+    @SerializedName("available_threshold")
+    @Expose
+    private int availableThreshold;
 
     public String getAbsoluteUrl() {
         return absoluteUrl;
@@ -138,6 +150,9 @@ public class ProductData extends BaseObservable implements Parcelable {
         accessDenied = in.readByte() !=0;
         alternativeProducts = in.createTypedArrayList(ProductData.CREATOR);
         absoluteUrl = in.readString();
+        inventoryAvailability = in.readString();
+        availableQuantity = in.readInt();
+        availableThreshold = in.readInt();
     }
 
     @Override
@@ -162,6 +177,9 @@ public class ProductData extends BaseObservable implements Parcelable {
         dest.writeByte((byte) (accessDenied ? 1 : 0));
         dest.writeTypedList(alternativeProducts);
         dest.writeString(absoluteUrl);
+        dest.writeString(inventoryAvailability);
+        dest.writeInt(availableQuantity);
+        dest.writeInt(availableThreshold);
     }
 
     @Override
@@ -352,21 +370,12 @@ public class ProductData extends BaseObservable implements Parcelable {
         return forecastQuantity;
     }
 
-    public int getForecastQuantityInt() {
-        if (forecastQuantity == null) {
-            return 0;
-        } else {
-            try {
-                return (int) Double.parseDouble(forecastQuantity);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return 0;
-            }
-        }
+    public boolean isInStock() {
+        return getAvailableQuantity() > 0;
     }
 
-    public boolean isInStock() {
-        return forecastQuantity == null || getForecastQuantityInt() > 0;
+    public boolean isThreshold() {
+        return inventoryAvailability.equals(ApplicationConstant.THRESHOLD);
     }
 
     public boolean isAccessDenied() {
@@ -390,4 +399,17 @@ public class ProductData extends BaseObservable implements Parcelable {
     public void setPriceUnit(String priceUnit) {
         this.priceUnit = priceUnit;
     }
+
+    public String getInventoryAvailability() {
+        return inventoryAvailability;
+    }
+
+    public int getAvailableQuantity() {
+        return availableQuantity;
+    }
+
+    public int getAvailableThreshold() {
+        return availableThreshold;
+    }
+
 }

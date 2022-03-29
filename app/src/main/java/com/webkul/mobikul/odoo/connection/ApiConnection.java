@@ -90,7 +90,7 @@ public class ApiConnection {
 //                callback.onSuccess(homePageResponse);
             return Observable.just(homePageResponse);
         } else {
-            return RetrofitClient.getClient(context).create(ApiInterface.class).getHomePageData(new RegisterDeviceTokenRequest(context).toString());
+            return RetrofitClient.getClient(context).create(ApiInterface.class).getHomePageData();
         }
     }
 
@@ -122,20 +122,20 @@ public class ApiConnection {
         });
     }
 
-    public static Observable<ProductData> getProductData(Context context, String productTemplateId) {
+    public static Observable<ProductData> getProductData(Context context, String productId, String productTemplateId) {
 
-        return RetrofitClient.getClient(context).create(ApiInterface.class).getProductData(productTemplateId);
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getProductData(productId, productTemplateId);
 
 
     }
 
 
-    public static Observable<CatalogProductResponse> getProductSliderData(Context context, ProductSliderRequest productSliderRequest) {
-        return RetrofitClient.getClient(context).create(ApiInterface.class).getProductSliderData(productSliderRequest.getUrl().substring(1, productSliderRequest.getUrl().length()), productSliderRequest.toString());
+    public static Observable<CatalogProductResponse> getProductSliderData(Context context, int sliderId, int offset, int limit) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getProductSliderData(sliderId, offset, limit);
     }
 
-    public static Observable<CatalogProductResponse> getCategoryProducts(Context context, CategoryRequest categoryRequest) {
-        return RetrofitClient.getClient(context).create(ApiInterface.class).getCategoryProducts(categoryRequest.toString());
+    public static Observable<CatalogProductResponse> getCategoryProducts(Context context, String categoryId, int offset, int limit) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getCategoryProducts(categoryId, offset, limit);
     }
 
     public static Observable<ProductReviewResponse> getProductReviews(Context context, ProductReviewRequest
@@ -356,8 +356,8 @@ public class ApiConnection {
     }
 
 
-    public static Observable<CatalogProductResponse> getSearchResponse(Context context, SearchRequest searchRequest) {
-        return RetrofitClient.getClient(context).create(ApiInterface.class).getSearchResponse(searchRequest.toString());
+    public static Observable<CatalogProductResponse> getSearchResponse(Context context, String keyword, int offset, int limit) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getSearchResponse(keyword, offset, limit);
     }
 
 
