@@ -1,6 +1,5 @@
 package com.webkul.mobikul.odoo.core.extension
 
-import android.os.Build
 import com.webkul.mobikul.odoo.BuildConfig
 
 /**
