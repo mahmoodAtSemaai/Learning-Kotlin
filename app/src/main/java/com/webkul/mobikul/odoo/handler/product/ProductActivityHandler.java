@@ -94,7 +94,7 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
     }
 
     private int isQuantityExceeding(int qty) {
-        if (qty > mData.getAvailableQuantity()) {
+        if (!mData.isNever() && qty > mData.getAvailableQuantity()) {
             showQuantityWarning(mContext.getString(R.string.quantity_exceeding));
             return mData.getAvailableQuantity();
         }
@@ -147,7 +147,7 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
             return;
         }
 
-        if (mData.getQuantity() > mData.getAvailableQuantity()) {
+        if (!mData.isNever() && mData.getQuantity() > mData.getAvailableQuantity()) {
             SnackbarHelper.getSnackbar((Activity) mContext, mContext.getString(R.string.product_not_available_in_this_quantity), Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
             return;
         }

@@ -133,7 +133,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentBottom="true"
-                                android:visibility="@{data == null ? View.GONE : (data.inStock ? View.GONE : View.VISIBLE)}">
+                                android:visibility="@{data == null ? View.GONE : (data.isNever() ? View.GONE : (data.inStock ? View.GONE : View.VISIBLE))}">
 
                                 <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="match_parent"
@@ -263,7 +263,7 @@
                                 android:gravity="center"
                                 android:maxLines="1"
                                 android:text="@{data.inStock ? (data.isThreshold() ? (data.getAvailableQuantity() > data.getAvailableThreshold() ? @string/in_stock : @string/in_stock_quantity_x(data.getAvailableQuantity())) : @string/in_stock_quantity_x(data.getAvailableQuantity())) : @string/out_of_stock }"
-                                android:visibility="@{data == null ? View.GONE : View.VISIBLE}"
+                                android:visibility="@{data == null ? View.GONE : (data.isNever() ? View.GONE : View.VISIBLE)}"
                                 tools:text="In Stock" />
 
                             <androidx.appcompat.widget.AppCompatButton
@@ -276,14 +276,14 @@
                                 android:drawablePadding="@dimen/spacing_normal"
                                 android:gravity="center"
                                 android:minWidth="@dimen/min_qty_width"
-                                android:onClick="@{() -> data.inStock ? handler.changeQty() : void}"
+                                android:onClick="@{() -> data.isNever() ? handler.changeQty() : (data.inStock ? handler.changeQty() : void)}"
                                 android:paddingStart="@dimen/spacing_generic"
                                 android:paddingLeft="@dimen/spacing_generic"
                                 android:paddingEnd="@dimen/spacing_normal"
                                 android:paddingRight="@dimen/spacing_generic"
                                 android:layout_marginBottom="@dimen/spacing_normal"
                                 android:layout_marginTop="@dimen/spacing_tiny"
-                                android:text="@{data.inStock ? @string/qty_x_int(data.quantity) : @string/qty_x_int(0)}"
+                                android:text="@{data.isNever() ? @string/qty_x_int(data.quantity) : (data.inStock ? @string/qty_x_int(data.quantity) : @string/qty_x_int(0))}"
                                 android:textColor="@android:color/black"
 
                                 tools:text="Qty: 1" />
@@ -517,7 +517,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/button_height_generic"
                     android:layout_gravity="bottom"
-                    android:background="@{data.inStock ? @color/colorAccent : @color/colorDarkGrey}"
+                    android:background="@{data.isNever() ? @color/colorAccent : (data.inStock ? @color/colorAccent : @color/colorDarkGrey)}"
                     android:orientation="horizontal"
                     android:visibility="@{data == null ? View.GONE : View.VISIBLE}">
 
@@ -528,16 +528,16 @@
                         android:layout_height="match_parent"
                         android:layout_margin="1dp"
                         android:layout_weight="1"
-                        android:background="@{data.inStock ? @drawable/btn_rounded_corners_accent_bg : @drawable/bg_out_of_stock}"
-                        android:drawableStart="@{data.inStock ? @drawable/ic_vector_bag_wrapper : @drawable/ic_vector_bag_disabled}"
-                        android:drawableLeft="@{data.inStock ? @drawable/ic_vector_bag_wrapper : @drawable/ic_vector_bag_disabled}"
+                        android:background="@{data.isNever() ? @drawable/btn_rounded_corners_accent_bg :  (data.inStock ? @drawable/btn_rounded_corners_accent_bg : @drawable/bg_out_of_stock)}"
+                        android:drawableStart="@{data.isNever() ? @drawable/ic_vector_bag_wrapper : (data.inStock ? @drawable/ic_vector_bag_wrapper : @drawable/ic_vector_bag_disabled)}"
+                        android:drawableLeft="@{data.isNever() ? @drawable/ic_vector_bag_wrapper : (data.inStock ? @drawable/ic_vector_bag_wrapper : @drawable/ic_vector_bag_disabled)}"
                         android:gravity="center"
                         android:onClick="@{() -> handler.addToCart(false)}"
                         android:text="@string/add_to_bag"
                         android:textSize="@dimen/text_size_medium"
                         android:textStyle="bold"
                         android:textColor="#FFFFFF"
-                        android:enabled="@{data.inStock? true : false}"/>
+                        android:enabled="@{data.isNever() ? true : (data.inStock? true : false)}"/>
 
                     <!--<androidx.appcompat.widget.AppCompatButton-->
                     <!--android:id="@+id/buy_now_button"-->

@@ -127,23 +127,18 @@ public class BagItemsRecyclerHandler implements ChangeQtyDialogFragment.OnQtyCha
     @Override
     public void onQtyChanged(int qty) {
         Toast.makeText(mContext, R.string.updating_bag, Toast.LENGTH_SHORT).show();
-        if (isQuantityExceeding(qty)) {
-            showQuantityWarning();
-            hitUpdateCartApi(mData.getAvailableQuantity());
-        }
-        else{
-            hitUpdateCartApi(qty);
-        }
+        hitUpdateCartApi(qty);
     }
 
     private Boolean isQuantityExceeding(int qty) {
         return qty > mData.getAvailableQuantity();
     }
 
-    private void showQuantityWarning() {
-        new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE)
+    private void showQuantityWarning(String message) {
+        new SweetAlertDialog(mContext, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+            .setCustomImage(R.drawable.ic_warning)
             .setTitleText("")
-            .setContentText(mContext.getString(R.string.quantity_exceeding))
+            .setContentText(message)
             .setConfirmText(mContext.getString(R.string.continue_))
             .setConfirmClickListener(sweetAlertDialog -> {
                 sweetAlertDialog.dismiss();
@@ -178,7 +173,7 @@ public class BagItemsRecyclerHandler implements ChangeQtyDialogFragment.OnQtyCha
                     ((BagActivity) mContext).getCartData();
                 } else {
                     AnalyticsImpl.INSTANCE.trackItemQuantityChangeFailed(baseResponse.getMessage(), baseResponse.getResponseCode(), "");
-                    AlertDialogHelper.showDefaultErrorDialog(mContext, mContext.getString(R.string.error_something_went_wrong), baseResponse.getMessage());
+                    showQuantityWarning(baseResponse.getMessage().replace(".0", ""));
                 }
             }
 

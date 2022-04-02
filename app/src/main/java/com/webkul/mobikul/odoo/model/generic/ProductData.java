@@ -378,6 +378,10 @@ public class ProductData extends BaseObservable implements Parcelable {
         return inventoryAvailability.equals(ApplicationConstant.THRESHOLD);
     }
 
+    public boolean isNever() {
+        return inventoryAvailability.equals(ApplicationConstant.NEVER);
+    }
+
     public boolean isAccessDenied() {
         return accessDenied;
     }
