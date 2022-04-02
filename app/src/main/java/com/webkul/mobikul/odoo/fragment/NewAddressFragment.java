@@ -781,7 +781,7 @@ public class NewAddressFragment extends BaseFragment {
     @androidx.annotation.NonNull
     @Override
     public String getTitle() {
-        return this.getClass().getSimpleName();
+        return TAG;
     }
 
     @Override

@@ -48,7 +48,7 @@ public class AddSellerReviewFragment extends BaseFragment {
     @NonNull
     @Override
     public String getTitle() {
-        return this.getClass().getSimpleName();
+        return TAG;
     }
 
     @Override
