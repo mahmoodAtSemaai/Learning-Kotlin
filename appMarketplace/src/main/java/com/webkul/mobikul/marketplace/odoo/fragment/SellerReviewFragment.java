@@ -35,6 +35,7 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING
 public class SellerReviewFragment extends BaseFragment {
 
     private FragmentSellerReviewBinding mBinding;
+    private static final String TAG = "SellerReviewFragment";
 
     public static SellerReviewFragment newInstance(int sellerID) {
         Bundle args = new Bundle();
@@ -102,7 +103,7 @@ public class SellerReviewFragment extends BaseFragment {
     @androidx.annotation.NonNull
     @Override
     public String getTitle() {
-        return this.getClass().getSimpleName();
+        return TAG;
     }
 
     @Override
