@@ -8,6 +8,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.webkul.mobikul.odoo.BR;
+import com.webkul.mobikul.odoo.constant.ApplicationConstant;
 
 /**
  * Created by shubham.agarwal on 23/5/17.
@@ -60,9 +61,18 @@ public class BagItemData extends BaseObservable implements Parcelable {
     @SerializedName("templateId")
     @Expose
     private String templateId;
+    @SerializedName("product_id")
+    @Expose
+    private String productId;
     @SerializedName("message")
     @Expose
     private String message;
+    @SerializedName("available_quantity")
+    @Expose
+    private int availableQuantity;
+    @SerializedName("inventory_availability")
+    @Expose
+    private String inventoryAvailability;
 
     protected BagItemData(Parcel in) {
         priceUnit = in.readString();
@@ -75,7 +85,10 @@ public class BagItemData extends BaseObservable implements Parcelable {
         productName = in.readString();
         thumbNail = in.readString();
         templateId = in.readString();
+        productId = in.readString();
         message = in.readString();
+        availableQuantity = in.readInt();
+        inventoryAvailability = in.readString();
     }
 
     @Override
@@ -90,7 +103,10 @@ public class BagItemData extends BaseObservable implements Parcelable {
         dest.writeString(productName);
         dest.writeString(thumbNail);
         dest.writeString(templateId);
+        dest.writeString(productId);
         dest.writeString(message);
+        dest.writeInt(availableQuantity);
+        dest.writeString(inventoryAvailability);
     }
 
     @Override
@@ -173,7 +189,23 @@ public class BagItemData extends BaseObservable implements Parcelable {
         return templateId;
     }
 
+    public String getProductId() {
+        if (productId == null) {
+            return "";
+        }
+        return productId;
+    }
+
     public String getMessage() {
         return message;
     }
+
+    public int getAvailableQuantity() {
+        return availableQuantity;
+    }
+
+    public boolean isNever() {
+        return inventoryAvailability.equals(ApplicationConstant.NEVER);
+    }
+
 }

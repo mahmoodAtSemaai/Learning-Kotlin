@@ -386,6 +386,10 @@
     <string name="lightMode">Mode Terang</string>
     <string name="darkMode">Mode Gelap</string>
     <string name="setting">Pengaturan</string>
+    <string name="in_stock">Stok Tersedia</string>
+    <string name="in_stock_quantity_x">Stok: %1$d </string>
+    <string name="quantity_exceeding">Jumlah pesanan Anda melebihi stok</string>
+    <string name="product_already_added">produk sudah ditambahkan di tas</string>
 
     <!--Fingerprint-->
     <string name="fingerprint_login_header">Masuk dengan sidik jari</string>

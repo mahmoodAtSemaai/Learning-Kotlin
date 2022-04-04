@@ -31,6 +31,7 @@ import io.reactivex.schedulers.Schedulers;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_NAME;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID;
 
 
 /**
@@ -63,7 +64,8 @@ public class WishlistProductInfoItemHandler {
     public void viewProduct() {
         AnalyticsImpl.INSTANCE.trackWishlistedItemSelected(mData.getId(), mData.getName(), mData.getPriceUnit());
         Intent intent = new Intent(mContext, ((OdooApplication) mContext.getApplicationContext()).getProductActivity());
-        intent.putExtra(BUNDLE_KEY_PRODUCT_ID, mData.getTemplateId());
+        intent.putExtra(BUNDLE_KEY_PRODUCT_ID, mData.getProductId());
+        intent.putExtra(BUNDLE_KEY_PRODUCT_TEMPLATE_ID, mData.getTemplateId());
         intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, mData.getName());
         mContext.startActivity(intent);
     }

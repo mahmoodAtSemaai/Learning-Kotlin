@@ -89,7 +89,27 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
 
     @Override
     public void onQtyChanged(int qty) {
+        qty = isQuantityExceeding(qty);
         mData.setQuantity(qty);
+    }
+
+    private int isQuantityExceeding(int qty) {
+        if (!mData.isNever() && qty > mData.getAvailableQuantity()) {
+            showQuantityWarning(mContext.getString(R.string.quantity_exceeding));
+            return mData.getAvailableQuantity();
+        }
+        return qty;
+    }
+
+    private void showQuantityWarning(String message) {
+        new SweetAlertDialog(mContext, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+            .setCustomImage(R.drawable.ic_warning)
+            .setTitleText("")
+            .setContentText(message)
+            .setConfirmText(mContext.getString(R.string.continue_))
+            .setConfirmClickListener(sweetAlertDialog -> {
+                sweetAlertDialog.dismiss();
+        }).show();
     }
 
     public void addToCart(boolean isBuyNow) {
@@ -127,7 +147,7 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
             return;
         }
 
-        if (mData.getForecastQuantity() != null && mData.getQuantity() > mData.getForecastQuantityInt()) {
+        if (!mData.isNever() && mData.getQuantity() > mData.getAvailableQuantity()) {
             SnackbarHelper.getSnackbar((Activity) mContext, mContext.getString(R.string.product_not_available_in_this_quantity), Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
             return;
         }
@@ -168,13 +188,13 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
                                 if (addToCartResponse.isSuccess()) {
                                     IntentHelper.beginCheckout(mContext);
                                 } else {
-                                    AlertDialogHelper.showDefaultErrorDialog(mContext, addToCartResponse.getProductName(), addToCartResponse.getMessage());
+                                    showQuantityWarning(addToCartResponse.getMessage());
                                 }
                             } else {
                                 if (addToCartResponse.isSuccess()) {
                                     ProductAddedToBagDialogFrag.newInstance(addToCartResponse.getProductName(), addToCartResponse.getMessage()).show(((BaseActivity) mContext).mSupportFragmentManager, RateAppDialogFragm.class.getSimpleName());
                                 } else {
-                                    AlertDialogHelper.showDefaultErrorDialog(mContext, addToCartResponse.getProductName(), addToCartResponse.getMessage());
+                                    showQuantityWarning(addToCartResponse.getMessage().replace(".0", ""));
                                 }
                             }
                         }

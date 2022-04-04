@@ -44,6 +44,7 @@ public class SellerOrdersListActivity extends BaseActivity {
     //    private Toast mToast;
     private CustomToast mToast;
     private String mState = "";
+    private static final String TAG = "SellerOrdersListActivity";
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

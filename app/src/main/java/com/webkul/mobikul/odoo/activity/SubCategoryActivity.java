@@ -36,6 +36,7 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PARENT_
 public class SubCategoryActivity extends BaseActivity {
 
     ActivitySubCategoryBinding mBinding;
+    private static final String TAG = "SubCategoryActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -19,6 +19,7 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGOR
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGORY_NAME;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_NAME;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_SEARCH_DOMAIN;
 import static com.webkul.mobikul.odoo.helper.CatalogHelper.CatalogProductRequestType.SEARCH_DOMAIN;
 
@@ -53,7 +54,8 @@ public class HomeBannerHandler {
                 break;
             case TYPE_PRODUCT:
                 intent = new Intent(mContext, ((OdooApplication) mContext.getApplicationContext()).getProductActivity());
-                intent.putExtra(BUNDLE_KEY_PRODUCT_ID, mData.getId());
+                intent.putExtra(BUNDLE_KEY_PRODUCT_ID, mData.getProductId());
+                intent.putExtra(BUNDLE_KEY_PRODUCT_TEMPLATE_ID, mData.getId());
                 intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, mData.getBannerName());
                 break;
             case TYPE_CATEGORY:

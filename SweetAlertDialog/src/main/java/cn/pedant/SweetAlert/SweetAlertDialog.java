@@ -153,6 +153,7 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
         mCancelButton.setOnClickListener(this);
 
         setTitleText(mTitleText);
+        setTitleVisibilty(mTitleText);
         setContentText(mContentText);
         setCancelText(mCancelText);
         setConfirmText(mConfirmText);
@@ -240,6 +241,13 @@ public class SweetAlertDialog extends Dialog implements View.OnClickListener {
             mTitleTextView.setText(mTitleText);
         }
         return this;
+    }
+
+    public void setTitleVisibilty(String mTitleText) {
+        if (mTitleTextView != null && mTitleText != null) {
+            if (mTitleText.equals(""))
+                mTitleTextView.setVisibility(View.GONE);
+        }
     }
 
     public SweetAlertDialog setCustomImage(Drawable drawable) {

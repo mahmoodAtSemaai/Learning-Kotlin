@@ -2,6 +2,7 @@ package com.webkul.mobikul.odoo.handler.extra.search;
 
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_NAME;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID;
 
 import android.content.Context;
 import android.content.Intent;
@@ -60,7 +61,8 @@ public class SearchSuggestionProductHandler {
 
 
         Intent intent = new Intent(mContext, ((OdooApplication) mContext.getApplicationContext()).getProductActivity());
-        intent.putExtra(BUNDLE_KEY_PRODUCT_ID, mData.getTemplateId());
+        intent.putExtra(BUNDLE_KEY_PRODUCT_ID, mData.getProductId());
+        intent.putExtra(BUNDLE_KEY_PRODUCT_TEMPLATE_ID, mData.getTemplateId());
         intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, mData.getName());
         mContext.startActivity(intent);
     }

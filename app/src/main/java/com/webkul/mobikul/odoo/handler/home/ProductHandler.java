@@ -82,8 +82,8 @@ public class ProductHandler {
         AnalyticsImpl.INSTANCE.trackProductItemSelected(Helper.getScreenName(mContext),
                 mData.getProductId(), mData.getName());
         Intent intent = new Intent(mContext, ((OdooApplication) mContext.getApplicationContext()).getProductActivity());
-        intent.putExtra(BUNDLE_KEY_PRODUCT_ID, mData.getTemplateId());
-        //intent.putExtra(BUNDLE_KEY_PRODUCT_TEMPLATE_ID, mData.getTemplateId());
+        intent.putExtra(BUNDLE_KEY_PRODUCT_ID, mData.getProductId());
+        intent.putExtra(BUNDLE_KEY_PRODUCT_TEMPLATE_ID, mData.getTemplateId());
         intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, mData.getName());
 //        Pair<View, String> p1 = Pair.create((View)mProductDefaultBinding.productImage, "product_image");
 

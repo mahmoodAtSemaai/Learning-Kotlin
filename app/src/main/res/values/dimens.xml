@@ -39,6 +39,10 @@
     <!--GENERIC DIMENSIONS FOR THE TOOLBAR ELEVATION-->
     <dimen name="toolbar_elevation_generic">4dp</dimen>
 
+    <dimen name="margin_horizontal_button">70dp</dimen>
+    <dimen name="button_radius">3dp</dimen>
+    <dimen name="spacing_min">2dp</dimen>
+    <dimen name="margin_top_grid">105dp</dimen>
 
     <!--=============================================================================================================================================================
                                                     Background dimensions
@@ -59,7 +63,7 @@
     <dimen name="button_height_generic">48dp</dimen>
 
     <!--Profile Pic related dimenstion-->
-    <dimen name="profile_pic_small">64dp</dimen>
+    <dimen name="profile_pic_small">48dp</dimen>
     <dimen name="profile_pic_generic">96dp</dimen>
 
     <!--Banner related dimensions-->

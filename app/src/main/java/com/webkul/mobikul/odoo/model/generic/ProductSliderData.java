@@ -45,6 +45,9 @@ public class ProductSliderData implements Parcelable {
     @SerializedName("url")
     @Expose
     private String url;
+    @SerializedName("slider_id")
+    @Expose
+    private int sliderId;
     @SerializedName("products")
     @Expose
     private List<ProductData> products = null;
@@ -55,6 +58,7 @@ public class ProductSliderData implements Parcelable {
         itemDisplayLimit = in.readInt();
         sliderMode = in.readString();
         url = in.readString();
+        sliderId = in.readInt();
         products = in.createTypedArrayList(ProductData.CREATOR);
     }
 
@@ -65,6 +69,7 @@ public class ProductSliderData implements Parcelable {
         dest.writeInt(itemDisplayLimit);
         dest.writeString(sliderMode);
         dest.writeString(url);
+        dest.writeInt(sliderId);
         dest.writeTypedList(products);
     }
 
@@ -104,6 +109,10 @@ public class ProductSliderData implements Parcelable {
             return "";
         }
         return url;
+    }
+
+    public int getSliderId() {
+        return sliderId;
     }
 
     public List<ProductData> getProducts() {

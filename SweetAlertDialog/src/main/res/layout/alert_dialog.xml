@@ -12,9 +12,9 @@
 
     <ImageView
         android:id="@+id/custom_image"
-        android:layout_width="53dp"
-        android:layout_height="53dp"
-        android:layout_marginTop="5dp"
+        android:layout_width="@dimen/custom_image_size"
+        android:layout_height="@dimen/custom_image_size"
+        android:layout_marginTop="@dimen/custom_image_margin"
         android:contentDescription="@string/app_name"
         android:scaleType="fitCenter"
         android:visibility="gone" />
