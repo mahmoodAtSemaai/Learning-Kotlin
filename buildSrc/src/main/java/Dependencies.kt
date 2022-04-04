@@ -82,6 +82,7 @@ object DepVersions {
 
     //SweetAlertDialog Module
     const val materialishProgress = "1.0"
+    const val navigation = "2.4.1"
 
 
     //appMarketPlace Modules
@@ -221,5 +222,7 @@ object Dependencies {
         "com.google.android.material:material:${DepVersions.materialDesignSupport}"
     const val constraintLayoutModule = "androidx.constraintlayout:constraintlayout:${DepVersions.constraintLayoutModule}"
     const val jUnit = "junit:junit:${DepVersions.jUnit}"
+    const val navigation = "androidx.navigation:navigation-fragment-ktx:${DepVersions.navigation}"
+    const val navigationUI = "androidx.navigation:navigation-ui-ktx:${DepVersions.navigation}"
 
 }

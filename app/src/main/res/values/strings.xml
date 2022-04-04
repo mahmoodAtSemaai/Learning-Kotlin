@@ -467,8 +467,8 @@
     <string name="app_update_alert_positive_button_title">Update</string>
 
     <!-- Product Activity and product details -->
-    <string name="product_details_category" >Category</string>
-    <string name="product_details_organic" >Organic</string>
+    <string name="product_details_category">Category</string>
+    <string name="product_details_organic">Organic</string>
     <string name="product_details_crops">Crops</string>
     <string name="product_details_weight">Weight</string>
     <string name="product_details_additional_information">Additional Information</string>

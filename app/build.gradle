@@ -108,7 +108,9 @@ dependencies {
             Dependencies.coreKTX,
             Dependencies.remoteConfig,
             Dependencies.remoteConfigKTX,
-            Dependencies.greenRobot
+            Dependencies.greenRobot,
+            Dependencies.navigation,
+            Dependencies.navigationUI
     )
 
     androidTestImplementation(
