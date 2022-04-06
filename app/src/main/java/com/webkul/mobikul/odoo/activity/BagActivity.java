@@ -2,6 +2,7 @@ package com.webkul.mobikul.odoo.activity;
 
 import android.content.Intent;
 
+import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 
 import android.os.Bundle;
@@ -17,12 +18,14 @@ import com.webkul.mobikul.odoo.adapter.cart.BagItemsRecyclerAdapter;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.databinding.ActivityBagBinding;
+import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.fragment.EmptyFragment;
 import com.webkul.mobikul.odoo.handler.bag.BagActivityHandler;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.CustomerHelper;
 import com.webkul.mobikul.odoo.helper.FragmentHelper;
+import com.webkul.mobikul.odoo.helper.IntentHelper;
 import com.webkul.mobikul.odoo.model.cart.BagResponse;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -32,28 +35,19 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CUSTOMER_FRAG_TYPE;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_ORDER_ID;
 
-/**
- * Webkul Software.
- *
- * @author Webkul <support@webkul.com>
- * @package Mobikul App
- * @Category Mobikul
- * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
- * @license https://store.webkul.com/license.html ASL Licence
- * @link https://store.webkul.com/license.html
- */
 
 public class BagActivity extends BaseActivity implements FragmentManager.OnBackStackChangedListener {
     @SuppressWarnings("unused")
-    private static final String TAG = "ShoppingCartActivity";
-    private ActivityBagBinding mBinding;
+    private static final String TAG = "BagActivity";
+    private ActivityBagBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_bag);
-        setSupportActionBar(mBinding.toolbar);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_bag);
+        setSupportActionBar(binding.toolbar);
         showBackButton(true);
         mSupportFragmentManager.addOnBackStackChangedListener(this);
     }
@@ -67,41 +61,21 @@ public class BagActivity extends BaseActivity implements FragmentManager.OnBackS
     @Override
     protected void onResume() {
         super.onResume();
+        binding.setData(null);
         getCartData();
     }
 
     public void getCartData() {
         ApiConnection.getCartData(this).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<BagResponse>(this) {
-
             @Override
             public void onNext(@NonNull BagResponse bagResponse) {
                 super.onNext(bagResponse);
                 if (bagResponse.isAccessDenied()) {
-                    AlertDialogHelper.showDefaultWarningDialogWithDismissListener(BagActivity.this, getString(R.string.error_login_failure), getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            sweetAlertDialog.dismiss();
-                            AppSharedPref.clearCustomerData(BagActivity.this);
-                            Intent i = new Intent(BagActivity.this, SignInSignUpActivity.class);
-                            i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, BagActivity.class.getSimpleName());
-                            startActivity(i);
-                        }
-                    });
+                    IntentHelper.redirectToSignUpActivity(BagActivity.this);
                 } else {
-                    mBinding.setData(bagResponse);
-                    mBinding.setHandler(new BagActivityHandler(BagActivity.this, bagResponse));
-
-                    if (bagResponse.getItems().isEmpty()) {
-
-                        FragmentHelper.replaceFragment(R.id.container, BagActivity.this, EmptyFragment.newInstance(R.drawable.ic_vector_empty_bag, getString(R.string.empty_bag)
-                                , getString(R.string.add_item_to_your_bag_now), false, EmptyFragment.EmptyFragType.TYPE_CART.ordinal()), EmptyFragment.class.getSimpleName(), false, false);
-                    } else {
-
-                        mBinding.productsRv.setAdapter(new BagItemsRecyclerAdapter(BagActivity.this, bagResponse.getItems()));
-                    }
+                    handleResponseData(bagResponse);
                 }
             }
-
             @Override
             public void onError(@NonNull Throwable t) {
                 super.onError(t);
@@ -109,9 +83,32 @@ public class BagActivity extends BaseActivity implements FragmentManager.OnBackS
 
             @Override
             public void onComplete() {
-
             }
         });
+    }
+
+
+    private void handleResponseData(BagResponse bagResponse) {
+        binding.setData(bagResponse);
+        binding.setHandler(new BagActivityHandler(BagActivity.this, bagResponse));
+        if (bagResponse.getItems().isEmpty()) {
+            showEmptyFragment();
+        } else {
+            binding.rvProducts.setAdapter(new BagItemsRecyclerAdapter(BagActivity.this, bagResponse.getItems()));
+            setButtonClickListeners(bagResponse);
+        }
+    }
+
+    private void setButtonClickListeners(BagResponse bagResponse) {
+        binding.btnGoToCheckout.setOnClickListener(view -> {
+            FirebaseAnalyticsImpl.logBeginCheckoutEvent(BagActivity.this);
+            startActivity(new Intent(BagActivity.this, CheckoutActivity.class).putExtra(BUNDLE_KEY_ORDER_ID, bagResponse.getOrderId()));
+        });
+    }
+
+    private void showEmptyFragment() {
+        FragmentHelper.replaceFragment(R.id.container, BagActivity.this, EmptyFragment.newInstance(R.drawable.ic_vector_empty_bag, getString(R.string.empty_bag)
+                , getString(R.string.add_item_to_your_bag_now), false, EmptyFragment.EmptyFragType.TYPE_CART.ordinal()), EmptyFragment.class.getSimpleName(), false, false);
     }
 
 
@@ -119,11 +116,7 @@ public class BagActivity extends BaseActivity implements FragmentManager.OnBackS
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.bag_menu, menu);
         MenuItem wishlistMenuItem = menu.findItem(R.id.menu_item_wishlist);
-        if (AppSharedPref.isAllowedWishlist(this) && AppSharedPref.isLoggedIn(this)) {
-            wishlistMenuItem.setVisible(true);
-        } else {
-            wishlistMenuItem.setVisible(false);
-        }
+        wishlistMenuItem.setVisible(true);
         wishlistMenuItem.setOnMenuItemClickListener(item -> {
             Intent intent = new Intent(BagActivity.this, CustomerBaseActivity.class);
             intent.putExtra(BUNDLE_KEY_CUSTOMER_FRAG_TYPE, CustomerHelper.CustomerFragType.TYPE_WISHLIST);

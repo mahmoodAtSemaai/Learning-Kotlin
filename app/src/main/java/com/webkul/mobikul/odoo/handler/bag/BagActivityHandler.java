@@ -2,6 +2,7 @@ package com.webkul.mobikul.odoo.handler.bag;
 
 import android.content.Context;
 import android.content.Intent;
+import android.widget.ImageView;
 
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.BagActivity;
@@ -59,15 +60,6 @@ public class BagActivityHandler {
         mData = data;
     }
 
-    public void beginCheckout() {
-        List<String> nameList = new ArrayList<>();
-        for(int i=0; i < mData.getItems().size(); i++) {
-            nameList.add(mData.getItems().get(i).getName());
-        }
-        AnalyticsImpl.INSTANCE.trackProceedToCheckoutSelected(mData.getGrandTotal().getValue(), mData.getTax().getValue(),
-                nameList);
-        IntentHelper.beginCheckout(mContext);
-    }
 
     public void emptyCart() {
         AnalyticsImpl.INSTANCE.trackEmptyShoppingBagSelected();
@@ -120,6 +112,5 @@ public class BagActivityHandler {
         ((BaseActivity) mContext).mSweetAlertDialog.show();
         ((BaseActivity) mContext).mSweetAlertDialog.showCancelButton(true);
     }
-
 
 }

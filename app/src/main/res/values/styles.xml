@@ -9,8 +9,8 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorPrimaryLight">@color/colorPrimaryLight</item>
 
-<!--        <item name="android:windowContentTransitions">true</item>-->
-<!--        <item name="android:forceDarkAllowed">true</item>-->
+        <!--        <item name="android:windowContentTransitions">true</item>-->
+        <!--        <item name="android:forceDarkAllowed">true</item>-->
 
         <!--TEXT COLORS-->
         <item name="textColorRequired">@color/text_color_required</item>
@@ -124,5 +124,56 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorBackgroundFloating">@color/activityBackground</item>
 
+    </style>
+
+
+    <style name="large_bold_title_text" parent="@android:style/Widget.TextView">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">@dimen/font_size_20</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="medium_bold_text" parent="@android:style/Widget.TextView">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">@dimen/font_size_16</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="medium_bold_text_no_caps" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">@dimen/font_size_16</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="medium_bold_text_accent" parent="@android:style/Widget.TextView">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/font_size_16</item>
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+
+    <style name="medium_normal_text" parent="@android:style/Widget.TextView">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/font_size_16</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+
+    <style name="medium_normal_text_accent" parent="@android:style/Widget.TextView">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/font_size_14</item>
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="custom_button_1" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:paddingVertical" tools:ignore="NewApi">@dimen/spacing_normal</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/font_size_20</item>
     </style>
 </resources>

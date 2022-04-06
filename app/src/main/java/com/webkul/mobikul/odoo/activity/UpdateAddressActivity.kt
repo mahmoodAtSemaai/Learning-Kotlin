@@ -39,9 +39,9 @@ import io.reactivex.schedulers.Schedulers
 
 class UpdateAddressActivity : BaseActivity() {
 
-    private val TAG = "NewAddressFragment"
+    private val TAG = "UpdateAddressActivity"
     private val MAP_PIN_LOCATION_REQUEST_CODE = 103
-    private var mBinding: ActivityNewAddressBinding? = null
+    private var binding: ActivityNewAddressBinding? = null
     private var countryListHashmap = HashMap<String, Int>()
     private var stateListHashmap = HashMap<String, StateData>()
     private var districtListHashmap = HashMap<String, DistrictData>()
@@ -84,12 +84,12 @@ class UpdateAddressActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_new_address)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_new_address)
         setBundleData()
         setTitle(getString(R.string.add_new_address))
         fetchCountry()
 
-        mBinding!!.saveAddressBtn.setOnClickListener {
+        binding!!.saveAddressBtn.setOnClickListener {
             if (checkIfSubRegionsAreLoading()) {
                 if (isMissingDetails)
                     validateMandatoryFeilds(selectedStateId)
@@ -114,20 +114,24 @@ class UpdateAddressActivity : BaseActivity() {
             homePageResponse =
                 intent.extras?.getParcelable(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE)
         if (intent.hasExtra(BundleConstant.BUNDLE_KEY_NAME))
-            mBinding?.nameEt?.setText(intent.extras?.getString(BundleConstant.BUNDLE_KEY_NAME))
+            binding?.nameEt?.setText(intent.extras?.getString(BundleConstant.BUNDLE_KEY_NAME))
         else
-            showNameET()
+            showNameEditText()
         if (intent.hasExtra(BundleConstant.BUNDLE_KEY_PHONE_NUMBER))
-            mBinding?.telephoneEt?.setText(intent.extras?.getString(BundleConstant.BUNDLE_KEY_PHONE_NUMBER))
+            binding?.telephoneEt?.setText(intent.extras?.getString(BundleConstant.BUNDLE_KEY_PHONE_NUMBER))
         else
-            showTelephoneEt()
+            showTelephoneEditText()
 
         if (intent.hasExtra(BundleConstant.BUNDLE_KEY_URL)) {
-            setEditmodeData()
+            setEditModeData()
+        }
+        if (intent.hasExtra(BundleConstant.BUNDLE_KEY_CHECKOUT)) {
+            showNameEditText()
+            showTelephoneEditText()
         }
     }
 
-    private fun setEditmodeData() {
+    private fun setEditModeData() {
         isEditMode = true
         addressUrl = intent.extras?.getString(BundleConstant.BUNDLE_KEY_URL) ?: ""
         fetchCurrentAddress(addressUrl)
@@ -159,7 +163,7 @@ class UpdateAddressActivity : BaseActivity() {
     }
 
     private fun setDataOnFeilds(addressFormResponse: AddressFormResponse) {
-        mBinding?.apply {
+        binding?.apply {
             nameEt.setText(addressFormResponse.name)
             telephoneEt.setText(addressFormResponse.phone)
             if (!addressFormResponse.stateId.isNullOrEmpty())
@@ -167,14 +171,14 @@ class UpdateAddressActivity : BaseActivity() {
         }
     }
 
-    private fun showTelephoneEt() {
-        mBinding?.apply {
+    private fun showTelephoneEditText() {
+        binding?.apply {
             telephoneEtContainer.visibility = View.VISIBLE
         }
     }
 
-    private fun showNameET() {
-        mBinding?.apply {
+    private fun showNameEditText() {
+        binding?.apply {
             nameEtContainer.visibility = View.VISIBLE
         }
     }
@@ -182,28 +186,28 @@ class UpdateAddressActivity : BaseActivity() {
     private fun resetSpinners(i: Int) {
         when (i) {
             RESET_SPINNERS_FROM_STATE_UPTO_VILLAGE -> {
-                resetSpinnerAndPostalCode(mBinding!!.provinceSpinner)
-                resetSpinnerAndPostalCode(mBinding!!.districtSpinner)
-                resetSpinnerAndPostalCode(mBinding!!.subDistrictSpinner)
-                resetSpinnerAndPostalCode(mBinding!!.villageSpinner)
+                resetSpinnerAndPostalCode(binding!!.provinceSpinner)
+                resetSpinnerAndPostalCode(binding!!.districtSpinner)
+                resetSpinnerAndPostalCode(binding!!.subDistrictSpinner)
+                resetSpinnerAndPostalCode(binding!!.villageSpinner)
             }
             RESET_SPINNERS_FROM_DISTRICT_UPTO_VILLAGE -> {
-                resetSpinnerAndPostalCode(mBinding!!.districtSpinner)
-                resetSpinnerAndPostalCode(mBinding!!.subDistrictSpinner)
-                resetSpinnerAndPostalCode(mBinding!!.villageSpinner)
+                resetSpinnerAndPostalCode(binding!!.districtSpinner)
+                resetSpinnerAndPostalCode(binding!!.subDistrictSpinner)
+                resetSpinnerAndPostalCode(binding!!.villageSpinner)
             }
             RESET_SPINNERS_FROM_SUB_DISTRICT_UPTO_VILLAGE -> {
-                resetSpinnerAndPostalCode(mBinding!!.subDistrictSpinner)
-                resetSpinnerAndPostalCode(mBinding!!.villageSpinner)
+                resetSpinnerAndPostalCode(binding!!.subDistrictSpinner)
+                resetSpinnerAndPostalCode(binding!!.villageSpinner)
             }
-            RESET_SPINNERS_VILLAGE -> resetSpinnerAndPostalCode(mBinding!!.villageSpinner)
-            else -> resetSpinnerAndPostalCode(mBinding!!.provinceSpinner)
+            RESET_SPINNERS_VILLAGE -> resetSpinnerAndPostalCode(binding!!.villageSpinner)
+            else -> resetSpinnerAndPostalCode(binding!!.provinceSpinner)
         }
     }
 
     private fun resetSpinnerAndPostalCode(spinner: AppCompatSpinner) {
         spinner.adapter = null
-        mBinding!!.villageCodeEt.text = ""
+        binding!!.villageCodeEt.text = ""
     }
 
     private fun fetchCountry() {
@@ -221,7 +225,7 @@ class UpdateAddressActivity : BaseActivity() {
     }
 
     private fun setCountrySpinnerAdapter() {
-        mBinding!!.countrySpinner.adapter = ArrayAdapter(
+        binding!!.countrySpinner.adapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_dropdown_item,
             countryList
@@ -229,7 +233,7 @@ class UpdateAddressActivity : BaseActivity() {
     }
 
     private fun setCountrySpinnerSelectionListener() {
-        mBinding!!.countrySpinner.onItemSelectedListener =
+        binding!!.countrySpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
@@ -262,7 +266,7 @@ class UpdateAddressActivity : BaseActivity() {
     }
 
     private fun setSpinnerItemSelection(pos: Int) {
-        if (pos != UNSELECTED_POSITION) mBinding!!.provinceSpinner.setSelection(pos)
+        if (pos != UNSELECTED_POSITION) binding!!.provinceSpinner.setSelection(pos)
     }
 
     private fun setUpStateSpinner() {
@@ -277,11 +281,11 @@ class UpdateAddressActivity : BaseActivity() {
             android.R.layout.simple_spinner_dropdown_item,
             statesList
         )
-        mBinding!!.provinceSpinner.adapter = stateArrayAdapter
+        binding!!.provinceSpinner.adapter = stateArrayAdapter
     }
 
     private fun setUpStateSpinnerAdapterListener() {
-        mBinding!!.provinceSpinner.onItemSelectedListener =
+        binding!!.provinceSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
@@ -314,7 +318,7 @@ class UpdateAddressActivity : BaseActivity() {
     }
 
     private fun setSubRegionFieldsVisibility(show: Boolean) {
-        mBinding?.apply {
+        binding?.apply {
             districtContainer.visibility = if (show) View.VISIBLE else View.GONE
             subDistrictContainer.visibility = if (show) View.VISIBLE else View.GONE
             villageContainer.visibility = if (show) View.VISIBLE else View.GONE
@@ -348,20 +352,20 @@ class UpdateAddressActivity : BaseActivity() {
             .setContentText(getString(R.string.service_unavailablity_text))
             .setConfirmText(getString(R.string.confirm_small))
             .setConfirmClickListener { sweetAlertDialog: SweetAlertDialog ->
-                makeEmptyRequestBody(selectedStateId)
+                makeEmptyAddressRequestBody(selectedStateId)
             }
 
         alertDialog?.show()
     }
 
     private fun checkMandatoryFeilds(): Boolean {
-        return isValid(mBinding!!.nameEt) && isValid(mBinding!!.telephoneEt)
+        return isValid(binding!!.nameEt) && isValid(binding!!.telephoneEt)
     }
 
-    private fun makeEmptyRequestBody(selectedState: String) {
-        addressRequestBody.setName(mBinding!!.nameEt.text.toString())
-        addressRequestBody.setPhone(mBinding!!.telephoneEt.text.toString())
-        addressRequestBody.setStreet(mBinding?.streetEt?.text.toString())
+    private fun makeEmptyAddressRequestBody(selectedState: String) {
+        addressRequestBody.setName(binding!!.nameEt.text.toString())
+        addressRequestBody.setPhone(binding!!.telephoneEt.text.toString())
+        addressRequestBody.setStreet(binding?.streetEt?.text.toString())
         addressRequestBody.setState_id(selectedState)
         addressRequestBody.setZip("")
         addressRequestBody.setCountry_id(COUNTRY_ID.toString())
@@ -419,11 +423,11 @@ class UpdateAddressActivity : BaseActivity() {
             android.R.layout.simple_spinner_dropdown_item,
             districtsList
         )
-        mBinding!!.districtSpinner.adapter = districtArrayAdapter
+        binding!!.districtSpinner.adapter = districtArrayAdapter
     }
 
     private fun setUpDistrictSpinnerAdapterListener() {
-        mBinding!!.districtSpinner.onItemSelectedListener =
+        binding!!.districtSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
@@ -481,11 +485,11 @@ class UpdateAddressActivity : BaseActivity() {
             android.R.layout.simple_spinner_dropdown_item,
             subDistrictsList
         )
-        mBinding!!.subDistrictSpinner.adapter = subDistrictArrayAdapter
+        binding!!.subDistrictSpinner.adapter = subDistrictArrayAdapter
     }
 
     private fun setUpSubdistrictSpinnerAdapterListener() {
-        mBinding!!.subDistrictSpinner.onItemSelectedListener =
+        binding!!.subDistrictSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
@@ -544,11 +548,11 @@ class UpdateAddressActivity : BaseActivity() {
             android.R.layout.simple_spinner_dropdown_item,
             villagesList
         )
-        mBinding!!.villageSpinner.adapter = districtArrayAdapter
+        binding!!.villageSpinner.adapter = districtArrayAdapter
     }
 
     private fun setUpVillageSpinnerAdapterListener(villageListResponse: VillageListResponse) {
-        mBinding!!.villageSpinner.onItemSelectedListener =
+        binding!!.villageSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
@@ -578,14 +582,14 @@ class UpdateAddressActivity : BaseActivity() {
     private fun setAvailableVillageData(villageData: VillageData) {
         addressRequestBody.setZip(villageData.zip)
         addressRequestBody.setVillage_id(villageData.id.toString())
-        mBinding!!.villageCodeEt.text = villageData.zip
+        binding!!.villageCodeEt.text = villageData.zip
     }
 
     private fun setUnavailableVillageData(villageData: VillageData) {
         addressRequestBody.setVillage_id(villageData.id.toString())
         setUnserviceableAreaDetails()
         showShortToast(getString(R.string.service_not_availabe_text))
-        mBinding!!.villageCodeEt.text = ""
+        binding!!.villageCodeEt.text = ""
         addressRequestBody.setVillage_id("")
     }
 
@@ -618,7 +622,7 @@ class UpdateAddressActivity : BaseActivity() {
 
 
     private fun validateAddressEditTextFeilds() {
-        if (isValid(mBinding!!.nameEt) && isValid(mBinding!!.telephoneEt) && addressRequestBody.village_id != null
+        if (isValid(binding!!.nameEt) && isValid(binding!!.telephoneEt) && addressRequestBody.village_id != null
         ) {
             makeRequestBody()
         } else {
@@ -636,9 +640,9 @@ class UpdateAddressActivity : BaseActivity() {
     }
 
     private fun makeRequestBody() {
-        addressRequestBody.setName(mBinding!!.nameEt.text.toString())
-        addressRequestBody.setPhone(mBinding!!.telephoneEt.text.toString())
-        addressRequestBody.setStreet(mBinding?.streetEt?.text.toString())
+        addressRequestBody.setName(binding!!.nameEt.text.toString())
+        addressRequestBody.setPhone(binding!!.telephoneEt.text.toString())
+        addressRequestBody.setStreet(binding?.streetEt?.text.toString())
         addressRequestBody.setState_id(selectedStateId)
         addressRequestBody.setCountry_id(COUNTRY_ID.toString())
         saveAddress(addressRequestBody)
@@ -673,8 +677,7 @@ class UpdateAddressActivity : BaseActivity() {
                         // user is never approved on this screen so auto intent to user approval activity
                         IntentHelper.goToUserUnapprovedScreen(this@UpdateAddressActivity)
                         finish()
-                    }
-                    else {
+                    } else {
                         finish()
                     }
                     hideDialog()

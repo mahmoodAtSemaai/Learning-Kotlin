@@ -72,7 +72,7 @@
     <string name="error_could_not_add_to_bag_pls_try_again">Could not add item to the bag Please try again later.</string>
     <string name="error_could_not_add_to_wishlist_pls_try_again">Could not add item to the wishlist. Please try again later.</string>
     <string name="error_no_shipping_method_chosen">Please specify shipping method.</string>
-    <string name="error_no_payment_method_chosen">Please specify payment method.</string>
+    <string name="error_no_payment_method_chosen">Please select your payment method.</string>
     <string name="error_permision_required_to_change_profile_image">Please provide required permission to change profile image</string>
     <string name="error_in_changing_profile_image">Something went wrong in uploading profile image to server. Please try again after some time</string>
     <string name="error_please_login_to_continue">Please login to continue</string>
@@ -89,6 +89,8 @@
     <string name="error_google_sign_in">Could not perform sign in via Google. Please try again.</string>
     <string name="error_twitter_sign_in">Could not perform sign in via Twitter. Please try again.</string>
     <string name="error_in_zip_code">Please enter valid zip code.</string>
+    <string name="error_payment_status">Error occurred while fetching payment status.</string>
+    <string name="error_order_details">Error occurred while fetching order detail.</string>
     <!---->
     <!---->
     <!--MESSAGES MESSAGES MESSAGES => All Relavent question alert warning messages etc are summed up here.-->
@@ -210,6 +212,7 @@
     <string name="orders_product_info">Product Info</string>
     <string name="orders_order_details">ORDER DETAILS</string>
     <string name="tax">Tax</string>
+    <string name="taxes">Taxes</string>
     <string name="subtotal">Subtotal</string>
     <string name="grand_total">Grand Total</string>
     <string name="placed_on_Xdate">Placed on %s</string>
@@ -218,8 +221,10 @@
     <string name="qty_x">Qty: %s</string>
     <string name="discount_x">Discount: %s</string>
     <string name="tax_x">Tax: %s</string>
-    <string name="price_total_x">Total Price: %s</string>
+    <string name="price_total_x">Total Price: \n%s</string>
     <string name="order_noX">Order #%s</string>
+    <string name="rp_x">Rp%s</string>
+    <string name="placing_your_order">Placing your order</string>
     <!---->
     <!---->
     <!--WISHLIST-->
@@ -272,11 +277,15 @@
     <string name="shipping_address_missing">Shipping Address missing</string>
     <string name="billing_address_missing">Billing Address missing</string>
     <string name="billing_address_incomplete">Billing Address incomplete</string>
+    <string name="shipping_address_incomplete">Shipping Address Incomplete</string>
     <string name="indonesia">Indonesia</string>
     <string name="service_unavailablity_text">Thanks for your interest but we are not yet available in your area. We will get in touch with you when we start operations there.</string>
     <string name="service_unavailable">Service Unavailable</string>
     <string name="enter_address">Please enter your Address</string>
     <string name="billing_address_place_holder">Billing Address</string>
+    <string name="unserviceable_address_text">Sorry, your address is out of our service</string>
+
+
     <!---->
     <!---->
     <!-- DASHBOARD-->
@@ -301,6 +310,7 @@
     <string name="buy_now">Buy Now</string>
     <string name="qty">Qty:</string>
     <string name="qty_x_int">Qty: %d </string>
+    <string name="qty_x_float">Qty: %f </string>
 
 
     <!---->
@@ -326,7 +336,7 @@
     <string name="checkout_heading_shipping_method">Shipping Method</string>
     <string name="checkout_select_a_shipping_method">Select a shipping method</string>
     <string name="checkout_heading_payment_method">Payment Information</string>
-    <string name="checkout_select_a_payment_method">Select a payment method</string>
+    <string name="checkout_select_your_payment_method">Select your payment method</string>
     <string name="checkout_heading_order_review">Review your order</string>
     <string name="order_review_payment_method">Payment Method</string>
     <string name="place_order">Place Order</string>
@@ -335,6 +345,10 @@
     <string name="order_review_product_price_is_X">Price: %s</string>
     <string name="order_review_product_subtotal_is_X">Subtotal: %s</string>
     <string name="checkout">Checkout</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="total_price">Total Price</string>
+    <string name="total_price_s">Total Price %s</string>
+    <string name="total_price_ns">Total Price\n%s</string>
     <!---->
     <!---->
     <!--RATE APP DIALOG-->
@@ -459,12 +473,106 @@
     <string name="privacy_policy">Privacy Policy</string>
     <string name="false_">False</string>
     <string name="service_not_availabe_text">Sorry, our services are not available in your village right now.</string>
+
+
+    <string name="semaai_points">Semaai Points</string>
+    <string name="semaai_points_redeemed">Semaai Points Redeemed</string>
+    <string name="new_member_discount">New member discount</string>
+    <string name="semaai_coupons">Semaai Coupons</string>
+    <string name="payment_complete">Payment Complete</string>
+    <string name="payment_failure">Payment Failed</string>
+    <string name="payment_success_text">Thank you, your payment has been succesful, please wait or check our other interesting products.</string>
+    <string name="payment_failure_text">Your Payment has failed. Please try again</string>
+    <string name="payment_is_pending">Payment is Pending</string>
+    <string name="account_number">Account Number :</string>
+    <string name="payment_done">Payment Done</string>
+    <string name="my_purchases">My Purchases</string>
+    <string name="sorry">Sorry</string>
+    <string name="payment_incomplete_text">Your payment is not yet completed. Please go to the order page to get payment details.</string>
+    <string name="due_payment">Due Payment</string>
+    <string name="total_payment">Total Payment</string>
+    <string name="total_payment_x">Total Payment\n%s</string>
+    <string name="shopee_activated_text">Your Shopee Pay Has Been Activated</string>
+    <string name="your_order_will_be_delivered_soon">Your Order Will Be Delivered Soon.</string>
+    <string name="payment_n_status">Payment\nStatus</string>
+    <string name="payment_status">Payment Status</string>
+    <string name="order_status">Order Status</string>
+    <string name="activate_shopee_pay_text">Activate ShopeePay</string>
+    <string name="what_is_shoppe_pay">What is Shopee Pay?</string>
+    <string name="shopeepay_description_text">ShopeePay is Shopee’s digital wallet where users can make safe and cashless payments. You can use it for: (a) Online transactions within Shopee - such as buying mobile load and bills payment</string>
+    <string name="activate_shopee_pay_now">Activate Shopee Pay Now</string>
+    <string name="read_more">Read More</string>
+    <string name="phone_number_verification">Phone Number Verification</string>
+    <string name="enter_your_phone_number">Enter Your Phone Number</string>
+    <string name="enter_otp_code_here">Enter OTP Code Here</string>
+    <string name="otp_not_received">OTP code will be send to your message. \nDidn`t receive it?</string>
+    <string name="send_again">Send again</string>
+    <string name="select_your_coupon">Select Your Coupon >></string>
+    <string name="bank_transfer_va">Bank Transfer Virtual Account</string>
+    <string name="cod_text">Cash On Delivery</string>
+    <string name="cod_text_2">Cash On Delivery</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="address">Address</string>
+    <string name="shipping_method">Shipping Method</string>
+    <string name="shipping_charges">Shipping Charges</string>
+    <string name="minimum_transactions">Min. Transactions</string>
+    <string name="choose_your_delivery_address">Choose your delivery address</string>
+    <string name="select_your_shipping_address">Select your shipping address</string>
+    <string name="payment_options_loading_text">Fetching Payment Options</string>
+    <string name="shipping_options_loading_text">Fetching Shipping Methods</string>
+
     <string name="authorization_is_under_process">Account Approval Under Process</string>
     <string name="contact_chat_our_admin">Contact/chat our admin</string>
     <string name="whatsapp_message">Hi Semaai team, Please approve my account</string>
     <string name="whatsapp_contant_wo_cc">0811870155</string>
     <string name="semaai_support_whatsapp_url">https://api.whatsapp.com/send?phone=%s&amp;text=%s</string>
     <string name="network_error">API Error</string>
+
+    <string name="payment_mode">Payment Mode</string>
+    <string name="product">Product</string>
+    <string name="product_details">Product Details</string>
+    <string name="delivery_details">Delivery Details</string>
+    <string name="courier">Courier</string>
+    <string name="date_of_purchase">Date of Purchase</string>
+    <string name="to_pay">To Pay</string>
+    <string name="to_pay_2">To Pay</string>
+    <string name="completed">Completed</string>
+    <string name="x">x</string>
+    <string name="transfer_instruction">How to Transfer</string>
+    <string name="check_status">Check Status</string>
+    <string name="order_details">Order Details</string>
+    <string name="atm">ATM</string>
+    <string name="m_banking">M-Banking</string>
+    <string name="online_banking">Online Banking</string>
+    <string name="payment_pending">Pending Payment</string>
+    <string name="processing">Processing…</string>
+    <string name="please_wait_a_moment">Please wait a moment</string>
+    <string name="updating_shipping_method_text">Updating your shipping method</string>
+    <string name="updating_shipping_address_text">Updating your shipping address</string>
+    <string name="va_text">VA</string>
+    <string name="fetching_order_details">Fetching order details</string>
+    <string name="currency_idr">IDR</string>
+    <string name="virtual_account">Virtual Account</string>
+    <string name="durian_pay_text">Durian Pay</string>
+    <string name="text_copied_message">Text copied to clipboard</string>
+    <string name="label">Label</string>
+    <string name="checking_payment_status">Checking your payment status</string>
+    <string name="pending">Pending</string>
+    <string name="quotation_sent_text">Quotation Sent</string>
+    <string name="quotation_sent_text_2">Quotation Sent</string>
+    <string name="fail">Fail</string>
+    <string name="fail_2">Fail</string>
+    <string name="failed">Failed</string>
+    <string name="failed_2">Failed</string>
+    <string name="try_again_later_text">Please try again later</string>
+    <string name="done">DONE</string>
+    <string name="time_expired">Time expired</string>
+    <string name="time_expired_2">Time expired</string>
+    <string name="bank">Bank </string>
+    <string name="how_to_transfer">How to transfer</string>
+    <string name="paid">Paid</string>
+    <string name="paid_2">Paid</string>
+
     <string name="app_update_alert_title">New Version Available</string>
     <string name="app_update_alert_description">Please update your app to continue using it</string>
     <string name="app_update_alert_negative_button_title">No, Thanks</string>

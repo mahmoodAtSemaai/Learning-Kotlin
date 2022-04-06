@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <data>
+
+
+        <import type="com.webkul.mobikul.odoo.helper.ImageHelper.ImageType" />
+
+        <import type="com.webkul.mobikul.odoo.helper.FontHelper" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="isLoggedIn"
+            type="boolean" />
+
+        <variable
+            name="wishlistEnabled"
+            type="boolean" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.customer.order.OrderItem" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.bag.BagItemsRecyclerHandler" />
+
+        <variable
+            name="position"
+            type="int" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingHorizontal="@dimen/size_16"
+        android:paddingVertical="@dimen/size_8">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/product_iv"
+            android:layout_width="@dimen/size_120"
+            android:layout_height="@dimen/size_120"
+            android:onClick="@{() -> handler.viewProduct()}"
+            android:scaleType="centerInside"
+            app:imageType="@{ImageType.PROFILE_PIC_GENERIC}"
+            app:imageUrl="@{data.thumbNail}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:placeholder="@{@drawable/ic_vector_odoo_placeholder_grey400_48dp}"
+            app:srcCompat="@drawable/ic_vector_odoo_placeholder_grey400_48dp"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView5"
+            style="@style/large_bold_title_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_12"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@{data.productName}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/product_iv"
+            app:layout_constraintTop_toTopOf="@+id/product_iv"
+            tools:text="Lafayette Convertable Bag" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/qty_btn"
+            style="@style/medium_bold_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/grey_300"
+            android:text="@{@string/qty_x_int(data.qty)}"
+            android:textAllCaps="false"
+            app:layout_constraintStart_toStartOf="@+id/appCompatTextView5"
+            app:layout_constraintTop_toBottomOf="@+id/appCompatTextView5"
+            tools:text="Qty: 1" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>
+

@@ -4,6 +4,7 @@ import com.webkul.mobikul.odoo.model.BaseResponse;
 import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
 import com.webkul.mobikul.odoo.model.cart.BagResponse;
 import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse;
+import com.webkul.mobikul.odoo.model.checkout.OrderDataResponse;
 import com.webkul.mobikul.odoo.model.checkout.OrderPlaceResponse;
 import com.webkul.mobikul.odoo.model.checkout.OrderReviewResponse;
 import com.webkul.mobikul.odoo.model.checkout.PaymentAcquirerResponse;
@@ -28,8 +29,15 @@ import com.webkul.mobikul.odoo.model.generic.CountryStateData;
 import com.webkul.mobikul.odoo.model.generic.ProductData;
 import com.webkul.mobikul.odoo.model.home.HomePageResponse;
 import com.webkul.mobikul.odoo.model.notification.NotificationMessagesResponse;
+import com.webkul.mobikul.odoo.model.payments.PaymentAcquirerMethodProviderResponse;
+import com.webkul.mobikul.odoo.model.payments.PaymentAcquirerMethodResponse;
+import com.webkul.mobikul.odoo.model.payments.PaymentAcquirersResponse;
+import com.webkul.mobikul.odoo.model.payments.PaymentStatusResponse;
+import com.webkul.mobikul.odoo.model.payments.PaymentTransactionResponse;
+import com.webkul.mobikul.odoo.model.payments.PaymentsAPIConstants;
 import com.webkul.mobikul.odoo.model.product.AddToCartResponse;
 import com.webkul.mobikul.odoo.model.product.ProductReviewResponse;
+import com.webkul.mobikul.odoo.model.request.BaseLazyRequest;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
@@ -41,23 +49,6 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 
-/**
-
- * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
- * @author Webkul <support@webkul.com>
-
- * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
- * @license https://store.webkul.com/license.html ASL Licence
-
- * @link https://store.webkul.com/license.html
-
- */
 
 public interface ApiInterface {
 
@@ -76,8 +67,9 @@ public interface ApiInterface {
     String MOBIKUL_CHECKOUT_ADD_TO_CART = "mobikul/mycart/addToCart";
     String MOBIKUL_CHECKOUT_EMPTY_CART = "mobikul/mycart/setToEmpty";
     String MOBIKUL_CHECKOUT_PAYMENT_ACQUIRERS = "mobikul/paymentAcquirers";
-    String MOBIKUL_CHECKOUT_ORDER_REVIEW = "mobikul/orderReviewData";
-    String MOBIKUL_CHECKOUT_PLACE_ORDER = "mobikul/placeMyOrder";
+    String MOBIKUL_CHECKOUT_ORDER_REVIEW = "sale-orders/review";
+    String MOBIKUL_CHECKOUT_PLACE_ORDER = "sale-orders/place";
+    String MOBIKUL_CHECKOUT_SALE_ORDERS = "sale-orders";
     String MOBIKUL_CHECKOUT_SHIPPING_METHODS = "/mobikul/ShippingMethods";
 
     /*Customer*/
@@ -99,7 +91,7 @@ public interface ApiInterface {
     String MOBIKUL_SEND_EMAIL_VERIFICATION_LINK = "send/verifyEmail";
 
     /*Analytics*/
-     String MOBIKUL_ANALYTICS = "/mobikul/analytics";
+    String MOBIKUL_ANALYTICS = "/mobikul/analytics";
 
     /*Extras*/
     String MOBIKUL_EXTRAS_SPLASH_PAGE_DATA = "mobikul/splashPageData";
@@ -125,6 +117,16 @@ public interface ApiInterface {
     String MOBIKUL_GDPR_DOWNLOAD_REQUEST = "/mobikul/gdpr/downloadRequest";
     String MOBIKUL_GDPR_DOWNLOAD = "/mobikul/gdpr/download";
     String MOBIKUL_GDPR_DOWNLOAD_DATA = "/web/content/5520?download=true";
+
+    /*Payments*/
+    String MOBIKUL_PAYMENTS_ACQUIRERS = "payment/acquirers";
+    String MOBIKUL_PAYMENTS_ACQUIRERS_METHODS = "payment/acquirers/{" + PaymentsAPIConstants.ACQUIRER_ID + "}/methods";
+    String MOBIKUL_PAYMENTS_ACQUIRERS_METHODS_PROVIDERS = "payment/acquirers/{" + PaymentsAPIConstants.ACQUIRER_ID + "}/methods/{" + PaymentsAPIConstants.PAYMENT_METHOD_ID + "}/providers";
+    String MOBIKUL_CREATE_PAYMENTS_TRANSACTIONS = "/payment-transactions";
+    String MOBIKUL_GET_PAYMENTS_TRANSACTIONS = "/payment-transactions";
+    String MOBIKUL_GET_ORDER_DATA = "/sale-orders/{order_id}";
+    String MOBIKUL_UPDATE_ORDER_DATA = "/sale-orders/{order_id}";
+    String MOBIKUL_ORDER_ID = "order_id";
 
      /*-----------------------------------------------------------------------------------------------------------------------------------------------------------
         CATALOG API's
@@ -225,7 +227,7 @@ public interface ApiInterface {
     );
 
     @PUT
-    Observable<BaseResponse> editAddress(@Url String url,@Body String addressData);
+    Observable<BaseResponse> editAddress(@Url String url, @Body String addressData);
 
     @DELETE
     Observable<BaseResponse> deleteAddress(
@@ -407,5 +409,31 @@ public interface ApiInterface {
     @DELETE(MOBIKUL_DELETE_BANNER_IMAGE)
     Observable<BaseResponse> deleteBannerImage();
 
+    @GET(MOBIKUL_PAYMENTS_ACQUIRERS)
+    Observable<PaymentAcquirersResponse> getPaymentAcquirers(@Query(PaymentsAPIConstants.COMPANY_ID) int companyId);
 
+    @GET(MOBIKUL_PAYMENTS_ACQUIRERS_METHODS)
+    Observable<PaymentAcquirerMethodResponse> getPaymentAcquirerMethods(@Path(PaymentsAPIConstants.ACQUIRER_ID) int acquirerId);
+
+    @GET(MOBIKUL_PAYMENTS_ACQUIRERS_METHODS_PROVIDERS)
+    Observable<PaymentAcquirerMethodProviderResponse> getPaymentAcquirerMethodProviders(@Path(PaymentsAPIConstants.ACQUIRER_ID) int acquirerId, @Path(PaymentsAPIConstants.PAYMENT_METHOD_ID) int paymentMethodId);
+
+    @POST(MOBIKUL_CREATE_PAYMENTS_TRANSACTIONS)
+    Observable<PaymentTransactionResponse> createPayment(@Body String payment);
+
+    @GET(MOBIKUL_GET_ORDER_DATA)
+    Observable<OrderDataResponse> getOrderData(
+            @Path(MOBIKUL_ORDER_ID) int orderID
+    );
+
+    @POST(MOBIKUL_CHECKOUT_SALE_ORDERS)
+    Observable<MyOrderReponse> getSaleOrders(
+            @Body String baseLazyRequestStr
+    );
+
+    @PUT(MOBIKUL_UPDATE_ORDER_DATA)
+    Observable<BaseResponse> updateOrderData(@Path(MOBIKUL_ORDER_ID) int orderId, @Body String updateOrderRequest);
+
+    @GET(MOBIKUL_GET_PAYMENTS_TRANSACTIONS)
+    Observable<PaymentStatusResponse> getPaymentTransactionStatus(@Query(MOBIKUL_ORDER_ID) int orderId);
 }

@@ -1,118 +1,274 @@
 package com.webkul.mobikul.odoo.fragment;
 
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+
 import androidx.databinding.DataBindingUtil;
+
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DividerItemDecoration;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.webkul.mobikul.odoo.R;
-import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
-import com.webkul.mobikul.odoo.adapter.customer.OrderDetailProductInfoRvAdapter;
-import com.webkul.mobikul.odoo.adapter.customer.OrderDetailTransactionRvAdapter;
-import com.webkul.mobikul.odoo.adapter.customer.OrderDetailsDeliveryOrderRvAdapter;
+import com.webkul.mobikul.odoo.activity.FragmentContainerActivity;
+import com.webkul.mobikul.odoo.adapter.customer.OrderItemDetailAdapter;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
+import com.webkul.mobikul.odoo.constant.BundleConstant;
 import com.webkul.mobikul.odoo.databinding.FragmentOrderBinding;
-import com.webkul.mobikul.odoo.handler.order.OrderFragmentHandler;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
-import com.webkul.mobikul.odoo.helper.AppSharedPref;
+import com.webkul.mobikul.odoo.helper.CalendarUtil;
 import com.webkul.mobikul.odoo.helper.Helper;
-import com.webkul.mobikul.odoo.model.customer.order.OrderDetailResponse;
+import com.webkul.mobikul.odoo.model.checkout.OrderDataResponse;
+import com.webkul.mobikul.odoo.model.payments.OrderPaymentData;
+import com.webkul.mobikul.odoo.model.payments.PaymentStatusResponse;
+import com.webkul.mobikul.odoo.model.payments.PendingPaymentData;
+import com.webkul.mobikul.odoo.model.payments.Result;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_URL;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CHECKOUT;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_ORDER_ID;
 
-
-
-/**
-
- * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
- * @author Webkul <support@webkul.com>
-
- * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
- * @license https://store.webkul.com/license.html ASL Licence
-
- * @link https://store.webkul.com/license.html
-
- */
 
 public class OrderFragment extends BaseFragment {
 
-    private FragmentOrderBinding mBinding;
+    private FragmentOrderBinding binding;
+    private SweetAlertDialog dialog;
+    private final int TIME_EXPIRED = 0;
+    private final int TIME_MILLIS = 1000;
+    private final int SECONDS_IN_A_MINUTE = 60;
+    private final int MINUTES_IN_AN_HOUR = 60;
+    private final int SECONDS_IN_AN_HOUR = 3600;
+    private final int PENDING = 1;
+    private final int COMPLETED = 2;
+    private final int FAILED = 3;
 
     public static final String TAG = "OrderFragment";
 
-    public static OrderFragment newInstance(String url) {
-        Bundle args = new Bundle();
-        args.putString(BUNDLE_KEY_URL, url);
+    public static OrderFragment newInstance(String orderID, String toolbarText) {
+        Bundle bundle = new Bundle();
+        bundle.putString(BUNDLE_KEY_ORDER_ID, orderID);
+        if (!toolbarText.isEmpty())
+            bundle.putString(BundleConstant.BUNDLE_KEY_CHECKOUT, toolbarText);
         OrderFragment fragment = new OrderFragment();
-        fragment.setArguments(args);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_order, container, false);
-        return mBinding.getRoot();
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_order, container, false);
+        buildDialog();
+        return binding.getRoot();
+    }
+
+    private void buildDialog() {
+        dialog = AlertDialogHelper.getAlertDialog(requireContext(), SweetAlertDialog.PROGRESS_TYPE,
+                getString(R.string.fetching_order_details), "", false, false);
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        ApiConnection.getOrderDetailsData(getContext(), getArguments().getString(BUNDLE_KEY_URL)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<OrderDetailResponse>(getContext()) {
+    public void onResume() {
+        super.onResume();
+        int orderId = getOrderIdFromArguments();
+        getOrderDetails(orderId);
+    }
 
+    private int getOrderIdFromArguments() {
+        if (getArguments().containsKey(BUNDLE_KEY_CHECKOUT))
+            ((FragmentContainerActivity) getActivity()).setToolbarText(getArguments().getString(BUNDLE_KEY_CHECKOUT));
+        return Integer.parseInt(getArguments().getString(BUNDLE_KEY_ORDER_ID));
+    }
+
+
+    private void getOrderDetails(int orderId) {
+        ApiConnection.getOrderData(requireContext(), orderId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<OrderDataResponse>(requireContext()) {
             @Override
-            public void onNext(@NonNull OrderDetailResponse orderDetailResponse) {
-                super.onNext(orderDetailResponse);
-
-                if (orderDetailResponse.isAccessDenied()) {
-                    AlertDialogHelper.showDefaultWarningDialogWithDismissListener(getContext(), getString(R.string.error_login_failure), getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            sweetAlertDialog.dismiss();
-                            AppSharedPref.clearCustomerData(getContext());
-                            Intent i = new Intent(getContext(), SignInSignUpActivity.class);
-                            i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, getActivity().getClass().getSimpleName());
-                            startActivity(i);
-                        }
-                    });
-                } else {
-                    mBinding.setData(orderDetailResponse);
-                    mBinding.setHandler(new OrderFragmentHandler(getContext()));
-                    mBinding.executePendingBindings();
-                    DividerItemDecoration dividerItemDecorationHorizontal = new DividerItemDecoration(getContext(), LinearLayout.VERTICAL);
-                    mBinding.productInfoRv.addItemDecoration(dividerItemDecorationHorizontal);
-                    mBinding.productInfoRv.setAdapter(new OrderDetailProductInfoRvAdapter(getContext(), orderDetailResponse.getItems()));
-                    mBinding.transactionsRv.setAdapter(new OrderDetailTransactionRvAdapter(getContext(),orderDetailResponse.getTransactions()));
-                    mBinding.deliveryOrdersRv.setAdapter(new OrderDetailsDeliveryOrderRvAdapter(getContext(), orderDetailResponse.getDeliveryOrders()));
-                }
+            public void onSubscribe(Disposable d) {
+                super.onSubscribe(d);
+                dialog.setTitleText(getString(R.string.fetching_order_details));
+                dialog.show();
             }
 
             @Override
-            public void onComplete() {
+            public void onNext(OrderDataResponse orderDataResponse) {
+                super.onNext(orderDataResponse);
+                handleOrderDataResponse(orderDataResponse);
+                setClickListeners(orderDataResponse);
+                dialog.hide();
+            }
 
+            @Override
+            public void onError(Throwable t) {
+                super.onError(t);
+                showErrorDialog();
+                binding.getRoot().setVisibility(View.INVISIBLE);
             }
         });
+    }
+
+    private void handleOrderDataResponse(OrderDataResponse orderDataResponse) {
+        binding.setData(orderDataResponse);
+        setTextOnViews(orderDataResponse);
+        binding.executePendingBindings();
+        setupRecyclerView(orderDataResponse);
+        setViewGroupVisibility(orderDataResponse);
+    }
+
+
+    private void showErrorDialog() {
+        dialog = AlertDialogHelper.getAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE,
+                getString(R.string.error_something_went_wrong), getString(R.string.error_order_details)
+                , false, false);
+        dialog.setConfirmText(getString(R.string.ok));
+        dialog.setConfirmClickListener(sweetAlertDialog -> {
+            dialog.hide();
+            requireActivity().finish();
+        });
+        dialog.show();
+    }
+
+
+    private void setViewGroupVisibility(OrderDataResponse orderDataResponse) {
+        if (orderDataResponse.getPaymentMode().equalsIgnoreCase(getString(R.string.cod_text_2))) {
+            setVisibility(binding.dueDateDetail, View.GONE);
+            setVisibility(binding.bankPaymentMethodDetail, View.GONE);
+        } else {
+            boolean isPaymentDone = orderDataResponse.getPaymentStatus().equalsIgnoreCase(getString(R.string.done))
+                    || orderDataResponse.getPaymentStatus().equalsIgnoreCase(getString(R.string.completed))
+                    || orderDataResponse.getPaymentStatus().equalsIgnoreCase(getString(R.string.paid_2));
+            if (isPaymentDone) {
+                setVisibility(binding.dueDateDetail, View.GONE);
+                setText(binding.tvStatus, getString(R.string.completed));
+                setVisibility(binding.bankPaymentMethodDetail, View.GONE);
+                setVisibility(binding.purchaseDateDetail, View.VISIBLE);
+            } else if (orderDataResponse.getPaymentStatus().equalsIgnoreCase(getString(R.string.time_expired_2))
+                    || orderDataResponse.getPaymentStatus().equalsIgnoreCase(getString(R.string.failed_2))
+                    || orderDataResponse.getPaymentStatus().equalsIgnoreCase(getString(R.string.error))) {
+                setVisibility(binding.dueDateDetail, View.GONE);
+                setText(binding.tvStatus, getString(R.string.time_expired));
+                setVisibility(binding.bankPaymentMethodDetail, View.GONE);
+                setVisibility(binding.purchaseDateDetail, View.VISIBLE);
+            } else {
+                setVisibility(binding.purchaseDateDetail, View.GONE);
+                setText(binding.tvStatus, getString(R.string.pending));
+            }
+        }
+    }
+
+    private void setText(TextView textView, String text) {
+        textView.setText(text);
+    }
+
+    private void setTextOnViews(OrderDataResponse orderDataResponse) {
+        String codText = getString(R.string.cod_text);
+        String paymentMode = orderDataResponse.getPaymentMode().equalsIgnoreCase(codText) ?
+                codText : orderDataResponse.getBank().getName() + " " + orderDataResponse.getPaymentMode();
+        OrderPaymentData orderPaymentData = new OrderPaymentData(paymentMode, orderDataResponse.getAmountTotal(),
+                "(" + orderDataResponse.getItems().size() + " " + getString(R.string.product) + ")", "", orderDataResponse.getDelivery().getTotal(), "",
+                orderDataResponse.getAmountTotal());
+        binding.paymentDetails.setData(orderPaymentData);
+    }
+
+
+    private void setupRecyclerView(OrderDataResponse orderDataResponse) {
+        DividerItemDecoration dividerItemDecorationHorizontal = new DividerItemDecoration(requireContext(), LinearLayout.VERTICAL);
+        binding.rvProductsInfo.addItemDecoration(dividerItemDecorationHorizontal);
+        binding.rvProductsInfo.setAdapter(new OrderItemDetailAdapter(requireContext(), orderDataResponse.getItems()));
+    }
+
+    private void setClickListeners(OrderDataResponse orderDataResponse) {
+        binding.tvAccountNumber.setOnClickListener(v -> {
+            copyTextToClipBoard(binding.tvAccountNumber.getText().toString());
+        });
+
+
+        binding.btnPaymentStatus.setOnClickListener(v -> {
+            callPaymentStatus(orderDataResponse.getOrderId());
+        });
+    }
+
+    private void copyTextToClipBoard(String textTobeCopied) {
+        ClipboardManager clipboard = getSystemService(requireContext(), ClipboardManager.class);
+        ClipData clip = ClipData.newPlainText(getString(R.string.label), textTobeCopied);
+        if (clipboard != null)
+            clipboard.setPrimaryClip(clip);
+        Toast.makeText(requireContext(), R.string.text_copied_message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void callPaymentStatus(int orderId) {
+        ApiConnection.getPaymentTransactionStatus(requireContext(), orderId)
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CustomObserver<PaymentStatusResponse>(requireContext()) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        super.onSubscribe(d);
+                        dialog.setTitleText(getString(R.string.checking_payment_status));
+                        dialog.show();
+                    }
+
+                    @Override
+                    public void onNext(PaymentStatusResponse paymentStatusResponse) {
+                        super.onNext(paymentStatusResponse);
+                        handlePaymentStatusResponse(paymentStatusResponse, orderId);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        dialog = new SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
+                                .setTitleText(getString(R.string.error_payment_status))
+                                .setConfirmText(getString(R.string.ok))
+                                .setConfirmClickListener(sweetAlertDialog -> {
+                                    sweetAlertDialog.hide();
+                                });
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                        dialog.hide();
+                    }
+                });
+    }
+
+    private void handlePaymentStatusResponse(PaymentStatusResponse paymentStatusResponse, int orderId) {
+        int paymentStatus = paymentStatusResponse.getResult().getPaymentStatusCode();
+        if (paymentStatus == COMPLETED) {
+            startActivity(new Intent(requireActivity(), FragmentContainerActivity.class)
+                    .putExtra(BundleConstant.BUNDLE_KEY_FRAGMENT_TYPE, BundleConstant.BUNDLE_PAYMENT_STATUS_SCREEN)
+                    .putExtra(BundleConstant.BUNDLE_PAYMENT_STATUS_SCREEN, PaymentStatusFragment.SHOW_PAYMENT_COMPLETE_MESSAGE));
+        } else if (paymentStatus == FAILED)
+            startActivity(new Intent(requireActivity(), FragmentContainerActivity.class)
+                    .putExtra(BundleConstant.BUNDLE_KEY_FRAGMENT_TYPE, BundleConstant.BUNDLE_PAYMENT_STATUS_SCREEN)
+                    .putExtra(BundleConstant.BUNDLE_PAYMENT_STATUS_SCREEN, PaymentStatusFragment.SHOW_PAYMENT_FAILURE_MESSAGE));
+        else if (paymentStatus == PENDING) {
+            Result result = paymentStatusResponse.getResult();
+            PendingPaymentData pendingPaymentData =
+                    new PendingPaymentData(result.getExpireDate(), result.getExpireTime(),
+                            binding.paymentDetails.tvTotalPayment.getText().toString(), result.getBank(), orderId, false);
+            startActivity(new Intent(requireActivity(), FragmentContainerActivity.class)
+                    .putExtra(BundleConstant.BUNDLE_KEY_FRAGMENT_TYPE, BundleConstant.BUNDLE_PAYMENT_PENDING_SCREEN)
+                    .putExtra(BundleConstant.BUNDLE_PAYMENT_PENDING_SCREEN, pendingPaymentData));
+        }
     }
 
     @Override
@@ -126,13 +282,6 @@ public class OrderFragment extends BaseFragment {
         Helper.hiderAllMenuItems(menu);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @androidx.annotation.NonNull String[] permissions, @androidx.annotation.NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            mBinding.getHandler().onClickDownloadDeliveryOrder(mBinding.getData().getDeliveryOrders().get(0).getReportUrl(), mBinding.getData().getName());
-        }
-    }
 
     @androidx.annotation.NonNull
     @Override
@@ -144,4 +293,9 @@ public class OrderFragment extends BaseFragment {
     public void setTitle(@androidx.annotation.NonNull String title) {
 
     }
+
+    private void setVisibility(View view, int gone) {
+        view.setVisibility(gone);
+    }
+
 }

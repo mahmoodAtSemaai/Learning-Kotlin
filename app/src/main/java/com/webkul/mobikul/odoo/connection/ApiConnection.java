@@ -10,10 +10,12 @@ import com.webkul.mobikul.odoo.model.BaseResponse;
 import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
 import com.webkul.mobikul.odoo.model.cart.BagResponse;
 import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse;
+import com.webkul.mobikul.odoo.model.checkout.OrderDataResponse;
 import com.webkul.mobikul.odoo.model.checkout.OrderPlaceResponse;
 import com.webkul.mobikul.odoo.model.checkout.OrderReviewResponse;
 import com.webkul.mobikul.odoo.model.checkout.PaymentAcquirerResponse;
 import com.webkul.mobikul.odoo.model.checkout.ShippingMethodResponse;
+import com.webkul.mobikul.odoo.model.checkout.UpdateOrderRequest;
 import com.webkul.mobikul.odoo.model.customer.ResetPasswordResponse;
 import com.webkul.mobikul.odoo.model.customer.account.SaveCustomerDetailResponse;
 import com.webkul.mobikul.odoo.model.customer.address.AddressFormResponse;
@@ -33,6 +35,11 @@ import com.webkul.mobikul.odoo.model.generic.CountryStateData;
 import com.webkul.mobikul.odoo.model.generic.ProductData;
 import com.webkul.mobikul.odoo.model.home.HomePageResponse;
 import com.webkul.mobikul.odoo.model.notification.NotificationMessagesResponse;
+import com.webkul.mobikul.odoo.model.payments.PaymentAcquirerMethodProviderResponse;
+import com.webkul.mobikul.odoo.model.payments.PaymentAcquirerMethodResponse;
+import com.webkul.mobikul.odoo.model.payments.PaymentAcquirersResponse;
+import com.webkul.mobikul.odoo.model.payments.PaymentStatusResponse;
+import com.webkul.mobikul.odoo.model.payments.PaymentTransactionResponse;
 import com.webkul.mobikul.odoo.model.product.AddToCartResponse;
 import com.webkul.mobikul.odoo.model.product.ProductReviewResponse;
 import com.webkul.mobikul.odoo.model.request.AddProductReviewRequest;
@@ -63,16 +70,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 
-/**
- * Webkul Software.
- *
- * @author Webkul <support@webkul.com>
- * @package Mobikul App
- * @Category Mobikul
- * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
- * @license https://store.webkul.com/license.html ASL Licence
- * @link https://store.webkul.com/license.html
- */
 public class ApiConnection {
 
 
@@ -421,6 +418,39 @@ public class ApiConnection {
 
     public static Observable<BaseResponse> deleteBannerImage(Context context) {
         return RetrofitClient.getClient(context).create(ApiInterface.class).deleteBannerImage();
+    }
+
+    public static Observable<PaymentAcquirersResponse> getPaymentAcquirers(Context context, int company_id) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getPaymentAcquirers(company_id);
+    }
+
+    public static Observable<PaymentAcquirerMethodResponse> getPaymentAcquirersMethods(Context context, int acquirerId) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getPaymentAcquirerMethods(acquirerId);
+    }
+
+
+    public static Observable<PaymentAcquirerMethodProviderResponse> getPaymentAcquirerMethodProviders(Context context, int paymentMethodId, int paymentVendorId){
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getPaymentAcquirerMethodProviders(paymentVendorId, paymentMethodId);
+    }
+
+    public static Observable<PaymentTransactionResponse> createPayments(Context context, String paymentDetails){
+        return RetrofitClient.getClient(context).create(ApiInterface.class).createPayment(paymentDetails);
+    }
+
+    public static Observable<OrderDataResponse> getOrderData(Context context, int orderId){
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getOrderData(orderId);
+    }
+
+    public static Observable<MyOrderReponse> getSaleOrders(Context context, BaseLazyRequest baseLazyRequest){
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getSaleOrders(baseLazyRequest.toString());
+    }
+
+    public static Observable<BaseResponse> updateOrderData(Context context, int orderId, UpdateOrderRequest updateOrderRequest){
+        return RetrofitClient.getClient(context).create(ApiInterface.class).updateOrderData(orderId, updateOrderRequest.toString());
+    }
+
+    public static Observable<PaymentStatusResponse> getPaymentTransactionStatus(Context context, int orderId){
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getPaymentTransactionStatus(orderId);
     }
 
 }

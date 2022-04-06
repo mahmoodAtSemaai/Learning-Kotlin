@@ -13,136 +13,76 @@
             name="data"
             type="com.webkul.mobikul.odoo.model.customer.address.MyAddressesResponse" />
 
-        <variable
-            name="handler"
-            type="com.webkul.mobikul.odoo.handler.customer.AddressBookFragmentHandler" />
     </data>
 
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/btn_confirm_address"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:background="@color/white"
+                android:paddingHorizontal="@dimen/size_12"
+                android:paddingTop="@dimen/size_20"
+                android:paddingBottom="@dimen/size_20"
+                tools:context=".fragment.NewAddressBookFragment">
 
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/tv_fragment_heading"
+                    style="@style/medium_bold_text"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:cardUseCompatPadding="true">
+                    android:text="@string/choose_your_delivery_address"
+                    android:textAllCaps="false"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/spacing_generic">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/billing_address"
-                            android:textStyle="bold" />
-
-
-                        <View
-                            style="@style/DividerHorizontal"
-                            android:layout_margin="@dimen/spacing_generic" />
-
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/appCompatTextView2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@{data.billingAddress}"
-                            tools:text="@string/dummy_address" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:onClick="@{()->handler.editBillingAddress()}"
-                            android:paddingBottom="@dimen/spacing_generic"
-                            android:paddingTop="@dimen/spacing_generic"
-                            android:text="@string/edit_billing_address"
-                            android:textColor="?colorAccent"
-                            app:underline="@{true}" />
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
-                </androidx.cardview.widget.CardView>
-
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="match_parent"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_address"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/spacing_generic"
-                    android:layout_marginBottom="@dimen/spacing_generic"
-                    android:onClick="@{()->handler.addNewAddress()}"
-                    android:padding="@dimen/spacing_normal"
-                    android:text="@string/add_new_address"
-                    android:textAllCaps="true"
-                    android:textStyle="bold" />
+                    android:layout_marginTop="@dimen/size_6"
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_fragment_heading"
+                    tools:itemCount="2"
+                    tools:listitem="@layout/item_additional_address" />
 
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_generic"
-                    android:visibility="@{data==null || data.additionalAddress.empty ? View.GONE : View.VISIBLE}"
-                    app:cardUseCompatPadding="true">
-
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/spacing_generic">
-
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/shipping_addresses"
-                            android:textStyle="bold" />
-
-
-                        <View
-                            style="@style/DividerHorizontal"
-                            android:layout_marginTop="@dimen/spacing_tiny" />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/additional_address_rv"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            tools:listitem="@layout/item_additional_address"
-                            android:nestedScrollingEnabled="false"
-                            tools:itemCount="2"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            tools:targetApi="lollipop" />
-
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
-                </androidx.cardview.widget.CardView>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
 
-        <ProgressBar
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_confirm_address"
+            style="@style/custom_button_1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/custom_progress_drawable"
-            android:indeterminate="true"
-            app:visibility="@{data == null}" />
-    </FrameLayout>
+            android:layout_marginHorizontal="@dimen/size_16"
+            android:layout_marginBottom="@dimen/size_8"
+            android:text="@string/add_new_address"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </layout>

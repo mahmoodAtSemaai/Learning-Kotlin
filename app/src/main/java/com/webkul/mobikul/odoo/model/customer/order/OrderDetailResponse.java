@@ -1,6 +1,7 @@
 package com.webkul.mobikul.odoo.model.customer.order;
 
 import android.os.Parcel;
+
 import androidx.annotation.Nullable;
 
 import com.google.gson.annotations.Expose;
@@ -55,7 +56,9 @@ public class OrderDetailResponse extends BaseResponse {
     @SerializedName("transactions")
     @Expose
     private ArrayList<OrderDetailTransaction> transactions = null;
-
+    @SerializedName("phoneNumber")
+    @Expose
+    private String phoneNumber;
 
 
     protected OrderDetailResponse(@Nullable Parcel in) {
@@ -138,7 +141,7 @@ public class OrderDetailResponse extends BaseResponse {
 
 
     public ArrayList<DeliveryOrder> getDeliveryOrders() {
-        if (deliveryOrders == null){
+        if (deliveryOrders == null) {
             deliveryOrders = new ArrayList<>();
         }
         return deliveryOrders;
@@ -146,9 +149,13 @@ public class OrderDetailResponse extends BaseResponse {
 
 
     public ArrayList<OrderDetailTransaction> getTransactions() {
-        if (transactions == null){
+        if (transactions == null) {
             transactions = new ArrayList<>();
         }
         return transactions;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 }

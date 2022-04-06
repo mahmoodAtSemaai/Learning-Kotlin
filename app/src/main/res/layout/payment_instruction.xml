@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.checkout.TransferInstruction" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/tv_mobile_banking_heading"
+            style="@style/large_bold_title_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/size_12"
+            android:layout_marginTop="@dimen/size_12"
+            android:text="@{data.heading}"
+            android:textAllCaps="false"
+            app:drawableEndCompat="@drawable/ic_down_arrow_grey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/m_banking" />
+
+        <include
+            android:id="@+id/divider_3"
+            layout="@layout/divider_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_2"
+            android:layout_marginTop="@dimen/size_10"
+            app:layout_constraintTop_toBottomOf="@+id/tv_mobile_banking_heading" />
+
+        <TextView
+            android:id="@+id/tv_mobile_banking_transfer_instruction"
+            style="@style/medium_normal_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/size_8"
+            android:layout_marginTop="@dimen/size_10"
+            android:lineSpacingExtra="@dimen/size_12"
+            android:text="@{data.description}"
+            app:layout_constraintEnd_toEndOf="@+id/tv_mobile_banking_heading"
+            app:layout_constraintStart_toStartOf="@+id/tv_mobile_banking_heading"
+            app:layout_constraintTop_toBottomOf="@+id/divider_3"
+            tools:text="1) laoreet suspendisse interdum consectetur libero\n
+2) laoreet suspendisse interdum consectetur libero\n
+3) laoreet suspendisse interdum consectetur libero" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

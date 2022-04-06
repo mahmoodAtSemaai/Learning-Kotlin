@@ -345,25 +345,25 @@ public class AddressFormResponse extends BaseResponse {
 
 
             if (!getNameError().isEmpty()) {
-                newAddressFragment.mBinding.nameEt.requestFocus();
+                newAddressFragment.binding.nameEt.requestFocus();
                 return false;
             }
 
 
             if (!getPhoneError().isEmpty()) {
-                newAddressFragment.mBinding.telephoneEt.requestFocus();
+                newAddressFragment.binding.telephoneEt.requestFocus();
                 return false;
             }
 
 
             if (!getStreetError().isEmpty()) {
-                newAddressFragment.mBinding.streetEt.requestFocus();
+                newAddressFragment.binding.streetEt.requestFocus();
                 return false;
             }
 
 
             if (!getZipCodeError().isEmpty()) {
-                newAddressFragment.mBinding.zipEt.requestFocus();
+                newAddressFragment.binding.zipEt.requestFocus();
                 return false;
             }
             return true;

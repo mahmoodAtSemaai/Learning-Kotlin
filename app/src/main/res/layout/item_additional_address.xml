@@ -18,73 +18,78 @@
 
         <variable
             name="handler"
-            type="com.webkul.mobikul.odoo.handler.customer.AdditionalAddressRvHandler" />
+            type="com.webkul.mobikul.odoo.handler.customer.AddressRecyclerViewHandler" />
 
         <variable
             name="position"
             type="int" />
     </data>
 
-
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_generic"
-        android:orientation="vertical">
+        android:layout_marginTop="@dimen/size_12"
+        android:background="@drawable/shape_rectangular_white_bg_gray_border_1dp"
+        android:paddingHorizontal="@dimen/size_12"
+        android:paddingVertical="@dimen/size_8">
 
-        <androidx.appcompat.widget.AppCompatTextView
+
+        <TextView
+            android:id="@+id/textView7"
+            style="@style/medium_bold_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_generic"
-            android:text="@{@string/subheading_shipping_address_X(position+1)}"
-            android:textAllCaps="true"
-            android:textStyle="italic"
-            tools:text="@string/subheading_shipping_address_X" />
+            android:text="@{data.name}"
+            android:textAllCaps="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="User Name" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/textView8"
+            style="@style/medium_normal_text"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_12"
             android:text="@{data.displayName}"
-            tools:text="@string/dummy_address" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView7"
+            tools:text="Jl. K.H. Royani 1, no. 51, RT 02, RW 09. Kelurahan Karet Kuningan, Kecamatan Setia Budi, Kota Jakarta Selatan, DKI Jakarta, ID 12940" />
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/spacing_generic"
-                android:layout_marginRight="@dimen/spacing_generic"
-                android:onClick="@{()->handler.editAddress()}"
-                android:paddingBottom="@dimen/spacing_generic"
-                android:paddingTop="@dimen/spacing_generic"
-                android:text="@string/edit_address"
-                android:textColor="?colorAccent"
-                app:underline="@{true}" />
+        <TextView
+            android:id="@+id/textView10"
+            style="@style/medium_bold_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_12"
+            android:onClick="@{() -> handler.editAddress()}"
+            android:text="@string/edit_address"
+            android:textAllCaps="false"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_delete_address"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
-            <!---->
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/spacing_generic"
-                android:layout_marginStart="@dimen/spacing_generic"
-                android:onClick="@{()->handler.deleteAddress()}"
-                android:padding="@dimen/spacing_generic"
-                android:paddingBottom="@dimen/spacing_generic"
-                android:paddingTop="@dimen/spacing_generic"
-                android:text="@string/delete_address"
-                android:textColor="?colorAccent"
-                app:underline="@{true}" />
+        <TextView
+            android:id="@+id/tv_delete_address"
+            style="@style/medium_bold_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_12"
+            android:gravity="end"
+            android:onClick="@{() -> handler.deleteAddress()}"
+            android:text="@string/delete_address"
+            android:textAllCaps="false"
+            android:textColor="@color/colorAccent"
+            android:visibility="@{position == 0 ? View.INVISIBLE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView10"
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <View
-            android:layout_width="match_parent"
-            android:background="@color/grey_500"
-            android:layout_height="1dp"/>
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

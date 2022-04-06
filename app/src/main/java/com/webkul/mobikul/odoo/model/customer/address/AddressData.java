@@ -22,6 +22,11 @@ public class AddressData implements Parcelable {
             return new AddressData[size];
         }
     };
+
+
+    public AddressData() {
+    }
+
     @SuppressWarnings("unused")
     private static final String TAG = "AddressData";
     @SerializedName("url")
@@ -81,6 +86,9 @@ public class AddressData implements Parcelable {
         return displayName;
     }
 
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
 
     public String getAddressId() {
         if (addressId == null) {
@@ -88,4 +96,9 @@ public class AddressData implements Parcelable {
         }
         return addressId;
     }
+
+    public void setAddressId(String addressId) {
+        this.addressId = addressId;
+    }
+
 }
