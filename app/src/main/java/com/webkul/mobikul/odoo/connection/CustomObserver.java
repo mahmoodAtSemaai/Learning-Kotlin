@@ -8,6 +8,7 @@ import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.NetworkHelper;
 import com.webkul.mobikul.odoo.model.BaseResponse;
+import com.webkul.mobikul.odoo.model.customer.address.addressResponse.StateListResponse;
 
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
@@ -50,7 +51,9 @@ public abstract class CustomObserver<T> implements Observer<T> {
     public void onNext(@NonNull T t) {
         AlertDialogHelper.dismiss(mContext);
         if (t instanceof BaseResponse && mContext instanceof BaseActivity) {
-            ((BaseActivity) mContext).updateCartBadge(((BaseResponse) t).getCartCount());
+            if (!(t instanceof StateListResponse)){
+                ((BaseActivity) mContext).updateCartBadge(((BaseResponse) t).getCartCount());
+            }
             ((BaseActivity) mContext).updateEmailVerification(((BaseResponse) t).isEmailVerified());
             AppSharedPref.setAllowedReview(mContext, ((BaseResponse) t).isAllowReviewModule());
             AppSharedPref.setGdprEnable(mContext, ((BaseResponse) t).isGdprEnable());

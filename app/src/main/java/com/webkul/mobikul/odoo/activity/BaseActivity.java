@@ -1,6 +1,7 @@
 package com.webkul.mobikul.odoo.activity;
 
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CUSTOMER_FRAG_TYPE;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -29,6 +30,7 @@ import com.webkul.mobikul.odoo.connection.RetrofitClient;
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
+import com.webkul.mobikul.odoo.helper.CustomerHelper;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.IntentHelper;
 import com.webkul.mobikul.odoo.updates.ForceUpdateManager;
@@ -47,6 +49,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public FragmentManager mSupportFragmentManager;
     public SQLiteDatabase mSqLiteDatabase;
     private MenuItem mItemBag;
+    private String currentFragmentDisplayed = "";
 
     public static void setLocale(Context ctx, boolean reload) {
         String langCode = AppSharedPref.getLanguageCode(ctx);
@@ -130,6 +133,15 @@ public abstract class BaseActivity extends AppCompatActivity {
         int i = item.getItemId();
         if (i == android.R.id.home) {
             onBackPressed();
+        } else if (i == R.id.menu_item_bag){
+            AnalyticsImpl.INSTANCE.trackShoppingCartSelected(currentFragmentDisplayed);
+            IntentHelper.goToBag(this);
+        }
+        else if (item.getItemId() == R.id.menu_item_wishlist) {
+            AnalyticsImpl.INSTANCE.trackWishlistSelected(currentFragmentDisplayed);
+            Intent intent = new Intent(this, CustomerBaseActivity.class);
+            intent.putExtra(BUNDLE_KEY_CUSTOMER_FRAG_TYPE, CustomerHelper.CustomerFragType.TYPE_WISHLIST);
+            startActivity(intent);
         }
         // all [else] codeblock shifted to @HomeActivity @CustomerBaseActivity for code uniformity & analytics
         return super.onOptionsItemSelected(item);
