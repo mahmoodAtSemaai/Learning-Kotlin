@@ -53,13 +53,12 @@ public abstract class CustomObserver<T> implements Observer<T> {
         if (t instanceof BaseResponse && mContext instanceof BaseActivity) {
             if (!(t instanceof StateListResponse)){
                 ((BaseActivity) mContext).updateCartBadge(((BaseResponse) t).getCartCount());
+                ((BaseActivity) mContext).updateEmailVerification(((BaseResponse) t).isEmailVerified());
+                AppSharedPref.setAllowedReview(mContext, ((BaseResponse) t).isAllowReviewModule());
+                AppSharedPref.setGdprEnable(mContext, ((BaseResponse) t).isGdprEnable());
+                AppSharedPref.setAllowedWishlist(mContext, ((BaseResponse) t).isAllowWishlistModule());
+                AppSharedPref.setItemsPerPage(mContext, ((BaseResponse) t).getItemsPerPage());
             }
-            ((BaseActivity) mContext).updateEmailVerification(((BaseResponse) t).isEmailVerified());
-            AppSharedPref.setAllowedReview(mContext, ((BaseResponse) t).isAllowReviewModule());
-            AppSharedPref.setGdprEnable(mContext, ((BaseResponse) t).isGdprEnable());
-            AppSharedPref.setAllowedWishlist(mContext, ((BaseResponse) t).isAllowWishlistModule());
-            AppSharedPref.setItemsPerPage(mContext, ((BaseResponse) t).getItemsPerPage());
-
         }
     }
 
