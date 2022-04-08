@@ -223,7 +223,7 @@
     <string name="price_total_x">Harga Total: \n%s</string>
     <string name="order_noX">Order #%s</string>
     <string name="rp_x">Rp%s</string>
-    <string name="placing_your_order">Tempatkan pesanan Anda</string>
+    <string name="placing_your_order">Menempatkan pesanan</string>
     <!---->
     <!---->
     <!--WISHLIST-->
@@ -526,6 +526,7 @@
     <string name="completed">Selesai</string>
     <string name="x">x</string>
     <string name="select_your_shipping_address">Pilih alamat pengiriman Anda</string>
+    <string name="select_your_shipping_method">Pilih metode pengiriman Anda</string>
     <string name="payment_options_loading_text">Memilih Opsi Pembayaran</string>
     <string name="shipping_options_loading_text">Memilih Metode Pengiriman</string>
 
@@ -554,7 +555,7 @@
     <string name="text_copied_message">Teks disalin ke clipboard</string>
     <string name="label">Label</string>
     <string name="checking_payment_status">Memeriksa status pembayaran Anda</string>
-    <string name="pending">Tertunda</string>
+    <string name="pending">Belum dibayar</string>
     <string name="quotation_sent_text">Kutipan Dikirim</string>
     <string name="quotation_sent_text_2">Quotation Sent</string>
     <string name="fail">Gagal</string>

@@ -306,7 +306,7 @@ class CheckoutActivity : BaseActivity() {
         if (orderDataResponse.delivery == null || orderDataResponse.delivery?.name?.isEmpty() == true) {
             showError(
                 binding.layoutShippingMethod.clCheckoutOptions,
-                getString(R.string.select_your_shipping_address)
+                getString(R.string.select_your_shipping_method)
             )
             binding.nsvCheckout.smoothScrollTo(
                 START_X,

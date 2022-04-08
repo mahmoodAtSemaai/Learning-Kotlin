@@ -115,7 +115,6 @@ class FragmentContainerActivity : BaseActivity() {
         paymentVirtualAccountFragment.arguments = bundle
         return paymentVirtualAccountFragment
     }
-
     private fun setupPaymentProcessingFragment(): PaymentProcessingFragment {
         val paymentProcessingFragment = PaymentProcessingFragment()
         val bundle = Bundle()

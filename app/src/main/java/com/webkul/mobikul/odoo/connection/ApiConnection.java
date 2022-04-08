@@ -40,6 +40,7 @@ import com.webkul.mobikul.odoo.model.payments.PaymentAcquirerMethodResponse;
 import com.webkul.mobikul.odoo.model.payments.PaymentAcquirersResponse;
 import com.webkul.mobikul.odoo.model.payments.PaymentStatusResponse;
 import com.webkul.mobikul.odoo.model.payments.PaymentTransactionResponse;
+import com.webkul.mobikul.odoo.model.payments.TransferInstructionResponse;
 import com.webkul.mobikul.odoo.model.product.AddToCartResponse;
 import com.webkul.mobikul.odoo.model.product.ProductReviewResponse;
 import com.webkul.mobikul.odoo.model.request.AddProductReviewRequest;
@@ -451,6 +452,11 @@ public class ApiConnection {
 
     public static Observable<PaymentStatusResponse> getPaymentTransactionStatus(Context context, int orderId){
         return RetrofitClient.getClient(context).create(ApiInterface.class).getPaymentTransactionStatus(orderId);
+    }
+
+
+    public static Observable<TransferInstructionResponse> getTransferInstruction(Context context, int bankId){
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getTransferInstruction(bankId);
     }
 
 }

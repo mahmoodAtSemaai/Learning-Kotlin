@@ -104,7 +104,8 @@ class PaymentPendingFragment : Fragment() {
                         BundleConstant.BUNDLE_KEY_TRANSFER_INSTRUCTION,
                         TransferInstruction(
                             pendingPaymentData.bank.name,
-                            pendingPaymentData.bank.instructions
+                            "",
+                            pendingPaymentData.bank.providerId
                         )
                     )
             )

@@ -61,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/processing"
-            android:textSize="@dimen/font_size_32"
+            android:textSize="@dimen/font_size_24"
             app:layout_constraintBottom_toTopOf="@+id/guideline3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/please_wait_a_moment"
-            android:textSize="@dimen/font_size_24"
+            android:textSize="@dimen/font_size_20"
             app:layout_constraintEnd_toEndOf="@+id/textView11"
             app:layout_constraintStart_toStartOf="@+id/textView11"
             app:layout_constraintTop_toTopOf="@+id/guideline3" />

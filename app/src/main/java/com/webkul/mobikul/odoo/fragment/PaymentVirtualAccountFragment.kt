@@ -49,8 +49,6 @@ class PaymentVirtualAccountFragment : Fragment() {
             val orderAmount = arguments?.getString(BundleConstant.BUNDLE_KEY_ORDER_AMOUNT)
             result.meta.paidAmount = orderAmount
             binding.data = result
-            binding.bankingInstruction.data =
-                TransferInstruction(result.bank.name, result.bank.instructions)
         }
         (requireActivity() as FragmentContainerActivity).setToolbarText(getString(R.string.payment_n_status))
     }

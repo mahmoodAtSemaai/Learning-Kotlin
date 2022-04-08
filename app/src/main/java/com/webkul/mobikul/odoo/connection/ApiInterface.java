@@ -35,6 +35,7 @@ import com.webkul.mobikul.odoo.model.payments.PaymentAcquirersResponse;
 import com.webkul.mobikul.odoo.model.payments.PaymentStatusResponse;
 import com.webkul.mobikul.odoo.model.payments.PaymentTransactionResponse;
 import com.webkul.mobikul.odoo.model.payments.PaymentsAPIConstants;
+import com.webkul.mobikul.odoo.model.payments.TransferInstructionResponse;
 import com.webkul.mobikul.odoo.model.product.AddToCartResponse;
 import com.webkul.mobikul.odoo.model.product.ProductReviewResponse;
 import com.webkul.mobikul.odoo.model.request.BaseLazyRequest;
@@ -124,9 +125,11 @@ public interface ApiInterface {
     String MOBIKUL_PAYMENTS_ACQUIRERS_METHODS_PROVIDERS = "payment/acquirers/{" + PaymentsAPIConstants.ACQUIRER_ID + "}/methods/{" + PaymentsAPIConstants.PAYMENT_METHOD_ID + "}/providers";
     String MOBIKUL_CREATE_PAYMENTS_TRANSACTIONS = "/payment-transactions";
     String MOBIKUL_GET_PAYMENTS_TRANSACTIONS = "/payment-transactions";
+    String MOBIKUL_GET_PAYMENTS_INSTRUCTIONS = "/payment/method-providers/{bank_id}/instructions";
     String MOBIKUL_GET_ORDER_DATA = "/sale-orders/{order_id}";
     String MOBIKUL_UPDATE_ORDER_DATA = "/sale-orders/{order_id}";
     String MOBIKUL_ORDER_ID = "order_id";
+    String MOBIKUL_BANK_ID = "bank_id";
 
      /*-----------------------------------------------------------------------------------------------------------------------------------------------------------
         CATALOG API's
@@ -436,4 +439,8 @@ public interface ApiInterface {
 
     @GET(MOBIKUL_GET_PAYMENTS_TRANSACTIONS)
     Observable<PaymentStatusResponse> getPaymentTransactionStatus(@Query(MOBIKUL_ORDER_ID) int orderId);
+
+    @GET(MOBIKUL_GET_PAYMENTS_INSTRUCTIONS)
+    Observable<TransferInstructionResponse> getTransferInstruction(@Path(MOBIKUL_BANK_ID) int bankId);
+
 }

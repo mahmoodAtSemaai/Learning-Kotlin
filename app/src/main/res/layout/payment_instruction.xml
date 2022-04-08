@@ -14,9 +14,11 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/base"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:paddingBottom="@dimen/size_12">
 
         <TextView
             android:id="@+id/tv_mobile_banking_heading"
@@ -27,11 +29,22 @@
             android:layout_marginTop="@dimen/size_12"
             android:text="@{data.heading}"
             android:textAllCaps="false"
-            app:drawableEndCompat="@drawable/ic_down_arrow_grey"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="@dimen/font_size_18"
+            app:layout_constraintEnd_toStartOf="@+id/iv_icon"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/m_banking" />
+
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/size_12"
+            android:layout_marginRight="@dimen/size_12"
+            android:background="@drawable/ic_down_arrow_grey"
+            android:contentDescription="@string/ok"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_mobile_banking_heading" />
 
         <include
             android:id="@+id/divider_3"
@@ -42,16 +55,17 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_mobile_banking_heading" />
 
         <TextView
-            android:id="@+id/tv_mobile_banking_transfer_instruction"
+            android:id="@+id/tv_payment_transfer_instruction"
             style="@style/medium_normal_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/size_8"
+            android:layout_marginHorizontal="@dimen/size_16"
             android:layout_marginTop="@dimen/size_10"
             android:lineSpacingExtra="@dimen/size_12"
-            android:text="@{data.description}"
-            app:layout_constraintEnd_toEndOf="@+id/tv_mobile_banking_heading"
-            app:layout_constraintStart_toStartOf="@+id/tv_mobile_banking_heading"
+            android:text="@{data.instruction}"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider_3"
             tools:text="1) laoreet suspendisse interdum consectetur libero\n
 2) laoreet suspendisse interdum consectetur libero\n

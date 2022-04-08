@@ -518,6 +518,7 @@
     <string name="minimum_transactions">Min. Transactions</string>
     <string name="choose_your_delivery_address">Choose your delivery address</string>
     <string name="select_your_shipping_address">Select your shipping address</string>
+    <string name="select_your_shipping_method">Select your shipping method</string>
     <string name="payment_options_loading_text">Fetching Payment Options</string>
     <string name="shipping_options_loading_text">Fetching Shipping Methods</string>
 

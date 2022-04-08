@@ -4,8 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.TransitionManager
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.databinding.PaymentInstructionBinding
 import com.webkul.mobikul.odoo.model.checkout.TransferInstruction
@@ -30,6 +32,24 @@ class TransferInstructionAdapter(
 
     private fun bindData(holder: TransferInstructionAdapter.ViewHolder, position: Int) {
         holder.binding.data = list.get(position)
+        holder.binding.root.setOnClickListener {
+            if (holder.binding.tvPaymentTransferInstruction.visibility == View.VISIBLE) {
+                holder.binding.tvPaymentTransferInstruction.visibility = View.GONE
+                holder.binding.ivIcon.background = ResourcesCompat.getDrawable(
+                    context.resources,
+                    R.drawable.ic_down_arrow_grey,
+                    null
+                )
+            } else {
+                holder.binding.tvPaymentTransferInstruction.visibility = View.VISIBLE
+                holder.binding.ivIcon.background = ResourcesCompat.getDrawable(
+                    context.resources,
+                    R.drawable.ic_up_arrow_grey,
+                    null
+                )
+            }
+            TransitionManager.beginDelayedTransition(holder.binding.base)
+        }
     }
 
     override fun getItemCount(): Int = list.size
