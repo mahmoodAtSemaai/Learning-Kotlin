@@ -1,0 +1,68 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.webkul.mobikul.odoo.helper.ImageHelper.ImageType" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.generic.FeaturedCategoryData" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.fragment.HomeFragment" />
+    </data>
+
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_generic">
+        <!--app:cardCornerRadius="4dp">-->
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="8dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/product_iv"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@color/activityBackground"
+                android:scaleType="fitXY"
+                app:imageType="@{ImageType.PRODUCT_TINY}"
+                app:imageUrl="@{data.url}"
+                app:placeholder="@{@drawable/ic_vector_odoo_placeholder_grey400_48dp}"
+                app:srcCompat="@drawable/ic_vector_odoo_placeholder_grey400_48dp"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:maxLines="1"
+                android:paddingBottom="@dimen/spacing_tiny"
+                android:paddingEnd="@dimen/spacing_tiny"
+                android:paddingLeft="@dimen/spacing_tiny"
+                android:paddingRight="@dimen/spacing_tiny"
+                android:paddingStart="@dimen/spacing_tiny"
+                android:paddingTop="@dimen/spacing_tiny"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_min"
+                app:htmlText="@{data.categoryName}"
+                tools:text="Magento" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</layout>

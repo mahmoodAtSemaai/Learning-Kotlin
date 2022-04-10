@@ -28,12 +28,13 @@ public class FeaturedCategoryHandler {
     }
 
     public void viewCategory() {
-        AnalyticsImpl.INSTANCE.trackProductCategorySelected(mFeaturedCategotyData.getCategoryId(),
-                mFeaturedCategotyData.getCategoryName(), Helper.getScreenName(mContext));
-        Intent intent = new Intent(mContext, CatalogProductActivity.class);
-        intent.putExtra(BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE, CatalogHelper.CatalogProductRequestType.FEATURED_CATEGORY);
-        intent.putExtra(BUNDLE_KEY_CATEGORY_ID, mFeaturedCategotyData.getCategoryId());
-        intent.putExtra(BUNDLE_KEY_CATEGORY_NAME, mFeaturedCategotyData.getCategoryName());
-        mContext.startActivity(intent);
+//        AnalyticsImpl.INSTANCE.trackProductCategorySelected(mFeaturedCategotyData.getCategoryId(),
+//                mFeaturedCategotyData.getCategoryName(), Helper.getScreenName(mContext));
+//        Intent intent = new Intent(mContext, CatalogProductActivity.class);
+//        intent.putExtra(BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE, CatalogHelper.CatalogProductRequestType.FEATURED_CATEGORY);
+//        intent.putExtra(BUNDLE_KEY_CATEGORY_ID, mFeaturedCategotyData.getCategoryId());
+//        intent.putExtra(BUNDLE_KEY_CATEGORY_NAME, mFeaturedCategotyData.getCategoryName());
+//        mContext.startActivity(intent);
+
     }
 }

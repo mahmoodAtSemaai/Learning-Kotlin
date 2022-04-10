@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/ic_vector_home_black_24dp"
+        android:title="@string/home"/>
+
+    <item
+        android:id="@+id/wishlistFragment"
+        android:icon="@drawable/ic_wishlist_new"
+        android:title="@string/favorite"/>
+
+    <item
+        android:id="@+id/orderListFragment"
+        android:icon="@drawable/ic_transactions"
+        android:title="@string/transaction"/>
+
+    <item
+        android:id="@+id/notificationFragment"
+        android:icon="@drawable/ic_notif_new"
+        android:title="@string/notification" />
+
+    <item
+        android:id="@+id/accountFragment"
+        android:icon="@drawable/ic_profile_new"
+        android:title="@string/profile" />
+</menu>

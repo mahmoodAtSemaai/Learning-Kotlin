@@ -5,6 +5,8 @@ import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import com.google.android.material.snackbar.Snackbar;
+
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.adapter.extra.NotificationMessageAdapter;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
+import com.webkul.mobikul.odoo.constant.BundleConstant;
 import com.webkul.mobikul.odoo.database.SaveData;
 import com.webkul.mobikul.odoo.databinding.FragmentNotificationBinding;
 import com.webkul.mobikul.odoo.handler.home.FragmentNotifier;
@@ -35,6 +38,9 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_HIDE_CONTINUE_SHOPPING_BTN;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_SUBTITLE_ID;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_TYPE;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -111,8 +117,15 @@ public class NotificationFragment extends BaseFragment {
 
                     mBinding.setData(notificationMessagesResponse);
                     if (notificationMessagesResponse.getAllNotificationMessages().isEmpty()) {
-                        FragmentHelper.replaceFragment(R.id.container, getContext(), EmptyFragment.newInstance(R.drawable.ic_vector_empty_notification, getString(R.string.empty_notification), getString(R.string.visit_later_to_check_your_notification), true,
-                                EmptyFragment.EmptyFragType.TYPE_NOTIFICATION.ordinal()), EmptyFragment.class.getSimpleName(), true, false);
+                        //FragmentHelper.replaceFragment(R.id.container, getContext(), EmptyFragment.newInstance(R.drawable.ic_vector_empty_notification, getString(R.string.empty_notification), getString(R.string.visit_later_to_check_your_notification), true,
+                                //EmptyFragment.EmptyFragType.TYPE_NOTIFICATION.ordinal()), EmptyFragment.class.getSimpleName(), true, false);
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_DRAWABLE_ID, R.drawable.ic_vector_empty_notification);
+                        bundle.putString(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_TITLE_ID, getString(R.string.empty_notification));
+                        bundle.putString(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_SUBTITLE_ID, getString(R.string.visit_later_to_check_your_notification));
+                        bundle.putBoolean(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_HIDE_CONTINUE_SHOPPING_BTN, false);
+                        bundle.putInt(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_TYPE, EmptyFragment.EmptyFragType.TYPE_NOTIFICATION.ordinal());
+                        Navigation.findNavController(requireView()).navigate(R.id.action_notificationFragment_to_emptyFragment, bundle);
                     } else {
                         new SaveData(getActivity(), notificationMessagesResponse);
                         mBinding.notificationListRv.setAdapter(new NotificationMessageAdapter(getContext(), notificationMessagesResponse.getAllNotificationMessages()));

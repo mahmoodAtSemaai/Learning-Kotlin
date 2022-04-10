@@ -32,9 +32,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/custom_progress_drawable"
-            app:visibility="@{data.allNotificationMessages.empty}" />
+            app:visibility="@{data.allNotificationMessages.empty? View.GONE : View.VISIBLE}" />
 
-
+        <include
+            layout="@layout/fragment_empty"
+            android:visibility="@{data.allNotificationMessages.empty ? View.VISIBLE : View.GONE}"/>
     </FrameLayout>
 
 

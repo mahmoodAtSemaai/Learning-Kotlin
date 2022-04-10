@@ -3,6 +3,137 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+<!--    <data>-->
+
+<!--        <import type="android.view.View" />-->
+
+<!--        <variable-->
+<!--            name="data"-->
+<!--            type="com.webkul.mobikul.odoo.model.home.HomePageResponse" />-->
+
+<!--    </data>-->
+
+
+<!--    <FrameLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+
+<!--        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
+<!--            android:id="@+id/swipe_refresh_layout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent">-->
+
+<!--            <androidx.appcompat.widget.LinearLayoutCompat-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:clickable="true"-->
+<!--                android:orientation="vertical">-->
+
+
+<!--                <androidx.core.widget.NestedScrollView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content">-->
+
+<!--                    <androidx.appcompat.widget.LinearLayoutCompat-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:background="@color/white"-->
+<!--                        android:gravity="center"-->
+<!--                        android:orientation="vertical">-->
+
+<!--                        &lt;!&ndash;BANNER SLIDERS&ndash;&gt;-->
+
+<!--                        <androidx.viewpager.widget.ViewPager-->
+<!--                            android:id="@+id/banner_view_pager"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="150dp"-->
+<!--                            android:clipToPadding="true"-->
+<!--                            android:nestedScrollingEnabled="false"-->
+<!--                            android:scaleType="fitCenter"-->
+<!--                            android:visibility="@{data.bannerImages.empty? View.GONE : View.VISIBLE}"-->
+<!--                            tools:background="@color/badge_background_color"-->
+<!--                            tools:ignore="UnusedAttribute" />-->
+
+
+<!--                        <com.google.android.material.tabs.TabLayout-->
+<!--                            android:id="@+id/banner_dots_tab_layout"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="@dimen/tab_dot_switcher_height"-->
+<!--                            android:layout_marginBottom="@dimen/spacing_generic"-->
+<!--                            android:visibility="@{data.bannerImages.empty? View.GONE : View.VISIBLE}"-->
+<!--                            app:tabBackground="@drawable/selector_dots_tab_layout"-->
+<!--                            app:tabGravity="center"-->
+<!--                            app:tabIndicatorHeight="0dp"-->
+<!--                            app:tabPaddingStart="@dimen/spacing_generic"-->
+<!--                            tools:background="@color/bb_tabletRightBorderDark" />-->
+<!--                        <View-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="3dp"-->
+<!--                            android:background="@color/grey_300"/>-->
+<!--                        &lt;!&ndash;Categories&ndash;&gt;-->
+
+<!--                        <androidx.recyclerview.widget.RecyclerView-->
+<!--                            android:id="@+id/featured_categories_rv"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_gravity="start"-->
+<!--                            android:nestedScrollingEnabled="false"-->
+<!--                            android:orientation="horizontal"-->
+<!--                            android:visibility="@{data.featuredCategories.empty ? View.GONE : View.VISIBLE}"-->
+<!--                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+<!--                            tools:listitem="@layout/item_featured_category"-->
+<!--                            tools:targetApi="lollipop" />-->
+
+<!--                        &lt;!&ndash;PRODUCT SLIDERS&ndash;&gt;-->
+<!--                        <androidx.appcompat.widget.LinearLayoutCompat-->
+<!--                            android:id="@+id/product_slider_container"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:orientation="vertical" />-->
+<!--                        <View-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="3dp"-->
+<!--                            android:background="@color/grey_300"/>-->
+
+<!--                        <LinearLayout-->
+<!--                            android:id="@+id/llRecentViewProducts"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:orientation="vertical">-->
+<!--                            <androidx.appcompat.widget.AppCompatTextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text="@string/recent_view_products"-->
+<!--                                android:textAppearance="?android:attr/textAppearanceMedium"-->
+<!--                                android:textStyle="bold"-->
+<!--                                android:paddingTop="10dp"-->
+<!--                                android:paddingBottom="@dimen/spacing_tiny"-->
+<!--                                android:paddingLeft="@dimen/spacing_normal"/>-->
+
+<!--                            <androidx.recyclerview.widget.RecyclerView-->
+<!--                                android:id="@+id/rvAlternativeProduct"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content" />-->
+
+<!--                        </LinearLayout>-->
+
+<!--                    </androidx.appcompat.widget.LinearLayoutCompat>-->
+
+<!--                </androidx.core.widget.NestedScrollView>-->
+
+<!--            </androidx.appcompat.widget.LinearLayoutCompat>-->
+<!--        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
+
+
+<!--        <ProgressBar-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:background="@drawable/custom_progress_drawable"-->
+<!--            app:visibility="@{data == null}" />-->
+
+<!--    </FrameLayout>-->
+
     <data>
 
         <import type="android.view.View" />
@@ -11,128 +142,97 @@
             name="data"
             type="com.webkul.mobikul.odoo.model.home.HomePageResponse" />
 
+        <variable
+            name="catalogProductData"
+            type="com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse" />
+
     </data>
 
-
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh_layout"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/featured_categories_rv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:nestedScrollingEnabled="false"
+            android:orientation="horizontal"
+            android:visibility="@{data.featuredCategories.empty ? View.GONE : View.VISIBLE}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/item_featured_category_home"
+            tools:targetApi="lollipop" />
+
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/featured_categories_rv">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clickable="true"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center"
                 android:orientation="vertical">
 
-
-                <androidx.core.widget.NestedScrollView
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/banner_view_pager"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <!--BANNER SLIDERS-->
-
-                        <androidx.viewpager.widget.ViewPager
-                            android:id="@+id/banner_view_pager"
-                            android:layout_width="match_parent"
-                            android:layout_height="150dp"
-                            android:clipToPadding="true"
-                            android:nestedScrollingEnabled="false"
-                            android:scaleType="fitCenter"
-                            android:visibility="@{data.bannerImages.empty? View.GONE : View.VISIBLE}"
-                            tools:background="@color/badge_background_color"
-                            tools:ignore="UnusedAttribute" />
+                    android:layout_height="100dp"
+                    android:clipToPadding="true"
+                    android:nestedScrollingEnabled="false"
+                    android:scaleType="fitCenter"
+                    android:visibility="@{data.bannerImages.empty? View.GONE : View.VISIBLE}"
+                    tools:background="@color/badge_background_color"
+                    tools:ignore="UnusedAttribute" />
 
 
-                        <com.google.android.material.tabs.TabLayout
-                            android:id="@+id/banner_dots_tab_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/tab_dot_switcher_height"
-                            android:layout_marginBottom="@dimen/spacing_generic"
-                            android:visibility="@{data.bannerImages.empty? View.GONE : View.VISIBLE}"
-                            app:tabBackground="@drawable/selector_dots_tab_layout"
-                            app:tabGravity="center"
-                            app:tabIndicatorHeight="0dp"
-                            app:tabPaddingStart="@dimen/spacing_generic"
-                            tools:background="@color/bb_tabletRightBorderDark" />
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="3dp"
-                            android:background="@color/grey_300"/>
-                        <!--Categories-->
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/banner_dots_tab_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/tab_dot_switcher_height"
+                    android:layout_marginBottom="@dimen/spacing_generic"
+                    android:visibility="@{data.bannerImages.empty? View.GONE : View.VISIBLE}"
+                    app:tabBackground="@drawable/selector_dots_tab_layout"
+                    app:tabGravity="center"
+                    app:tabIndicatorHeight="0dp"
+                    app:tabPaddingStart="@dimen/spacing_generic"
+                    tools:background="@color/bb_tabletRightBorderDark" />
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/featured_categories_rv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="start"
-                            android:nestedScrollingEnabled="false"
-                            android:orientation="horizontal"
-                            android:visibility="@{data.featuredCategories.empty ? View.GONE : View.VISIBLE}"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            tools:listitem="@layout/item_featured_category"
-                            tools:targetApi="lollipop" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@color/grey_300" />
 
-                        <!--PRODUCT SLIDERS-->
-                        <androidx.appcompat.widget.LinearLayoutCompat
-                            android:id="@+id/product_slider_container"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical" />
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="3dp"
-                            android:background="@color/grey_300"/>
-
-                        <LinearLayout
-                            android:id="@+id/llRecentViewProducts"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/recent_view_products"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textStyle="bold"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="@dimen/spacing_tiny"
-                                android:paddingLeft="@dimen/spacing_normal"/>
-
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rvAlternativeProduct"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
-
-                        </LinearLayout>
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
-                </androidx.core.widget.NestedScrollView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/product_catalog_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    android:background="@color/activityBackground" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/custom_progress_drawable"
-            app:visibility="@{data == null}" />
 
-    </FrameLayout>
+        </androidx.core.widget.NestedScrollView>
+
+<!--        <ProgressBar-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="@id/featured_categories_rv"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            android:visibility="@{catalogProductData.lazyLoading ? View.VISIBLE : View.GONE}"/>-->
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </layout>

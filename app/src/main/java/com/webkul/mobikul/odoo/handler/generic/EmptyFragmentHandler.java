@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.webkul.mobikul.odoo.activity.HomeActivity;
+import com.webkul.mobikul.odoo.activity.NewHomeActivity;
 
 
 /**
@@ -19,7 +20,7 @@ public class EmptyFragmentHandler {
     }
 
     public void continueShopping() {
-        Intent intent = new Intent(mContext, HomeActivity.class);
+        Intent intent = new Intent(mContext, NewHomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         mContext.startActivity(intent);
     }

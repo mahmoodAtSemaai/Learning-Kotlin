@@ -140,4 +140,7 @@ public class HomeActivityHandler {
 
     }
 
+    // code for catalog product handler goes here
+
+
 }

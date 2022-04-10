@@ -174,7 +174,7 @@ public class SplashScreenActivity extends BaseActivity  {
                 SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(SplashScreenActivity.this);
                 HomePageResponse homePageResponse = sqlLiteDbHelper.getHomeScreenData();
                 if (homePageResponse != null) {
-                    Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
+                    Intent intent = new Intent(SplashScreenActivity.this, NewHomeActivity.class);
                     intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
                     startActivity(intent);
                 } else {
@@ -291,7 +291,7 @@ public class SplashScreenActivity extends BaseActivity  {
                         }
                         if (homePageResponse.isSuccess()) {
                             new SaveData(SplashScreenActivity.this, homePageResponse);
-                            Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
+                            Intent intent = new Intent(SplashScreenActivity.this, NewHomeActivity.class);
                             intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
                             startActivity(intent);
                         } else {

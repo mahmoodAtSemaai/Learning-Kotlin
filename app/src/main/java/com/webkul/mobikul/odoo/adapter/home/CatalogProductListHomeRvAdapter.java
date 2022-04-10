@@ -1,24 +1,24 @@
-package com.webkul.mobikul.odoo.adapter.catalog;
+package com.webkul.mobikul.odoo.adapter.home;
+
+import static com.webkul.mobikul.odoo.activity.CatalogProductActivity.VIEW_TYPE_GRID;
+import static com.webkul.mobikul.odoo.activity.CatalogProductActivity.VIEW_TYPE_LIST;
 
 import android.content.Context;
-
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
 import com.webkul.mobikul.odoo.databinding.ItemCatalogProductListBinding;
+import com.webkul.mobikul.odoo.databinding.ItemCatalogProductListHomeBinding;
 import com.webkul.mobikul.odoo.databinding.ItemProductGridBinding;
 import com.webkul.mobikul.odoo.handler.home.ProductHandler;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
@@ -26,20 +26,7 @@ import com.webkul.mobikul.odoo.model.generic.ProductData;
 
 import java.util.List;
 
-import static com.webkul.mobikul.odoo.activity.CatalogProductActivity.VIEW_TYPE_GRID;
-import static com.webkul.mobikul.odoo.activity.CatalogProductActivity.VIEW_TYPE_LIST;
-
-/**
- * Webkul Software.
- *
- * @author Webkul <support@webkul.com>
- * @package Mobikul App
- * @Category Mobikul
- * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
- * @license https://store.webkul.com/license.html ASL Licence
- * @link https://store.webkul.com/license.html
- */
-public class CatalogProductListRvAdapter extends RecyclerView.Adapter<CatalogProductListRvAdapter.ViewHolder> {
+public class CatalogProductListHomeRvAdapter extends RecyclerView.Adapter<com.webkul.mobikul.odoo.adapter.home.CatalogProductListHomeRvAdapter.ViewHolder> {
     @SuppressWarnings("unused")
     private static final String TAG = "CatalogProductListRvAda";
     private final Context mContext;
@@ -47,7 +34,7 @@ public class CatalogProductListRvAdapter extends RecyclerView.Adapter<CatalogPro
     public int VIEW_TYPE;
     public int VIEW_TYPE_BACK_TO_TOP = 3;
 
-    public CatalogProductListRvAdapter(Context context, @NonNull List<ProductData> productDatas, int viewTypeGrid) {
+    public CatalogProductListHomeRvAdapter(Context context, @NonNull List<ProductData> productDatas, int viewTypeGrid) {
         mContext = context;
         mProductDatas = productDatas;
         VIEW_TYPE = viewTypeGrid;
@@ -55,34 +42,34 @@ public class CatalogProductListRvAdapter extends RecyclerView.Adapter<CatalogPro
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public com.webkul.mobikul.odoo.adapter.home.CatalogProductListHomeRvAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         Log.d(TAG, "onCreateViewHolderviewType: " + viewType);
         if (viewType == VIEW_TYPE_BACK_TO_TOP) {
 //            if(((CatalogProductActivity) mContext).mBinding.productCatalogRv.getLayoutManager() instanceof GridLayoutManager && mProductDatas.size()<=9){
 //                return null;
 //            }
-            return new ViewHolder(inflater.inflate(R.layout.item_button_back_to_top, parent, false));
+            return new com.webkul.mobikul.odoo.adapter.home.CatalogProductListHomeRvAdapter.ViewHolder(inflater.inflate(R.layout.item_button_back_to_top, parent, false));
         }
         if (viewType == VIEW_TYPE) {
-            return new ViewHolder(inflater.inflate(R.layout.item_catalog_product_list, parent, false));
+            return new com.webkul.mobikul.odoo.adapter.home.CatalogProductListHomeRvAdapter.ViewHolder(inflater.inflate(R.layout.item_catalog_product_list_home, parent, false));
         } else {
-            return new ViewHolder(inflater.inflate(R.layout.item_product_grid, parent, false));
+            return new com.webkul.mobikul.odoo.adapter.home.CatalogProductListHomeRvAdapter.ViewHolder(inflater.inflate(R.layout.item_product_grid, parent, false));
         }
     }
 
     @Override
-    public void onBindViewHolder(CatalogProductListRvAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(com.webkul.mobikul.odoo.adapter.home.CatalogProductListHomeRvAdapter.ViewHolder holder, int position) {
         Log.i(TAG, "onBindViewHolder: ");
         if (position < mProductDatas.size()) {
             final ProductData productData = mProductDatas.get(position);
 //        productData.setContext(mContext);
             if (getItemViewType(position) == VIEW_TYPE) {
-                ((ItemCatalogProductListBinding) holder.mBinding).setData(productData);
-                ((ItemCatalogProductListBinding) holder.mBinding).setHandler(new ProductHandler(mContext, productData));
-                //((ItemCatalogProductListBinding) holder.mBinding).getHandler().setProductListBinding(((ItemCatalogProductListBinding) holder.mBinding));
-                ((ItemCatalogProductListBinding) holder.mBinding).setWishlistEnabled(AppSharedPref.isAllowedWishlist(mContext));
-                ((ItemCatalogProductListBinding) holder.mBinding).setIsLoggedIn(AppSharedPref.isLoggedIn(mContext));
+                ((ItemCatalogProductListHomeBinding) holder.mBinding).setData(productData);
+                ((ItemCatalogProductListHomeBinding) holder.mBinding).setHandler(new ProductHandler(mContext, productData));
+                ((ItemCatalogProductListHomeBinding) holder.mBinding).getHandler().setProductListBinding(((ItemCatalogProductListHomeBinding) holder.mBinding));
+                ((ItemCatalogProductListHomeBinding) holder.mBinding).setWishlistEnabled(AppSharedPref.isAllowedWishlist(mContext));
+                ((ItemCatalogProductListHomeBinding) holder.mBinding).setIsLoggedIn(AppSharedPref.isLoggedIn(mContext));
             } else {
                 ((ItemProductGridBinding) holder.mBinding).setData(productData);
                 ((ItemProductGridBinding) holder.mBinding).setIsLoggedIn(AppSharedPref.isLoggedIn(mContext));
@@ -96,7 +83,6 @@ public class CatalogProductListRvAdapter extends RecyclerView.Adapter<CatalogPro
 
     @Override
     public int getItemViewType(int position) {
-        boolean isLinearLayoutManager = ((CatalogProductActivity) mContext).mBinding.productCatalogRv.getLayoutManager() instanceof LinearLayoutManager;
         Log.i(TAG, "getItemViewType: " + AppSharedPref.isGridview(mContext));
         if (position == mProductDatas.size()) {
             Log.i(TAG, "getItemViewType: buttonToTop");
