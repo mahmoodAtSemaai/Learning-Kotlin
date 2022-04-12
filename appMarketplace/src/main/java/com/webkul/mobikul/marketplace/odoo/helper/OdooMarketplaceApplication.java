@@ -30,7 +30,7 @@ public class OdooMarketplaceApplication extends OdooApplication {
     }
 
     public Observable<CatalogProductResponse> getSellerCollection(String sellerId, int offset, int itemsPerPage) {
-        return MarketplaceApiConnection.getSellerCollectionData(this, new SellerCollectionRequest(sellerId, offset, itemsPerPage));
+        return MarketplaceApiConnection.getSellerCollectionData(this, sellerId, offset, itemsPerPage);
     }
 
     public Class getMarketplaceLandingPage() {
