@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.payments.PaymentAcquirerMethod" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_generic"
+        android:background="@color/white"
+        android:paddingVertical="@dimen/size_6">
+
+        <ImageView
+            android:id="@+id/iv_payment_method"
+            android:layout_width="@dimen/size_56"
+            android:layout_height="@dimen/size_40"
+            android:layout_marginStart="@dimen/size_12"
+            android:layout_marginLeft="@dimen/size_12"
+            android:adjustViewBounds="false"
+            android:padding="@dimen/size_6"
+            android:scaleType="centerInside"
+            app:imageUrl="@{data.imageUrl}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_bank_bni_logo" />
+
+        <TextView
+            android:id="@+id/tv_payment_method"
+            style="@style/medium_normal_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/size_16"
+            android:text="@{data.name}"
+            app:layout_constraintEnd_toStartOf="@+id/iv_option"
+            app:layout_constraintStart_toEndOf="@+id/iv_payment_method"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Bank BRI" />
+
+        <TextView
+            android:id="@+id/tv_payment_method_desc"
+            style="@style/medium_normal_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{data.description}"
+            android:textSize="@dimen/font_size_14"
+            app:layout_constraintEnd_toEndOf="@+id/tv_payment_method"
+            app:layout_constraintStart_toStartOf="@+id/tv_payment_method"
+            app:layout_constraintTop_toBottomOf="@+id/tv_payment_method"
+            tools:text="Only accept payments from BRI Bank" />
+
+
+        <ImageView
+            android:id="@+id/iv_option"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/size_12"
+            android:layout_marginRight="@dimen/size_12"
+            android:src="@drawable/circular_radio_button_unselected_state"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+

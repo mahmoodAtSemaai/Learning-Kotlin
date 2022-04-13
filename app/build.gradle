@@ -106,9 +106,10 @@ dependencies {
             Dependencies.stetho,
             Dependencies.stethoOkHttp,
             Dependencies.coreKTX,
-            Dependencies.remoteConfig,
-            Dependencies.remoteConfigKTX,
-            Dependencies.greenRobot
+            Dependencies.greenRobot,
+            Dependencies.activity,
+            Dependencies.fragment,
+            Dependencies.remoteConfigKTX
     )
 
     androidTestImplementation(
@@ -118,10 +119,10 @@ dependencies {
 
     api(
             fileTree(include: ['*.jar'], dir: 'lib'),
-            Dependencies.material,
             Dependencies.cardview,
             Dependencies.viewpager,
             Dependencies.glide,
+            Dependencies.materialDesignSupport,
             Dependencies.circleImageView,
             Dependencies.firebaseCrash,
             Dependencies.firebaseMessaging,

@@ -1,11 +1,11 @@
 object DepVersions {
-    const val buildTools = "3.4.2"
-    const val kotlin = "1.3.41"
+    const val buildTools = "4.2.1"
+    const val kotlin = "1.6.0"
     const val googleServices = "4.3.4"
     const val firebaseCrashlyticsGradle = "2.3.0"
     const val gradleVersion = "2.3.0"
 
-    const val compileSdkVersion = 30
+    const val compileSdkVersion = 31
     const val buildToolsVersion = "28.0.3"
     const val renderScriptTargetApi = 16
     const val targetSdkVersion = 30
@@ -17,7 +17,7 @@ object DepVersions {
     const val glide = "4.11.0"
     const val expandableRecyclerView = "3.0.0-RC1"
     const val support = "27.1.1"
-    const val materialDesignSupport = "1.0.0"
+    const val materialDesignSupport = "1.5.0"
     const val multidex = "1.0.1"
     const val multidex2 = "2.0.1"
     const val gson = "2.8.5"
@@ -49,7 +49,6 @@ object DepVersions {
     const val espressoCore = "3.1.0"
     const val androidXAnnotation = "1.1.0"
 
-    const val material = "1.2.1"
     const val cardview = "1.0.0"
     const val viewpager = "1.0.0"
 
@@ -87,7 +86,10 @@ object DepVersions {
     //appMarketPlace Modules
     const val jUnit = "4.13.2"
 
-    const val greenRobot="3.3.1"
+    const val greenRobot = "3.3.1"
+
+    const val activty = "1.4.0"
+    const val fragment = "1.4.0"
 
 }
 
@@ -103,8 +105,8 @@ object Flavours {
 }
 
 object Version {
-    const val code = 21
-    const val name = "1.3.2"
+    const val code = 22
+    const val name = "1.4.0"
 }
 
 object Url {
@@ -147,7 +149,6 @@ object Dependencies {
     const val androidXAnnotation = "androidx.annotation:annotation:${DepVersions.androidXAnnotation}"
 
     //noinspection GradleCompatible
-    const val material = "com.google.android.material:material:${DepVersions.material}"
     const val cardview = "androidx.cardview:cardview:${DepVersions.cardview}"
     const val viewpager = "androidx.viewpager:viewpager:${DepVersions.viewpager}"
 
@@ -221,5 +222,8 @@ object Dependencies {
         "com.google.android.material:material:${DepVersions.materialDesignSupport}"
     const val constraintLayoutModule = "androidx.constraintlayout:constraintlayout:${DepVersions.constraintLayoutModule}"
     const val jUnit = "junit:junit:${DepVersions.jUnit}"
+
+    const val activity = "androidx.activity:activity-ktx:${DepVersions.activty}"
+    const val fragment = "androidx.fragment:fragment-ktx:${DepVersions.fragment}"
 
 }

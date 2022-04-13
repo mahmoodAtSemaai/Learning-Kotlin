@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:padding="@dimen/size_16"
+        tools:context=".fragment.ActivateShopeePayFragment">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_16"
+            android:text="@string/activate_shopee_pay_now"
+            android:textSize="@dimen/font_size_24"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/size_200"
+            android:layout_marginHorizontal="@dimen/size_24"
+            android:paddingHorizontal="@dimen/size_12"
+            app:layout_constraintEnd_toEndOf="@+id/textView"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:srcCompat="@drawable/ic_shopeepay_logo" />
+
+
+        <Button
+            android:id="@+id/button2"
+            style="@style/custom_button_1"
+            android:layout_marginTop="@dimen/size_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/size_12"
+            android:background="@color/colorPrimary"
+            android:text="@string/activate_shopee_pay_now"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="@+id/imageView5"
+            app:layout_constraintStart_toStartOf="@+id/imageView5"
+            app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+
+        <Button
+            android:layout_width="0dp"
+            style="@style/custom_button_1"
+            android:layout_height="wrap_content"
+            android:text="@string/read_more"
+            android:textAllCaps="false"
+            android:layout_marginTop="@dimen/size_32"
+            android:background="@color/colorAccent"
+            app:layout_constraintEnd_toEndOf="@+id/button2"
+            app:layout_constraintStart_toStartOf="@+id/button2"
+            app:layout_constraintTop_toBottomOf="@+id/button2" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

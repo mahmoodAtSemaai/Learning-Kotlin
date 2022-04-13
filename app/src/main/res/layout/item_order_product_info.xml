@@ -23,77 +23,100 @@
 
     </data>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:gravity="center_vertical"
         android:onClick="@{()->handler.viewProduct()}"
-        android:padding="@dimen/spacing_generic">
+        android:paddingHorizontal="@dimen/font_size_16"
+        android:paddingTop="@dimen/size_12"
+        android:paddingBottom="@dimen/size_12">
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/appCompatImageView"
             android:layout_width="@dimen/product_image_small"
             android:layout_height="@dimen/product_image_small"
-            android:layout_margin="@dimen/spacing_generic"
             android:scaleType="centerInside"
             app:imageType="@{ImageType.PRODUCT_SMALL}"
             app:imageUrl="@{data.thumbNail}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:placeholder="@{@drawable/ic_vector_odoo_placeholder_grey400_48dp}"
             app:srcCompat="@drawable/ic_vector_odoo_placeholder_grey400_48dp"
-            tools:ignore="ContentDescription"
             tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
 
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView10"
+            style="@style/medium_bold_text"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/spacing_generic">
+            android:layout_marginStart="@dimen/size_20"
+            android:text="@{data.productName}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/appCompatImageView"
+            app:layout_constraintTop_toTopOf="@+id/appCompatImageView"
+            tools:text="BUNCIS LEBAT 3 - 500 GR" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView11"
+            style="@style/medium_bold_text_no_caps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_4"
+            android:text="@{String.valueOf(data.qty)}"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toStartOf="@+id/textView19"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="@+id/appCompatTextView10"
+            app:layout_constraintTop_toBottomOf="@+id/appCompatTextView10"
+            tools:text="1" />
 
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{data.productName}"
-                tools:text="[E-COM12] iPod (16 GB)\nHeight: 76.5 mm\nWidth:  39.6 mm\nDepth:  5.4 mm\nWeight: 31 grams" />
+        <TextView
+            android:id="@+id/textView19"
+            style="@style/medium_bold_text_no_caps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/size_6"
+            android:text="@string/x"
+            android:textAllCaps="false"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toStartOf="@+id/appCompatTextView12"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/appCompatTextView11"
+            app:layout_constraintTop_toTopOf="@+id/appCompatTextView11" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{@string/state_x(data.state)}"
-                tools:text="State: draft" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView12"
+            style="@style/medium_bold_text_no_caps"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{data.priceUnit}"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView19"
+            app:layout_constraintTop_toTopOf="@+id/appCompatTextView11"
+            tools:text="Rp47,300" />
 
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{@string/unit_price_x(data.priceUnit)}"
-                tools:text="price_unit : 16.5" />
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/medium_normal_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_8"
+            android:gravity="center"
+            android:text="@{@string/price_total_x(data.priceTotal)}"
+            android:textSize="@dimen/size_14"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="@+id/appCompatImageView"
+            app:layout_constraintStart_toStartOf="@+id/appCompatImageView"
+            app:layout_constraintTop_toBottomOf="@+id/appCompatImageView"
+            tools:text="Total Price\nRp47,000" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{@string/qty_x(data.qty)}"
-                tools:text="quantity : 1.0 Unit(s)" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{@string/discount_x(data.discount)}"
-                app:visibility="@{!data.discount.empty}"
-                tools:text="discount : 0" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{@string/tax_x(data.priceTax)}"
-                tools:text="price_tax : 0" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{@string/price_total_x(data.priceTotal)}"
-                tools:text="price_total : 16.5" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
-    </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

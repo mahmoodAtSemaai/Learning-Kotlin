@@ -8,8 +8,8 @@ import android.os.Parcelable;
 
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.BagActivity;
-import com.webkul.mobikul.odoo.activity.CheckoutActivity;
 import com.webkul.mobikul.odoo.activity.HomeActivity;
+import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.activity.UserApprovalActivity;
 import com.webkul.mobikul.odoo.dialog_frag.ProductAddedToBagDialogFrag;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
@@ -17,7 +17,10 @@ import com.webkul.mobikul.odoo.model.home.HomePageResponse;
 
 import java.util.Arrays;
 
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by shubham.agarwal on 31/5/17.
@@ -54,7 +57,7 @@ public class IntentHelper {
 
     public static void beginCheckout(Context context) {
         FirebaseAnalyticsImpl.logBeginCheckoutEvent(context);
-        Intent intent = new Intent(context, CheckoutActivity.class);
+        Intent intent = new Intent(context, BagActivity.class);
         context.startActivity(intent);
     }
 
@@ -65,48 +68,6 @@ public class IntentHelper {
     }
 
 
-    //    public static void proceedToCheckout(Context context) {
-//        ApiConnection.getAddressBookData(context, new BaseLazyRequest(0, 0)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<MyAddressesResponse>(context) {
-//
-//            @Override
-//            public void onSubscribe(@NonNull Disposable d) {
-//                super.onSubscribe(d);
-//                AlertDialogHelper.showDefaultProgressDialog(context);
-//            }
-//
-//            @Override
-//            public void onNext(@NonNull MyAddressesResponse myAddressesResponse) {
-//                super.onNext(myAddressesResponse);
-//                if (myAddressesResponse.getAddresses().get(0).getDisplayName().replaceAll("\\n", "").trim().isEmpty()) {
-//                    ((BaseActivity) context).mSweetAlertDialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
-//                            .setTitleText(context.getString(R.string.error_default_address_not_found))
-//                            .setContentText(context.getString(R.string.question_add_new_address_to_place_order))
-//                            .setConfirmText(context.getString(R.string.ok))
-//                            .setConfirmClickListener(sDialog -> {
-//                                // reuse previous dialog instance
-//                                FragmentHelper.replaceFragment(R.id.container, context, NewAddressFragment.newInstance(String.valueOf(myAddressesResponse.getAddresses().get(0).getUrl()), context.getString(R.string.edit_billing_address)
-//                                        , NewAddressFragment.AddressType.TYPE_BILLING_CHECKOUT), NewAddressFragment.class.getSimpleName(), true, false);
-//                                sDialog.dismiss();
-//                            });
-//                    ((BaseActivity) context).mSweetAlertDialog.show();
-//                    ((BaseActivity) context).mSweetAlertDialog.showCancelButton(true);
-//                } else {
-//                    IntentHelper.beginCheckout(context);
-//                }
-//            }
-//
-//            @Override
-//            public void onError(@NonNull Throwable t) {
-//                super.onError(t);
-//            }
-//
-//            @Override
-//            public void onComplete() {
-//
-//
-//            }
-//        });
-//    }
     public static String intentToString(Intent intent) {
         if (intent == null) {
             return "intent == null ";
@@ -163,5 +124,17 @@ public class IntentHelper {
 
         out.append("]");
         return out.toString();
+    }
+
+
+    public static void redirectToSignUpActivity(Context context){
+        AlertDialogHelper.showDefaultWarningDialogWithDismissListener(context, context.getString(R.string.error_login_failure),
+                context.getString(R.string.access_denied_message), sweetAlertDialog -> {
+                    sweetAlertDialog.dismiss();
+                    AppSharedPref.clearCustomerData(context);
+                    Intent i = new Intent(context, SignInSignUpActivity.class);
+                    context.startActivity(i);
+                });
+
     }
 }

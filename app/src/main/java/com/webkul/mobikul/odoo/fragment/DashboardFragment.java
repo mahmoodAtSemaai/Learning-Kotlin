@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
-import com.webkul.mobikul.odoo.adapter.catalog.OrderRvAdapter;
+import com.webkul.mobikul.odoo.adapter.catalog.OrdersAdapter;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.databinding.FragmentDashboardBinding;
@@ -35,22 +35,11 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
 
-
-/**
- * Webkul Software.
- *
- * @author Webkul <support@webkul.com>
- * @package Mobikul App
- * @Category Mobikul
- * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
- * @license https://store.webkul.com/license.html ASL Licence
- * @link https://store.webkul.com/license.html
- */
 public class DashboardFragment extends BaseFragment {
 
     @SuppressWarnings("unused")
     private static final String TAG = "DashboardFragment";
-    private FragmentDashboardBinding mBinding;
+    private FragmentDashboardBinding binding;
 
     public static DashboardFragment newInstance() {
         return new DashboardFragment();
@@ -58,16 +47,16 @@ public class DashboardFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard, container, false);
-        return mBinding.getRoot();
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mBinding.setCustomerName(Helper.initCap(AppSharedPref.getCustomerName(getContext())));
-        mBinding.setCustomerEmail(AppSharedPref.getCustomerEmail(getContext()));
-        mBinding.setCustomerPhoneNumber(AppSharedPref.getCustomerPhoneNumber(getContext()));
+        binding.setCustomerName(Helper.initCap(AppSharedPref.getCustomerName(getContext())));
+        binding.setCustomerEmail(AppSharedPref.getCustomerEmail(getContext()));
+        binding.setCustomerPhoneNumber(AppSharedPref.getCustomerPhoneNumber(getContext()));
         Observable<MyOrderReponse> myOrderReponseObservable = ApiConnection.getOrders(getContext(), new BaseLazyRequest(0, 5)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
         Observable<MyAddressesResponse> myAddressesResponseDataObservable = ApiConnection.getAddressBookData(getContext(), new BaseLazyRequest(0, 1)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
 
@@ -95,7 +84,7 @@ public class DashboardFragment extends BaseFragment {
 
             @Override
             public void onComplete() {
-                mBinding.setHandler(new DashboardFragmentHandler(getContext(), mBinding.getData()));
+                binding.setHandler(new DashboardFragmentHandler(getContext(), binding.getData()));
             }
 
             @Override
@@ -113,8 +102,8 @@ public class DashboardFragment extends BaseFragment {
                         }
                     });
                 } else {
-                    mBinding.setData(dashboardData);
-                    mBinding.recentOrderRv.setAdapter(new OrderRvAdapter(getContext(), mBinding.getData().getRecentOrders(), TAG));
+                    binding.setData(dashboardData);
+                    binding.recentOrderRv.setAdapter(new OrdersAdapter(getContext(), binding.getData().getRecentOrders(), TAG));
                 }
             }
 

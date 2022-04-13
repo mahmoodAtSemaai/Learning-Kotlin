@@ -18,9 +18,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.tabs.TabLayout;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
 import com.webkul.mobikul.odoo.activity.HomeActivity;
@@ -66,22 +64,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
 
-
-/**
- * Webkul Software.
- *
- * @author Webkul <support@webkul.com>
- * @package Mobikul App
- * @Category Mobikul
- * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
- * @license https://store.webkul.com/license.html ASL Licence
- * @link https://store.webkul.com/license.html
- */
 public class HomeFragment extends BaseFragment implements CustomRetrofitCallback {
 
     @SuppressWarnings("unused")
     private static final String TAG = "HomeFragment";
-    public FragmentHomeBinding mBinding;
+    public FragmentHomeBinding binding;
 
     private int CHECK_FOR_EXISTING_ADDRESS = 1;
     private int BILLING_ADDRESS_POSITION = 1;
@@ -97,8 +84,8 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
-        return mBinding.getRoot();
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -140,7 +127,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
             @Override
             public void onComplete() {
-                mBinding.swipeRefreshLayout.setRefreshing(false);
+                binding.swipeRefreshLayout.setRefreshing(false);
             }
         });
 
@@ -166,8 +153,8 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         if (isFromApi) {
             homePageResponse.updateSharedPref(getContext(), "");
         }
-        mBinding.setData(homePageResponse);
-        mBinding.swipeRefreshLayout.setOnRefreshListener(
+        binding.setData(homePageResponse);
+        binding.swipeRefreshLayout.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
@@ -176,7 +163,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
                 }
         );
         /*LEFT CATEGORIES DRAWER*/
-        ((HomeActivity) getActivity()).mBinding.categoryRv.setAdapter(new NavDrawerCategoryStartRvAdapter(getContext(), homePageResponse.getCategories().get(0).getChildren(),""));
+        ((HomeActivity) getActivity()).mBinding.categoryRv.setAdapter(new NavDrawerCategoryStartRvAdapter(getContext(), homePageResponse.getCategories().get(0).getChildren(), ""));
         if (homePageResponse.getLanguageMap().size() > 0) {
             ((HomeActivity) getActivity()).mBinding.setLanguageData(homePageResponse.getLanguageMap());
         } else {
@@ -190,25 +177,25 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
 
         /*FEATURED CATEGORIES*/
-        mBinding.featuredCategoriesRv.setAdapter(new FeaturedCategoriesRvAdapter(getContext(), homePageResponse.getFeaturedCategories()));
+        binding.featuredCategoriesRv.setAdapter(new FeaturedCategoriesRvAdapter(getContext(), homePageResponse.getFeaturedCategories()));
 
         /*BANNER SLIDERS*/
-        mBinding.bannerViewPager.setAdapter(new HomeBannerAdapter(getContext(), homePageResponse.getBannerImages()));
-        mBinding.bannerDotsTabLayout.setupWithViewPager(mBinding.bannerViewPager, true);
+        binding.bannerViewPager.setAdapter(new HomeBannerAdapter(getContext(), homePageResponse.getBannerImages()));
+        binding.bannerDotsTabLayout.setupWithViewPager(binding.bannerViewPager, true);
 
         /*PRODUCT SLIDES...*/
-        mBinding.productSliderContainer.removeAllViews();
+        binding.productSliderContainer.removeAllViews();
         for (ProductSliderData productSliderData : homePageResponse.getProductSliders()) {
             switch (productSliderData.getSliderMode()) {
                 case SLIDER_MODE_DEFAULT:
-                    ItemProductSliderDefaultStyleBinding itemProductSliderDefaultStyleBinding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.item_product_slider_default_style, mBinding.productSliderContainer, true);
+                    ItemProductSliderDefaultStyleBinding itemProductSliderDefaultStyleBinding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.item_product_slider_default_style, binding.productSliderContainer, true);
                     itemProductSliderDefaultStyleBinding.setData(productSliderData);
                     itemProductSliderDefaultStyleBinding.setHandler(new ProductSliderHandler(getContext()));
                     itemProductSliderDefaultStyleBinding.productsRv.setAdapter(new ProductDefaultStyleRvAdapter(getContext(), (ArrayList<ProductData>) productSliderData.getProducts(), SLIDER_MODE_DEFAULT));
                     break;
 
                 case SLIDER_MODE_FIXED:
-                    ItemProductSliderFixedStyleBinding itemProductSliderFixedStyleBinding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.item_product_slider_fixed_style, mBinding.productSliderContainer, true);
+                    ItemProductSliderFixedStyleBinding itemProductSliderFixedStyleBinding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.item_product_slider_fixed_style, binding.productSliderContainer, true);
                     itemProductSliderFixedStyleBinding.setData(productSliderData);
                     itemProductSliderFixedStyleBinding.setHandler(new ProductSliderHandler(getContext()));
                     itemProductSliderFixedStyleBinding.productsRv.setLayoutManager(new GridLayoutManager(getContext(), ViewHelper.getSpanCount(getContext())));
@@ -223,15 +210,15 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
             SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(getContext());
             ArrayList<ProductData> productData = sqlLiteDbHelper.getRecentProductList();
             if (productData.size() > 0) {
-                mBinding.llRecentViewProducts.setVisibility(View.VISIBLE);
-                mBinding.rvAlternativeProduct.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-                mBinding.rvAlternativeProduct.setAdapter(new AlternativeProductsRvAdapter(getActivity(), productData, true));
+                binding.llRecentViewProducts.setVisibility(View.VISIBLE);
+                binding.rvAlternativeProduct.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+                binding.rvAlternativeProduct.setAdapter(new AlternativeProductsRvAdapter(getActivity(), productData, true));
             } else {
-                mBinding.llRecentViewProducts.setVisibility(View.GONE);
+                binding.llRecentViewProducts.setVisibility(View.GONE);
             }
 
         } else {
-            mBinding.llRecentViewProducts.setVisibility(View.GONE);
+            binding.llRecentViewProducts.setVisibility(View.GONE);
         }
     }
 

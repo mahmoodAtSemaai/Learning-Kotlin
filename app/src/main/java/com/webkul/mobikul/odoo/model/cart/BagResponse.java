@@ -10,9 +10,6 @@ import com.webkul.mobikul.odoo.model.generic.KeyValuePairData;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by shubham.agarwal on 27/12/16. @Webkul Software Pvt. Ltd
- */
 
 public class BagResponse extends BaseResponse {
     @SuppressWarnings("unused")
@@ -33,6 +30,9 @@ public class BagResponse extends BaseResponse {
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("order_id")
+    @Expose
+    private int orderId;
 
 
     protected BagResponse(Parcel in) {
@@ -69,4 +69,7 @@ public class BagResponse extends BaseResponse {
         return items;
     }
 
+    public int getOrderId() {
+        return orderId;
+    }
 }

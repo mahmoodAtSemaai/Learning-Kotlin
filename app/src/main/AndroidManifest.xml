@@ -128,16 +128,16 @@
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
         <activity
             android:name=".activity.BagActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.CheckoutActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/BaseTheme.AppTheme.NoActionBar.SpinnerStyle" />
+            android:screenOrientation="portrait">
+        </activity>
         <activity
-            android:name=".activity.OrderPlacedActivity"
-            android:launchMode="singleTop"
+            android:name=".activity.FragmentContainerActivity"
+            android:launchMode="standard"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SubCategoryActivity"
