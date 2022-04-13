@@ -336,7 +336,7 @@
     <string name="checkout_heading_shipping_method">Shipping Method</string>
     <string name="checkout_select_a_shipping_method">Select a shipping method</string>
     <string name="checkout_heading_payment_method">Payment Information</string>
-    <string name="checkout_select_your_payment_method">Select your payment method</string>
+    <string name="checkout_select_your_payment_method">Select a payment method</string>
     <string name="checkout_heading_order_review">Review your order</string>
     <string name="order_review_payment_method">Payment Method</string>
     <string name="place_order">Place Order</string>
@@ -407,6 +407,7 @@
     <string name="in_stock_quantity_x">Stock: %1$d </string>
     <string name="quantity_exceeding">Your order quantity exceeds the stock</string>
     <string name="product_already_added">products already added in bag</string>
+    <string name="added_successfully">Added Successfully</string>
 
     <!--Fingerprint-->
     <string name="fingerprint_login_header">Fingerprint Login</string>
@@ -513,6 +514,7 @@
     <string name="cod_text_2">Cash On Delivery</string>
     <string name="confirmation">Confirmation</string>
     <string name="address">Address</string>
+    <string name="shipping">Shipping</string>
     <string name="shipping_method">Shipping Method</string>
     <string name="shipping_charges">Shipping Charges</string>
     <string name="minimum_transactions">Min. Transactions</string>

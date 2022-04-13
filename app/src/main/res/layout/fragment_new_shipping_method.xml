@@ -30,14 +30,13 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_shipping_method_heading"
+                    style="@style/medium_normal_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/spacing_tiny"
                     android:layout_marginTop="@dimen/spacing_normal"
                     android:text="@string/checkout_select_a_shipping_method"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textSize="@dimen/font_size_18"
-                    android:textStyle="bold"
                     app:layout_constraintEnd_toStartOf="@+id/guideline3"
                     app:layout_constraintStart_toStartOf="@+id/guideline2"
                     app:layout_constraintTop_toTopOf="parent" />

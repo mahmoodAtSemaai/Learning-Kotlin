@@ -192,7 +192,7 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
                                 }
                             } else {
                                 if (addToCartResponse.isSuccess()) {
-                                    ProductAddedToBagDialogFrag.newInstance(addToCartResponse.getProductName(), addToCartResponse.getMessage()).show(((BaseActivity) mContext).mSupportFragmentManager, RateAppDialogFragm.class.getSimpleName());
+                                    ProductAddedToBagDialogFrag.newInstance(addToCartResponse.getProductName(), mContext.getString(R.string.added_successfully)).show(((BaseActivity) mContext).mSupportFragmentManager, RateAppDialogFragm.class.getSimpleName());
                                 } else {
                                     showQuantityWarning(addToCartResponse.getMessage().replace(".0", ""));
                                 }

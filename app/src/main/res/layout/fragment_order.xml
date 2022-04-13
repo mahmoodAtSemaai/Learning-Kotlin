@@ -120,18 +120,19 @@
                     android:id="@+id/horizontal_divider_1"
                     layout="@layout/divider_horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/size_6"
+                    android:layout_height="@dimen/size_2"
                     android:layout_marginTop="@dimen/size_12"
                     app:layout_constraintTop_toBottomOf="@+id/tv_due_date_day" />
 
                 <TextView
                     android:id="@+id/tv_product_details_header"
-                    style="@style/large_bold_title_text"
+                    style="@style/medium_bold_text_no_caps"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_12"
                     android:text="@string/product_details"
                     android:textAllCaps="false"
+                    android:textSize="@dimen/font_size_18"
                     app:layout_constraintEnd_toStartOf="@+id/right_guideline"
                     app:layout_constraintStart_toStartOf="@+id/left_guideline"
                     app:layout_constraintTop_toBottomOf="@+id/horizontal_divider_1" />
@@ -141,7 +142,8 @@
                     layout="@layout/divider_horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/size_2"
-                    android:layout_marginTop="@dimen/size_6"
+                    android:visibility="invisible"
+                    android:layout_marginTop="@dimen/size_2"
                     app:layout_constraintTop_toBottomOf="@+id/tv_product_details_header" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -159,17 +161,18 @@
                     android:id="@+id/divider_2"
                     layout="@layout/divider_horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/size_8"
+                    android:layout_height="@dimen/size_2"
                     app:layout_constraintTop_toBottomOf="@+id/rv_products_info" />
 
                 <TextView
                     android:id="@+id/tv_delivery_details_heading"
-                    style="@style/large_bold_title_text"
+                    style="@style/medium_bold_text_no_caps"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_12"
                     android:text="@string/delivery_details"
                     android:textAllCaps="false"
+                    android:textSize="@dimen/font_size_18"
                     app:layout_constraintEnd_toStartOf="@+id/right_guideline"
                     app:layout_constraintStart_toStartOf="@+id/left_guideline"
                     app:layout_constraintTop_toBottomOf="@+id/divider_2" />
@@ -272,7 +275,7 @@
                     android:id="@+id/divider_4"
                     layout="@layout/divider_horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/size_6"
+                    android:layout_height="@dimen/size_2"
                     android:layout_marginTop="@dimen/size_10"
                     app:layout_constraintTop_toBottomOf="@+id/tv_address_description" />
 
@@ -305,7 +308,7 @@
                     android:id="@+id/divider_5"
                     layout="@layout/divider_horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/size_6"
+                    android:layout_height="@dimen/size_2"
                     android:layout_marginTop="@dimen/size_10"
                     app:layout_constraintTop_toBottomOf="@+id/btn_payment_status" />
 
@@ -346,12 +349,13 @@
 
                 <TextView
                     android:id="@+id/tv_payment_status_text"
-                    style="@style/large_bold_title_text"
+                    style="@style/medium_bold_text_no_caps"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_12"
                     android:text="@string/payment_status"
                     android:textAllCaps="false"
+                    android:textSize="@dimen/font_size_18"
                     app:layout_constraintEnd_toStartOf="@+id/tv_status"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="@+id/left_guideline"
@@ -359,12 +363,13 @@
 
                 <TextView
                     android:id="@+id/tv_status"
-                    style="@style/large_bold_title_text"
+                    style="@style/medium_bold_text_no_caps"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="end"
                     android:text="@{data.paymentStatus}"
                     android:textAllCaps="false"
+                    android:textSize="@dimen/font_size_18"
                     app:layout_constraintEnd_toStartOf="@+id/right_guideline"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/tv_payment_status_text"

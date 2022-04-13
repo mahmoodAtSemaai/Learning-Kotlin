@@ -23,9 +23,9 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_rectangular_white_bg_gray_border_1dp_corner_4dp"
+                android:background="@drawable/shape_rectangular_white_bg_grey_bg_border_1dp"
                 android:paddingHorizontal="@dimen/size_12"
-                android:paddingVertical="@dimen/size_6">
+                android:paddingVertical="@dimen/size_2">
 
                 <ImageView
                     android:id="@+id/iv_payment_method"

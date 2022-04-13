@@ -8,10 +8,10 @@
         <import
             alias="View"
             type="android.view.View" />
-        
+
         <variable
             name="converter"
-            type="com.webkul.mobikul.odoo.helper.CalendarUtil"/>
+            type="com.webkul.mobikul.odoo.helper.CalendarUtil" />
 
         <variable
             name="data"
@@ -47,14 +47,14 @@
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/tv_payment_status_heading"
-                        style="@style/large_bold_title_text"
+                        style="@style/medium_bold_text_no_caps"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/size_32"
                         android:text="@string/payment_is_pending"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/font_size_32"
+                        android:textSize="@dimen/font_size_20"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -64,14 +64,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/size_2"
                         android:layout_marginHorizontal="@dimen/size_40"
-                        android:layout_marginTop="@dimen/size_12"
+                        android:layout_marginTop="@dimen/size_32"
                         android:background="@color/white"
                         app:layout_constraintTop_toBottomOf="@id/tv_payment_status_heading" />
 
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/tv_payment_status_desc"
-                        style="@style/large_bold_title_text"
+                        style="@style/medium_bold_text_no_caps"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/size_20"
@@ -89,8 +89,8 @@
                         style="@style/medium_bold_text_no_caps"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/white"
                         android:text="@{data.paymentExpiryDate}"
+                        android:textColor="@color/white"
                         app:layout_constraintEnd_toStartOf="@+id/tv_payment_due_date_time"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="@+id/tv_payment_status_desc"
@@ -126,12 +126,12 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_virtual_account_bank"
-                    style="@style/large_bold_title_text"
+                    style="@style/medium_bold_text_no_caps"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/size_12"
                     android:layout_marginTop="@dimen/size_12"
-                    android:text='@{String.format("%s (%s)", data.bank.name, data.bank.type)}'
+                    android:text='@{String.format("%s (%s)", data.bank.name, @string/virtual_account)}'
                     android:textAllCaps="false"
                     app:layout_constraintEnd_toEndOf="@+id/divider_2"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -154,8 +154,6 @@
                     android:id="@+id/tv_account_number_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/size_20"
-                    android:layout_marginLeft="@dimen/size_20"
                     android:layout_marginTop="@dimen/size_16"
                     android:text="@string/account_number"
                     app:layout_constraintStart_toStartOf="@+id/divider_2"
@@ -182,7 +180,7 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_total_payment_text"
-                    style="@style/large_bold_title_text"
+                    style="@style/medium_bold_text_no_caps"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/size_20"
@@ -197,7 +195,7 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_total_payment_value"
-                    style="@style/large_bold_title_text"
+                    style="@style/medium_bold_text_no_caps"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_32"
@@ -218,7 +216,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/size_2"
                     android:layout_marginHorizontal="@dimen/font_size_20"
-                    android:layout_marginTop="@dimen/size_12"
+                    android:layout_marginTop="@dimen/size_16"
                     app:layout_constraintTop_toBottomOf="@+id/tv_total_payment_text"
                     tools:layout_editor_absoluteX="20dp" />
 

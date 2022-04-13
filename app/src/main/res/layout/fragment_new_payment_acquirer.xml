@@ -32,14 +32,13 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_payment_info_heading"
+                    style="@style/medium_normal_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/size_6"
                     android:layout_marginTop="@dimen/size_12"
                     android:text="@string/checkout_select_your_payment_method"
-                    android:textAllCaps="false"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold"
+                    android:textSize="@dimen/font_size_18"
                     app:layout_constraintEnd_toStartOf="@+id/guideline5"
                     app:layout_constraintStart_toStartOf="@+id/guideline4"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -107,9 +106,8 @@
             android:layout_alignParentBottom="true"
             android:layout_marginHorizontal="@dimen/size_12"
             android:layout_marginBottom="@dimen/size_8"
-
             android:text="@string/confirmation"
-            android:textAllCaps="true"
+            android:textAllCaps="false"
             android:textSize="@dimen/font_size_20"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

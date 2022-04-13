@@ -214,23 +214,37 @@
             android:paddingVertical="@dimen/size_4"
             android:text="@string/unserviceable_address_text"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/appCompatButton4" />
+            app:layout_constraintBottom_toTopOf="@+id/textView3" />
 
         <TextView
             android:id="@+id/appCompatButton4"
-            style="@style/medium_normal_text"
+            style="@style/medium_bold_text_no_caps"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@color/grey_bg"
             android:gravity="center_horizontal"
-            android:paddingVertical="@dimen/size_6"
-            android:text="@{@string/total_price_ns(String.valueOf(data.amountTotal))}"
+            android:paddingBottom="@dimen/size_6"
+            android:text="@{data.amountTotal}"
             android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_confirm_order"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="Total Payment\nRp47,000" />
+            tools:text="Rp47,000" />
+
+        <TextView
+            android:id="@+id/textView3"
+            style="@style/medium_normal_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/grey_bg"
+            android:gravity="center_horizontal"
+            android:paddingTop="@dimen/size_6"
+            android:text="@string/total_price"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/appCompatButton4"
+            app:layout_constraintEnd_toEndOf="@+id/appCompatButton4"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
         <androidx.appcompat.widget.AppCompatButton
@@ -248,7 +262,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/appCompatButton4"
-            app:layout_constraintTop_toTopOf="@+id/appCompatButton4" />
+            app:layout_constraintTop_toTopOf="@+id/textView3" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

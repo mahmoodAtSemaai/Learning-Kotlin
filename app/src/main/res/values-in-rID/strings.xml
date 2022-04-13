@@ -402,6 +402,7 @@
     <string name="in_stock_quantity_x">Stok: %1$d </string>
     <string name="quantity_exceeding">Jumlah pesanan Anda melebihi stok</string>
     <string name="product_already_added">produk sudah ditambahkan di tas</string>
+    <string name="added_successfully">Berhasil ditambahkan</string>
 
     <!--Fingerprint-->
     <string name="fingerprint_login_header">Masuk dengan sidik jari</string>
@@ -511,6 +512,7 @@
     <string name="cod_text_2">Cash On Delivery</string>
     <string name="confirmation">Konfirmasi</string>
     <string name="address">Alamat</string>
+    <string name="shipping">Pengiriman</string>
     <string name="shipping_method">Metode Pengiriman</string>
     <string name="shipping_charges">Biaya Pengiriman</string>
     <string name="minimum_transactions">Minimal Transaksi</string>

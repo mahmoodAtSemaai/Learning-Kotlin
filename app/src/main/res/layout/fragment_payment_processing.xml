@@ -41,18 +41,18 @@
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/cpi_loading"
-            android:layout_width="@dimen/size_96"
-            android:layout_height="@dimen/size_96"
+            android:layout_width="@dimen/size_64"
+            android:layout_height="@dimen/size_64"
             android:indeterminate="true"
             app:indicatorColor="@color/colorAccent"
-            app:indicatorSize="@dimen/size_96"
+            app:indicatorSize="@dimen/size_64"
             app:layout_constraintBottom_toTopOf="@+id/guideline2"
             app:layout_constraintEnd_toEndOf="@+id/iv_semaai_logo"
             app:layout_constraintStart_toStartOf="@+id/iv_semaai_logo"
             app:layout_constraintTop_toTopOf="@+id/guideline2"
             app:trackColor="@color/white"
-            app:trackCornerRadius="@dimen/size_16"
-            app:trackThickness="@dimen/size_12" />
+            app:trackCornerRadius="@dimen/size_8"
+            app:trackThickness="@dimen/size_8" />
 
 
         <TextView
@@ -61,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/processing"
-            android:textSize="@dimen/font_size_24"
+            android:textSize="@dimen/font_size_20"
             app:layout_constraintBottom_toTopOf="@+id/guideline3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/please_wait_a_moment"
-            android:textSize="@dimen/font_size_20"
+            android:textSize="@dimen/font_size_18"
             app:layout_constraintEnd_toEndOf="@+id/textView11"
             app:layout_constraintStart_toStartOf="@+id/textView11"
             app:layout_constraintTop_toTopOf="@+id/guideline3" />
