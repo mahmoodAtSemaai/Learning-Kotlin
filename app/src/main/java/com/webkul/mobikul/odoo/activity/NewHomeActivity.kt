@@ -1,15 +1,11 @@
 package com.webkul.mobikul.odoo.activity
 
+import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.webkul.mobikul.odoo.R
@@ -19,6 +15,8 @@ import com.webkul.mobikul.odoo.handler.home.FragmentNotifier.HomeActivityFragmen
 import com.webkul.mobikul.odoo.model.home.HomePageResponse
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE
+
 
 class NewHomeActivity : BaseActivity() {
     private lateinit var binding: ActivityNewHomeBinding
@@ -37,6 +35,13 @@ class NewHomeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_new_home)
         setupUIController()
+
+        binding.drawerIcon.setOnClickListener {
+            val intent = Intent(this@NewHomeActivity, NewDrawerActivity::class.java)
+            intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, getHomePageResponse())
+            startActivity(intent)
+            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left)
+        }
     }
 
     override fun getScreenTitle(): String = TAG

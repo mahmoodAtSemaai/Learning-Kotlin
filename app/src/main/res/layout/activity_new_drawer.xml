@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<fragment
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:name="androidx.navigation.fragment.NavHostFragment"
+    app:defaultNavHost="true"
+    tools:context=".activity.NewDrawerActivity">
+
+</fragment>
+
+
+
+
+
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<layout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools">-->
+
+<!--    <data>-->
+
+<!--        <import type="android.view.View" />-->
+
+<!--        <import type="java.util.HashMap" />-->
+
+<!--        <import type="com.webkul.mobikul.odoo.helper.AppSharedPref" />-->
+
+<!--        <variable-->
+<!--            name="languageData"-->
+<!--            type="java.util.HashMap" />-->
+
+<!--        <variable-->
+<!--            name="handler"-->
+<!--            type="com.webkul.mobikul.odoo.handler.home.HomeActivityHandler" />-->
+
+<!--    </data>-->
+
+
+<!--    <androidx.core.widget.NestedScrollView-->
+<!--        android:id="@+id/nav_start_scroll_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:fillViewport="true">-->
+
+
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginStart="10dp"-->
+<!--            android:layout_marginLeft="10dp"-->
+<!--            android:layout_marginTop="20dp">-->
+
+
+<!--            <androidx.appcompat.widget.AppCompatImageView-->
+<!--                android:id="@+id/drawer_close_btn"-->
+<!--                android:layout_width="25dp"-->
+<!--                android:layout_height="25dp"-->
+<!--                android:layout_marginStart="10dp"-->
+<!--                android:layout_marginLeft="10dp"-->
+<!--                android:src="@drawable/ic_action_navigation_close">-->
+
+<!--            </androidx.appcompat.widget.AppCompatImageView>-->
+
+<!--            <androidx.appcompat.widget.AppCompatTextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:layout_marginStart="50dp"-->
+<!--                android:fontFamily="sans-serif-medium"-->
+<!--                android:gravity="center"-->
+<!--                android:text="Main Menu"-->
+<!--                android:textSize="16sp"-->
+<!--                android:textStyle="bold">-->
+
+<!--            </androidx.appcompat.widget.AppCompatTextView>-->
+
+
+<!--            <de.hdodenhof.circleimageview.CircleImageView-->
+<!--                android:id="@+id/profile_image"-->
+<!--                android:layout_width="50dp"-->
+<!--                android:layout_height="50dp"-->
+<!--                android:layout_below="@+id/drawer_close_btn"-->
+<!--                android:layout_marginStart="10dp"-->
+<!--                android:layout_marginTop="15dp"-->
+<!--                android:src="@color/grey_400">-->
+
+<!--            </de.hdodenhof.circleimageview.CircleImageView>-->
+
+
+<!--            <androidx.appcompat.widget.AppCompatTextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="50dp"-->
+<!--                android:layout_below="@+id/drawer_close_btn"-->
+<!--                android:layout_marginStart="80dp"-->
+<!--                android:layout_marginTop="15dp"-->
+<!--                android:fontFamily="sans-serif-medium"-->
+<!--                android:gravity="center"-->
+<!--                android:text="Username"-->
+<!--                android:textSize="16sp"-->
+<!--                android:textStyle="bold">-->
+
+<!--            </androidx.appcompat.widget.AppCompatTextView>-->
+
+
+<!--            <androidx.appcompat.widget.LinearLayoutCompat-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                android:layout_marginTop="100dp"-->
+<!--                android:layout_marginEnd="0dp"-->
+<!--                android:layout_marginRight="0dp"-->
+<!--                android:orientation="vertical"-->
+<!--                android:paddingBottom="@dimen/spacing_generic">-->
+
+<!--                <androidx.recyclerview.widget.RecyclerView-->
+<!--                    android:id="@+id/category_rv"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="10dp"-->
+<!--                    android:layout_marginEnd="10dp"-->
+<!--                    android:elevation="1dp"-->
+<!--                    android:nestedScrollingEnabled="false"-->
+<!--                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+<!--                    tools:targetApi="lollipop" />-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="55dp"-->
+<!--                    android:layout_marginStart="10dp"-->
+<!--                    android:drawableStart="@drawable/ic_vector_store_grey400_24dp_wrapper"-->
+<!--                    android:drawableLeft="@drawable/ic_vector_store_grey400_24dp_wrapper"-->
+<!--                    android:drawablePadding="@dimen/spacing_normal"-->
+<!--                    android:fontFamily="sans-serif-medium"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:onClick="@{()->handler.onClickMarketplaceIcon()}"-->
+<!--                    android:padding="@dimen/spacing_normal"-->
+<!--                    android:text="@string/marketplace"-->
+<!--                    android:visibility="@{AppSharedPref.isMarketplaceAllowed(context) ? View.VISIBLE : View.GONE }" />-->
+
+
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="55dp"-->
+<!--                    android:layout_marginStart="10dp"-->
+<!--                    android:drawableStart="@drawable/ic_setting"-->
+<!--                    android:drawableLeft="@drawable/ic_setting"-->
+<!--                    android:drawablePadding="@dimen/spacing_normal"-->
+<!--                    android:fontFamily="sans-serif-medium"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:onClick="@{()->handler.onClickSettings()}"-->
+<!--                    android:padding="@dimen/spacing_normal"-->
+<!--                    android:text="@string/setting" />-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="45dp"-->
+<!--                    android:layout_marginStart="26dp"-->
+<!--                    android:drawablePadding="@dimen/spacing_normal"-->
+<!--                    android:fontFamily="sans-serif-medium"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:onClick="@{()->handler.shareApp()}"-->
+<!--                    android:text="@string/share_app"-->
+<!--                    android:textStyle="bold" />-->
+
+
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="45dp"-->
+<!--                    android:layout_marginStart="26dp"-->
+<!--                    android:drawablePadding="@dimen/spacing_normal"-->
+<!--                    android:fontFamily="sans-serif-medium"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:onClick="@{()->handler.rateUs()}"-->
+<!--                    android:text="@string/rate_us"-->
+<!--                    android:textStyle="bold" />-->
+
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="80dp"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:layout_marginStart="25dp"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:weightSum="10">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:id="@+id/english_option"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="5"-->
+<!--                        android:background="@color/background_orange"-->
+<!--                        android:gravity="center"-->
+<!--                        android:text="Eng"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="16sp">-->
+
+<!--                    </TextView>-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:id="@+id/ind_option"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="5"-->
+<!--                        android:background="@color/gray"-->
+<!--                        android:gravity="center"-->
+<!--                        android:text="Ind"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textSize="16sp">-->
+
+<!--                    </TextView>-->
+
+<!--                </LinearLayout>-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:drawableStart="@drawable/ic_vector_language_grey400_24dp_wrapper"-->
+<!--                    android:drawableLeft="@drawable/ic_vector_language_grey400_24dp_wrapper"-->
+<!--                    android:drawablePadding="@dimen/spacing_normal"-->
+<!--                    android:fontFamily="sans-serif-medium"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:padding="@dimen/spacing_normal"-->
+<!--                    android:text="@string/language"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:visibility="gone" />-->
+
+
+<!--                &lt;!&ndash;-->
+<!--                                Settings Page-->
+<!--            &ndash;&gt;-->
+
+
+<!--                <androidx.legacy.widget.Space-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="0dp"-->
+<!--                    android:layout_weight="1" />-->
+
+<!--                <androidx.appcompat.widget.LinearLayoutCompat-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:gravity="center">-->
+
+
+<!--                </androidx.appcompat.widget.LinearLayoutCompat>-->
+
+
+<!--            </androidx.appcompat.widget.LinearLayoutCompat>-->
+
+<!--        </RelativeLayout>-->
+
+<!--    </androidx.core.widget.NestedScrollView>-->
+
+
+<!--</layout>-->
+
+
+    <!--                    <androidx.appcompat.widget.AppCompatTextView-->
+    <!--                        android:layout_width="wrap_content"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_gravity="bottom|center"-->
+    <!--                        android:onClick="@{()->handler.shareApp()}"-->
+    <!--                        android:padding="@dimen/spacing_generic"-->
+    <!--                        android:text="@string/share_app"-->
+    <!--                        android:textColor="?android:attr/textColorSecondary" />-->
+
+    <!--                    <View-->
+    <!--                        style="@style/DividerVertical"-->
+    <!--                        android:layout_margin="@dimen/spacing_generic" />-->
+
+    <!--                    <androidx.appcompat.widget.AppCompatTextView-->
+    <!--                        android:layout_width="wrap_content"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_gravity="bottom|center"-->
+    <!--                        android:onClick="@{()->handler.rateUs()}"-->
+    <!--                        android:padding="@dimen/spacing_generic"-->
+    <!--                        android:text="@string/rate_us"-->
+    <!--                        android:textColor="?android:attr/textColorSecondary" />-->

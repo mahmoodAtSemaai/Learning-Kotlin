@@ -23,9 +23,10 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/linear_layout"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="40dp"
             android:gravity="center"
-            android:padding="@dimen/spacing_normal"
+            android:paddingStart="15dp"
+            android:paddingLeft="15dp"
             android:paddingBottom="1dp">
 
 
@@ -37,6 +38,7 @@
                 android:layout_marginEnd="@dimen/spacing_normal"
                 android:layout_marginRight="@dimen/spacing_normal"
                 android:scaleType="centerInside"
+                android:visibility="gone"
                 app:imageUrl="@{data.icon}"
                 app:placeholder="@{@drawable/ic_vector_odoo_placeholder_grey400_48dp}"
                 tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
@@ -48,8 +50,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_tiny"
                 android:layout_marginLeft="@dimen/spacing_tiny"
-                android:drawableEnd="@{data.children.size() == 0 ? null : @drawable/ic_baseline_keyboard_arrow_down_24}"
-                android:drawableRight="@{data.children.size() == 0 ? null : @drawable/ic_baseline_keyboard_arrow_down_24}"
                 android:fontFamily="@font/roboto_medium"
                 android:gravity="center_vertical|start"
                 android:lines="1"
@@ -57,7 +57,6 @@
                 android:textDirection="anyRtl"
                 android:textSize="@dimen/text_size_nav_bar"
                 app:htmlText="@{data.name}"
-                tools:drawableEnd="@drawable/ic_vector_arrow_right_grey600_18dp_wrapper"
                 tools:ignore="RtlSymmetry"
                 tools:targetApi="jelly_bean_mr1"
                 tools:text="Parent Category" />
@@ -71,19 +70,6 @@
             android:layout_below="@+id/linear_layout"
             android:background="@color/grey_400" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/child_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="2dp"
-            android:layout_marginBottom="10dp"
-            android:visibility="gone"
-            android:layout_below="@+id/divider_text"
-            android:layout_marginStart="65dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="10dp" />
 
     </RelativeLayout>
 

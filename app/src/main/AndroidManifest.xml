@@ -42,6 +42,10 @@
         <activity
             android:name=".activity.NewHomeActivity"
             android:exported="false" />
+        <activity android:name=".activity.NewDrawerActivity"
+            android:exported="false"
+
+            />
         <activity
             android:name=".activity.UserApprovalActivity"
             android:exported="true"

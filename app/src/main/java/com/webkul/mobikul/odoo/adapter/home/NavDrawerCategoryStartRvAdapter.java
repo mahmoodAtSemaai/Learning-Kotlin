@@ -5,8 +5,10 @@ import android.content.Intent;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.icu.lang.UCharacter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,8 +72,9 @@ public class NavDrawerCategoryStartRvAdapter extends RecyclerView.Adapter<NavDra
     @Override
     public void onBindViewHolder(@NonNull CategoryParentViewHolder parentViewHolder, int parentPosition) {
         parentViewHolder.mBinding.setData(mCategoriesData.get(parentPosition));
-        parentViewHolder.mBinding.getRoot().setOnClickListener((view) -> onClickParentCategoryItem(mCategoriesData.get(parentPosition)));
+        parentViewHolder.mBinding.getRoot().setOnClickListener((view) -> onClickParentCategoryItem( parentViewHolder , mCategoriesData.get(parentPosition)));
         parentViewHolder.mBinding.executePendingBindings();
+
     }
 
     @Override
@@ -79,7 +82,7 @@ public class NavDrawerCategoryStartRvAdapter extends RecyclerView.Adapter<NavDra
         return mCategoriesData.size();
     }
 
-    private void onClickParentCategoryItem(CategoryData parentCategoryData) {
+    private void onClickParentCategoryItem(@NonNull CategoryParentViewHolder parentViewHolder,CategoryData parentCategoryData) {
         if (parentCategoryData.getChildren().isEmpty()) {
             AnalyticsImpl.INSTANCE.trackSubCategoryItemSelect(mParentCategory, parentCategoryData.getName(), parentCategoryData.getCategoryId());
             Intent intent = new Intent(mContext, CatalogProductActivity.class);
@@ -88,11 +91,30 @@ public class NavDrawerCategoryStartRvAdapter extends RecyclerView.Adapter<NavDra
             intent.putExtra(BUNDLE_KEY_CATEGORY_NAME, parentCategoryData.getName());
             mContext.startActivity(intent);
         } else {
-            AnalyticsImpl.INSTANCE.trackDynamicParentItemSelect(parentCategoryData.getName());
-            Intent subCategoryIntent = new Intent(mContext, SubCategoryActivity.class);
-            subCategoryIntent.putExtra(BUNDLE_KEY_PARENT_CATEGORY, parentCategoryData.getName());
-            subCategoryIntent.putExtra(BUNDLE_KEY_CATEGORY_OBJECT, parentCategoryData);
-            mContext.startActivity(subCategoryIntent);
+            if( parentViewHolder.mBinding.childRecyclerview.isShown()){
+                parentViewHolder.mBinding.childRecyclerview.setVisibility(View.GONE);
+                parentViewHolder.mBinding.categoryNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+            }
+            else{
+                parentViewHolder.mBinding.childRecyclerview.setVisibility(View.VISIBLE);
+                parentViewHolder.mBinding.categoryNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
+
+            }
+
+
+            List<CategoryData> data = parentCategoryData.getChildren();
+            String name =  parentCategoryData.getName();
+            NewChildDrawerLayoutAdapter adapter = new NewChildDrawerLayoutAdapter(parentViewHolder.itemView.getContext() , data , name);
+            parentViewHolder.mBinding.childRecyclerview.setLayoutManager(new LinearLayoutManager(parentViewHolder.itemView.getContext()));
+            parentViewHolder.mBinding.childRecyclerview.setHasFixedSize(true);
+            parentViewHolder.mBinding.childRecyclerview.setAdapter(adapter);
+
+
+//            AnalyticsImpl.INSTANCE.trackDynamicParentItemSelect(parentCategoryData.getName());
+//            Intent subCategoryIntent = new Intent(mContext, SubCategoryActivity.class);
+//            subCategoryIntent.putExtra(BUNDLE_KEY_PARENT_CATEGORY, parentCategoryData.getName());
+//            subCategoryIntent.putExtra(BUNDLE_KEY_CATEGORY_OBJECT, parentCategoryData);
+//            mContext.startActivity(subCategoryIntent);
         }
         if (mContext instanceof HomeActivity) {
             ((HomeActivity) mContext).mBinding.drawerLayout.closeDrawers();

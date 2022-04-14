@@ -30,8 +30,8 @@ import java.util.Locale;
 public class LocationHelper {
     public static final int LOCATION_SUCCESS_RESULT = 0;
     public static final int LOCATION_FAILURE_RESULT = 1;
-    public static final String LOCATION_RECEIVER = BuildConfig.APPLICATION_ID + ".RECEIVER";
-    public static final String LOCATION_DATA_EXTRA = BuildConfig.APPLICATION_ID + ".LOCATION_DATA_EXTRA";
+    public static final String LOCATION_RECEIVER = "com.semaai.toko" + ".RECEIVER";
+    public static final String LOCATION_DATA_EXTRA = "com.semaai.toko" + ".LOCATION_DATA_EXTRA";
     @SuppressWarnings("unused")
     private static final String TAG = "LocationHelper";
 

@@ -31,6 +31,7 @@ object DepVersions {
 
     const val sweetAlert = "1.3"
     const val circleImageView = "2.2.0"
+    const val picasso="2.71828"
     const val googlePlayService = "11.8.0"
     const val flexbox = "2.0.1"
     const val jsoup = "1.11.3"
@@ -83,6 +84,7 @@ object DepVersions {
     //SweetAlertDialog Module
     const val materialishProgress = "1.0"
     const val navigation = "2.4.1"
+    const val navigationfragment="1.4.0"
 
 
     //appMarketPlace Modules
@@ -156,6 +158,8 @@ object Dependencies {
     const val glideCompiler = "com.github.bumptech.glide:compiler:${DepVersions.glide}"
 
     const val circleImageView = "de.hdodenhof:circleimageview:${DepVersions.circleImageView}"
+    const val picasso = "com.squareup.picasso:picasso:${DepVersions.picasso}"
+
     const val jsoup = "org.jsoup:jsoup:${DepVersions.jsoup}"
 
     const val firebaseCrash = "com.google.firebase:firebase-crash:${DepVersions.firebaseCrash}"
@@ -224,5 +228,5 @@ object Dependencies {
     const val jUnit = "junit:junit:${DepVersions.jUnit}"
     const val navigation = "androidx.navigation:navigation-fragment-ktx:${DepVersions.navigation}"
     const val navigationUI = "androidx.navigation:navigation-ui-ktx:${DepVersions.navigation}"
-
+    const val navigationfragment = "androidx.fragment:fragment-ktx:${DepVersions.navigationfragment}"
 }

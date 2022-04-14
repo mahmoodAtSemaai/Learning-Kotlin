@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -44,12 +45,12 @@ public class HomeActivityHandler {
     }
 
     public void rateUs() {
-        ((HomeActivity) mContext).mBinding.drawerLayout.closeDrawers();
+//        ((HomeActivity) mContext).mBinding.drawerLayout.closeDrawers();
         RateAppDialogFragm.newInstance().show(((BaseActivity) mContext).mSupportFragmentManager, RateAppDialogFragm.class.getSimpleName());
     }
 
     public void shareApp() {
-        ((HomeActivity) mContext).mBinding.drawerLayout.closeDrawers();
+//        ((HomeActivity) mContext).mBinding.drawerLayout.closeDrawers();
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, APP_PLAYSTORE_URL);
@@ -88,30 +89,32 @@ public class HomeActivityHandler {
         }
     }
 
-    public void onClickLanguageIcon(HashMap languageMap) {
-        if (languageMap.size() > 0) {
-            RadioGroup group = new RadioGroup(mContext);
-            group.setOrientation(LinearLayout.VERTICAL);
-            group.setPadding(20, 20, 20, 20);
-            HashMap<String, String> map = languageMap;
-            for (Map.Entry<String, String> pair : map.entrySet()) {
-                RadioButton button = new RadioButton(mContext);
-                button.setText(pair.getValue());
-                button.setTag(pair.getKey());
-                group.addView(button);
-                if (pair.getKey().equals(AppSharedPref.getLanguageCode(mContext))) {
-                    group.check(button.getId());
-                    AnalyticsImpl.INSTANCE.trackLanguageClick(AppSharedPref.getLanguageCode(mContext));
-                }
-            }
-            group.setOnCheckedChangeListener((group1, checkedId) -> {
-                RadioButton selectedButton = group1.findViewById(checkedId);
-                String selectedLang = (String) selectedButton.getTag();
+    public void onClickLanguageIcon(String  lang_code) {
+
+        AnalyticsImpl.INSTANCE.trackLanguageClick(lang_code);
+
+//            RadioGroup group = new RadioGroup(mContext);
+//            group.setOrientation(LinearLayout.VERTICAL);
+//            group.setPadding(20, 20, 20, 20);
+//            HashMap<String, String> map = languageMap;
+//            for (Map.Entry<String, String> pair : map.entrySet()) {
+//                RadioButton button = new RadioButton(mContext);
+//                button.setText(pair.getValue());
+//                button.setTag(pair.getKey());
+//                group.addView(button);
+//                if (pair.getKey().equals(AppSharedPref.getLanguageCode(mContext))) {
+//                    group.check(button.getId());
+//                }
+//            }
+//            group.setOnCheckedChangeListener((group1, checkedId) -> {
+//                RadioButton selectedButton = group1.findViewById(checkedId);
+//                String selectedLang = (String) selectedButton.getTag();
                 try {
-                    if (!selectedLang.equals(AppSharedPref.getLanguageCode(mContext))) {
-                        AppSharedPref.setLanguageCode(mContext, selectedLang);
+//                    if (!selectedLang.equals(AppSharedPref.getLanguageCode(mContext))) {
+
+                        AppSharedPref.setLanguageCode(mContext, lang_code);
                         AppSharedPref.setIsLanguageChange(mContext, true);
-                        AnalyticsImpl.INSTANCE.trackLanguageChangeSuccess(selectedLang);
+                        AnalyticsImpl.INSTANCE.trackLanguageChangeSuccess(lang_code);
                         // delete product data
 
                         SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(mContext);
@@ -121,17 +124,17 @@ public class HomeActivityHandler {
                             languageDialog.dismiss();
                         }
                         BaseActivity.setLocale(mContext, true);
-                    }
+
                 } catch (Exception e) {
-                    AnalyticsImpl.INSTANCE.trackLanguageChangeFail(selectedLang, ErrorConstants.LanguageChangeError.INSTANCE.getErrorCode(), ErrorConstants.LanguageChangeError.INSTANCE.getErrorMessage());
+                    AnalyticsImpl.INSTANCE.trackLanguageChangeFail(lang_code, ErrorConstants.LanguageChangeError.INSTANCE.getErrorCode(), ErrorConstants.LanguageChangeError.INSTANCE.getErrorMessage());
                 }
 
-            });
+//            });
 
-            languageDialog = new AlertDialog.Builder(mContext).setTitle(R.string.language)
-                    .setView(group).setCancelable(true).create();
-            languageDialog.show();
-        }
+//            languageDialog = new AlertDialog.Builder(mContext).setTitle(R.string.language)
+//                    .setView(group).setCancelable(true).create();
+//            languageDialog.show();
+
     }
 
     public void onClickSettings() {
