@@ -44,6 +44,9 @@
     <dimen name="spacing_min">2dp</dimen>
     <dimen name="margin_top_grid">105dp</dimen>
 
+<!--    Material search view of home page-->
+    <dimen name="hamburger_icon_right_margin">20dp</dimen>
+
     <!--=============================================================================================================================================================
                                                     Background dimensions
     =============================================================================================================================================================-->
@@ -95,5 +98,11 @@
 
     <dimen name="max_qty_dialog_height">200dp</dimen>
     <dimen name="button_margin">16dp</dimen>
+
+
+<!--    size of hambuger icon-->
+    <dimen name="hamburger_icon_dimens">30dp</dimen>
+
+
 
 </resources>

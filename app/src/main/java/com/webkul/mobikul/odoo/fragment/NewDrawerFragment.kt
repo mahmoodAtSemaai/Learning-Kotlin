@@ -11,7 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.webkul.mobikul.odoo.R
-import com.webkul.mobikul.odoo.adapter.home.NavDrawerCategoryStartRvAdapter
+import com.webkul.mobikul.odoo.adapter.home.NavDrawerCategoryStartAdapter
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper
 import com.webkul.mobikul.odoo.databinding.FragmentNewDrawerBinding
 import com.webkul.mobikul.odoo.handler.home.HomeActivityHandler
@@ -64,7 +64,7 @@ class NewDrawerFragment : BaseFragment() {
         if (data != null) {
             setUpDrawer(data)
         } else {
-            Toast.makeText(context, "Something Went Wrong!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.error_something_went_wrong, Toast.LENGTH_SHORT).show()
         }
 
 
@@ -87,18 +87,18 @@ class NewDrawerFragment : BaseFragment() {
         val langPref = AppSharedPref.getLanguageCode(context)
 
         mBinding.englishOption.setOnClickListener {
-            if (langPref != "en_US") {
-                HomeActivityHandler(context).onClickLanguageIcon("en_US")
+            if (langPref != getString(R.string.english_lang)) {
+                HomeActivityHandler(context).onClickLanguageIcon(getString(R.string.english_lang))
             }
         }
 
         mBinding.indOption.setOnClickListener {
-            if (langPref != "id_ID") {
-                HomeActivityHandler(context).onClickLanguageIcon("id_ID")
+            if (langPref != getString(R.string.ind_lang)) {
+                HomeActivityHandler(context).onClickLanguageIcon(getString(R.string.ind_lang))
             }
         }
 
-        if (langPref.equals("en_US")) {
+        if (langPref.equals(getString(R.string.english_lang))) {
             mBinding.englishOption.setBackgroundColor(resources.getColor(R.color.background_orange))
             mBinding.englishOption.setTextColor(resources.getColor(R.color.white))
             mBinding.indOption.setBackgroundColor(resources.getColor(R.color.gray))
@@ -115,7 +115,7 @@ class NewDrawerFragment : BaseFragment() {
     private fun setUpDrawer(homePageResponse: HomePageResponse?) {
         if (homePageResponse != null) {
             mBinding.categoryRv.adapter =
-                NavDrawerCategoryStartRvAdapter(
+                NavDrawerCategoryStartAdapter(
                     context,
                     homePageResponse.categories[0].children,
                     ""

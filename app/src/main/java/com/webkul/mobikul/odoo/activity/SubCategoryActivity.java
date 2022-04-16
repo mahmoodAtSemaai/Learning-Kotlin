@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 
 import com.webkul.mobikul.odoo.R;
-import com.webkul.mobikul.odoo.adapter.home.NavDrawerCategoryStartRvAdapter;
+import com.webkul.mobikul.odoo.adapter.home.NavDrawerCategoryStartAdapter;
 import com.webkul.mobikul.odoo.custom.MaterialSearchView;
 import com.webkul.mobikul.odoo.databinding.ActivitySubCategoryBinding;
 import com.webkul.mobikul.odoo.model.generic.CategoryData;
@@ -49,7 +49,7 @@ public class SubCategoryActivity extends BaseActivity {
                 String parentCategory = getIntent().getExtras().getString(BUNDLE_KEY_PARENT_CATEGORY);
                 if (data != null) {
                     mBinding.setTitle(data.getName());
-                    mBinding.subCategoryRecyclerView.setAdapter(new NavDrawerCategoryStartRvAdapter(this, data.getChildren(), parentCategory));
+                    mBinding.subCategoryRecyclerView.setAdapter(new NavDrawerCategoryStartAdapter(this, data.getChildren(), parentCategory));
                 }
             }
         }

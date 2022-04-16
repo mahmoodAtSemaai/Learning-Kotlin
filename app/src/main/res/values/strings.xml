@@ -488,5 +488,7 @@
     <string name="favorite">Favorite</string>
     <string name="transaction">Transaction</string>
     <string name="profile">Profile</string>
+    <string name="english_lang">en_US</string>
+    <string name="ind_lang">id_ID</string>
 
 </resources>

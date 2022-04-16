@@ -22,8 +22,8 @@ import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
 import com.webkul.mobikul.odoo.activity.NewHomeActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.activity.UpdateAddressActivity;
-import com.webkul.mobikul.odoo.adapter.home.CatalogProductListHomeRvAdapter;
-import com.webkul.mobikul.odoo.adapter.home.FeaturedCategoriesRvAdapter;
+import com.webkul.mobikul.odoo.adapter.home.CatalogProductListHomeAdapter;
+import com.webkul.mobikul.odoo.adapter.home.FeaturedCategoriesAdapter;
 import com.webkul.mobikul.odoo.adapter.home.HomeBannerAdapter;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
@@ -164,7 +164,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         mBinding.setData(homePageResponse);
 
         /*FEATURED CATEGORIES*/
-        mBinding.featuredCategoriesRv.setAdapter(new FeaturedCategoriesRvAdapter(getContext(), homePageResponse.getFeaturedCategories(), value));
+        mBinding.featuredCategoriesRv.setAdapter(new FeaturedCategoriesAdapter(getContext(), homePageResponse.getFeaturedCategories(), value));
 
         /*BANNER SLIDERS*/
         mBinding.bannerViewPager.setAdapter(new HomeBannerAdapter(getContext(), homePageResponse.getBannerImages()));
@@ -413,7 +413,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
     private void initProductCatalogRv() {
 
-        mBinding.productCatalogRv.setAdapter(new CatalogProductListHomeRvAdapter(requireContext(), mBinding.getCatalogProductData().getProducts(), VIEW_TYPE_LIST));
+        mBinding.productCatalogRv.setAdapter(new CatalogProductListHomeAdapter(requireContext(), mBinding.getCatalogProductData().getProducts(), VIEW_TYPE_LIST));
         int spanCount = 2;
         GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(), spanCount);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -449,7 +449,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
     }
 
-    FeaturedCategoriesRvAdapter.FeaturedCategoryDataValue value = new FeaturedCategoriesRvAdapter.FeaturedCategoryDataValue() {
+    FeaturedCategoriesAdapter.FeaturedCategoryDataValue value = new FeaturedCategoriesAdapter.FeaturedCategoryDataValue() {
         @Override
         public void data(FeaturedCategoryData featuredCategoryData) {
             mFeaturedCategoryData = featuredCategoryData;

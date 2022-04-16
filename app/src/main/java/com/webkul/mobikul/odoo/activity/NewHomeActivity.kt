@@ -36,6 +36,12 @@ class NewHomeActivity : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_new_home)
         setupUIController()
 
+        //Open the Navigation Drawer
+        openDrawer()
+    }
+
+
+    private fun openDrawer() {
         binding.drawerIcon.setOnClickListener {
             val intent = Intent(this@NewHomeActivity, NewDrawerActivity::class.java)
             intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, getHomePageResponse())

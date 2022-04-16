@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,7 +18,7 @@ import android.view.ViewGroup;
 
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
-import com.webkul.mobikul.odoo.adapter.catalog.OrderRvAdapter;
+import com.webkul.mobikul.odoo.adapter.catalog.OrderAdapter;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.databinding.FragmentOrderListBinding;
@@ -115,7 +114,7 @@ public class OrderListFragment extends BaseFragment {
                                     }
                                 }
                             });
-                            mBinding.orderRv.setAdapter(new OrderRvAdapter(getContext(), mBinding.getData().getOrders(), TAG));
+                            mBinding.orderRv.setAdapter(new OrderAdapter(getContext(), mBinding.getData().getOrders(), TAG));
                         }
                     } else {
                         mBinding.getData().setLazyLoading(false);

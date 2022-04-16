@@ -93,25 +93,7 @@ public class HomeActivityHandler {
 
         AnalyticsImpl.INSTANCE.trackLanguageClick(lang_code);
 
-//            RadioGroup group = new RadioGroup(mContext);
-//            group.setOrientation(LinearLayout.VERTICAL);
-//            group.setPadding(20, 20, 20, 20);
-//            HashMap<String, String> map = languageMap;
-//            for (Map.Entry<String, String> pair : map.entrySet()) {
-//                RadioButton button = new RadioButton(mContext);
-//                button.setText(pair.getValue());
-//                button.setTag(pair.getKey());
-//                group.addView(button);
-//                if (pair.getKey().equals(AppSharedPref.getLanguageCode(mContext))) {
-//                    group.check(button.getId());
-//                }
-//            }
-//            group.setOnCheckedChangeListener((group1, checkedId) -> {
-//                RadioButton selectedButton = group1.findViewById(checkedId);
-//                String selectedLang = (String) selectedButton.getTag();
                 try {
-//                    if (!selectedLang.equals(AppSharedPref.getLanguageCode(mContext))) {
-
                         AppSharedPref.setLanguageCode(mContext, lang_code);
                         AppSharedPref.setIsLanguageChange(mContext, true);
                         AnalyticsImpl.INSTANCE.trackLanguageChangeSuccess(lang_code);
@@ -128,12 +110,6 @@ public class HomeActivityHandler {
                 } catch (Exception e) {
                     AnalyticsImpl.INSTANCE.trackLanguageChangeFail(lang_code, ErrorConstants.LanguageChangeError.INSTANCE.getErrorCode(), ErrorConstants.LanguageChangeError.INSTANCE.getErrorMessage());
                 }
-
-//            });
-
-//            languageDialog = new AlertDialog.Builder(mContext).setTitle(R.string.language)
-//                    .setView(group).setCancelable(true).create();
-//            languageDialog.show();
 
     }
 

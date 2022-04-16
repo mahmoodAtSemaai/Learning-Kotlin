@@ -81,7 +81,7 @@ public class FCMMessageReceiverService extends FirebaseMessagingService {
             int notificationId = 0;
             Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
             Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,"com.semaai.toko"+"id")
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,BuildConfig.APPLICATION_ID+"id")
                     .setSmallIcon(getNotificationIcon())
                     .setContentTitle(remoteMessage.getNotification().getTitle())
                     .setContentText(remoteMessage.getNotification().getBody())
@@ -146,7 +146,7 @@ public class FCMMessageReceiverService extends FirebaseMessagingService {
 
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                NotificationChannel channel  = new NotificationChannel("com.semaai.toko"+"id","com.semaai.toko"+"channel",NotificationManager.IMPORTANCE_HIGH);
+                NotificationChannel channel  = new NotificationChannel(BuildConfig.APPLICATION_ID+"id",BuildConfig.APPLICATION_ID+"channel",NotificationManager.IMPORTANCE_HIGH);
                 notificationManager.createNotificationChannel(channel);
             }
             notificationManager.notify(notificationId, notificationBuilder.build());

@@ -19,9 +19,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;

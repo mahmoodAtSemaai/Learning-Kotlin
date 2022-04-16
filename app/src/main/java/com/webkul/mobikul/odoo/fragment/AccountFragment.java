@@ -340,13 +340,13 @@ public class AccountFragment extends BaseFragment {
     }
 
     //Commented this was crashing a crash
-//
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        EventBus.getDefault().register(getContext());
-//        EventBus.getDefault().post(FragmentNotifier.HomeActivityFragments.ACCOUNT_FRAGMENT);
-//    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(getContext());
+        EventBus.getDefault().post(FragmentNotifier.HomeActivityFragments.ACCOUNT_FRAGMENT);
+    }
 
     @Override
     public void onStop() {

@@ -28,12 +28,12 @@
             android:background="#FFD8B8">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/hamburger_icon_dimens"
+            android:layout_height="@dimen/hamburger_icon_dimens"
             android:id="@+id/drawer_icon"
             android:src="@drawable/ic_baseline_menu_24"
             android:layout_gravity="end"
-            android:layout_marginEnd="20dp"/>
+            android:layout_marginEnd="@dimen/hamburger_icon_right_margin"/>
 
         </com.google.android.material.appbar.MaterialToolbar>
 

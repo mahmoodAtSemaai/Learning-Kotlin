@@ -8,8 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.icu.lang.UCharacter;
-import android.util.Log;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +18,8 @@ import android.view.ViewGroup;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
 import com.webkul.mobikul.odoo.activity.HomeActivity;
-import com.webkul.mobikul.odoo.activity.SubCategoryActivity;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.databinding.ItemDrawerStartCategoryBinding;
-import com.webkul.mobikul.odoo.generated.callback.OnClickListener;
 import com.webkul.mobikul.odoo.helper.CatalogHelper;
 import com.webkul.mobikul.odoo.model.generic.CategoryData;
 
@@ -29,8 +28,6 @@ import java.util.List;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGORY_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGORY_NAME;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGORY_OBJECT;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PARENT_CATEGORY;
 
 /**
  * Webkul Software.
@@ -42,12 +39,12 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PARENT_
  * @license https://store.webkul.com/license.html ASL Licence
  * @link https://store.webkul.com/license.html
  */
-public class NavDrawerCategoryStartRvAdapter extends RecyclerView.Adapter<NavDrawerCategoryStartRvAdapter.CategoryParentViewHolder> {
+public class NavDrawerCategoryStartAdapter extends RecyclerView.Adapter<NavDrawerCategoryStartAdapter.CategoryParentViewHolder> {
     private final Context mContext;
     private List<CategoryData> mCategoriesData;
     private final String mParentCategory;
 
-    public NavDrawerCategoryStartRvAdapter(Context context, List<CategoryData> categoriesData, String parentCategory) {
+    public NavDrawerCategoryStartAdapter(Context context, List<CategoryData> categoriesData, String parentCategory) {
         mContext = context;
         mCategoriesData = categoriesData;
         mParentCategory = parentCategory;
@@ -61,18 +58,10 @@ public class NavDrawerCategoryStartRvAdapter extends RecyclerView.Adapter<NavDra
         return new CategoryParentViewHolder(parentView);
     }
 
-//    @NonNull
-//    @Override
-//    public CategoryChildViewHolder onCreateChildViewHolder(@NonNull ViewGroup childViewGroup, int viewType) {
-//        LayoutInflater inflater = LayoutInflater.from(mContext);
-//        View childView = inflater.inflate(R.layout.item_drawer_start_subcategory, childViewGroup, false);
-//        return new NavDrawerCategoryStartRvAdapter.CategoryChildViewHolder(childView);
-//    }
-
     @Override
     public void onBindViewHolder(@NonNull CategoryParentViewHolder parentViewHolder, int parentPosition) {
         parentViewHolder.mBinding.setData(mCategoriesData.get(parentPosition));
-        parentViewHolder.mBinding.getRoot().setOnClickListener((view) -> onClickParentCategoryItem( parentViewHolder , mCategoriesData.get(parentPosition)));
+        parentViewHolder.mBinding.getRoot().setOnClickListener((view) -> onClickParentCategoryItem(parentViewHolder, mCategoriesData.get(parentPosition)));
         parentViewHolder.mBinding.executePendingBindings();
 
     }
@@ -82,7 +71,7 @@ public class NavDrawerCategoryStartRvAdapter extends RecyclerView.Adapter<NavDra
         return mCategoriesData.size();
     }
 
-    private void onClickParentCategoryItem(@NonNull CategoryParentViewHolder parentViewHolder,CategoryData parentCategoryData) {
+    private void onClickParentCategoryItem(@NonNull CategoryParentViewHolder parentViewHolder, CategoryData parentCategoryData) {
         if (parentCategoryData.getChildren().isEmpty()) {
             AnalyticsImpl.INSTANCE.trackSubCategoryItemSelect(mParentCategory, parentCategoryData.getName(), parentCategoryData.getCategoryId());
             Intent intent = new Intent(mContext, CatalogProductActivity.class);
@@ -91,43 +80,35 @@ public class NavDrawerCategoryStartRvAdapter extends RecyclerView.Adapter<NavDra
             intent.putExtra(BUNDLE_KEY_CATEGORY_NAME, parentCategoryData.getName());
             mContext.startActivity(intent);
         } else {
-            if( parentViewHolder.mBinding.childRecyclerview.isShown()){
+            if (parentViewHolder.mBinding.childRecyclerview.isShown()) {
                 parentViewHolder.mBinding.childRecyclerview.setVisibility(View.GONE);
-                parentViewHolder.mBinding.categoryNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
-            }
-            else{
+                changeDrawable(parentViewHolder, R.drawable.ic_baseline_keyboard_arrow_down_24);
+            } else {
                 parentViewHolder.mBinding.childRecyclerview.setVisibility(View.VISIBLE);
-                parentViewHolder.mBinding.categoryNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_up_24, 0);
-
+                changeDrawable(parentViewHolder, R.drawable.ic_baseline_keyboard_arrow_up_24);
             }
-
 
             List<CategoryData> data = parentCategoryData.getChildren();
-            String name =  parentCategoryData.getName();
-            NewChildDrawerLayoutAdapter adapter = new NewChildDrawerLayoutAdapter(parentViewHolder.itemView.getContext() , data , name);
+            String name = parentCategoryData.getName();
+            NewChildDrawerLayoutAdapter adapter = new NewChildDrawerLayoutAdapter(parentViewHolder.itemView.getContext(), data, name);
             parentViewHolder.mBinding.childRecyclerview.setLayoutManager(new LinearLayoutManager(parentViewHolder.itemView.getContext()));
             parentViewHolder.mBinding.childRecyclerview.setHasFixedSize(true);
             parentViewHolder.mBinding.childRecyclerview.setAdapter(adapter);
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                TransitionManager.beginDelayedTransition(parentViewHolder.mBinding.childRecyclerview);
+            }
 
-//            AnalyticsImpl.INSTANCE.trackDynamicParentItemSelect(parentCategoryData.getName());
-//            Intent subCategoryIntent = new Intent(mContext, SubCategoryActivity.class);
-//            subCategoryIntent.putExtra(BUNDLE_KEY_PARENT_CATEGORY, parentCategoryData.getName());
-//            subCategoryIntent.putExtra(BUNDLE_KEY_CATEGORY_OBJECT, parentCategoryData);
-//            mContext.startActivity(subCategoryIntent);
         }
         if (mContext instanceof HomeActivity) {
             ((HomeActivity) mContext).mBinding.drawerLayout.closeDrawers();
         }
 
     }
-//
-//    @Override
-//    public void onBindChildViewHolder(@NonNull CategoryChildViewHolder childViewHolder, int parentPosition, int childPosition, @NonNull CategoryData childCategoryData) {
-//        childViewHolder.mBinding.setData(childCategoryData);
-//        childViewHolder.mBinding.setHandler(new NavDrawerStartSubCategoryHandler(mContext, childCategoryData));
-//        childViewHolder.mBinding.executePendingBindings();
-//    }
+
+    private void changeDrawable(@NonNull CategoryParentViewHolder parentViewHolder, Integer drawable) {
+        parentViewHolder.mBinding.categoryNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawable, 0);
+    }
 
 
     static class CategoryParentViewHolder extends RecyclerView.ViewHolder {
@@ -138,24 +119,7 @@ public class NavDrawerCategoryStartRvAdapter extends RecyclerView.Adapter<NavDra
             mBinding = DataBindingUtil.bind(itemView);
         }
 
-//        @Override
-//        @UiThread
-//        public void onClick(View v) {
-//            super.onClick(v);
-//            if (isExpanded()) {
-//                mBinding.categoryNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_vector_arrow_down_grey600_18dp_wrapper, 0);
-//            } else {
-//                mBinding.categoryNameTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_vector_arrow_right_grey600_18dp_wrapper, 0);
-//            }
-//        }
     }
 
-//    static class CategoryChildViewHolder extends ChildViewHolder {
-//        private final ItemDrawerStartSubcategoryBinding mBinding;
-//
-//        private CategoryChildViewHolder(View itemView) {
-//            super(itemView);
-//            mBinding = DataBindingUtil.bind(itemView);
-//        }
-//    }
+
 }

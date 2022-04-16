@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
-import com.webkul.mobikul.odoo.adapter.catalog.OrderRvAdapter;
+import com.webkul.mobikul.odoo.adapter.catalog.OrderAdapter;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.databinding.FragmentDashboardBinding;
@@ -114,7 +114,7 @@ public class DashboardFragment extends BaseFragment {
                     });
                 } else {
                     mBinding.setData(dashboardData);
-                    mBinding.recentOrderRv.setAdapter(new OrderRvAdapter(getContext(), mBinding.getData().getRecentOrders(), TAG));
+                    mBinding.recentOrderRv.setAdapter(new OrderAdapter(getContext(), mBinding.getData().getRecentOrders(), TAG));
                 }
             }
 

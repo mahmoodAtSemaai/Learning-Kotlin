@@ -10,10 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.webkul.mobikul.odoo.R;
-import com.webkul.mobikul.odoo.databinding.ItemFeaturedCategoryBinding;
 import com.webkul.mobikul.odoo.databinding.ItemFeaturedCategoryHomeBinding;
-import com.webkul.mobikul.odoo.fragment.HomeFragment;
-import com.webkul.mobikul.odoo.handler.home.FeaturedCategoryHandler;
 import com.webkul.mobikul.odoo.model.generic.FeaturedCategoryData;
 
 import java.util.List;
@@ -35,7 +32,7 @@ import java.util.List;
 
  */
 
-public class FeaturedCategoriesRvAdapter extends RecyclerView.Adapter<FeaturedCategoriesRvAdapter.ViewHolder> {
+public class FeaturedCategoriesAdapter extends RecyclerView.Adapter<FeaturedCategoriesAdapter.ViewHolder> {
     @SuppressWarnings("unused")
     private static final String TAG = "FeaturedCategoriesRvAda";
     private FeaturedCategoryDataValue featuredCategoryDataValue;
@@ -46,8 +43,8 @@ public class FeaturedCategoriesRvAdapter extends RecyclerView.Adapter<FeaturedCa
     private final Context mContext;
     private final List<FeaturedCategoryData> mFeaturedCategoryDatas;
 
-    public FeaturedCategoriesRvAdapter(Context context, List<FeaturedCategoryData> featuredCategotyDatas,
-                                       FeaturedCategoryDataValue featuredCategoryDataValue) {
+    public FeaturedCategoriesAdapter(Context context, List<FeaturedCategoryData> featuredCategotyDatas,
+                                     FeaturedCategoryDataValue featuredCategoryDataValue) {
         mContext = context;
         mFeaturedCategoryDatas = featuredCategotyDatas;
         this.featuredCategoryDataValue = featuredCategoryDataValue;
@@ -99,6 +96,6 @@ public class FeaturedCategoriesRvAdapter extends RecyclerView.Adapter<FeaturedCa
     }
 
     public interface FeaturedCategoryDataValue {
-        void data(com.webkul.mobikul.odoo.model.generic.FeaturedCategoryData featuredCategoryData);
+        void data(FeaturedCategoryData featuredCategoryData);
     }
 }

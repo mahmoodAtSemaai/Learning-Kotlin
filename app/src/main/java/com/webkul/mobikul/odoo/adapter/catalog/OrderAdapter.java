@@ -27,7 +27,7 @@ import java.util.List;
  * @link https://store.webkul.com/license.html
  */
 
-public class OrderRvAdapter extends RecyclerView.Adapter<OrderRvAdapter.ViewHolder> {
+public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> {
     @SuppressWarnings("unused")
     private static final String TAG = "OrderRvAdapter";
 
@@ -35,7 +35,7 @@ public class OrderRvAdapter extends RecyclerView.Adapter<OrderRvAdapter.ViewHold
     private final List<OrderData> mOrderDatas;
     private final String mSourceActivity;
 
-    public OrderRvAdapter(Context context, List<OrderData> orderDatas, String sourceActivity) {
+    public OrderAdapter(Context context, List<OrderData> orderDatas, String sourceActivity) {
         mContext = context;
         mOrderDatas = orderDatas;
         mSourceActivity = sourceActivity;
