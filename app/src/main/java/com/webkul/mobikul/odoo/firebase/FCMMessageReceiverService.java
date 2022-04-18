@@ -1,6 +1,18 @@
 package com.webkul.mobikul.odoo.firebase;
 
-import android.app.Notification;
+import static com.webkul.mobikul.odoo.constant.ApplicationConstant.TYPE_CATEGORY;
+import static com.webkul.mobikul.odoo.constant.ApplicationConstant.TYPE_CUSTOM;
+import static com.webkul.mobikul.odoo.constant.ApplicationConstant.TYPE_NONE;
+import static com.webkul.mobikul.odoo.constant.ApplicationConstant.TYPE_PRODUCT;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGORY_ID;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGORY_NAME;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_NAME;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_SEARCH_DOMAIN;
+import static com.webkul.mobikul.odoo.helper.CatalogHelper.CatalogProductRequestType.SEARCH_DOMAIN;
+
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,10 +22,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.webkit.URLUtil;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -37,36 +50,16 @@ import java.util.Map;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.webkul.mobikul.odoo.constant.ApplicationConstant.TYPE_CATEGORY;
-import static com.webkul.mobikul.odoo.constant.ApplicationConstant.TYPE_CUSTOM;
-import static com.webkul.mobikul.odoo.constant.ApplicationConstant.TYPE_NONE;
-import static com.webkul.mobikul.odoo.constant.ApplicationConstant.TYPE_PRODUCT;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGORY_ID;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGORY_NAME;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_NAME;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_SEARCH_DOMAIN;
-import static com.webkul.mobikul.odoo.helper.CatalogHelper.CatalogProductRequestType.SEARCH_DOMAIN;
-
 
 /**
-
  * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
+ *
  * @author Webkul <support@webkul.com>
-
+ * @package Mobikul App
+ * @Category Mobikul
  * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
  * @license https://store.webkul.com/license.html ASL Licence
-
  * @link https://store.webkul.com/license.html
-
  */
 public class FCMMessageReceiverService extends FirebaseMessagingService {
     @SuppressWarnings("unused")
@@ -74,14 +67,14 @@ public class FCMMessageReceiverService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.d("TAG", "FCMMessageReceiverService onMessageReceived remoteMessage.getData : " +remoteMessage.getData());
-        Log.d("TAG", "FCMMessageReceiverService onMessageReceived remoteMessage.getNotification : " +remoteMessage.getNotification());
+        Log.d("TAG", "FCMMessageReceiverService onMessageReceived remoteMessage.getData : " + remoteMessage.getData());
+        Log.d("TAG", "FCMMessageReceiverService onMessageReceived remoteMessage.getNotification : " + remoteMessage.getNotification());
         /*for safety side throwing all exception*/
         try {
             int notificationId = 0;
             Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
             Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,BuildConfig.APPLICATION_ID+"id")
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, BuildConfig.LIBRARY_PACKAGE_NAME + "id")
                     .setSmallIcon(getNotificationIcon())
                     .setContentTitle(remoteMessage.getNotification().getTitle())
                     .setContentText(remoteMessage.getNotification().getBody())
@@ -146,7 +139,7 @@ public class FCMMessageReceiverService extends FirebaseMessagingService {
 
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                NotificationChannel channel  = new NotificationChannel(BuildConfig.APPLICATION_ID+"id",BuildConfig.APPLICATION_ID+"channel",NotificationManager.IMPORTANCE_HIGH);
+                NotificationChannel channel = new NotificationChannel(BuildConfig.LIBRARY_PACKAGE_NAME + "id", BuildConfig.LIBRARY_PACKAGE_NAME + "channel", NotificationManager.IMPORTANCE_HIGH);
                 notificationManager.createNotificationChannel(channel);
             }
             notificationManager.notify(notificationId, notificationBuilder.build());

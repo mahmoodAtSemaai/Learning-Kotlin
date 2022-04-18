@@ -170,16 +170,16 @@
             style="@style/medium_bold_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/size_6"
-            android:text="@{data.priceReduce}"
+            android:layout_marginTop="@dimen/size_6"
+            android:text="@{data.priceReduce.isEmpty() ? data.priceUnit : data.priceReduce}"
+            android:textAllCaps="false"
             android:textSize="@dimen/font_size_14"
-            app:layout_constraintEnd_toStartOf="@+id/tv_price_unit"
+            app:layout_constraintEnd_toStartOf="@+id/view5"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_unit_price_heading"
-            app:visibility="@{!data.priceReduce.empty}"
-            tools:text="$100.00" />
+            tools:text="Rp34,000" />
 
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -187,29 +187,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing_tiny"
-            android:background="@{data.priceReduce.empty ?  null : @drawable/bg_strikethrough}"
-            android:paddingBottom="@dimen/size_6"
+            android:background="@drawable/bg_strikethrough"
             android:text="@{data.priceUnit}"
+            android:visibility="@{data.priceReduce == null || data.priceReduce.isEmpty() ? View.GONE : View.VISIBLE}"
             app:layout_constraintEnd_toStartOf="@+id/tv_discount"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tv_reduced_price"
-            app:layout_constraintTop_toBottomOf="@+id/tv_unit_price_heading"
-            tools:background="@drawable/bg_strikethrough"
-            tools:text="$120.00" />
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_discount"
+            tools:text="Rp34,000" />
 
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_discount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/size_6"
+            android:layout_marginTop="@dimen/spacing_tiny"
             android:text="@{data.discount}"
             android:textColor="@color/red_500"
             android:textStyle="italic"
-            app:layout_constraintEnd_toEndOf="@+id/tv_unit_price_heading"
+            android:visibility="@{data.discount == null || data.discount.isEmpty() ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toStartOf="@+id/view5"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/tv_price_unit"
-            app:layout_constraintTop_toBottomOf="@+id/tv_unit_price_heading"
+            app:layout_constraintTop_toBottomOf="@+id/tv_reduced_price"
             tools:text="(50% OFF)" />
 
         <View
@@ -239,12 +240,13 @@
             android:id="@+id/tv_sub_total_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/size_6"
+            android:layout_marginTop="8dp"
             android:text="@{data.total}"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_price_unit"
             app:layout_constraintEnd_toEndOf="@+id/tv_sub_total_heading"
-            app:layout_constraintStart_toStartOf="@+id/tv_sub_total_heading"
-            app:layout_constraintTop_toBottomOf="@+id/tv_sub_total_heading"
-            tools:text="$360.00" />
+            app:layout_constraintStart_toEndOf="@+id/tv_unit_price_heading"
+            app:layout_constraintTop_toTopOf="@+id/tv_reduced_price"
+            tools:text="Rp360.00" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
