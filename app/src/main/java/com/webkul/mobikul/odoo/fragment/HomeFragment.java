@@ -19,10 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.webkul.mobikul.odoo.BuildConfig;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
+import com.webkul.mobikul.odoo.activity.HomeActivity;
 import com.webkul.mobikul.odoo.activity.NewHomeActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.activity.UpdateAddressActivity;
 import com.webkul.mobikul.odoo.adapter.home.CatalogProductListHomeAdapter;
+import com.webkul.mobikul.odoo.adapter.home.CategoryProductAdapter;
 import com.webkul.mobikul.odoo.adapter.home.FeaturedCategoriesAdapter;
 import com.webkul.mobikul.odoo.adapter.home.HomeBannerAdapter;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
@@ -52,6 +54,9 @@ import com.webkul.mobikul.odoo.model.home.HomePageResponse;
 import com.webkul.mobikul.odoo.model.request.BaseLazyRequest;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.Observable;
@@ -90,8 +95,8 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     }
 
     public void handleCatalogData() {
-        init();
-        callApi();
+//        init();
+//        callApi();
     }
 
     private void init() {
@@ -166,6 +171,12 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         /*FEATURED CATEGORIES*/
         mBinding.featuredCategoriesRv.setAdapter(new FeaturedCategoriesAdapter(getContext(), homePageResponse.getFeaturedCategories(), value));
 
+
+        List<FeaturedCategoryData> fragment = homePageResponse.getFeaturedCategories();
+
+        CategoryProductAdapter adapter = new CategoryProductAdapter((NewHomeActivity)requireContext() , fragment);
+        mBinding.viewPager2.setAdapter(adapter);
+
         /*BANNER SLIDERS*/
         mBinding.bannerViewPager.setAdapter(new HomeBannerAdapter(getContext(), homePageResponse.getBannerImages()));
         mBinding.bannerDotsTabLayout.setupWithViewPager(mBinding.bannerViewPager, true);
@@ -175,7 +186,6 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     public void fetchExistingAddresses() {
         ApiConnection.getAddressBookData(getContext(), new BaseLazyRequest(0, 1)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(getAddressResponseObserver());
     }
-
     private Observer<? super MyAddressesResponse> getAddressResponseObserver() {
         return new CustomObserver<MyAddressesResponse>(getContext()) {
             @Override
@@ -185,6 +195,8 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
             }
         };
     }
+
+
 
     private void checkIfAddressExists(MyAddressesResponse myAddressesResponse) {
         if (myAddressesResponse.isAccessDenied()) {
@@ -217,7 +229,6 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     private void fetchBillingAddressData(AddressData addressData) {
         ApiConnection.getAddressFormData(getContext(), addressData.getUrl()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(getBillingAddressResponse(addressData));
     }
-
     private Observer<? super AddressFormResponse> getBillingAddressResponse(AddressData addressData) {
         return new CustomObserver<AddressFormResponse>(getContext()) {
             @Override
@@ -231,7 +242,6 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     private void fetchStates(AddressFormResponse addressFormResponse, AddressData addressData) {
         ApiConnection.getStates(requireContext(), COMPANY_ID).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(getStateListResponse(addressFormResponse, addressData));
     }
-
     private Observer<? super StateListResponse> getStateListResponse(AddressFormResponse addressFormResponse, AddressData addressData) {
         return new CustomObserver<BaseResponse>(getContext()) {
             @Override
@@ -279,8 +289,6 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         startActivity(new Intent(requireActivity(), UpdateAddressActivity.class)
                 .putExtra(BUNDLE_KEY_URL, addressData.getUrl()));
     }
-
-
     private void showAlertDialog(String title, String message) {
         AlertDialogHelper.showDefaultWarningDialogWithDismissListener(getContext(), title, message, sweetAlertDialog -> {
             sweetAlertDialog.dismiss();
@@ -294,7 +302,6 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, CatalogProductActivity.class.getSimpleName());
         startActivity(i);
     }
-
     private void clearCustomerDataFromSharedPref() {
         AppSharedPref.clearCustomerData(getContext());
     }
@@ -432,7 +439,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
                 if (AppSharedPref.getItemsPerPage(requireContext()) <= totalItemsCount) {
                     mIsFirstCall = false;
                     mBinding.getCatalogProductData().setLazyLoading(true);
-                    callApi();
+//                    callApi();
                 }
             }
         });

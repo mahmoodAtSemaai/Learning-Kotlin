@@ -6,6 +6,8 @@ import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.constant.BundleConstant
 //import com.webkul.mobikul.odoo.databinding.ActivityNewDrawerBinding
 import com.webkul.mobikul.odoo.model.home.HomePageResponse
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class NewDrawerActivity : BaseActivity() {
 

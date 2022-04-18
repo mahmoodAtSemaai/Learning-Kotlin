@@ -209,9 +209,20 @@
                     android:layout_height="3dp"
                     android:background="@color/grey_300" />
 
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/view_pager2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/activityBackground"
+                    >
+
+                </androidx.viewpager2.widget.ViewPager2>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/product_catalog_rv"
                     android:layout_width="match_parent"
+                    android:visibility="gone"
                     android:layout_height="match_parent"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     android:background="@color/activityBackground" />

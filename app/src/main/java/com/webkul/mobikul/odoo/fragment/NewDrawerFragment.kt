@@ -17,6 +17,8 @@ import com.webkul.mobikul.odoo.databinding.FragmentNewDrawerBinding
 import com.webkul.mobikul.odoo.handler.home.HomeActivityHandler
 import com.webkul.mobikul.odoo.helper.AppSharedPref
 import com.webkul.mobikul.odoo.model.home.HomePageResponse
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 class NewDrawerFragment : BaseFragment() {
@@ -71,6 +73,13 @@ class NewDrawerFragment : BaseFragment() {
         //Manage language settings
         languageSettings()
 
+
+
+        open_account_fragment()
+    }
+
+
+    fun open_account_fragment() {
         mBinding.profileImage.setOnClickListener {
             val action = NewDrawerFragmentDirections.actionNewDrawerFragmentToAccountFragment2()
             navController.navigate(action)

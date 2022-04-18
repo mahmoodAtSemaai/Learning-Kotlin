@@ -51,7 +51,16 @@ public class WishlistProductInfoRvAdapter extends RecyclerView.Adapter<WishlistP
     @Override
     public void onBindViewHolder(Holder holder, int position) {
         holder.mBinding.setData(mWishLists.get(position));
-        holder.mBinding.setHandler(new WishlistProductInfoItemHandler(mContext, mWishLists.get(position)));
+        WishlistProductInfoItemHandler handler = new  WishlistProductInfoItemHandler(mContext, mWishLists.get(position));
+        holder.mBinding.setHandler(handler);
+
+        holder.mBinding.deleteIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handler.deleteProduct();
+
+            }
+        });
         holder.mBinding.executePendingBindings();
     }
 

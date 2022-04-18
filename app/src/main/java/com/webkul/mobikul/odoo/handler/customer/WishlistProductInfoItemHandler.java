@@ -9,6 +9,7 @@ import com.webkul.mobikul.odoo.activity.BaseActivity;
 import com.webkul.mobikul.odoo.activity.CustomerBaseActivity;
 import com.webkul.mobikul.odoo.activity.NewHomeActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
+import com.webkul.mobikul.odoo.adapter.customer.WishlistProductInfoRvAdapter;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
@@ -33,9 +34,6 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_NAME;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 
 /**
@@ -108,6 +106,8 @@ public class WishlistProductInfoItemHandler {
                                 AnalyticsImpl.INSTANCE.trackMoveItemToBagSuccessful(mData.getId(), mData.getName(), mData.getPriceUnit(),
                                         Helper.getScreenName(mContext),
                                         "");
+
+                                //Generating Errors
                                 (((CustomerBaseActivity) mContext).getSupportFragmentManager().findFragmentByTag(WishlistFragment
                                         .class.getSimpleName())).onResume();
                                 AlertDialogHelper.showDefaultSuccessOneLinerDialog(mContext, wishlistToCartResponse.getMessage());
@@ -155,6 +155,8 @@ public class WishlistProductInfoItemHandler {
                         }else {
                             if (baseResponse.isSuccess()) {
                                 AnalyticsImpl.INSTANCE.trackItemRemovedFromWishlist(mData.getId(), mData.getName(), mData.getPriceUnit());
+
+                                //Creating Errors
                                 (((NewHomeActivity) mContext).getSupportFragmentManager().findFragmentByTag(WishlistFragment
                                         .class.getSimpleName())).onResume();
                                 CustomToast.makeText(mContext, baseResponse.getMessage(), Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();

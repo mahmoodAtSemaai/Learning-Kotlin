@@ -21,6 +21,7 @@ import com.webkul.mobikul.odoo.handler.home.ProductHandler;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.model.generic.ProductData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CatalogProductListHomeAdapter extends RecyclerView.Adapter<CatalogProductListHomeAdapter.ViewHolder> {
@@ -31,7 +32,7 @@ public class CatalogProductListHomeAdapter extends RecyclerView.Adapter<CatalogP
     public int VIEW_TYPE;
     public int VIEW_TYPE_BACK_TO_TOP = 3;
 
-    public CatalogProductListHomeAdapter(Context context, @NonNull List<ProductData> productDatas, int viewTypeGrid) {
+    public CatalogProductListHomeAdapter(Context context, @NonNull ArrayList<ProductData> productDatas, int viewTypeGrid) {
         mContext = context;
         mProductDatas = productDatas;
         VIEW_TYPE = viewTypeGrid;

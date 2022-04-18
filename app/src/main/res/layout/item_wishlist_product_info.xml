@@ -114,8 +114,8 @@
 
                 <ImageButton
                     android:layout_width="wrap_content"
+                    android:id="@+id/delete_icon"
                     android:layout_height="wrap_content"
-                    android:onClick="@{()->handler.deleteProduct()}"
                     app:srcCompat="@drawable/ic_vector_delete_forever_grey_64dp" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
