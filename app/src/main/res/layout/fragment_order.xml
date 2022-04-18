@@ -295,7 +295,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_12"
-                    android:text="@{data.bank.name.concat(` (`+@string/virtual_account+`)`)}"
+                    android:text="@{data.bank.name.concat(` (`+data.bank.type+`)`)}"
                     android:textAllCaps="false"
                     android:textSize="@dimen/font_size_18"
                     app:layout_constraintEnd_toStartOf="@+id/right_guideline"

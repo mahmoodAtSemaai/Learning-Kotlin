@@ -131,7 +131,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/size_12"
                     android:layout_marginTop="@dimen/size_12"
-                    android:text='@{String.format("%s (%s)", data.bank.name, @string/virtual_account)}'
+                    android:text='@{String.format("%s (%s)", data.bank.name, data.bank.type)}'
                     android:textAllCaps="false"
                     app:layout_constraintEnd_toEndOf="@+id/divider_2"
                     app:layout_constraintHorizontal_bias="0.5"

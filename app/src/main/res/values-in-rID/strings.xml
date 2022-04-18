@@ -552,7 +552,7 @@
     <string name="va_text">VA</string>
     <string name="fetching_order_details">Memuat rincian pesanan</string>
     <string name="currency_idr">IDR</string>
-    <string name="virtual_account">Akun Virtual</string>
+    <string name="virtual_account">Virtual Account</string>
     <string name="durian_pay_text">Durian Pay</string>
     <string name="text_copied_message">Teks disalin ke clipboard</string>
     <string name="label">Label</string>
