@@ -3,6 +3,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'dagger.hilt.android.plugin'
 
 apply from: rootProject.file('library-common-module.gradle')
 
@@ -157,13 +158,15 @@ dependencies {
             Dependencies.kotlinStdlib,
             Dependencies.lifecycleExtension,
             Dependencies.mixPanel,
+            Dependencies.hilt,
             project(Modules.sweetAlertDialog)
     )
 
     kapt(
             Dependencies.daggerAndroidProcessor,
             Dependencies.daggerCompiler,
-            Dependencies.glideCompiler
+            Dependencies.glideCompiler,
+            Dependencies.hiltCompiler
     )
     androidTestImplementation(Dependencies.espressoCore, {
         exclude group: 'com.android.support', module: 'support-annotations'
