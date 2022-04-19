@@ -91,6 +91,15 @@ object DepVersions {
     const val activty = "1.4.0"
     const val fragment = "1.4.0"
 
+    //hilt
+    const val hilt = "2.35.1"
+
+    // Arch Components
+    const val lifecycle = "2.4.1"
+
+    // Kotlin Coroutines
+    const val kotlinCoroutines = "1.4.1"
+
 }
 
 object Modules {
@@ -105,8 +114,8 @@ object Flavours {
 }
 
 object Version {
-    const val code = 22
-    const val name = "1.4.0"
+    const val code = 23
+    const val name = "1.4.1"
 }
 
 object Url {
@@ -134,6 +143,7 @@ object Dependencies {
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${DepVersions.kotlin}"
     const val googleServices = "com.google.gms:google-services:${DepVersions.googleServices}"
     const val firebaseCrashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:${DepVersions.firebaseCrashlyticsGradle}"
+    const val hiltClassPath = "com.google.dagger:hilt-android-gradle-plugin:${DepVersions.hilt}"
 
     //App Dependencies
     const val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -215,6 +225,20 @@ object Dependencies {
     const val greenRobot= "org.greenrobot:eventbus:${DepVersions.greenRobot}"
     //SweetAlertDialog Module
     const val materialishProgress = "com.pnikosis:materialish-progress:${DepVersions.materialishProgress}"
+
+    const val hilt = "com.google.dagger:hilt-android:${DepVersions.hilt}"
+    const val hiltCompiler = "com.google.dagger:hilt-android-compiler:${DepVersions.hilt}"
+
+    // Arch Components
+    const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${DepVersions.lifecycle}"
+    const val lifeData = "androidx.lifecycle:lifecycle-livedata-ktx:${DepVersions.lifecycle}"
+    const val lifecycle = "androidx.lifecycle:lifecycle-runtime-ktx:${DepVersions.lifecycle}"
+    const val viewModelState = "androidx.lifecycle:lifecycle-viewmodel-savedstate:${DepVersions.lifecycle}"
+
+    // Kotlin Coroutines
+    const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${DepVersions.kotlinCoroutines}"
+    const val coroutinesAndroid =
+            "org.jetbrains.kotlinx:kotlinx-coroutines-android:${DepVersions.kotlinCoroutines}"
 
 
     //appMarketPlace Module
