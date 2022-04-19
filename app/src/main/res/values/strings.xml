@@ -414,6 +414,7 @@
     <string name="ok">OK</string>
     <string name="cancel">CANCEL</string>
     <string name="cancel_small">Cancel</string>
+    <string name="cancelled">Cancelled</string>
     <string name="confirm">CONFIRM</string>
     <string name="confirm_small">Confirm</string>
     <string name="no_fingerprint_permission">Fingerprint authentication permission not enabled</string>
