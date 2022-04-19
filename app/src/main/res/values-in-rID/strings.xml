@@ -409,6 +409,7 @@
     <string name="ok">OK</string>
     <string name="cancel">BATAL</string>
     <string name="cancel_small">Batal</string>
+    <string name="cancelled">Cancelled</string>
     <string name="confirm">KONFIRMASI</string>
     <string name="confirm_small">Konfirmasi</string>
     <string name="no_fingerprint_permission">Otentifikasi menggunakan sidik jari tidak tersedia</string>
