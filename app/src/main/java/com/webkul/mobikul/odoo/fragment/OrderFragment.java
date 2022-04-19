@@ -165,7 +165,8 @@ public class OrderFragment extends BaseFragment {
                     || orderDataResponse.getPaymentStatus().equalsIgnoreCase(getString(R.string.error))
                     || orderDataResponse.getStatus().equalsIgnoreCase(getString(R.string.cancelled))) {
                 setVisibility(binding.dueDateDetail, View.GONE);
-                setText(binding.tvStatus, getString(R.string.time_expired));
+                setText(binding.tvStatus, orderDataResponse.getStatus().equalsIgnoreCase(getString(R.string.cancelled)) ?
+                        getString(R.string.cancelled) : getString(R.string.time_expired));
                 setVisibility(binding.bankPaymentMethodDetail, View.GONE);
                 setVisibility(binding.purchaseDateDetail, View.VISIBLE);
             } else {
