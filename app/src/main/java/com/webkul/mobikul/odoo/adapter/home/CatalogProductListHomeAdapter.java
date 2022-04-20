@@ -36,13 +36,11 @@ public class CatalogProductListHomeAdapter extends RecyclerView.Adapter<CatalogP
         mContext = context;
         mProductDatas = productDatas;
         VIEW_TYPE = viewTypeGrid;
-        Log.d(TAG, "onCreateViewHolderAdapter: " + viewTypeGrid);
     }
 
     @Override
     public CatalogProductListHomeAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        Log.d(TAG, "onCreateViewHolderviewType: " + viewType);
         if (viewType == VIEW_TYPE_BACK_TO_TOP) {
 //            if(((CatalogProductActivity) mContext).mBinding.productCatalogRv.getLayoutManager() instanceof GridLayoutManager && mProductDatas.size()<=9){
 //                return null;
@@ -58,7 +56,6 @@ public class CatalogProductListHomeAdapter extends RecyclerView.Adapter<CatalogP
 
     @Override
     public void onBindViewHolder(CatalogProductListHomeAdapter.ViewHolder holder, int position) {
-        Log.i(TAG, "onBindViewHolder: ");
         if (position < mProductDatas.size()) {
             final ProductData productData = mProductDatas.get(position);
 //        productData.setContext(mContext);
@@ -81,7 +78,7 @@ public class CatalogProductListHomeAdapter extends RecyclerView.Adapter<CatalogP
 
     @Override
     public int getItemViewType(int position) {
-        Log.i(TAG, "getItemViewType: " + AppSharedPref.isGridview(mContext));
+//        Log.i(TAG, "getItemViewType: " + AppSharedPref.isGridview(mContext));
         if (position == mProductDatas.size()) {
             Log.i(TAG, "getItemViewType: buttonToTop");
             return VIEW_TYPE_BACK_TO_TOP;

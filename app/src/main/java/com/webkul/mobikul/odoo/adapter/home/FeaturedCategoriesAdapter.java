@@ -64,13 +64,13 @@ public class FeaturedCategoriesAdapter extends RecyclerView.Adapter<FeaturedCate
         holder.itemView.findViewById(R.id.container).setBackgroundResource(selectedPos == position ?
                 R.drawable.featured_categories_selected_item_bg : Color.TRANSPARENT);
         if(firstTimeSetup) {
-            featuredCategoryDataValue.data(featuredCategotyData);
+            featuredCategoryDataValue.data(featuredCategotyData , position);
         }
         firstTimeSetup = false;
         holder.mBinding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                featuredCategoryDataValue.data(featuredCategotyData);
+                featuredCategoryDataValue.data(featuredCategotyData , holder.getAdapterPosition());
                 notifyItemChanged(selectedPos);
                 selectedPos = holder.getLayoutPosition();
                 notifyItemChanged(selectedPos);
@@ -96,6 +96,6 @@ public class FeaturedCategoriesAdapter extends RecyclerView.Adapter<FeaturedCate
     }
 
     public interface FeaturedCategoryDataValue {
-        void data(FeaturedCategoryData featuredCategoryData);
+        void data(FeaturedCategoryData featuredCategoryData , Integer pos);
     }
 }

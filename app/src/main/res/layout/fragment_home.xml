@@ -222,8 +222,8 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/product_catalog_rv"
                     android:layout_width="match_parent"
-                    android:visibility="gone"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     android:background="@color/activityBackground" />
 

@@ -95,8 +95,8 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     }
 
     public void handleCatalogData() {
-//        init();
-//        callApi();
+        init();
+        callApi();
     }
 
     private void init() {
@@ -175,6 +175,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         List<FeaturedCategoryData> fragment = homePageResponse.getFeaturedCategories();
 
         CategoryProductAdapter adapter = new CategoryProductAdapter((NewHomeActivity)requireContext() , fragment);
+        mBinding.viewPager2.setUserInputEnabled(false);
         mBinding.viewPager2.setAdapter(adapter);
 
         /*BANNER SLIDERS*/
@@ -354,7 +355,6 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
                 });
             } else {
 
-
                 mBinding.getCatalogProductData().setLazyLoading(false);
 
                 if (mIsFirstCall) {
@@ -439,7 +439,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
                 if (AppSharedPref.getItemsPerPage(requireContext()) <= totalItemsCount) {
                     mIsFirstCall = false;
                     mBinding.getCatalogProductData().setLazyLoading(true);
-//                    callApi();
+                    callApi();
                 }
             }
         });
@@ -458,8 +458,9 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
     FeaturedCategoriesAdapter.FeaturedCategoryDataValue value = new FeaturedCategoriesAdapter.FeaturedCategoryDataValue() {
         @Override
-        public void data(FeaturedCategoryData featuredCategoryData) {
+        public void data(FeaturedCategoryData featuredCategoryData , Integer pos) {
             mFeaturedCategoryData = featuredCategoryData;
+            mBinding.viewPager2.setCurrentItem(pos);
             handleCatalogData();
         }
     };
