@@ -36,15 +36,15 @@ import io.reactivex.schedulers.Schedulers
 class CategoryProductFragment : Fragment() {
 
 
-    lateinit var  recyclerView: RecyclerView
+    lateinit var recyclerView: RecyclerView
     private var mIsFirstCall = true
-    lateinit var catalog_response : CatalogProductResponse
-    var currentItems =0
-    var totalItems=0
-    var scrolledItems=0
-    var isScrolling=false
-    lateinit var  adapter : CatalogProductListHomeAdapter
-    lateinit var progressbar : ProgressBar
+    lateinit var catalog_response: CatalogProductResponse
+    var currentItems = 0
+    var totalItems = 0
+    var scrolledItems = 0
+    var isScrolling = false
+    lateinit var adapter: CatalogProductListHomeAdapter
+    lateinit var progressbar: ProgressBar
 
 
     override fun onCreateView(
@@ -52,7 +52,7 @@ class CategoryProductFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        var view = inflater.inflate(R.layout.fragment_category_product, container, false)
+        val view = inflater.inflate(R.layout.fragment_category_product, container, false)
         recyclerView = view.findViewById(R.id.product_recycler_view)
         progressbar = view.findViewById(R.id.progress_bar)
         return view
@@ -64,25 +64,23 @@ class CategoryProductFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val pos = arguments?.getInt(POSITION_ARG)
-        var id = arguments?.getString(CATEGORY_ARG)
+        val id = arguments?.getString(CATEGORY_ARG)
 
-       init(id)
-       callApi(id)
+        init(id)
+        callApi(id)
     }
 
 
-    private fun init(id : String?) {
+    private fun init(id: String?) {
         /*Init Data */
         mIsFirstCall = true
         AppSharedPref.setItemsPerPage(requireContext(), BuildConfig.DEFAULT_ITEM_PER_PAGE)
     }
 
-     fun callApi(id : String?) {
+    fun callApi(id: String?) {
         var offset = 0
         if (!mIsFirstCall) {
-            offset = catalog_response.offset + AppSharedPref.getItemsPerPage(
-                requireContext()
-            )
+            offset = catalog_response.offset + AppSharedPref.getItemsPerPage(requireContext())
         }
         val catalogProductRequestType = CatalogProductRequestType.FEATURED_CATEGORY
         val catalogProductDataObservable = ApiConnection.getCategoryProducts(
@@ -91,116 +89,117 @@ class CategoryProductFragment : Fragment() {
             offset,
             AppSharedPref.getItemsPerPage(requireContext())
         )
-                activity?.let {
-            catalogProductDataObservable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe( object : CustomObserver<CatalogProductResponse?>(
-                    it
-                ) {
 
-                    override fun onComplete() {}
+        catalogProductDataObservable.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : CustomObserver<CatalogProductResponse?>(
+                requireContext()
+            ) {
 
-                    override fun onNext(catalogProductResponse: CatalogProductResponse) {
-                        super.onNext(catalogProductResponse)
+                override fun onComplete() {}
 
-                      progressbar.visibility = View.VISIBLE
+                override fun onNext(catalogProductResponse: CatalogProductResponse) {
+                    super.onNext(catalogProductResponse)
 
-                        if (catalogProductResponse.isAccessDenied) {
-                            AlertDialogHelper.showDefaultWarningDialogWithDismissListener(
-                                requireContext(),
-                                getString(R.string.error_login_failure),
-                                getString(R.string.access_denied_message)
-                            ) { sweetAlertDialog ->
-                                sweetAlertDialog.dismiss()
-                                AppSharedPref.clearCustomerData(requireContext())
-                                val i = Intent(requireContext(), SignInSignUpActivity::class.java)
-                                i.putExtra(
-                                    BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY,
-                                    CatalogProductActivity::class.java.simpleName
-                                )
-                                startActivity(i)
-                            }
-                        } else {
-                            if (mIsFirstCall) {
-                                catalog_response=catalogProductResponse
-                                catalogProductResponse.setWishlistData()
+                    progressbar.visibility = View.VISIBLE
 
-                                /*BETTER REPLACE SOME CONTAINER INSTEAD OF WHOLE PAGE android.R.id.content */
-                                val requestTypeIdentifier =
-                                    CatalogProductRequestType.FEATURED_CATEGORY.toString()
-                                SaveData(activity, catalogProductResponse, requestTypeIdentifier)
-                                if (catalog_response?.products!!.isEmpty()) {
-                                    val bundle = Bundle()
-                                    bundle.putInt(
-                                        BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_DRAWABLE_ID,
-                                        R.drawable.ic_vector_empty_product_catalog
-                                    )
-                                    bundle.putString(
-                                        BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_TITLE_ID,
-                                        getString(R.string.empty_product_catalog)
-                                    )
-                                    bundle.putString(
-                                        BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_SUBTITLE_ID,
-                                        getString(R.string.try_different_category_or_search_keyword_maybe)
-                                    )
-                                    bundle.putBoolean(
-                                        BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_HIDE_CONTINUE_SHOPPING_BTN,
-                                        false
-                                    )
-                                    bundle.putInt(
-                                        BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_TYPE,
-                                        EmptyFragment.EmptyFragType.TYPE_CATALOG_PRODUCT.ordinal
-                                    )
-                                    findNavController(requireView()).navigate(
-                                        R.id.action_homeFragment_to_emptyFragment,
-                                        bundle
-                                    )
-                                } else {
-                                    initProductCatalogRv(id)
-                                }
-                            } else {
-                                /*update offset from new response*/
-                                catalogProductResponse.setWishlistData()
-                               catalog_response.offset=catalogProductResponse.offset
-                               catalog_response.limit = catalogProductResponse.limit
-                               catalog_response.products.addAll(catalogProductResponse.products)
-//                                initProductCatalogRv(id)
-                               adapter.notifyDataSetChanged()
-                            }
+                    if (catalogProductResponse.isAccessDenied) {
+                        AlertDialogHelper.showDefaultWarningDialogWithDismissListener(
+                            requireContext(),
+                            getString(R.string.error_login_failure),
+                            getString(R.string.access_denied_message)
+                        ) { sweetAlertDialog ->
+                            sweetAlertDialog.dismiss()
+                            AppSharedPref.clearCustomerData(requireContext())
+                            val i = Intent(requireContext(), SignInSignUpActivity::class.java)
+                            i.putExtra(
+                                BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY,
+                                CatalogProductActivity::class.java.simpleName
+                            )
+                            startActivity(i)
                         }
-                    }
+                    } else {
+                        if (mIsFirstCall) {
+                            catalog_response = catalogProductResponse
+                            catalogProductResponse.setWishlistData()
 
-                    override fun onError(t: Throwable) {
-
-
-                        if (catalog_response != null) {
-//                            catalog_response.isLazyLoading(false)
-                        }
-
-                        if (!NetworkHelper.isNetworkAvailable(requireContext())) {
-                            val sqlLiteDbHelper = SqlLiteDbHelper(requireContext())
+                            /*BETTER REPLACE SOME CONTAINER INSTEAD OF WHOLE PAGE android.R.id.content */
                             val requestTypeIdentifier =
                                 CatalogProductRequestType.FEATURED_CATEGORY.toString()
-                            val dbResponse =
-                                sqlLiteDbHelper.getCatalogProductData(requestTypeIdentifier)
-                            if (mIsFirstCall) {
-                                if (dbResponse != null) {
-                                    onNext(dbResponse)
-                                } else {
-                                    super.onError(t)
-                                }
+                            SaveData(activity, catalogProductResponse, requestTypeIdentifier)
+                            if (catalog_response?.products!!.isEmpty()) {
+                                val bundle = Bundle()
+                                bundle.putInt(
+                                    BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_DRAWABLE_ID,
+                                    R.drawable.ic_vector_empty_product_catalog
+                                )
+                                bundle.putString(
+                                    BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_TITLE_ID,
+                                    getString(R.string.empty_product_catalog)
+                                )
+                                bundle.putString(
+                                    BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_SUBTITLE_ID,
+                                    getString(R.string.try_different_category_or_search_keyword_maybe)
+                                )
+                                bundle.putBoolean(
+                                    BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_HIDE_CONTINUE_SHOPPING_BTN,
+                                    false
+                                )
+                                bundle.putInt(
+                                    BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_TYPE,
+                                    EmptyFragment.EmptyFragType.TYPE_CATALOG_PRODUCT.ordinal
+                                )
+                                findNavController(requireView()).navigate(
+                                    R.id.action_homeFragment_to_emptyFragment,
+                                    bundle
+                                )
+                            } else {
+                                initProductCatalogRv(id)
+                            }
+                        } else {
+                            /*update offset from new response*/
+                            catalogProductResponse.setWishlistData()
+                            catalog_response.offset = catalogProductResponse.offset
+                            catalog_response.limit = catalogProductResponse.limit
+                            catalog_response.products.addAll(catalogProductResponse.products)
+//                                initProductCatalogRv(id)
+                            adapter.notifyDataSetChanged()
+                        }
+                    }
+                }
+
+                override fun onError(t: Throwable) {
+
+
+                    if (catalog_response != null) {
+//                            catalog_response.isLazyLoading(false)
+                    }
+
+                    if (!NetworkHelper.isNetworkAvailable(requireContext())) {
+                        val sqlLiteDbHelper = SqlLiteDbHelper(requireContext())
+                        val requestTypeIdentifier =
+                            CatalogProductRequestType.FEATURED_CATEGORY.toString()
+                        val dbResponse =
+                            sqlLiteDbHelper.getCatalogProductData(requestTypeIdentifier)
+                        if (mIsFirstCall) {
+                            if (dbResponse != null) {
+                                onNext(dbResponse)
                             } else {
                                 super.onError(t)
                             }
                         } else {
                             super.onError(t)
                         }
+                    } else {
+                        super.onError(t)
                     }
-                })
-        }
+                }
+            })
+
 
     }
 
-    private fun initProductCatalogRv(id : String?) {
+    private fun initProductCatalogRv(id: String?) {
 
         adapter =
             CatalogProductListHomeAdapter(
@@ -218,103 +217,35 @@ class CategoryProductFragment : Fragment() {
                 } else 1
             }
         }
-        recyclerView.layoutManager=gridLayoutManager
+        recyclerView.layoutManager = gridLayoutManager
         recyclerView.adapter = adapter
 
 
-       recyclerView.addOnScrollListener(object  : RecyclerView.OnScrollListener() {
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
-           override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-               super.onScrollStateChanged(recyclerView, newState)
-           }
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+            }
 
-           override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-               super.onScrolled(recyclerView, dx, dy)
-           }
-       });
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+            }
+        })
 
-//        recyclerView.addOnScrollListener(object :
-//            EndlessRecyclerViewScrollListener(gridLayoutManager) {
-//            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
-//                if (AppSharedPref.getItemsPerPage(requireContext()) <= totalItemsCount) {
-//                    mIsFirstCall = false
-//                      Log.d("bardata" , "Called")
-//                    progressbar.visibility = View.VISIBLE
-//
-//                    callApi(id)
-//                }
-//            }
-//        })
-//        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                super.onScrollStateChanged(recyclerView, newState)
-//                val lastVisibleItemPosition =
-//                    (recyclerView.layoutManager as GridLayoutManager?)!!.findLastVisibleItemPosition()
-//            }
-//        })
+
     }
 
-
-
-
-
-//    private fun callApi(id: String?) {
-//        val catalogProductDataObservable = ApiConnection.getCategoryProducts(
-//            context,
-//            id,
-//            0,
-//            AppSharedPref.getItemsPerPage(context)
-//        )
-//
-//
-//        activity?.let {
-//            catalogProductDataObservable.subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread()).subscribe( object : CustomObserver<CatalogProductResponse?>(
-//                    it
-//                ) {
-//
-//                    override fun onComplete() {}
-//
-//                    override fun onNext(catalogProductResponse: CatalogProductResponse) {
-//                        super.onNext(catalogProductResponse)
-//
-//
-//                        recyclerView.adapter = CatalogProductListHomeAdapter(
-//                            context,
-//                            catalogProductResponse.products,
-//                            HomeFragment.VIEW_TYPE_LIST
-//                        )
-//
-//                        val spanCount = 2
-//                        val gridLayoutManager = GridLayoutManager(context, spanCount)
-//                        gridLayoutManager.spanSizeLookup =
-//                            object : GridLayoutManager.SpanSizeLookup() {
-//                                override fun getSpanSize(position: Int): Int {
-//                                    return 1
-//                                }
-//                            }
-//                        recyclerView.layoutManager = gridLayoutManager
-//                    }
-//
-//                    override fun onError(t: Throwable) {
-//                    }
-//                })
-//        }
-//
-//    }
-
-    companion object{
+    companion object {
         var POSITION_ARG = "position_arg"
         var CATEGORY_ARG = "category_id"
 
         @JvmStatic
-        fun newInstance(position: Int , category_id : String ) = CategoryProductFragment().apply {
-           arguments = Bundle().apply{
-               putInt(POSITION_ARG,position)
-               putString(CATEGORY_ARG,category_id)
-           }
+        fun newInstance(position: Int, category_id: String) = CategoryProductFragment().apply {
+            arguments = Bundle().apply {
+                putInt(POSITION_ARG, position)
+                putString(CATEGORY_ARG, category_id)
+            }
         }
     }
-
 
 }

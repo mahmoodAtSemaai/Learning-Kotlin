@@ -112,10 +112,90 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         if (!mIsFirstCall) {
             offset = mBinding.getCatalogProductData().getOffset() + AppSharedPref.getItemsPerPage(requireContext());
         }
-        CatalogHelper.CatalogProductRequestType catalogProductRequestType = (CatalogHelper.CatalogProductRequestType) CatalogHelper.CatalogProductRequestType.FEATURED_CATEGORY;
-        Observable<CatalogProductResponse> catalogProductDataObservable = ApiConnection.getCategoryProducts(requireContext(),mFeaturedCategoryData.getCategoryId(), offset, AppSharedPref.getItemsPerPage(requireContext()));
+        Observable<CatalogProductResponse> catalogProductDataObservable = ApiConnection.getCategoryProducts(requireContext(), mFeaturedCategoryData.getCategoryId(), offset, AppSharedPref.getItemsPerPage(requireContext()));
 
-        catalogProductDataObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(mCatalogProductDataObserver);
+        catalogProductDataObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<CatalogProductResponse>(requireContext()) {
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onNext(@NonNull CatalogProductResponse catalogProductResponse) {
+                super.onNext(catalogProductResponse);
+
+                if (catalogProductResponse.isAccessDenied()) {
+                    AlertDialogHelper.showDefaultWarningDialogWithDismissListener(requireContext(), getString(R.string.error_login_failure), getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismiss();
+                            AppSharedPref.clearCustomerData(requireContext());
+                            Intent i = new Intent(requireContext(), SignInSignUpActivity.class);
+                            i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, CatalogProductActivity.class.getSimpleName());
+                            startActivity(i);
+                        }
+                    });
+                } else {
+
+                    mBinding.getCatalogProductData().setLazyLoading(false);
+
+                    if (mIsFirstCall) {
+                        mBinding.setCatalogProductData(catalogProductResponse);
+                        catalogProductResponse.setWishlistData();
+
+                        /*BETTER REPLACE SOME CONTAINER INSTEAD OF WHOLE PAGE android.R.id.content */
+                        CatalogHelper.CatalogProductRequestType catalogProductRequestType = (CatalogHelper.CatalogProductRequestType) CatalogHelper.CatalogProductRequestType.FEATURED_CATEGORY;
+                        String requestTypeIdentifier = catalogProductRequestType.toString();
+                        new SaveData(getActivity(), catalogProductResponse, requestTypeIdentifier);
+
+                        if (mBinding.getCatalogProductData().getProducts().isEmpty()) {
+                            Bundle bundle = new Bundle();
+                            bundle.putInt(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_DRAWABLE_ID, R.drawable.ic_vector_empty_product_catalog);
+                            bundle.putString(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_TITLE_ID, getString(R.string.empty_product_catalog));
+                            bundle.putString(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_SUBTITLE_ID, getString(R.string.try_different_category_or_search_keyword_maybe));
+                            bundle.putBoolean(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_HIDE_CONTINUE_SHOPPING_BTN, false);
+                            bundle.putInt(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_TYPE, EmptyFragment.EmptyFragType.TYPE_CATALOG_PRODUCT.ordinal());
+                            Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_emptyFragment, bundle);
+                        }
+                    } else {
+                        /*update offset from new response*/
+                        catalogProductResponse.setWishlistData();
+                        mBinding.getCatalogProductData().setOffset(catalogProductResponse.getOffset());
+                        mBinding.getCatalogProductData().setLimit(catalogProductResponse.getLimit());
+                        mBinding.getCatalogProductData().getProducts().addAll(catalogProductResponse.getProducts());
+                    }
+                }
+            }
+
+            @Override
+            public void onError(@NonNull Throwable t) {
+
+                if (mBinding.getCatalogProductData() != null) {
+                    mBinding.getCatalogProductData().setLazyLoading(false);
+                }
+
+                if (!NetworkHelper.isNetworkAvailable(requireContext())) {
+                    SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(requireContext());
+                    CatalogHelper.CatalogProductRequestType catalogProductRequestType = (CatalogHelper.CatalogProductRequestType) CatalogHelper.CatalogProductRequestType.FEATURED_CATEGORY;
+                    String requestTypeIdentifier = catalogProductRequestType.toString();
+                    CatalogProductResponse dbResponse = sqlLiteDbHelper.getCatalogProductData(requestTypeIdentifier);
+
+                    if (mIsFirstCall) {
+                        if (dbResponse != null) {
+                            onNext(dbResponse);
+                        } else {
+                            super.onError(t);
+                        }
+                    } else {
+                        super.onError(t);
+                    }
+                } else {
+                    super.onError(t);
+                }
+            }
+
+        });
     }
 
     @Override
@@ -174,7 +254,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
         List<FeaturedCategoryData> fragment = homePageResponse.getFeaturedCategories();
 
-        CategoryProductAdapter adapter = new CategoryProductAdapter((NewHomeActivity)requireContext() , fragment);
+        CategoryProductAdapter adapter = new CategoryProductAdapter((NewHomeActivity) requireContext(), fragment);
         mBinding.viewPager2.setUserInputEnabled(false);
         mBinding.viewPager2.setAdapter(adapter);
 
@@ -187,6 +267,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     public void fetchExistingAddresses() {
         ApiConnection.getAddressBookData(getContext(), new BaseLazyRequest(0, 1)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(getAddressResponseObserver());
     }
+
     private Observer<? super MyAddressesResponse> getAddressResponseObserver() {
         return new CustomObserver<MyAddressesResponse>(getContext()) {
             @Override
@@ -196,7 +277,6 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
             }
         };
     }
-
 
 
     private void checkIfAddressExists(MyAddressesResponse myAddressesResponse) {
@@ -230,6 +310,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     private void fetchBillingAddressData(AddressData addressData) {
         ApiConnection.getAddressFormData(getContext(), addressData.getUrl()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(getBillingAddressResponse(addressData));
     }
+
     private Observer<? super AddressFormResponse> getBillingAddressResponse(AddressData addressData) {
         return new CustomObserver<AddressFormResponse>(getContext()) {
             @Override
@@ -243,6 +324,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     private void fetchStates(AddressFormResponse addressFormResponse, AddressData addressData) {
         ApiConnection.getStates(requireContext(), COMPANY_ID).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(getStateListResponse(addressFormResponse, addressData));
     }
+
     private Observer<? super StateListResponse> getStateListResponse(AddressFormResponse addressFormResponse, AddressData addressData) {
         return new CustomObserver<BaseResponse>(getContext()) {
             @Override
@@ -290,6 +372,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         startActivity(new Intent(requireActivity(), UpdateAddressActivity.class)
                 .putExtra(BUNDLE_KEY_URL, addressData.getUrl()));
     }
+
     private void showAlertDialog(String title, String message) {
         AlertDialogHelper.showDefaultWarningDialogWithDismissListener(getContext(), title, message, sweetAlertDialog -> {
             sweetAlertDialog.dismiss();
@@ -303,6 +386,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, CatalogProductActivity.class.getSimpleName());
         startActivity(i);
     }
+
     private void clearCustomerDataFromSharedPref() {
         AppSharedPref.clearCustomerData(getContext());
     }
@@ -331,134 +415,10 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
     }
 
-    private CustomObserver<CatalogProductResponse> mCatalogProductDataObserver = new CustomObserver<CatalogProductResponse>(getActivity()) {
-
-        @Override
-        public void onComplete() {
-
-        }
-
-        @Override
-        public void onNext(@NonNull CatalogProductResponse catalogProductResponse) {
-            super.onNext(catalogProductResponse);
-
-            if (catalogProductResponse.isAccessDenied()) {
-                AlertDialogHelper.showDefaultWarningDialogWithDismissListener(requireContext(), getString(R.string.error_login_failure), getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        sweetAlertDialog.dismiss();
-                        AppSharedPref.clearCustomerData(requireContext());
-                        Intent i = new Intent(requireContext(), SignInSignUpActivity.class);
-                        i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, CatalogProductActivity.class.getSimpleName());
-                        startActivity(i);
-                    }
-                });
-            } else {
-
-                mBinding.getCatalogProductData().setLazyLoading(false);
-
-                if (mIsFirstCall) {
-                    mBinding.setCatalogProductData(catalogProductResponse);
-                    mBinding.executePendingBindings();
-                    catalogProductResponse.setWishlistData();
-
-                    /*BETTER REPLACE SOME CONTAINER INSTEAD OF WHOLE PAGE android.R.id.content */
-                    CatalogHelper.CatalogProductRequestType catalogProductRequestType = (CatalogHelper.CatalogProductRequestType) CatalogHelper.CatalogProductRequestType.FEATURED_CATEGORY;
-                    String requestTypeIdentifier = catalogProductRequestType.toString();
-                    new SaveData(getActivity(), catalogProductResponse, requestTypeIdentifier);
-
-                    if (mBinding.getCatalogProductData().getProducts().isEmpty()) {
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_DRAWABLE_ID, R.drawable.ic_vector_empty_product_catalog);
-                        bundle.putString(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_TITLE_ID, getString(R.string.empty_product_catalog));
-                        bundle.putString(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_SUBTITLE_ID, getString(R.string.try_different_category_or_search_keyword_maybe));
-                        bundle.putBoolean(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_HIDE_CONTINUE_SHOPPING_BTN, false);
-                        bundle.putInt(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_TYPE, EmptyFragment.EmptyFragType.TYPE_CATALOG_PRODUCT.ordinal());
-                        Navigation.findNavController(requireView()).navigate(R.id.action_homeFragment_to_emptyFragment, bundle);
-                    } else {
-                        initProductCatalogRv();
-                    }
-                } else {
-                    /*update offset from new response*/
-                    catalogProductResponse.setWishlistData();
-                    mBinding.getCatalogProductData().setOffset(catalogProductResponse.getOffset());
-                    mBinding.getCatalogProductData().setLimit(catalogProductResponse.getLimit());
-                    mBinding.getCatalogProductData().getProducts().addAll(catalogProductResponse.getProducts());
-                    mBinding.productCatalogRv.getAdapter().notifyDataSetChanged();
-                }
-            }
-        }
-
-        @Override
-        public void onError(@NonNull Throwable t) {
-
-            if (mBinding.getCatalogProductData() != null) {
-                mBinding.getCatalogProductData().setLazyLoading(false);
-            }
-
-            if (!NetworkHelper.isNetworkAvailable(requireContext())) {
-                SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(requireContext());
-                CatalogHelper.CatalogProductRequestType catalogProductRequestType = (CatalogHelper.CatalogProductRequestType) CatalogHelper.CatalogProductRequestType.FEATURED_CATEGORY;
-                String requestTypeIdentifier = catalogProductRequestType.toString();
-                CatalogProductResponse dbResponse = sqlLiteDbHelper.getCatalogProductData(requestTypeIdentifier);
-
-                if (mIsFirstCall) {
-                    if (dbResponse != null) {
-                        onNext(dbResponse);
-                    } else {
-                        super.onError(t);
-                    }
-                } else {
-                    super.onError(t);
-                }
-            } else {
-                super.onError(t);
-            }
-        }
-
-    };
-
-    private void initProductCatalogRv() {
-
-        mBinding.productCatalogRv.setAdapter(new CatalogProductListHomeAdapter(requireContext(), mBinding.getCatalogProductData().getProducts(), VIEW_TYPE_LIST));
-        int spanCount = 2;
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(), spanCount);
-        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                if (position == mBinding.getCatalogProductData().getProducts().size()) {
-                    return spanCount;
-                }
-                return 1;
-            }
-        });
-        mBinding.productCatalogRv.setLayoutManager(gridLayoutManager);
-        mBinding.productCatalogRv.addOnScrollListener(new EndlessRecyclerViewScrollListener((GridLayoutManager) mBinding.productCatalogRv.getLayoutManager()) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                if (AppSharedPref.getItemsPerPage(requireContext()) <= totalItemsCount) {
-                    mIsFirstCall = false;
-                    mBinding.getCatalogProductData().setLazyLoading(true);
-                    callApi();
-                }
-            }
-        });
-
-        mBinding.productCatalogRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-
-                int lastVisibleItemPosition = ((GridLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-
-            }
-        });
-
-    }
 
     FeaturedCategoriesAdapter.FeaturedCategoryDataValue value = new FeaturedCategoriesAdapter.FeaturedCategoryDataValue() {
         @Override
-        public void data(FeaturedCategoryData featuredCategoryData , Integer pos) {
+        public void data(FeaturedCategoryData featuredCategoryData, Integer pos) {
             mFeaturedCategoryData = featuredCategoryData;
             mBinding.viewPager2.setCurrentItem(pos);
             handleCatalogData();
