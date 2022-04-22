@@ -48,13 +48,11 @@ public class CatalogProductListAdapter extends RecyclerView.Adapter<CatalogProdu
         mContext = context;
         mProductDatas = productDatas;
         VIEW_TYPE = viewTypeGrid;
-        Log.d(TAG, "onCreateViewHolderAdapter: " + viewTypeGrid);
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        Log.d(TAG, "onCreateViewHolderviewType: " + viewType);
         if (viewType == VIEW_TYPE_BACK_TO_TOP) {
 //            if(((CatalogProductActivity) mContext).mBinding.productCatalogRv.getLayoutManager() instanceof GridLayoutManager && mProductDatas.size()<=9){
 //                return null;
@@ -70,7 +68,6 @@ public class CatalogProductListAdapter extends RecyclerView.Adapter<CatalogProdu
 
     @Override
     public void onBindViewHolder(CatalogProductListAdapter.ViewHolder holder, int position) {
-        Log.i(TAG, "onBindViewHolder: ");
         if (position < mProductDatas.size()) {
             final ProductData productData = mProductDatas.get(position);
 //        productData.setContext(mContext);
@@ -94,9 +91,7 @@ public class CatalogProductListAdapter extends RecyclerView.Adapter<CatalogProdu
     @Override
     public int getItemViewType(int position) {
         boolean isLinearLayoutManager = ((CatalogProductActivity) mContext).mBinding.productCatalogRv.getLayoutManager() instanceof LinearLayoutManager;
-        Log.i(TAG, "getItemViewType: " + AppSharedPref.isGridview(mContext));
         if (position == mProductDatas.size()) {
-            Log.i(TAG, "getItemViewType: buttonToTop");
             return VIEW_TYPE_BACK_TO_TOP;
         }
         if (AppSharedPref.isGridview(mContext)) {
@@ -108,7 +103,6 @@ public class CatalogProductListAdapter extends RecyclerView.Adapter<CatalogProdu
 
     @Override
     public int getItemCount() {
-        Log.i(TAG, "getItemCount: " + mProductDatas.size());
         if (mProductDatas.size() <= 9 && AppSharedPref.isGridview(mContext))
             return mProductDatas.size();
         if (mProductDatas.size() <= 5)

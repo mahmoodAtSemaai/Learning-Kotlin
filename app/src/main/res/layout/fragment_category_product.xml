@@ -1,32 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.CategoryProductFragment">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import
+            alias="View"
+            type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse" />
+
+    </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        tools:context=".fragment.CategoryProductFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/product_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        android:background="@color/activityBackground" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <ProgressBar
-        android:layout_width="50dp"
-        android:id="@+id/progress_bar"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_height="50dp">
-    </ProgressBar>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/product_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:background="@drawable/custom_progress_drawable"
+                android:indeterminate="true"
+                android:visibility="@{data== null ? View.VISIBLE :View.GONE}" />
+
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+
 
     </RelativeLayout>
-
-
-
-</RelativeLayout>
+</layout>
