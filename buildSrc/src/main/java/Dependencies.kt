@@ -100,6 +100,15 @@ object DepVersions {
     // Kotlin Coroutines
     const val kotlinCoroutines = "1.4.1"
 
+    //hilt
+    const val hilt = "2.35.1"
+
+    // Arch Components
+    const val lifecycle = "2.4.1"
+
+    // Kotlin Coroutines
+    const val kotlinCoroutines = "1.4.1"
+
 }
 
 object Modules {
