@@ -158,6 +158,8 @@ dependencies {
             Dependencies.lifecycleExtension,
             Dependencies.mixPanel,
             Dependencies.hilt,
+            Dependencies.coroutinesCore,
+            Dependencies.coroutinesAndroid,
             project(Modules.sweetAlertDialog)
     )
 
