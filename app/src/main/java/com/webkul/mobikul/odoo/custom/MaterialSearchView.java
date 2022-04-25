@@ -325,7 +325,7 @@ public class MaterialSearchView extends FrameLayout {
         }
         mBinding.etSearch.setText("");
 //        mBinding.etSearch.requestFocus();
-
+//
 //        ((SearchHistoryAdapter) mBinding.seachHistoryRv.getAdapter()).updateSearchHistory(getSearchHistoryList(""), "");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

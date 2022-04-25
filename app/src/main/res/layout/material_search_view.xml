@@ -107,6 +107,7 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
+            android:id="@+id/scroll_view"
             android:layout_height="match_parent"
             android:fillViewport="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -127,6 +128,7 @@
                     android:onClick="@{()->handler.backPressed()}" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
+
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="@dimen/spacing_generic"

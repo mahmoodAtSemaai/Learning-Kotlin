@@ -35,6 +35,7 @@
             app:visibility="@{data.allNotificationMessages.empty? View.GONE : View.VISIBLE}" />
 
         <include
+            android:id="@+id/empty_layout"
             layout="@layout/fragment_empty"
             android:visibility="@{data.allNotificationMessages.empty ? View.VISIBLE : View.GONE}"/>
     </FrameLayout>

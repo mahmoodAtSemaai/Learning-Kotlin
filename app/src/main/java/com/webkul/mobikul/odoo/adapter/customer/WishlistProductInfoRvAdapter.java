@@ -65,6 +65,13 @@ public class WishlistProductInfoRvAdapter extends RecyclerView.Adapter<WishlistP
             }
         });
 
+        holder.mBinding.addProductToBagBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                wishListInterface.addProductToBag(holder.getAdapterPosition());
+            }
+        });
+
 
         holder.mBinding.addProductToBagBtn.setOnClickListener(new View.OnClickListener(){
             @Override

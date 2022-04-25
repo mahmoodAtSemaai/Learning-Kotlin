@@ -110,7 +110,6 @@
                     android:id="@+id/add_product_to_bag_btn"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:onClick="@{()->handler.addProductToBag()}"
                     android:text="@string/move_to_bag" />
 
                 <ImageButton

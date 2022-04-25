@@ -73,7 +73,8 @@
 
     <!--Toolbar color-->
     <color name="toolbar_bg">#EBEFF2</color>
-    <color name="background_orange">#E3651F</color>
+    <color name="background_orange">#E16E03</color>
     <color name="black">#000</color>
+    <color name="background_appbar_color">#FFD8B8</color>
 
 </resources>

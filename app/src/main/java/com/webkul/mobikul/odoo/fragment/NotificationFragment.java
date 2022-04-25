@@ -23,6 +23,7 @@ import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.constant.BundleConstant;
 import com.webkul.mobikul.odoo.database.SaveData;
 import com.webkul.mobikul.odoo.databinding.FragmentNotificationBinding;
+import com.webkul.mobikul.odoo.handler.generic.EmptyFragmentHandler;
 import com.webkul.mobikul.odoo.handler.home.FragmentNotifier;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
@@ -117,15 +118,13 @@ public class NotificationFragment extends BaseFragment {
 
                     mBinding.setData(notificationMessagesResponse);
                     if (notificationMessagesResponse.getAllNotificationMessages().isEmpty()) {
-                        //FragmentHelper.replaceFragment(R.id.container, getContext(), EmptyFragment.newInstance(R.drawable.ic_vector_empty_notification, getString(R.string.empty_notification), getString(R.string.visit_later_to_check_your_notification), true,
-                                //EmptyFragment.EmptyFragType.TYPE_NOTIFICATION.ordinal()), EmptyFragment.class.getSimpleName(), true, false);
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_DRAWABLE_ID, R.drawable.ic_vector_empty_notification);
-                        bundle.putString(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_TITLE_ID, getString(R.string.empty_notification));
-                        bundle.putString(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_SUBTITLE_ID, getString(R.string.visit_later_to_check_your_notification));
-                        bundle.putBoolean(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_HIDE_CONTINUE_SHOPPING_BTN, false);
-                        bundle.putInt(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_TYPE, EmptyFragment.EmptyFragType.TYPE_NOTIFICATION.ordinal());
-                        Navigation.findNavController(requireView()).navigate(R.id.action_notificationFragment_to_emptyFragment, bundle);
+
+                        mBinding.emptyLayout.setTitle(getString(R.string.empty_notification));
+                        mBinding.emptyLayout.setSubtitle(getString(R.string.visit_later_to_check_your_notification));
+                        mBinding.emptyLayout.setEmptyImage(R.drawable.ic_vector_empty_notification);
+                        mBinding.emptyLayout.setHideContinueShoppingBtn(false);
+                        mBinding.emptyLayout.setHandler(new EmptyFragmentHandler(getContext()));
+
                     } else {
                         new SaveData(getActivity(), notificationMessagesResponse);
                         mBinding.notificationListRv.setAdapter(new NotificationMessageAdapter(getContext(), notificationMessagesResponse.getAllNotificationMessages()));

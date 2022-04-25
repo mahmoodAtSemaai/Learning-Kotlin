@@ -1,8 +1,15 @@
 package com.webkul.mobikul.odoo.activity
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.view.Window
+import android.view.WindowManager
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
@@ -10,12 +17,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.constant.BundleConstant
+import com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE
 import com.webkul.mobikul.odoo.databinding.ActivityNewHomeBinding
 import com.webkul.mobikul.odoo.handler.home.FragmentNotifier.HomeActivityFragments
 import com.webkul.mobikul.odoo.model.home.HomePageResponse
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE
 
 
 class NewHomeActivity : BaseActivity() {
@@ -31,15 +38,48 @@ class NewHomeActivity : BaseActivity() {
     private val mBackPressedTime: Long = 0
     private var currentFragmentDisplayed = ""
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val window: Window = this.window
+
+        //changes the status bar color
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor= ContextCompat.getColor(this, R.color.background_appbar_color)
+
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_new_home)
         setupUIController()
 
         //Open the Navigation Drawer
         openDrawer()
+
+
+         binding.searchView.setOnClickListener{
+             binding.searchd.visibility= View.VISIBLE
+             binding.searchd.openSearch()
+         }
+
+        binding.cartIcon.setOnClickListener{
+            startActivity(Intent(this@NewHomeActivity , BagActivity::class.java))
+        }
+
+
     }
 
+
+    override fun onBackPressed() {
+
+        if(binding.searchd.isVisible){
+            binding.searchd.visibility = View.GONE
+            binding.searchd.closeSearch()
+        }
+        else{
+            super.onBackPressed()
+        }
+    }
 
     private fun openDrawer() {
         binding.drawerIcon.setOnClickListener {
