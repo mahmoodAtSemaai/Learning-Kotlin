@@ -1,5 +1,6 @@
 package com.webkul.mobikul.odoo.features.auth.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -13,6 +14,7 @@ import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.databinding.FragmentLoginV1Binding
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
@@ -39,57 +41,23 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
 
     private fun setObservers() {
         lifecycleScope.launchWhenCreated {
-            viewModel.logInResponse.collect {
+            viewModel.state.collect {
                 when (it) {
-                    is Resource.Success -> {
+                    is LoginState.Idle -> {
 
                     }
-                    is Resource.Failure -> {
-                        val error = it
-                        when (it.failureStatus) {
-
-                            FailureStatus.API_FAIL -> {
-                                var message = error.message
-                                if (message == null) message = "Could not connect to server"
-                                AlertDialogHelper.showDefaultWarningDialog(
-                                    context,
-                                    getString(R.string.error_login_failure),
-                                    message
-                                )
-                            }
-
-                            FailureStatus.NO_INTERNET -> {
-                                var message = error.message
-                                if (message == null) message =
-                                    "Please check your internet connection"
-
-                                AlertDialogHelper.showDefaultWarningDialog(
-                                    context,
-                                    getString(R.string.error_login_failure),
-                                    message
-                                )
-
-                            }
-
-                            FailureStatus.OTHER -> {
-                                var message = error.message
-                                if (message == null) message = "Something went wrong"
-                                AlertDialogHelper.showDefaultWarningDialog(
-                                    context,
-                                    getString(R.string.error_login_failure),
-                                    message
-                                )
-
-                            }
-
-                        }
+                    is LoginState.Loading -> {
+                        AlertDialogHelper.showDefaultProgressDialog(context)
                     }
-                    is Resource.Loading -> {
-                        AlertDialogHelper.showDefaultProgressDialog(
-                            context
-                        )
+                    is LoginState.Login -> {
+                        val loginResponse = it.data
+                        startActivity(Intent())
                     }
-                    else -> {}
+
+                    is LoginState.Error -> {
+                        val error = it.error
+
+                    }
                 }
             }
         }
@@ -143,8 +111,9 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
             )
 
         if (username.isNotEmpty() && password.isNotEmpty() && password.length > BuildConfig.MIN_PASSWORD_LENGTH)
-            Toast.makeText(requireContext(), "Login", Toast.LENGTH_SHORT).show()
-//           viewModel.onLogInClicked(username, password)
+            lifecycleScope.launch {
+                viewModel.userIntent.send(LoginIntent.Login(username, password))
+            }
     }
 
     private fun onPrivacyPolicyClicked() {
