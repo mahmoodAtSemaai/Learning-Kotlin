@@ -9,22 +9,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.webkul.mobikul.odoo.BuildConfig;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
-import com.webkul.mobikul.odoo.activity.HomeActivity;
 import com.webkul.mobikul.odoo.activity.NewHomeActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.activity.UpdateAddressActivity;
-import com.webkul.mobikul.odoo.adapter.home.CatalogProductListHomeAdapter;
 import com.webkul.mobikul.odoo.adapter.home.CategoryProductAdapter;
 import com.webkul.mobikul.odoo.adapter.home.FeaturedCategoriesAdapter;
 import com.webkul.mobikul.odoo.adapter.home.HomeBannerAdapter;
@@ -40,7 +35,6 @@ import com.webkul.mobikul.odoo.handler.home.FragmentNotifier;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.CatalogHelper;
-import com.webkul.mobikul.odoo.helper.EndlessRecyclerViewScrollListener;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.NetworkHelper;
 import com.webkul.mobikul.odoo.model.BaseResponse;
@@ -56,7 +50,6 @@ import com.webkul.mobikul.odoo.model.request.BaseLazyRequest;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -71,7 +64,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
     @SuppressWarnings("unused")
     private static final String TAG = "HomeFragment";
-    public FragmentHomeBinding mBinding;
+    public FragmentHomeBinding binding;
 
     private int CHECK_FOR_EXISTING_ADDRESS = 1;
     private int BILLING_ADDRESS_POSITION = 1;
@@ -85,8 +78,8 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
-        return mBinding.getRoot();
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -103,15 +96,15 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     private void init() {
         /*Init Data */
         mIsFirstCall = true;
-        mBinding.setCatalogProductData(new CatalogProductResponse());
-        mBinding.getCatalogProductData().setLazyLoading(true);
+        binding.setCatalogProductData(new CatalogProductResponse());
+        binding.getCatalogProductData().setLazyLoading(true);
         AppSharedPref.setItemsPerPage(requireContext(), BuildConfig.DEFAULT_ITEM_PER_PAGE);
     }
 
     protected void callApi() {
         int offset = 0;
         if (!mIsFirstCall) {
-            offset = mBinding.getCatalogProductData().getOffset() + AppSharedPref.getItemsPerPage(requireContext());
+            offset = binding.getCatalogProductData().getOffset() + AppSharedPref.getItemsPerPage(requireContext());
         }
         Observable<CatalogProductResponse> catalogProductDataObservable = ApiConnection.getCategoryProducts(requireContext(), mFeaturedCategoryData.getCategoryId(), offset, AppSharedPref.getItemsPerPage(requireContext()));
 
@@ -139,10 +132,10 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
                     });
                 } else {
 
-                    mBinding.getCatalogProductData().setLazyLoading(false);
+                    binding.getCatalogProductData().setLazyLoading(false);
 
                     if (mIsFirstCall) {
-                        mBinding.setCatalogProductData(catalogProductResponse);
+                        binding.setCatalogProductData(catalogProductResponse);
                         catalogProductResponse.setWishlistData();
 
                         /*BETTER REPLACE SOME CONTAINER INSTEAD OF WHOLE PAGE android.R.id.content */
@@ -150,7 +143,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
                         String requestTypeIdentifier = catalogProductRequestType.toString();
                         new SaveData(getActivity(), catalogProductResponse, requestTypeIdentifier);
 
-                        if (mBinding.getCatalogProductData().getProducts().isEmpty()) {
+                        if (binding.getCatalogProductData().getProducts().isEmpty()) {
                             Bundle bundle = new Bundle();
                             bundle.putInt(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_DRAWABLE_ID, R.drawable.ic_vector_empty_product_catalog);
                             bundle.putString(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_TITLE_ID, getString(R.string.empty_product_catalog));
@@ -162,9 +155,9 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
                     } else {
                         /*update offset from new response*/
                         catalogProductResponse.setWishlistData();
-                        mBinding.getCatalogProductData().setOffset(catalogProductResponse.getOffset());
-                        mBinding.getCatalogProductData().setLimit(catalogProductResponse.getLimit());
-                        mBinding.getCatalogProductData().getProducts().addAll(catalogProductResponse.getProducts());
+                        binding.getCatalogProductData().setOffset(catalogProductResponse.getOffset());
+                        binding.getCatalogProductData().setLimit(catalogProductResponse.getLimit());
+                        binding.getCatalogProductData().getProducts().addAll(catalogProductResponse.getProducts());
                     }
                 }
             }
@@ -172,8 +165,8 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
             @Override
             public void onError(@NonNull Throwable t) {
 
-                if (mBinding.getCatalogProductData() != null) {
-                    mBinding.getCatalogProductData().setLazyLoading(false);
+                if (binding.getCatalogProductData() != null) {
+                    binding.getCatalogProductData().setLazyLoading(false);
                 }
 
                 if (!NetworkHelper.isNetworkAvailable(requireContext())) {
@@ -247,21 +240,21 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         if (isFromApi) {
             homePageResponse.updateSharedPref(getContext(), "");
         }
-        mBinding.setData(homePageResponse);
+        binding.setData(homePageResponse);
 
         /*FEATURED CATEGORIES*/
-        mBinding.featuredCategoriesRv.setAdapter(new FeaturedCategoriesAdapter(getContext(), homePageResponse.getFeaturedCategories(), value));
+        binding.featuredCategoriesRv.setAdapter(new FeaturedCategoriesAdapter(getContext(), homePageResponse.getFeaturedCategories(), value));
 
 
         List<FeaturedCategoryData> fragment = homePageResponse.getFeaturedCategories();
 
         CategoryProductAdapter adapter = new CategoryProductAdapter((NewHomeActivity) requireContext(), fragment);
-        mBinding.viewPager2.setUserInputEnabled(false);
-        mBinding.viewPager2.setAdapter(adapter);
+        binding.viewPager2.setUserInputEnabled(false);
+        binding.viewPager2.setAdapter(adapter);
 
         /*BANNER SLIDERS*/
-        mBinding.bannerViewPager.setAdapter(new HomeBannerAdapter(getContext(), homePageResponse.getBannerImages()));
-        mBinding.bannerDotsTabLayout.setupWithViewPager(mBinding.bannerViewPager, true);
+        binding.bannerViewPager.setAdapter(new HomeBannerAdapter(getContext(), homePageResponse.getBannerImages()));
+        binding.bannerDotsTabLayout.setupWithViewPager(binding.bannerViewPager, true);
 
     }
 
@@ -421,7 +414,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         @Override
         public void data(FeaturedCategoryData featuredCategoryData, Integer pos) {
             mFeaturedCategoryData = featuredCategoryData;
-            mBinding.viewPager2.setCurrentItem(pos);
+            binding.viewPager2.setCurrentItem(pos);
             handleCatalogData();
         }
     };

@@ -15,41 +15,37 @@
 
     </data>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".fragment.CategoryProductFragment">
 
-        <RelativeLayout
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/product_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:spanCount="2"
+            tools:listitem="@layout/item_category_products" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/product_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
-
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:background="@drawable/custom_progress_drawable"
-                android:indeterminate="true"
-                android:visibility="@{data== null ? View.VISIBLE :View.GONE}" />
-
-
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true" />
-
-        </RelativeLayout>
+        <ProgressBar
+            android:id="@+id/pb_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:background="@drawable/custom_progress_drawable"
+            android:indeterminate="true"
+            app:layout_constraintBottom_toBottomOf="@id/product_recycler_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/product_recycler_view" />
 
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>
