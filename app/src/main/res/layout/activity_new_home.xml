@@ -21,21 +21,72 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/home_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:minHeight="?actionBarSize"
-            android:background="#FFD8B8">
+            android:background="@drawable/background_app_layout">
+            
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="@dimen/hamburger_icon_dimens"
-            android:layout_height="@dimen/hamburger_icon_dimens"
-            android:id="@+id/drawer_icon"
-            android:src="@drawable/ic_baseline_menu_24"
-            android:layout_gravity="end"
-            android:layout_marginEnd="@dimen/hamburger_icon_right_margin"/>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/drawer_icon"
+                    android:layout_width="@dimen/hamburger_icon_dimens"
+                    android:layout_height="@dimen/hamburger_icon_dimens"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/hamburger_icon_right_margin"
+                    android:src="@drawable/ic_baseline_menu_24"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/hamburger_icon_right_margin" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/cart_icon"
+                    android:layout_width="@dimen/hamburger_icon_dimens"
+                    android:layout_height="@dimen/hamburger_icon_dimens"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="70dp"
+                    android:src="@drawable/cart" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/chat_icon"
+                    android:layout_width="@dimen/hamburger_icon_dimens"
+                    android:layout_height="@dimen/hamburger_icon_dimens"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="119dp"
+                    android:foregroundGravity="center_vertical"
+                    android:src="@drawable/chat_icon" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/search_view"
+                    android:layout_width="155dp"
+                    android:layout_height="37dp"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/search_background"
+                    android:drawableStart="@drawable/search"
+                    android:gravity="center_vertical"
+                    android:hint="Search All Product"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="15dp"
+                    android:textAlignment="textEnd"
+                    android:textSize="12sp">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+
+            </RelativeLayout>
 
         </com.google.android.material.appbar.MaterialToolbar>
+
+
+
 
         <fragment
             android:id="@+id/home_nav_host"
@@ -48,6 +99,16 @@
             app:layout_constraintTop_toBottomOf="@id/home_toolbar"
             app:navGraph="@navigation/home_nav_graph" />
 
+
+        <com.webkul.mobikul.odoo.custom.MaterialSearchView
+            android:id="@+id/searchd"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            />
+
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/home_bottom_nav"
             android:layout_width="match_parent"
@@ -58,6 +119,9 @@
             app:layout_constraintRight_toRightOf="parent"
             app:menu="@menu/home_nav_menu"
             app:labelVisibilityMode="labeled" />
+
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

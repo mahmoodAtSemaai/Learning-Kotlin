@@ -45,7 +45,7 @@
     <dimen name="margin_top_grid">105dp</dimen>
 
 <!--    Material search view of home page-->
-    <dimen name="hamburger_icon_right_margin">20dp</dimen>
+    <dimen name="hamburger_icon_right_margin">21dp</dimen>
 
     <!--=============================================================================================================================================================
                                                     Background dimensions

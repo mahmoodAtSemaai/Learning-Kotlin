@@ -46,6 +46,9 @@
             android:exported="false"
 
             />
+        <activity android:name=".activity.SearchActivity"
+            android:exported="false">
+        </activity>
         <activity
             android:name=".activity.UserApprovalActivity"
             android:exported="true"

@@ -339,7 +339,6 @@ public class AccountFragment extends BaseFragment {
         }
     }
 
-    //Commented this was crashing a crash
 
     @Override
     public void onStart() {

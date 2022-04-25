@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.BaseActivity;
+import com.webkul.mobikul.odoo.activity.CustomerBaseActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.adapter.customer.WishlistProductInfoRvAdapter;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
@@ -21,16 +22,19 @@ import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.custom.CustomToast;
 import com.webkul.mobikul.odoo.databinding.FragmentWishlistBinding;
+import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.model.BaseResponse;
 import com.webkul.mobikul.odoo.model.customer.wishlist.MyWishListResponse;
 import com.webkul.mobikul.odoo.model.customer.wishlist.WishListData;
+import com.webkul.mobikul.odoo.model.request.WishListToCartRequest;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
@@ -151,6 +155,15 @@ public class WishlistFragment extends BaseFragment implements WishlistProductInf
 
     }
 
+    @Override
+    public void onDeleteProduct(Integer position) {
+        deleteProduct(wishListData.get(position));
+    }
+
+    @Override
+    public void addProductToBag(Integer pos) {
+       addProduct(wishListData.get(pos));
+    }
 
     public void deleteProduct(WishListData mData) {
 
@@ -199,14 +212,60 @@ public class WishlistFragment extends BaseFragment implements WishlistProductInf
         });
     }
 
-    @Override
-    public void onDeleteProduct(Integer position) {
-        deleteProduct(wishListData.get(position));
-    }
 
-    @Override
-    public void addProductToBag(Integer pos) {
+    public void addProduct(WishListData mData) {
+        AnalyticsImpl.INSTANCE.trackMoveToBagSelected(mData.getId(), mData.getName(), mData.getPriceUnit(),
+                Helper.getScreenName(getContext()),
+                "");
+        ApiConnection.wishlistToCart(getContext(), new WishListToCartRequest(mData.getId()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CustomObserver<BaseResponse>(getContext()) {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        super.onSubscribe(d);
+                        AlertDialogHelper.showDefaultProgressDialog(getContext());
+                    }
 
+                    @Override
+                    public void onNext(@NonNull BaseResponse wishlistToCartResponse) {
+                        super.onNext(wishlistToCartResponse);
+                        if (wishlistToCartResponse.isAccessDenied()){
+                            AlertDialogHelper.showDefaultWarningDialogWithDismissListener(getContext(), getContext().getString(R.string.error_login_failure), getContext().getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismiss();
+                                    AppSharedPref.clearCustomerData(getContext());
+                                    Intent i = new Intent(getContext(), SignInSignUpActivity.class);
+                                    i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ((BaseActivity)getContext()).getClass().getSimpleName());
+                                    getContext().startActivity(i);
+                                }
+                            });
+                        }else {
+                            FirebaseAnalyticsImpl.logAddToCartEvent(getContext(),mData.getProductId(),mData.getName());
+                            if (wishlistToCartResponse.isSuccess()) {
+                                AnalyticsImpl.INSTANCE.trackMoveItemToBagSuccessful(mData.getId(), mData.getName(), mData.getPriceUnit(),
+                                        Helper.getScreenName(getContext()),
+                                        "");
+
+                                //Generating Errors
+//                                (((NewHomeActivity) getContext()).getSupportFragmentManager().findFragmentByTag(WishlistFragment
+//                                        .class.getSimpleName())).onResume();
+                                callApi();
+                                AlertDialogHelper.showDefaultSuccessOneLinerDialog(getContext(), wishlistToCartResponse.getMessage());
+                            } else {
+                                AnalyticsImpl.INSTANCE.trackMoveItemToBagFailed(wishlistToCartResponse.getMessage(), wishlistToCartResponse.getResponseCode(), "");
+                                AlertDialogHelper.showDefaultErrorDialog(getContext(), getContext().getString(R.string.add_to_bag),
+                                        wishlistToCartResponse.getMessage());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }
 

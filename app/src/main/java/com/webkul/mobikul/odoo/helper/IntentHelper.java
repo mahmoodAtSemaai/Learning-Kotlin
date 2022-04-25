@@ -10,6 +10,7 @@ import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.BagActivity;
 import com.webkul.mobikul.odoo.activity.CheckoutActivity;
 import com.webkul.mobikul.odoo.activity.HomeActivity;
+import com.webkul.mobikul.odoo.activity.NewHomeActivity;
 import com.webkul.mobikul.odoo.activity.UserApprovalActivity;
 import com.webkul.mobikul.odoo.dialog_frag.ProductAddedToBagDialogFrag;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
@@ -28,7 +29,7 @@ public class IntentHelper {
     private static final String TAG = "IntentHelper";
 
     public static void continueShopping(Context context) {
-        Intent intent = new Intent(context, HomeActivity.class);
+        Intent intent = new Intent(context, NewHomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(intent);
     }
