@@ -84,8 +84,10 @@ class CategoryProductFragment : Fragment() {
                             catalogProductResponse.setWishlistData()
                             catalogResponse.offset = catalogProductResponse.offset + 10
                             catalogResponse.limit = catalogProductResponse.limit
+                            val initialSize = catalogResponse.products.size
                             catalogResponse.products.addAll(catalogProductResponse.products)
-                            binding.productRecyclerView.adapter?.notifyDataSetChanged()
+                            val finalSize = catalogResponse.products.size
+                            binding.productRecyclerView.adapter?.notifyItemRangeChanged(initialSize, finalSize - 1)
                         }
                     }
                 }
