@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.webkul.mobikul.odoo.helper.AppSharedPref" />
+
+        <import type="com.webkul.mobikul.odoo.BuildConfig" />
+
+        <import
+            alias="View"
+            type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.customer.signup.SignUpData" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.adapter.customer.SignUpHandler" />
+    </data>
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:context="com.webkul.mobikulhyperlocal.activity.SignInSignUpActivityV1">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                android:background="@color/toolbar_bg"
+                android:elevation="@dimen/toolbar_elevation_generic"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:navigationIcon="@drawable/ic_vector_chevron_left_black_24dp"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:title="@string/sign_up"
+                app:titleTextColor="@color/text_color_primary"
+                tools:ignore="HardcodedText"
+                tools:targetApi="lollipop">
+
+
+            </androidx.appcompat.widget.Toolbar>
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <ScrollView
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/activityBackground"
+            android:fillViewport="true"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:scrollbars="none"
+            android:scrollIndicators="none"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:padding="@dimen/spacing_generic"
+                        app:srcCompat="@drawable/ic_vector_telephone_accent_24dp" />
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        app:error="@{data.phoneNumberError}"
+                        app:errorEnabled="@{data.displayError}"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/email_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/enter_phone_number"
+                            android:inputType="phone"
+                            android:maxLines="1"
+                            android:text="@={data.phoneNumber}" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </LinearLayout>
+
+                <!--FULL NAME-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:padding="@dimen/spacing_generic"
+                        app:srcCompat="@drawable/ic_vector_person_accent_48dp" />
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        app:error="@{data.nameError}"
+                        app:errorEnabled="@{data.displayError}"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/name_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/enter_your_name"
+                            android:inputType="textPersonName"
+                            android:maxLines="1"
+                            android:text="@={data.name}" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:padding="@dimen/spacing_generic"
+                        app:srcCompat="@drawable/ic_vector_password_key_accent_24dp" />
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        app:error="@{data.passwordError}"
+                        app:errorEnabled="@{data.displayError}"
+                        app:hintEnabled="false"
+                        app:passwordToggleEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/password_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/enter_your_password"
+                            android:inputType="textPassword"
+                            android:maxLines="1"
+                            android:text="@={data.password}" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:padding="@dimen/spacing_generic"
+                        app:srcCompat="@drawable/ic_vector_password_key_accent_24dp" />
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        app:error="@{data.confirmPasswordError}"
+                        app:errorEnabled="@{data.displayError}"
+                        app:hintEnabled="false"
+                        app:passwordToggleEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/confirm_password_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/enter_confirm_password"
+                            android:inputType="textPassword"
+                            android:maxLines="1"
+                            android:text="@={data.confirmPassword}" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </LinearLayout>
+
+                <CheckBox
+                    android:id="@+id/terms_and_conditions_cb"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:onCheckedChanged="@{(cb, isChecked) -> (isChecked) ? handler.setTermAndCondition(true) : handler.setTermAndCondition(false)}"
+                    android:padding="@dimen/spacing_generic"
+                    android:text="@string/i_agree_with_term_and_condition"
+                    android:visibility="@{AppSharedPref.isTermAndCondition(context)? View.VISIBLE : View.GONE}" />
+
+                <TextView
+                    android:id="@+id/view_terms_and_conditions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:onClick="@{() -> handler.viewTermNCond()}"
+                    android:padding="5dp"
+                    android:text="@string/view_term_and_cond"
+                    android:textColor="@color/colorAccent"
+                    android:visibility="@{AppSharedPref.isTermAndCondition(context)? View.VISIBLE : View.GONE}" />
+                />
+
+                <CheckBox
+                    android:id="@+id/is_seller_cb"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:onCheckedChanged="@{(cb, isChecked) -> (isChecked) ? handler.setSeller(true) : handler.setSeller(false)}"
+                    android:padding="@dimen/spacing_generic"
+                    android:text="@string/do_you_want_to_become_a_seller"
+                    android:visibility="@{BuildConfig.isMarketplace? View.VISIBLE : View.GONE}" />
+
+
+                <LinearLayout
+                    android:id="@+id/country_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/spacing_generic"
+                        android:text="@string/country" />
+
+                    <Spinner
+                        android:id="@+id/country_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/url_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:padding="@dimen/spacing_generic"
+                        app:srcCompat="@drawable/ic_vector_link_accent_24dp" />
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        app:error="@{data.profileURLError}"
+                        app:errorEnabled="@{data.displayError}"
+                        app:hintEnabled="false"
+                        app:passwordToggleEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/profile_url_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/profile_url"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:text="@={data.profileURL}" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/marketplace_tnc_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:orientation="vertical"
+                    tools:visibility="visible">
+                    <CheckBox
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:onCheckedChanged="@{(cb, isChecked) -> (isChecked) ? handler.setMarketplaceTermAndCondition(true) : handler.setMarketplaceTermAndCondition(false)}"
+                        android:padding="@dimen/spacing_generic"
+                        android:text="@string/i_agree_with_term_and_condition"
+                        tools:visibility="visible"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:onClick="@{() -> handler.viewMarketplaceTermNCond()}"
+                        android:padding="5dp"
+                        android:text="@string/view_term_and_cond"
+                        android:textColor="@color/colorAccent"
+                        tools:visibility="visible"
+                        />
+                    />
+
+                </LinearLayout>
+
+
+
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/sign_up_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height_generic"
+                    android:layout_marginBottom="@dimen/spacing_normal"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:onClick="@{() -> handler.signUp()}"
+                    android:text="@string/sign_up"
+                    android:textAllCaps="true"
+                    android:textStyle="bold" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/log_in_now"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:onClick="@{() -> handler.signIn()}"
+                    app:htmlText="@{@string/signin_text_on_sign_up_page}"
+                    tools:text="@string/signin_text_on_sign_up_page" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </ScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>
+
+
