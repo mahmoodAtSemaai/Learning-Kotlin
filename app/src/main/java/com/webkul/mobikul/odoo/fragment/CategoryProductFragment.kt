@@ -155,4 +155,10 @@ class CategoryProductFragment : Fragment() {
         }
     }
 
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        view?.requestLayout()
+        super.setUserVisibleHint(isVisibleToUser)
+
+    }
+
 }
