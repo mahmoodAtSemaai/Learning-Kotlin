@@ -1,6 +1,8 @@
 package com.webkul.mobikul.odoo.adapter.home;
 
 import android.content.Context;
+
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -63,6 +65,7 @@ public class FeaturedCategoriesAdapter extends RecyclerView.Adapter<FeaturedCate
         holder.mBinding.setData(featuredCategotyData);
         holder.itemView.findViewById(R.id.container).setBackgroundResource(selectedPos == position ?
                 R.drawable.featured_categories_selected_item_bg : Color.TRANSPARENT);
+        holder.mBinding.categoryName.setTextColor(selectedPos == position ? ContextCompat.getColor(mContext, R.color.background_orange) : ContextCompat.getColor(mContext, R.color.black));
         if(firstTimeSetup) {
             featuredCategoryDataValue.data(featuredCategotyData , position);
         }

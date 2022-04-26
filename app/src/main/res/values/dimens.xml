@@ -134,5 +134,6 @@
 
     <!--    size of hambuger icon-->
     <dimen name="hamburger_icon_dimens">30dp</dimen>
+    <dimen name="font_size_13sp">13sp</dimen>
 
 </resources>

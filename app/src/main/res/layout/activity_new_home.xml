@@ -14,6 +14,12 @@
             type="com.webkul.mobikul.odoo.handler.home.HomeActivityHandler" />
     </data>
 
+
+
+
+
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -26,7 +32,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:minHeight="?actionBarSize"
             android:background="@drawable/background_app_layout">
-            
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -43,15 +49,37 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/hamburger_icon_right_margin" />
 
+
+
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/cart_icon"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="70dp"
+                    android:layout_alignParentRight="true"
                     android:layout_width="@dimen/hamburger_icon_dimens"
                     android:layout_height="@dimen/hamburger_icon_dimens"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="70dp"
                     android:src="@drawable/cart" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/badge_info"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:visibility="gone"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="61dp"
+                    android:background="@drawable/badge_symbol"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    android:textStyle="bold">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/chat_icon"
@@ -63,6 +91,8 @@
                     android:layout_marginEnd="119dp"
                     android:foregroundGravity="center_vertical"
                     android:src="@drawable/chat_icon" />
+
+
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/search_view"
@@ -84,8 +114,6 @@
             </RelativeLayout>
 
         </com.google.android.material.appbar.MaterialToolbar>
-
-
 
 
         <fragment
@@ -121,7 +149,7 @@
             app:labelVisibilityMode="labeled" />
 
 
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </layout>

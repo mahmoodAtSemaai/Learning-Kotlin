@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.webkul.mobikul.odoo.BuildConfig;
 import com.webkul.mobikul.odoo.R;
@@ -86,11 +87,24 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Helper.hideKeyboard(getContext());
+
+         binding.refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+             @Override
+             public void onRefresh() {
+                 binding.refreshLayout.setRefreshing(true);
+                 hitApiForFetchingData();
+                 binding.refreshLayout.setRefreshing(false);
+             }
+         });
+
+
     }
 
+
+
     public void handleCatalogData() {
-        init();
-        callApi();
+//        init();
+//        callApi();
     }
 
     private void init() {
@@ -219,7 +233,6 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
             @Override
             public void onComplete() {
-                //mBinding.swipeRefreshLayout.setRefreshing(false);
             }
         });
 

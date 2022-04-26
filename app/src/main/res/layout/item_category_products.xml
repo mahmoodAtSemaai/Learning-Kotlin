@@ -65,6 +65,24 @@
                 tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
 
 
+            <TextView
+                android:id="@+id/discount_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/size_10"
+                android:text="@{data.calculateDiscount()}"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:padding="5dp"
+                android:layout_marginTop="5dp"
+                app:visibility="@{!data.priceReduce.empty}"
+                android:background="@drawable/background_discount_price"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/product_image" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_product_name"
                 style="@style/medium_normal_text"
@@ -75,7 +93,7 @@
                 android:text="@{data.name}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/product_image"
+                app:layout_constraintTop_toBottomOf="@+id/discount_price"
                 tools:text="Popuk bio konversi alabala babatala" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -96,15 +114,16 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/original_price"
                 style="@style/medium_normal_text"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/size_10"
-                android:layout_marginTop="@dimen/size_6"
+                android:layout_marginTop="8dp"
                 android:background="@{data.priceReduce.empty ?  null : @drawable/bg_strikethrough}"
                 android:text="@{data.priceUnit}"
                 android:textColor="@{data.priceReduce.empty ?  @color/black : @color/colorDarkGrey}"
-                android:textSize="@dimen/font_size_14"
+                android:textSize="@dimen/font_size_13sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.003"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/reduced_price"
                 app:textStyle="@{data.priceReduce.empty ? &quot;bold&quot; : &quot;normal&quot;}"
@@ -118,7 +137,7 @@
                 android:layout_marginHorizontal="@dimen/size_10"
                 android:layout_marginTop="@dimen/size_6"
                 android:text="@{data.brandName}"
-                android:textSize="@dimen/font_size_14"
+                android:textSize="@dimen/font_size_13sp"
                 android:visibility="@{(data.brandName != null &amp;&amp; data.brandName.length() > 0) ? View.VISIBLE : View.GONE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -133,12 +152,14 @@
                 android:layout_marginHorizontal="@dimen/size_10"
                 android:text="@{`Stock ` + data.availableQuantity}"
                 android:textColor="@color/colorDarkGrey"
-                android:textSize="@dimen/font_size_14"
+                android:textSize="@dimen/font_size_13sp"
                 android:visibility="@{data.availableQuantity > 0 ? View.VISIBLE : View.GONE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="4dp"
                 app:layout_constraintTop_toBottomOf="@+id/seller_name"
                 tools:text="Stock 10k" />
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
