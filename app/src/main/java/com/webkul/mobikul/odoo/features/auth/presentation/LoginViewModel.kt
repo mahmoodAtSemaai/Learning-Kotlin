@@ -19,7 +19,7 @@ class LoginViewModel @Inject constructor(
     private val appPreferences: AppPreferences
 ) : BaseViewModel() {
 
-    private val userIntent = Channel<LoginIntent>(Channel.UNLIMITED)
+    val userIntent = Channel<LoginIntent>(Channel.UNLIMITED)
     private val userAction = Channel<LoginAction>(Channel.UNLIMITED)
     private val _state = MutableStateFlow<LoginState>(LoginState.Idle)
     val state: StateFlow<LoginState>
@@ -35,7 +35,7 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             userIntent.consumeAsFlow().collect {
                 when (it) {
-                    is LoginIntent.Login -> LoginAction.Login(it.username, it.password)
+                    is LoginIntent.Login -> userAction.send(LoginAction.Login(it.username, it.password))
                 }
             }
         }
