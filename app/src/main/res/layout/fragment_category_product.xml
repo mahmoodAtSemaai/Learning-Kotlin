@@ -38,7 +38,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:spanCount="2"
-            android:nestedScrollingEnabled="false"
             tools:itemCount="10"
             tools:listitem="@layout/item_category_products" />
 

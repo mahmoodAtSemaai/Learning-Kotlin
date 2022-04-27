@@ -5,16 +5,20 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_URL;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.Navigation;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.webkul.mobikul.odoo.BuildConfig;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
@@ -74,6 +78,8 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     //    private Toast mToast;
     private CustomToast mToast;
     public static final int VIEW_TYPE_LIST = 1;
+    Handler handler = new Handler();
+    Runnable runnable;
     public static final int VIEW_TYPE_GRID = 2;
     private FeaturedCategoryData mFeaturedCategoryData;
 
@@ -88,12 +94,22 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         super.onViewCreated(view, savedInstanceState);
         Helper.hideKeyboard(getContext());
 
+
+
+        binding.appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener(){
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                binding.refreshLayout.setEnabled(verticalOffset == 0);
+            }
+        });
+
+        binding.refreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext() , R.color.background_orange));
+
         binding.refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 binding.refreshLayout.setRefreshing(true);
                 hitApiForFetchingData();
-                binding.refreshLayout.setRefreshing(false);
             }
         });
 
@@ -128,6 +144,8 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
             @Override
             public void onComplete() {
+                if(binding.refreshLayout.isEnabled() && binding.refreshLayout.isRefreshing())
+                     binding.refreshLayout.setRefreshing(false);
             }
         });
 
@@ -161,8 +179,32 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         binding.viewPager2.setAdapter(adapter);
 
         /*BANNER SLIDERS*/
-        binding.bannerViewPager.setAdapter(new HomeBannerAdapter(getContext(), homePageResponse.getBannerImages()));
-        binding.bannerDotsTabLayout.setupWithViewPager(binding.bannerViewPager, true);
+        binding.bannerViewPager.setAdapter(new HomeBannerAdapter(getContext(), homePageResponse.getBannerImages() , binding.bannerViewPager));
+//        binding.bannerDotsTabLayout.setupWithViewPager(binding.bannerViewPager, true);
+
+
+            binding.bannerViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    if(position==0){
+                        handler.postDelayed(runnable, 5000);
+                    }
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    handler.removeCallbacks(runnable);
+                    handler.postDelayed(runnable, 5000);
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+
+            runnable  = () -> binding.bannerViewPager.setCurrentItem(binding.bannerViewPager.getCurrentItem()+1);
+
 
     }
 

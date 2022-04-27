@@ -16,10 +16,6 @@
 
 
 
-
-
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -33,85 +29,97 @@
             android:minHeight="?actionBarSize"
             android:background="@drawable/background_app_layout">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/drawer_icon"
-                    android:layout_width="@dimen/hamburger_icon_dimens"
-                    android:layout_height="@dimen/hamburger_icon_dimens"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/hamburger_icon_right_margin"
-                    android:src="@drawable/ic_baseline_menu_24"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/hamburger_icon_right_margin" />
+                android:weightSum="10"
+                android:orientation="horizontal"
+                android:layout_height="match_parent">
 
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/search_view"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="37dp"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:background="@drawable/search_background"
+                android:drawableStart="@drawable/search"
+                android:layout_gravity="center_vertical"
+                android:hint="Search All Products"
+                android:paddingStart="5dp"
+                android:paddingEnd="15dp"
+                android:textSize="12sp"
+                android:drawableLeft="@drawable/search"
+                android:paddingLeft="5dp"
+                android:paddingRight="15dp">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/cart_icon"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="70dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_width="@dimen/hamburger_icon_dimens"
-                    android:layout_height="@dimen/hamburger_icon_dimens"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/cart" />
+            </androidx.appcompat.widget.AppCompatTextView>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_weight="2.5"
+                    android:layout_height="match_parent">
+                </Space>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/chat_icon"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_height="@dimen/hamburger_icon_dimens"
+            android:foregroundGravity="center_vertical"
+            android:src="@drawable/chat_icon"
+             />
+
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5">
+
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/cart_icon"
+                        android:layout_width="@dimen/hamburger_icon_dimens"
+                        android:layout_height="@dimen/hamburger_icon_dimens"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/cart" />
 
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/badge_info"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:visibility="gone"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="61dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_alignEnd="@+id/cart_icon"
+                    android:layout_marginRight="-9dp"
                     android:background="@drawable/badge_symbol"
                     android:gravity="center"
                     android:text="1"
                     android:textColor="@color/white"
-                    android:textSize="12dp"
-                    android:textStyle="bold">
-
-                </androidx.appcompat.widget.AppCompatTextView>
+                    android:textSize="@dimen/text_size_12sp"
+                    android:textStyle="bold"/>
 
 
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/chat_icon"
-                    android:layout_width="@dimen/hamburger_icon_dimens"
-                    android:layout_height="@dimen/hamburger_icon_dimens"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="119dp"
-                    android:foregroundGravity="center_vertical"
-                    android:src="@drawable/chat_icon" />
+                </RelativeLayout>
 
 
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/search_view"
-                    android:layout_width="155dp"
-                    android:layout_height="37dp"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/search_background"
-                    android:drawableStart="@drawable/search"
-                    android:gravity="center_vertical"
-                    android:hint="Search All Product"
-                    android:paddingStart="5dp"
-                    android:paddingEnd="15dp"
-                    android:textAlignment="textEnd"
-                    android:textSize="12sp">
 
-                </androidx.appcompat.widget.AppCompatTextView>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/drawer_icon"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_height="@dimen/hamburger_icon_dimens"
+            android:src="@drawable/ic_baseline_menu_24"
+            />
 
 
-            </RelativeLayout>
+
+            </LinearLayout>
 
         </com.google.android.material.appbar.MaterialToolbar>
 

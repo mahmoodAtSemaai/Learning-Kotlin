@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.databinding.ItemViewPagerHomeBannerBinding;
@@ -36,11 +37,17 @@ public class HomeBannerAdapter extends PagerAdapter {
 
     private final Context mContext;
     private List<BannerImageData> mBannerImageDatas;
+    ViewPager viewPager;
+    List<BannerImageData> list;
 
-    public HomeBannerAdapter(Context context, List<BannerImageData> bannerImageDatas) {
+    public HomeBannerAdapter(Context context, List<BannerImageData> bannerImageDatas , ViewPager viewPager) {
         mContext = context;
         mBannerImageDatas = bannerImageDatas;
+        this.viewPager = viewPager;
+        list = mBannerImageDatas;
     }
+
+
 
     @Override
     public int getCount() {
@@ -55,6 +62,10 @@ public class HomeBannerAdapter extends PagerAdapter {
         itemViewPagerBannerBinding.setHandler(new HomeBannerHandler(mContext, mBannerImageDatas.get(position)));
         itemViewPagerBannerBinding.executePendingBindings();
         container.addView(itemViewPagerBannerBinding.getRoot());
+        if(position==mBannerImageDatas.size()-1){
+            viewPager.post(runnable);
+        }
+
         return (itemViewPagerBannerBinding.getRoot());
     }
 
@@ -67,4 +78,12 @@ public class HomeBannerAdapter extends PagerAdapter {
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
     }
+
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            mBannerImageDatas.addAll(list);
+            notifyDataSetChanged();
+        }
+    };
 }

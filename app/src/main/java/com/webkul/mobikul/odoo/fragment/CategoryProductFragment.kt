@@ -86,8 +86,6 @@ class CategoryProductFragment : Fragment() {
                             catalogResponse.offset = catalogProductResponse.offset + 10
                             catalogResponse.limit = catalogProductResponse.limit
                             val initialSize = catalogResponse.products.size
-                            Log.d("responseu" , catalogResponse.products.toString())
-
                             catalogResponse.products.addAll(catalogProductResponse.products)
                             val finalSize = catalogResponse.products.size
                             binding.productRecyclerView.adapter?.notifyItemRangeChanged(initialSize, finalSize - 1)
