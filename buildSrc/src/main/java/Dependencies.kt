@@ -17,7 +17,7 @@ object DepVersions {
     const val glide = "4.11.0"
     const val expandableRecyclerView = "3.0.0-RC1"
     const val support = "27.1.1"
-    const val materialDesignSupport = "1.0.0"
+    const val materialDesignSupport = "1.5.0"
     const val multidex = "1.0.1"
     const val multidex2 = "2.0.1"
     const val gson = "2.8.5"
@@ -50,7 +50,6 @@ object DepVersions {
     const val espressoCore = "3.1.0"
     const val androidXAnnotation = "1.1.0"
 
-    const val material = "1.2.1"
     const val cardview = "1.0.0"
     const val viewpager = "1.0.0"
 
@@ -90,7 +89,21 @@ object DepVersions {
     //appMarketPlace Modules
     const val jUnit = "4.13.2"
 
-    const val greenRobot="3.3.1"
+    const val greenRobot = "3.3.1"
+
+    const val activty = "1.4.0"
+    const val fragment = "1.4.0"
+
+    //hilt
+    const val hilt = "2.40.5"
+
+    // Arch Components
+    const val lifecycle = "2.4.1"
+
+    // Kotlin Coroutines
+    const val kotlinCoroutines = "1.4.1"
+
+
 
 }
 
@@ -106,8 +119,8 @@ object Flavours {
 }
 
 object Version {
-    const val code = 20
-    const val name = "1.3.1"
+    const val code = 24
+    const val name = "1.4.2"
 }
 
 object Url {
@@ -135,6 +148,7 @@ object Dependencies {
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${DepVersions.kotlin}"
     const val googleServices = "com.google.gms:google-services:${DepVersions.googleServices}"
     const val firebaseCrashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:${DepVersions.firebaseCrashlyticsGradle}"
+    const val hiltClassPath = "com.google.dagger:hilt-android-gradle-plugin:${DepVersions.hilt}"
 
     //App Dependencies
     const val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -150,7 +164,6 @@ object Dependencies {
     const val androidXAnnotation = "androidx.annotation:annotation:${DepVersions.androidXAnnotation}"
 
     //noinspection GradleCompatible
-    const val material = "com.google.android.material:material:${DepVersions.material}"
     const val cardview = "androidx.cardview:cardview:${DepVersions.cardview}"
     const val viewpager = "androidx.viewpager:viewpager:${DepVersions.viewpager}"
 
@@ -220,6 +233,20 @@ object Dependencies {
     //SweetAlertDialog Module
     const val materialishProgress = "com.pnikosis:materialish-progress:${DepVersions.materialishProgress}"
 
+    const val hilt = "com.google.dagger:hilt-android:${DepVersions.hilt}"
+    const val hiltCompiler = "com.google.dagger:hilt-android-compiler:${DepVersions.hilt}"
+
+    // Arch Components
+    const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${DepVersions.lifecycle}"
+    const val lifeData = "androidx.lifecycle:lifecycle-livedata-ktx:${DepVersions.lifecycle}"
+    const val lifecycle = "androidx.lifecycle:lifecycle-runtime-ktx:${DepVersions.lifecycle}"
+    const val viewModelState = "androidx.lifecycle:lifecycle-viewmodel-savedstate:${DepVersions.lifecycle}"
+
+    // Kotlin Coroutines
+    const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${DepVersions.kotlinCoroutines}"
+    const val coroutinesAndroid =
+            "org.jetbrains.kotlinx:kotlinx-coroutines-android:${DepVersions.kotlinCoroutines}"
+
 
     //appMarketPlace Module
     const val materialDesignSupport =
@@ -229,4 +256,8 @@ object Dependencies {
     const val navigation = "androidx.navigation:navigation-fragment-ktx:${DepVersions.navigation}"
     const val navigationUI = "androidx.navigation:navigation-ui-ktx:${DepVersions.navigation}"
     const val navigationfragment = "androidx.fragment:fragment-ktx:${DepVersions.navigationfragment}"
+
+    const val activity = "androidx.activity:activity-ktx:${DepVersions.activty}"
+    const val fragment = "androidx.fragment:fragment-ktx:${DepVersions.fragment}"
+
 }

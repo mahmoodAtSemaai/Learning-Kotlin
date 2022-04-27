@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:padding="@dimen/size_16"
+        tools:context=".fragment.OTPVerificationFragment">
+
+        <ImageView
+            android:id="@+id/iv_ewallet_logo"
+            android:layout_width="@dimen/size_96"
+            android:layout_height="@dimen/size_96"
+            android:layout_marginHorizontal="@dimen/size_12"
+            android:layout_marginTop="@dimen/size_12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_shopeepay_logo" />
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_enter_OTP_heading"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_16"
+            android:text="@string/enter_otp_code_here"
+            android:textSize="@dimen/font_size_18"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/iv_ewallet_logo"
+            app:layout_constraintTop_toBottomOf="@+id/iv_ewallet_logo" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_otp_description_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/otp_not_received"
+            android:textSize="@dimen/font_size_16"
+            app:layout_constraintEnd_toEndOf="@+id/tv_enter_OTP_heading"
+            app:layout_constraintStart_toStartOf="@+id/tv_enter_OTP_heading"
+            app:layout_constraintTop_toBottomOf="@+id/tv_enter_OTP_heading" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/materialTextView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_12"
+            android:text="@string/send_again"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/font_size_14"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/tv_otp_description_text"
+            app:layout_constraintTop_toBottomOf="@+id/tv_otp_description_text" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_24"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/size_12"
+            app:layout_constraintEnd_toEndOf="@+id/tv_otp_description_text"
+            app:layout_constraintStart_toStartOf="@+id/tv_otp_description_text"
+            app:layout_constraintTop_toBottomOf="@+id/materialTextView6">
+
+            <EditText
+                android:id="@+id/et_otp_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_square_white_bg_gray_border_1dp"
+                android:digits="0123456789"
+                android:inputType="numberDecimal|number"
+                android:maxLength="1"
+                android:paddingHorizontal="@dimen/size_12"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/et_otp_2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/et_otp_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_square_white_bg_gray_border_1dp"
+                android:digits="0123456789"
+                android:inputType="numberDecimal|number"
+                android:maxLength="1"
+                android:paddingHorizontal="@dimen/size_12"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/et_otp_3"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toEndOf="@+id/et_otp_1"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/et_otp_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_square_white_bg_gray_border_1dp"
+                android:digits="0123456789"
+                android:inputType="numberDecimal|number"
+                android:maxLength="1"
+                android:paddingHorizontal="@dimen/size_12"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/et_otp_4"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/et_otp_2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/et_otp_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_square_white_bg_gray_border_1dp"
+                android:digits="0123456789"
+                android:inputType="numberDecimal|number"
+                android:maxLength="1"
+                android:paddingHorizontal="@dimen/size_12"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/et_otp_5"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/et_otp_3"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/et_otp_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_square_white_bg_gray_border_1dp"
+                android:digits="0123456789"
+                android:inputType="numberDecimal|number"
+                android:maxLength="1"
+                android:paddingHorizontal="@dimen/size_12"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/et_otp_6"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/et_otp_4"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/et_otp_6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_square_white_bg_gray_border_1dp"
+                android:digits="0123456789"
+                android:inputType="numberDecimal|number"
+                android:maxLength="1"
+                android:paddingHorizontal="@dimen/size_12"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/et_otp_5"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <Button
+            android:id="@+id/btn_verify_otp"
+            style="@style/custom_button_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/size_80"
+            android:layout_marginTop="@dimen/size_32"
+            android:background="@color/colorPrimary"
+            android:paddingHorizontal="@dimen/size_24"
+            android:paddingVertical="0dp"
+            android:text="@string/continue_"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
+            app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

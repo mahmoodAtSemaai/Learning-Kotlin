@@ -34,8 +34,8 @@ public class MarketplaceApiConnection {
         return RetrofitClient.getClient(context).create(MarketplaceApiInterface.class).getSellerProfileData(sellerMarketplaceID);
     }
 
-    public static Observable<CatalogProductResponse> getSellerCollectionData(Context context, SellerCollectionRequest sellerCollectionRequest) {
-        return RetrofitClient.getClient(context).create(MarketplaceApiInterface.class).getSellerCollectionData(sellerCollectionRequest.toString());
+    public static Observable<CatalogProductResponse> getSellerCollectionData(Context context, String sellerId, int offset, int limit) {
+        return RetrofitClient.getClient(context).create(MarketplaceApiInterface.class).getSellerCollectionData(sellerId, offset, limit);
     }
 
 

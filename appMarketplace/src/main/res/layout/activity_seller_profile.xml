@@ -440,7 +440,7 @@
                                 android:orientation="vertical">
 
                                 <ImageView
-                                    android:id="@+id/imageView"
+                                    android:id="@+id/iv_semaai_logo"
                                     android:layout_width="match_parent"
                                     android:layout_height="@dimen/product_image_generic"
                                     app:srcCompat="@drawable/ic_vector_review_hand" />

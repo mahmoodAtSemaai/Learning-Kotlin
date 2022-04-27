@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import
+            alias="View"
+            type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.checkout.ActiveShippingMethod" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_12"
+        android:background="@color/white">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_rectangular_white_bg_gray_border_1dp_corner_4dp"
+                android:paddingHorizontal="@dimen/spacing_normal"
+                android:paddingVertical="@dimen/size_8">
+
+
+                <TextView
+                    android:id="@+id/tv_shipping_method_heading"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/size_24"
+                    android:layout_marginRight="@dimen/size_24"
+                    android:text="@{data.name}"
+                    android:textSize="@dimen/font_size_16"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_shipping_method"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Free shipping Semaai (Rp0)" />
+
+
+                <TextView
+                    android:id="@+id/tv_shipping_method_desc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/size_24"
+                    android:layout_marginRight="@dimen/size_24"
+                    android:text="@{data.description}"
+                    android:textSize="@dimen/font_size_14"
+                    android:visibility="@{data.description.isEmpty() ? View.GONE : View .VISIBLE}"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_shipping_method"
+                    app:layout_constraintStart_toStartOf="@+id/tv_shipping_method_heading"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_shipping_method_heading"
+                    tools:text="Will be delivered by today" />
+
+
+                <ImageView
+                    android:id="@+id/iv_shipping_method"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/circular_radio_button_unselected_state"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_shipping_method_desc"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv_shipping_method_heading" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
+
+

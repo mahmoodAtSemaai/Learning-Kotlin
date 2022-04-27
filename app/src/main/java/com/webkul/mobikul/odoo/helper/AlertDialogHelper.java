@@ -29,10 +29,22 @@ public class AlertDialogHelper {
         ((BaseActivity) context).mSweetAlertDialog.show();
     }
 
+    public static void showProgressDialogWithText(Context context, String titleText) {
+        ((BaseActivity) context).mSweetAlertDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
+        ((BaseActivity) context).mSweetAlertDialog.setTitleText(titleText);
+        ((BaseActivity) context).mSweetAlertDialog.getProgressHelper().setBarColor(ColorHelper.getColor(context, R.attr.colorAccent));
+        ((BaseActivity) context).mSweetAlertDialog.setCancelable(false);
+        ((BaseActivity) context).mSweetAlertDialog.show();
+    }
+
     @SuppressWarnings("unused")
-    public static SweetAlertDialog getAlertDialog(Context context, int alertType, String titleText, boolean isCancelable, boolean isShow) {
+    public static SweetAlertDialog getAlertDialog(Context context, int alertType, String titleText, String contentText, boolean isCancelable, boolean isShow) {
         SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(context, alertType);
         sweetAlertDialog.setTitleText(titleText);
+        if (!contentText.isEmpty())
+            sweetAlertDialog.setContentText(contentText);
+        if (alertType == SweetAlertDialog.PROGRESS_TYPE)
+            sweetAlertDialog.getProgressHelper().setBarColor(ColorHelper.getColor(context, R.attr.colorAccent));
         sweetAlertDialog.setCancelable(isCancelable);
         if (isShow) {
             sweetAlertDialog.show();
@@ -101,7 +113,7 @@ public class AlertDialogHelper {
                 .setConfirmClickListener(Dialog::dismiss).show();
     }
 
-    public static void showPermissionDialog(Context context, String title, String message, DialogInterface.OnClickListener okListener){
+    public static void showPermissionDialog(Context context, String title, String message, DialogInterface.OnClickListener okListener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
         builder.setTitle(title)
                 .setMessage(message)
@@ -119,7 +131,7 @@ public class AlertDialogHelper {
                 .setConfirmClickListener(listener).show();
     }
 
-    public static void showDefaultWarningDialogWithDismissListener(Context context, String title, String message, SweetAlertDialog.OnSweetClickListener confirmListener,SweetAlertDialog.OnSweetClickListener cancelListener) {
+    public static void showDefaultWarningDialogWithDismissListener(Context context, String title, String message, SweetAlertDialog.OnSweetClickListener confirmListener, SweetAlertDialog.OnSweetClickListener cancelListener) {
         new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
                 .setTitleText(title)
                 .setContentText(message)

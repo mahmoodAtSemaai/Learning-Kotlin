@@ -5,6 +5,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 
+apply plugin: 'dagger.hilt.android.plugin'
 
 apply from: rootProject.file('library-common-module.gradle')
 
@@ -113,7 +114,10 @@ dependencies {
             Dependencies.greenRobot,
             Dependencies.navigation,
             Dependencies.navigationUI,
-            Dependencies.navigationfragment
+            Dependencies.navigationfragment,
+            Dependencies.activity,
+            Dependencies.fragment,
+            Dependencies.remoteConfigKTX
     )
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 //    implementation 'androidx.appcompat:appcompat:1.4.1'
@@ -126,10 +130,10 @@ dependencies {
 
     api(
             fileTree(include: ['*.jar'], dir: 'lib'),
-            Dependencies.material,
             Dependencies.cardview,
             Dependencies.viewpager,
             Dependencies.glide,
+            Dependencies.materialDesignSupport,
             Dependencies.circleImageView,
             Dependencies.picasso,
             Dependencies.firebaseCrash,
@@ -165,13 +169,15 @@ dependencies {
             Dependencies.kotlinStdlib,
             Dependencies.lifecycleExtension,
             Dependencies.mixPanel,
+            Dependencies.hilt,
             project(Modules.sweetAlertDialog)
     )
 
     kapt(
             Dependencies.daggerAndroidProcessor,
             Dependencies.daggerCompiler,
-            Dependencies.glideCompiler
+            Dependencies.glideCompiler,
+            Dependencies.hiltCompiler
     )
     androidTestImplementation(Dependencies.espressoCore, {
         exclude group: 'com.android.support', module: 'support-annotations'

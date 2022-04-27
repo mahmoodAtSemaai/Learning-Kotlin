@@ -50,7 +50,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/white"
             android:layout_gravity="center_horizontal">
 
@@ -99,7 +99,7 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
             android:background="@color/white"
@@ -124,7 +124,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/spacing_tiny"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <!--SPECIAL/REDUCED PRICE-->
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_tiny"
+                    android:layout_marginRight="@dimen/spacing_tiny"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:padding="2dp"
+                    android:text="@{data.priceReduce}"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textSize="@dimen/text_size_min"
+                    android:textStyle="bold"
+                    app:visibility="@{!data.priceReduce.empty}"
+                    tools:text="$310.00" />
 
                 <!--Normal Price-->
                 <androidx.appcompat.widget.AppCompatTextView
@@ -141,19 +158,6 @@
                     app:textStyle="@{data.priceReduce.empty ? &quot;bold&quot; : &quot;normal&quot;}"
                     tools:text="$310.00" />
 
-                <!--SPECIAL/REDUCED PRICE-->
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:padding="2dp"
-                    android:text="@{data.priceReduce}"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textSize="@dimen/text_size_min"
-                    android:textStyle="bold"
-                    app:visibility="@{!data.priceReduce.empty}"
-                    tools:text="$310.00" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 

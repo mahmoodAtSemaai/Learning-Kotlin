@@ -162,10 +162,10 @@ public class HomeActivity extends BaseActivity implements OnTabSelectListener,/*
             AnalyticsImpl.INSTANCE.trackSearchSelected(currentFragmentDisplayed);
             mBinding.bottomNavigation.selectTabWithId(R.id.navigation_search);
         } else if (item.getItemId() == R.id.menu_item_bag) {
-            AnalyticsImpl.INSTANCE.trackWishlistSelected(currentFragmentDisplayed);
+            AnalyticsImpl.INSTANCE.trackShoppingCartSelected(currentFragmentDisplayed);
             IntentHelper.goToBag(this);
         } else if (item.getItemId() == R.id.menu_item_wishlist) {
-            AnalyticsImpl.INSTANCE.trackShoppingCartSelected(currentFragmentDisplayed);
+            AnalyticsImpl.INSTANCE.trackWishlistSelected(currentFragmentDisplayed);
             Intent intent = new Intent(this, CustomerBaseActivity.class);
             intent.putExtra(BUNDLE_KEY_CUSTOMER_FRAG_TYPE, CustomerHelper.CustomerFragType.TYPE_WISHLIST);
             startActivity(intent);

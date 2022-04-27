@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="icon"
+            type="String" />
+
+        <variable
+            name="heading1"
+            type="String" />
+
+        <variable
+            name="heading2"
+            type="String" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/iv_cash"
+            android:layout_width="@dimen/size_16"
+            android:layout_height="@dimen/size_16"
+            app:layout_constraintBottom_toBottomOf="@+id/textView4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_min_transaction_text"
+            app:srcCompat="@drawable/ic_time" />
+
+        <TextView
+            android:id="@+id/tv_min_transaction_text"
+            style="@style/medium_normal_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/size_4"
+            android:layout_marginLeft="@dimen/size_4"
+            android:text="@string/minimum_transactions"
+            android:textSize="@dimen/font_size_12"
+            app:layout_constraintStart_toEndOf="@+id/iv_cash"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/minimum_transactions" />
+
+        <TextView
+            android:id="@+id/textView4"
+            style="@style/medium_bold_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/size_4"
+            android:layout_marginLeft="@dimen/size_4"
+            android:text="@string/minimum_transactions"
+            android:textAllCaps="false"
+            android:textSize="@dimen/font_size_12"
+            app:layout_constraintStart_toEndOf="@+id/iv_cash"
+            app:layout_constraintTop_toBottomOf="@+id/tv_min_transaction_text"
+            tools:text="47000" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

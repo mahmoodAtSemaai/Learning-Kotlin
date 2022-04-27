@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!--
-LAYOUT USED FOR THE NEW DESIGN OF WEBKUL STORE APPLICATION
--->
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -27,12 +22,13 @@ LAYOUT USED FOR THE NEW DESIGN OF WEBKUL STORE APPLICATION
             type="com.webkul.mobikul.odoo.handler.customer.OrderItemHandler" />
     </data>
 
-    <androidx.cardview.widget.CardView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/size_2"
+        android:background="@color/white"
         android:foreground="?attr/selectableItemBackground"
-        android:onClick="@{()->handler.viewOrderDetail()}"
-        app:cardUseCompatPadding="true">
+        android:onClick="@{()->handler.viewOrderDetail()}">
 
         <TableLayout
             android:layout_width="match_parent"
@@ -52,10 +48,10 @@ LAYOUT USED FOR THE NEW DESIGN OF WEBKUL STORE APPLICATION
                     tools:ignore="RtlSymmetry" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:paddingEnd="@dimen/spacing_generic"
-                    android:paddingLeft="@dimen/spacing_generic"
-                    android:paddingRight="@dimen/spacing_generic"
                     android:paddingStart="@dimen/spacing_generic"
+                    android:paddingLeft="@dimen/spacing_generic"
+                    android:paddingEnd="@dimen/spacing_generic"
+                    android:paddingRight="@dimen/spacing_generic"
                     android:text="@{data.name}"
                     tools:text="123456789" />
 
@@ -72,10 +68,10 @@ LAYOUT USED FOR THE NEW DESIGN OF WEBKUL STORE APPLICATION
                     tools:ignore="RtlSymmetry" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:paddingEnd="@dimen/spacing_generic"
-                    android:paddingLeft="@dimen/spacing_generic"
-                    android:paddingRight="@dimen/spacing_generic"
                     android:paddingStart="@dimen/spacing_generic"
+                    android:paddingLeft="@dimen/spacing_generic"
+                    android:paddingEnd="@dimen/spacing_generic"
+                    android:paddingRight="@dimen/spacing_generic"
                     android:text="@{data.createDate}"
                     tools:text="10 March 2017" />
 
@@ -92,10 +88,10 @@ LAYOUT USED FOR THE NEW DESIGN OF WEBKUL STORE APPLICATION
                     tools:ignore="RtlSymmetry" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:paddingEnd="@dimen/spacing_generic"
-                    android:paddingLeft="@dimen/spacing_generic"
-                    android:paddingRight="@dimen/spacing_generic"
                     android:paddingStart="@dimen/spacing_generic"
+                    android:paddingLeft="@dimen/spacing_generic"
+                    android:paddingEnd="@dimen/spacing_generic"
+                    android:paddingRight="@dimen/spacing_generic"
                     android:text="@{data.amountTotal}"
                     tools:text="$500.00" />
 
@@ -112,12 +108,54 @@ LAYOUT USED FOR THE NEW DESIGN OF WEBKUL STORE APPLICATION
                     tools:ignore="RtlSymmetry" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:paddingEnd="@dimen/spacing_generic"
-                    android:paddingLeft="@dimen/spacing_generic"
-                    android:paddingRight="@dimen/spacing_generic"
                     android:paddingStart="@dimen/spacing_generic"
-                    android:text="@{data.status}"
+                    android:paddingLeft="@dimen/spacing_generic"
+                    android:paddingEnd="@dimen/spacing_generic"
+                    android:paddingRight="@dimen/spacing_generic"
+                    android:text="@{data.mobileOrderStatus}"
                     android:textStyle="italic"
+                    tools:text="Pending" />
+
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:paddingEnd="@dimen/spacing_generic"
+                    android:paddingRight="@dimen/spacing_generic"
+                    android:text="@string/payment_mode"
+                    tools:ignore="RtlSymmetry" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:paddingStart="@dimen/spacing_generic"
+                    android:paddingLeft="@dimen/spacing_generic"
+                    android:paddingEnd="@dimen/spacing_generic"
+                    android:paddingRight="@dimen/spacing_generic"
+                    android:text="@{data.paymentMode}"
+                    tools:text="Pending" />
+
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:paddingEnd="@dimen/spacing_generic"
+                    android:paddingRight="@dimen/spacing_generic"
+                    android:text="@string/payment_status"
+                    tools:ignore="RtlSymmetry" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:paddingStart="@dimen/spacing_generic"
+                    android:paddingLeft="@dimen/spacing_generic"
+                    android:paddingEnd="@dimen/spacing_generic"
+                    android:paddingRight="@dimen/spacing_generic"
+                    android:text="@{data.paymentStatus}"
                     tools:text="Pending" />
 
 
@@ -126,7 +164,7 @@ LAYOUT USED FOR THE NEW DESIGN OF WEBKUL STORE APPLICATION
 
         </TableLayout>
 
-    </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </layout>

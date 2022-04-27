@@ -40,7 +40,7 @@ public class MyAddressesResponse extends BaseResponse implements Parcelable {
     @SerializedName("default_shipping_address")
     @Expose
     private AddressData defaultShippingAddress;
-    private Context mContext;
+    private Context context;
 
     private MyAddressesResponse(Parcel in) {
         super(in);
@@ -83,13 +83,13 @@ public class MyAddressesResponse extends BaseResponse implements Parcelable {
 
 
     public void setContext(Context context) {
-        mContext = context;
+        this.context = context;
     }
 
     public String getBillingAddress() {
         try {
             if (getAddresses().get(0).getDisplayName().replaceAll("\\n", "").trim().isEmpty()) {
-                return mContext.getString(R.string.error_billing_address_not_configured);
+                return context.getString(R.string.error_billing_address_not_configured);
             }
             return getAddresses().get(0).getDisplayName();
         } catch (IndexOutOfBoundsException e) {
@@ -100,4 +100,5 @@ public class MyAddressesResponse extends BaseResponse implements Parcelable {
     public AddressData getDefaultShippingAddress() {
         return defaultShippingAddress;
     }
+
 }

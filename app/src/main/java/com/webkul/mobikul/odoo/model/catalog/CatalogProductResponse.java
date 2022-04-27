@@ -56,7 +56,7 @@ public class CatalogProductResponse extends BaseObservable {
     public void setWishlistData() {
         if (wishlist != null) {
             for (String item : wishlist) {
-                for (ProductData data : mProducts) {
+                for (ProductData data : getProducts()) {
                     if (data.getProductId().equals(item)) {
                         data.setAddedToWishlist(true);
                         break;

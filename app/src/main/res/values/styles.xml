@@ -9,8 +9,8 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorPrimaryLight">@color/colorPrimaryLight</item>
 
-        <!--        <item name="android:windowContentTransitions">true</item>-->
-        <!--        <item name="android:forceDarkAllowed">true</item>-->
+<!--        <item name="android:windowContentTransitions">true</item>-->
+<!--        <item name="android:forceDarkAllowed">true</item>-->
 
         <!--TEXT COLORS-->
         <item name="textColorRequired">@color/text_color_required</item>

@@ -13,403 +13,419 @@
 
         <variable
             name="data"
-            type="com.webkul.mobikul.odoo.model.customer.order.OrderDetailResponse" />
+            type="com.webkul.mobikul.odoo.model.checkout.OrderDataResponse" />
+
+        <variable
+            name="converter"
+            type="com.webkul.mobikul.odoo.helper.CalendarUtil" />
+
         <variable
             name="handler"
-            type="com.webkul.mobikul.odoo.handler.order.OrderFragmentHandler"/>
+            type="com.webkul.mobikul.odoo.handler.order.OrderFragmentHandler" />
     </data>
 
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/order_details_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:visibility="@{data==null ? View.GONE : View.VISIBLE}">
 
-            <androidx.cardview.widget.CardView
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardUseCompatPadding="true">
+                android:layout_height="match_parent"
+                android:paddingVertical="@dimen/size_12">
 
-                <androidx.appcompat.widget.LinearLayoutCompat
+                <TextView
+                    android:id="@+id/tv_order_name"
+                    style="@style/medium_bold_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/order_noX(data.name)}"
+                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Order Id #216498014 " />
+
+
+                <TextView
+                    android:id="@+id/tv_purchase_date_text"
+                    style="@style/medium_normal_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_12"
+                    android:text="@string/date_of_purchase"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_purchase_date"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_order_name" />
+
+                <TextView
+                    android:id="@+id/tv_purchase_date"
+                    style="@style/medium_normal_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="@{data.createDate}"
+                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/tv_purchase_date_text"
+                    app:layout_constraintTop_toTopOf="@+id/tv_purchase_date_text"
+                    tools:text="20th March 2016" />
+
+
+                <TextView
+                    android:id="@+id/tv_due_payment_header"
+                    style="@style/medium_normal_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_12"
+                    android:text="@string/due_payment"
+                    app:layout_constraintStart_toStartOf="@+id/tv_purchase_date_text"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_purchase_date_text" />
+
+                <TextView
+                    android:id="@+id/tv_due_date_day"
+                    style="@style/medium_bold_text_no_caps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{data.paymentExpiryDate}"
+                    app:layout_constraintStart_toStartOf="@+id/tv_due_payment_header"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_due_payment_header"
+                    tools:text="Wed, 26 January 2022" />
+
+
+                <TextView
+                    android:id="@+id/tv_remaining_time"
+                    style="@style/medium_bold_text_no_caps"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="@{data.paymentStatus.equalsIgnoreCase(@string/failed) || data.paymentStatus.equalsIgnoreCase(@string/time_expired) ? @string/time_expired : data.expireTime}"
+                    android:textColor="@color/colorPrimary"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_due_date_day"
+                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+                    app:layout_constraintTop_toTopOf="@+id/tv_due_payment_header"
+                    tools:text="Time Expired" />
+
+                <include
+                    android:id="@+id/horizontal_divider_1"
+                    layout="@layout/divider_horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingBottom="@dimen/activity_vertical_margin"
-                        android:paddingLeft="@dimen/activity_horizontal_margin"
-                        android:paddingRight="@dimen/activity_horizontal_margin"
-                        android:paddingTop="@dimen/activity_vertical_margin">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_generic"
-                            android:text="@{@string/order_noX(data.name)}"
-                            android:textAllCaps="true"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textStyle="bold"
-                            tools:text="Order Id #216498014 " />
-
-
-                        <View
-                            style="@style/DividerHorizontal"
-                            android:layout_margin="@dimen/spacing_generic" />
-
-                        <androidx.appcompat.widget.LinearLayoutCompat
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_generic">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="@{@string/placed_on_Xdate(data.createDate)}"
-                                tools:text="Placed on 20th March 2016" />
-
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:padding="@dimen/spacing_generic"
-                                android:text="@{data.status}"
-                                android:textAllCaps="true"
-                                android:textStyle="bold"
-                                tools:text="DEFAULT STATUS" />
-
-                        </androidx.appcompat.widget.LinearLayoutCompat>
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_tiny"
-                            android:text="@string/label_order_shipping_address"
-                            android:textColor="?android:attr/textColorSecondary"
-                            android:textStyle="bold"
-                            android:visibility="@{data.shippingAddress.isEmpty() ? View.GONE : View.VISIBLE}" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_generic"
-                            android:text="@{data.shippingAddress}"
-                            android:visibility="@{data.shippingAddress.isEmpty() ? View.GONE : View.VISIBLE}"
-                            tools:text="Admin User\nWebkul Software Pvt. Ltd\n2nd floor, A-67,\n A Block, Sector 63\nNoida,  Uttar Pradesh, 201301\nIndia\nT: 123456789\nF: 123456\n" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_tiny"
-                            android:text="@string/label_order_billing_address"
-                            android:textColor="?android:attr/textColorSecondary"
-                            android:textStyle="bold" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_generic"
-                            android:text="@{data.billingAddress}"
-                            tools:text="Admin User\nWebkul Software Pvt. Ltd\n2nd floor, A-67,\n A Block, Sector 63\nNoida,  Uttar Pradesh, 201301\nIndia\nT: 123456789\nF: 123456\n" />
-
-
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_tiny"
-                            android:text="@string/label_order_delivery_orders"
-                            android:textColor="?android:attr/textColorSecondary"
-                            android:textStyle="bold"
-                            android:visibility="@{( data.deliveryOrders == null || data.deliveryOrders.size() ==0 ) ? View.GONE : View.VISIBLE }"
-                            />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/delivery_orders_rv"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:nestedScrollingEnabled="false"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            android:visibility="@{( data.deliveryOrders == null || data.deliveryOrders.size() ==0 ) ? View.GONE : View.VISIBLE }"
-                            />
-
-
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_tiny"
-                            android:text="@string/label_order_transactions"
-                            android:textColor="?android:attr/textColorSecondary"
-                            android:textStyle="bold"
-                            android:visibility="@{( data.transactions == null || data.transactions.size() ==0 ) ? View.GONE : View.VISIBLE }"
-                            />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/transactions_rv"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:nestedScrollingEnabled="false"
-                            android:visibility="@{( data.transactions == null || data.transactions.size() ==0 ) ? View.GONE : View.VISIBLE }"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-                        <!--<androidx.appcompat.widget.AppCompatTextView-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_marginBottom="@dimen/spacing_generic"-->
-                            <!--android:text="@{data.transactions.get(0).reference}"-->
-                            <!--android:visibility="@{( data.transactions == null || data.transactions.size() ==0 ) ? View.GONE : View.VISIBLE }"-->
-                            <!--tools:text="WH/OUT/00114"-->
-                            <!--/>-->
-                        <!--<androidx.appcompat.widget.AppCompatTextView-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_marginBottom="@dimen/spacing_generic"-->
-                            <!--android:visibility="@{( data.transactions == null || data.transactions.size() ==0 ) ? View.GONE : View.VISIBLE }"-->
-                            <!--android:text="@{data.transactions.get(0).createDate}"-->
-                            <!--tools:text="2019-01-15" />-->
-
-
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/spacing_generic"
-                        android:background="@drawable/shape_rectangular_white_bg_gray300_border_1dp"
-                        android:orientation="vertical"
-                        android:paddingBottom="@dimen/activity_vertical_margin"
-                        android:paddingLeft="@dimen/activity_horizontal_margin"
-                        android:paddingRight="@dimen/activity_horizontal_margin"
-                        android:paddingTop="@dimen/activity_vertical_margin">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_generic"
-                            android:text="@string/orders_product_info"
-                            android:textAllCaps="true"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textStyle="bold" />
-
-                        <View style="@style/DividerHorizontal" />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/product_info_rv"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:nestedScrollingEnabled="false"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            tools:ignore="UnusedAttribute" />
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/spacing_generic"
-                        android:background="@drawable/shape_rectangular_white_bg_gray300_border_1dp"
-                        android:orientation="vertical"
-                        android:paddingBottom="@dimen/activity_vertical_margin"
-                        android:paddingLeft="@dimen/activity_horizontal_margin"
-                        android:paddingRight="@dimen/activity_horizontal_margin"
-                        android:paddingTop="@dimen/activity_vertical_margin"
-                        android:visibility="@{data.delivery == null ? View.GONE : View.VISIBLE}">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_generic"
-                            android:text="@string/checkout_heading_shipping_method"
-                            android:textAllCaps="true"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textStyle="bold" />
-
-                        <View style="@style/DividerHorizontal" />
-
-                        <androidx.appcompat.widget.LinearLayoutCompat
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="@dimen/spacing_generic"
-                                android:layout_weight="1"
-                                android:text="@{data.delivery.name}"
-                                tools:text="DHL Shipping" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="@dimen/spacing_generic"
-                                android:text="@{data.delivery.total}"
-                                android:textStyle="bold"
-                                tools:text="$20" />
-
-                        </androidx.appcompat.widget.LinearLayoutCompat>
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
-                    <!--Cart Total Layout-->
-
-
-                    <TableLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/spacing_generic"
-                        android:background="@drawable/shape_rectangular_white_bg_gray300_border_1dp"
-                        android:paddingBottom="@dimen/activity_vertical_margin"
-                        android:paddingLeft="@dimen/activity_horizontal_margin"
-                        android:paddingRight="@dimen/activity_horizontal_margin"
-                        android:paddingTop="@dimen/activity_vertical_margin">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_generic"
-                            android:text="@string/orders_order_details"
-                            android:textAllCaps="true"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textStyle="bold" />
-
-                        <View
-                            style="@style/DividerHorizontal"
-                            android:layout_margin="@dimen/spacing_generic" />
-
-                        <!--
-                        Making subtotal visible as there will always be value for subtotal and some products are free
-                        android:visibility="@{data.totals.subtotal.unformatedValue == 0.0 ? View.GONE : View.VISIBLE}"
-                        -->
-                        <TableRow>
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1.3"
-                                android:gravity="end"
-                                android:text="@string/subtotal"
-                                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text=":"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                tools:ignore="HardcodedText" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="end"
-                                android:layout_weight="1"
-                                android:gravity="end"
-                                android:text="@{data.amountUntaxed}"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="?android:attr/textColorSecondary"
-                                tools:text="$1000.0000" />
-
-                        </TableRow>
-
-
-                        <!--CHECK FOR VISIBILITY WHETHER TO SHOW IT OR NOT-->
-                        <!--android:visibility="@{data.totals.tax.unformatedValue == 0.0 ? View.GONE : View.VISIBLE}"-->
-                        <TableRow>
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1.3"
-                                android:gravity="end"
-                                android:text="@string/tax"
-                                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text=":"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                tools:ignore="HardcodedText" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="end"
-                                android:layout_weight="1"
-                                android:gravity="end"
-                                android:text="@{data.amountTax}"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="?android:attr/textColorSecondary"
-                                tools:text="$1000.0000" />
-
-                        </TableRow>
-
-                        <View
-                            style="@style/DividerHorizontal"
-                            android:layout_margin="@dimen/spacing_generic" />
-
-                        <!--
-                        Making Grand Total, always visible as some product are free.
-                        android:visibility="@{data.totals.grandTotal.unformatedValue == 0.0 ? View.GONE : View.VISIBLE}"
-                        -->
-                        <TableRow>
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1.3"
-                                android:gravity="end"
-                                android:text="@string/grand_total"
-                                android:textAllCaps="true"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textStyle="bold"
-                                tools:text="" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text=":"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textStyle="bold"
-                                tools:ignore="HardcodedText" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="end"
-                                android:layout_weight="1"
-                                android:gravity="end"
-                                android:text="@{data.amountTotal}"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textColor="?android:attr/textColorSecondary"
-                                android:textStyle="bold"
-                                tools:text="$1000.0000" />
-
-                        </TableRow>
-
-                    </TableLayout>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-            </androidx.cardview.widget.CardView>
+                    android:layout_height="@dimen/size_2"
+                    android:layout_marginTop="@dimen/size_12"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_due_date_day" />
+
+                <TextView
+                    android:id="@+id/tv_product_details_header"
+                    style="@style/medium_bold_text_no_caps"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_12"
+                    android:text="@string/product_details"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/font_size_18"
+                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/horizontal_divider_1" />
+
+                <include
+                    android:id="@+id/divider_1"
+                    layout="@layout/divider_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_2"
+                    android:visibility="invisible"
+                    android:layout_marginTop="@dimen/size_2"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_product_details_header" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_products_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/size_8"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@+id/divider_1"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_order_product_info" />
+
+                <include
+                    android:id="@+id/divider_2"
+                    layout="@layout/divider_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_2"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_products_info" />
+
+                <TextView
+                    android:id="@+id/tv_delivery_details_heading"
+                    style="@style/medium_bold_text_no_caps"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_12"
+                    android:text="@string/delivery_details"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/font_size_18"
+                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/divider_2" />
+
+                <include
+                    android:id="@+id/divider_3"
+                    layout="@layout/divider_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_2"
+                    android:layout_marginTop="@dimen/size_6"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_delivery_details_heading" />
+
+
+                <include
+                    android:id="@+id/include7"
+                    layout="@layout/divider_vertical"
+                    android:layout_width="@dimen/size_1"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/size_8"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_address_description"
+                    app:layout_constraintEnd_toEndOf="@+id/divider_3"
+                    app:layout_constraintHorizontal_bias="0.3"
+                    app:layout_constraintStart_toStartOf="@+id/divider_3"
+                    app:layout_constraintTop_toBottomOf="@+id/divider_3" />
+
+                <TextView
+                    android:id="@+id/tv_courier_text"
+                    style="@style/medium_normal_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_8"
+                    android:layout_marginEnd="@dimen/size_8"
+                    android:layout_marginRight="@dimen/size_8"
+                    android:text="@string/courier"
+                    app:layout_constraintEnd_toStartOf="@+id/include7"
+                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/divider_3" />
+
+                <TextView
+                    android:id="@+id/tv_address_text"
+                    style="@style/medium_normal_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_12"
+                    android:layout_marginEnd="@dimen/size_8"
+                    android:layout_marginRight="@dimen/size_8"
+                    android:text="@string/address"
+                    app:layout_constraintEnd_toStartOf="@+id/include7"
+                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_courier_text" />
+
+                <TextView
+                    android:id="@+id/tv_shipping_method_name"
+                    style="@style/medium_normal_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/size_8"
+                    android:layout_marginLeft="@dimen/size_8"
+                    android:layout_marginTop="@dimen/size_8"
+                    android:text="@{data.delivery.name.concat(data.delivery.total)}"
+                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+                    app:layout_constraintStart_toEndOf="@+id/include7"
+                    app:layout_constraintTop_toBottomOf="@+id/divider_3"
+                    tools:text="Free Shipping" />
+
+                <TextView
+                    android:id="@+id/tv_customer_name"
+                    style="@style/medium_bold_text_no_caps"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@{data.shippingAddressId.name}"
+                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+                    app:layout_constraintStart_toStartOf="@+id/tv_shipping_method_name"
+                    app:layout_constraintTop_toTopOf="@+id/tv_address_text"
+                    tools:text="Semaai User" />
+
+                <TextView
+                    android:id="@+id/tv_phone_number"
+                    style="@style/medium_normal_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{`(`+data.shippingAddressId.phone+`)`}"
+                    android:visibility="@{(data.shippingAddressId.phone.isEmpty() || data.shippingAddressId.phone == null) ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintStart_toStartOf="@+id/tv_customer_name"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_customer_name"
+                    tools:text="(1234567890)" />
+
+                <TextView
+                    android:id="@+id/tv_address_description"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@{data.shippingAddressId.completeAddressDescription}"
+                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+                    app:layout_constraintStart_toStartOf="@+id/tv_phone_number"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_phone_number"
+                    tools:text="Jl. K.H. Royani 1, no. 51, RT 02, RW 09. Kelurahan Karet Kuningan, Kecamatan Setia Budi, Kota Jakarta Selatan, DKI Jakarta, ID 12940" />
+
+                <include
+                    android:id="@+id/divider_4"
+                    layout="@layout/divider_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_2"
+                    android:layout_marginTop="@dimen/size_10"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_address_description" />
+
+                <ImageView
+                    android:id="@+id/iv_bank_icon"
+                    android:layout_width="@dimen/size_48"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_8"
+                    app:imageUrl="@{data.bank.thumbnail}"
+                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/divider_4"
+                    tools:src="@drawable/ic_bank_bni_logo" />
+
+                <TextView
+                    android:id="@+id/tv_method_name"
+                    style="@style/medium_bold_text_no_caps"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_12"
+                    android:text="@{data.bank.name.concat(` (`+data.bank.type+`)`)}"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/font_size_18"
+                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+                    app:layout_constraintStart_toStartOf="@+id/iv_bank_icon"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_bank_icon"
+                    tools:text="BRI Virtual Account" />
+
+
+                <include
+                    android:id="@+id/divider_5"
+                    layout="@layout/divider_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_2"
+                    android:layout_marginTop="@dimen/size_10"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_payment_status" />
+
+
+                <TextView
+                    android:id="@+id/tv_account_number"
+                    style="@style/medium_bold_text_no_caps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_account_number"
+                    android:drawableRight="@drawable/ic_account_number"
+                    android:drawablePadding="@dimen/size_12"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:text="@{data.bank.account_number}"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/font_size_18"
+                    app:layout_constraintBottom_toBottomOf="@+id/btn_payment_status"
+                    app:layout_constraintEnd_toStartOf="@+id/btn_payment_status"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                    app:layout_constraintTop_toTopOf="@+id/btn_payment_status"
+                    tools:text="12345678691901" />
+
+                <Button
+                    android:id="@+id/btn_payment_status"
+                    style="@style/medium_bold_text_no_caps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_12"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/size_12"
+                    android:paddingVertical="@dimen/size_4"
+                    android:text="@string/payment_n_status"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_method_name" />
+
+                <TextView
+                    android:id="@+id/tv_payment_status_text"
+                    style="@style/medium_bold_text_no_caps"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_12"
+                    android:text="@string/payment_status"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/font_size_18"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_status"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/left_guideline"
+                    app:layout_constraintTop_toBottomOf="@+id/divider_5" />
+
+                <TextView
+                    android:id="@+id/tv_status"
+                    style="@style/medium_bold_text_no_caps"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="@{data.paymentStatus}"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/font_size_18"
+                    app:layout_constraintEnd_toStartOf="@+id/right_guideline"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/tv_payment_status_text"
+                    app:layout_constraintTop_toTopOf="@+id/tv_payment_status_text"
+                    tools:text="@string/to_pay" />
+
+                <include
+                    android:id="@+id/include31"
+                    layout="@layout/divider_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_2"
+                    android:layout_marginTop="@dimen/size_6"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_payment_status_text" />
+
+                <include
+                    android:id="@+id/payment_details"
+                    layout="@layout/layout_order_cost_calculation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/include31" />
+
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/left_guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.030" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/right_guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.970" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/bank_payment_method_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="iv_bank_icon,tv_method_name,tv_account_number,btn_payment_status,divider_4" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/due_date_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="tv_remaining_time,tv_due_payment_header,tv_due_date_day" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/purchase_date_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="tv_purchase_date,tv_purchase_date_text" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         </androidx.core.widget.NestedScrollView>
 
@@ -419,8 +435,12 @@
             android:layout_gravity="center"
             android:background="@drawable/custom_progress_drawable"
             android:indeterminate="true"
-            android:visibility="@{data==null ? View.VISIBLE :View.GONE}" />
+            android:visibility="@{data==null ? View.VISIBLE :View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

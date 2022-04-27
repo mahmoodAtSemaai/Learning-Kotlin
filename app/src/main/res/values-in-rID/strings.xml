@@ -36,7 +36,7 @@
     <!---->
     <!--Home Page-->
     <string name="notification">Notification</string>
-    <string name="bag">Bag</string>
+    <string name="bag">Keranjang</string>
     <string name="account">Account</string>
     <string name="login">Login</string>
     <string name="view_all">Lihat semua</string>
@@ -70,7 +70,7 @@
     <string name="error_could_not_add_to_bag_pls_try_again">Tidak bisa memasukkan barang ke dalam keranjang. Silakan coba lagi.</string>
     <string name="error_could_not_add_to_wishlist_pls_try_again">Tidak bisa memasukkan barang ke dalam wishlist. Silakan coba lagi.</string>
     <string name="error_no_shipping_method_chosen">Mohon masukkan metode pengiriman.</string>
-    <string name="error_no_payment_method_chosen">Mohon masukkan metode pembayaran.</string>
+    <string name="error_no_payment_method_chosen">Silakan pilih metode pembayaran Anda.</string>
     <string name="error_permision_required_to_change_profile_image">Mohon berikan izin untuk mengganti gambar profil</string>
     <string name="error_in_changing_profile_image">Terjadi kesalahan dalam mengunggah gambar profil ke server. Silakan coba lagi.</string>
     <string name="error_please_login_to_continue">Mohon login untuk melanjutkan</string>
@@ -87,6 +87,9 @@
     <string name="error_google_sign_in">Tidak bisa mendaftar melalui Google. Silakan coba lagi.</string>
     <string name="error_twitter_sign_in">Tidak bisa mendaftar melalui Twitter. Silakan coba lagi.</string>
     <string name="error_in_zip_code">Masukkan kode pos yang benar.</string>
+    <string name="error_payment_status">Terjadi kesalahan dalam menampilkan status pembayaran.</string>
+    <string name="error_order_details">Terjadi kesalahan dalam menampilkan rincian pemesanan.</string>
+
     <!---->
     <!---->
     <!--MESSAGES MESSAGES MESSAGES => All Relavent question alert warning messages etc are summed up here.-->
@@ -208,6 +211,7 @@
     <string name="orders_product_info">Info Produk</string>
     <string name="orders_order_details">Detail Order</string>
     <string name="tax">Pajak</string>
+    <string name="taxes">Pajak</string>
     <string name="subtotal">Subtotal</string>
     <string name="grand_total">Grand Total</string>
     <string name="placed_on_Xdate">Order terkirim tanggal %s</string>
@@ -216,8 +220,10 @@
     <string name="qty_x">Jumlah: %s</string>
     <string name="discount_x">Diskon: %s</string>
     <string name="tax_x">Pajak: %s</string>
-    <string name="price_total_x">Harga Total: %s</string>
+    <string name="price_total_x">Harga Total: \n%s</string>
     <string name="order_noX">Order #%s</string>
+    <string name="rp_x">Rp%s</string>
+    <string name="placing_your_order">Menempatkan pesanan</string>
     <!---->
     <!---->
     <!--WISHLIST-->
@@ -270,11 +276,13 @@
     <string name="shipping_address_missing">Alamat pengiriman tidak ada</string>
     <string name="billing_address_missing">Alamat penagihan tidak ada</string>
     <string name="billing_address_incomplete">Alamat penagihan tidak lengkap</string>
+    <string name="shipping_address_incomplete">Alamat Pengiriman Tidak Lengkap</string>
     <string name="indonesia">Indonesia</string>
     <string name="service_unavailablity_text">Terima kasih atas minat Anda. Mohon maaf, layanan kami belum tersedia di wilayah Anda. Kami akan menghubungi Anda saat kami mulai beroperasi di wilayah Anda.</string>
     <string name="service_unavailable">Di luar area jangjauan</string>
     <string name="enter_address">Silahkan masukkan alamat Anda</string>
     <string name="billing_address_place_holder">Alamat Penagihan</string>
+    <string name="unserviceable_address_text">Maaf, alamat Anda di luar jangkauan kami</string>
     <!---->
     <!---->
     <!-- DASHBOARD-->
@@ -324,7 +332,7 @@
     <string name="checkout_heading_shipping_method">Metode Pengiriman</string>
     <string name="checkout_select_a_shipping_method">Pilih Metode Pengiriman</string>
     <string name="checkout_heading_payment_method">Informasi Pembayaran</string>
-    <string name="checkout_select_a_payment_method">Pilih Metode Pembayaran</string>
+    <string name="checkout_select_your_payment_method">Pilih metode pembayaran Anda</string>
     <string name="checkout_heading_order_review">Tinjau Pebayaran Anda</string>
     <string name="order_review_payment_method">Metode Pembayaran</string>
     <string name="place_order">Pesan Sekarang</string>
@@ -333,6 +341,10 @@
     <string name="order_review_product_price_is_X">Harga: %s</string>
     <string name="order_review_product_subtotal_is_X">Subtotal: %s</string>
     <string name="checkout">Lakukan Pembayaran</string>
+    <string name="payment_method">Metode Pembayaran</string>
+    <string name="total_price">Total Harga</string>
+    <string name="total_price_s">Total Harga %s</string>
+    <string name="total_price_ns">Total Harga\n%s</string>
     <!---->
     <!---->
     <!--RATE APP DIALOG-->
@@ -390,12 +402,14 @@
     <string name="in_stock_quantity_x">Stok: %1$d </string>
     <string name="quantity_exceeding">Jumlah pesanan Anda melebihi stok</string>
     <string name="product_already_added">produk sudah ditambahkan di tas</string>
+    <string name="added_successfully">Berhasil ditambahkan</string>
 
     <!--Fingerprint-->
     <string name="fingerprint_login_header">Masuk dengan sidik jari</string>
     <string name="ok">OK</string>
     <string name="cancel">BATAL</string>
     <string name="cancel_small">Batal</string>
+    <string name="cancelled">Cancelled</string>
     <string name="confirm">KONFIRMASI</string>
     <string name="confirm_small">Konfirmasi</string>
     <string name="no_fingerprint_permission">Otentifikasi menggunakan sidik jari tidak tersedia</string>
@@ -456,10 +470,110 @@
     <string name="privacy_policy">Kebijakan Privasi</string>
     <string name="false_">False</string>
     <string name="service_not_availabe_text">Maaf, tidak pelayanan kami belum tersedia di dalam negeri ini sekarang.</string>
+
+
+
+
+    <string name="semaai_points">Poin semaai</string>
+    <string name="semaai_points_redeemed">Poin Semaai Ditukar</string>
+    <string name="new_member_discount">Diskon anggota baru</string>
+    <string name="semaai_coupons">Kupon Semaai</string>
+    <string name="payment_complete">Pembayaran Selesai</string>
+    <string name="payment_failure">Pembayaran Gagal</string>
+    <string name="payment_success_text">Terima kasih. Pembayaran Anda berhasil, harap tunggu konfirmasi. Sembari menunggu, silahkan lihat produk-produk lainnya.</string>
+    <string name="payment_failure_text">Pembayaran Anda gagal. Silakan coba lagi.</string>
+    <string name="payment_is_pending">Pembayaran tertunda</string>
+    <string name="account_number">Nomor Rekening :</string>
+    <string name="payment_done">Pembayaran Berhasil</string>
+    <string name="my_purchases">Pembelian Saya</string>
+    <string name="sorry">Maaf</string>
+    <string name="payment_incomplete_text">Pembayaran Anda belum selesai. Silakan buka halaman pesanan untuk mendapatkan rincian pembayaran.</string>
+    <string name="due_payment">Jatuh Tempo Pembayaran</string>
+    <string name="total_payment">Total Pembayaran</string>
+    <string name="total_payment_x">Total Pembayaran\n%s</string>
+    <string name="shopee_activated_text">Shopee Pay Anda Telah Aktif</string>
+    <string name="your_order_will_be_delivered_soon">Pesanan Anda Akan Segera Dikirim.</string>
+    <string name="payment_n_status">Status\nPembayaran</string>
+    <string name="payment_status">Status Pembayaran</string>
+    <string name="order_status">Status Pesanan</string>
+    <string name="activate_shopee_pay_text">Aktifkan ShopeePay</string>
+    <string name="what_is_shoppe_pay">Apa itu Shopee Pay?</string>
+    <string name="shopeepay_description_text">ShopeePay adalah dompet digital Shopee di mana pengguna dapat melakukan pembayaran yang aman dan tanpa uang tunai.
+        Anda dapat menggunakannya untuk: (a) Transaksi online di Shopee - seperti membeli pulsa seluler dan pembayaran tagihan</string>
+    <string name="activate_shopee_pay_now">Aktifkan Shopee Pay Sekarang</string>
+    <string name="read_more">Baca Selengkapnya</string>
+    <string name="phone_number_verification">Verifikasi Nomor Telepon</string>
+    <string name="enter_your_phone_number">Masukkan Nomor Telepon Anda</string>
+    <string name="enter_otp_code_here">Masukkan Kode OTP disini</string>
+    <string name="otp_not_received">Kode OTP akan dikirim ke pesan Anda. \nAnda tidak menerimanya?</string>
+    <string name="send_again">Kirim lagi</string>
+    <string name="select_your_coupon">Pilih Kupon Anda >></string>
+    <string name="bank_transfer_va">Transfer Bank Virtual Account</string>
+    <string name="cod_text">Bayar di tempat</string>
+    <string name="cod_text_2">Cash On Delivery</string>
+    <string name="confirmation">Konfirmasi</string>
+    <string name="address">Alamat</string>
+    <string name="shipping">Pengiriman</string>
+    <string name="shipping_method">Metode Pengiriman</string>
+    <string name="shipping_charges">Biaya Pengiriman</string>
+    <string name="minimum_transactions">Minimal Transaksi</string>
+    <string name="choose_your_delivery_address">Pilih alamat pengiriman Anda</string>
+    <string name="payment_mode">Mode Pembayaran</string>
+    <string name="product">Produk</string>
+    <string name="product_details">Rincian Produk</string>
+    <string name="delivery_details">Rincian Pengiriman</string>
+    <string name="courier">Kurir</string>
+    <string name="date_of_purchase">Tanggal Pembelian</string>
+    <string name="to_pay">Bayar</string>
+    <string name="to_pay_2">To Pay</string>
+    <string name="completed">Selesai</string>
+    <string name="x">x</string>
+    <string name="select_your_shipping_address">Pilih alamat pengiriman Anda</string>
+    <string name="select_your_shipping_method">Pilih metode pengiriman Anda</string>
+    <string name="payment_options_loading_text">Memilih Opsi Pembayaran</string>
+    <string name="shipping_options_loading_text">Memilih Metode Pengiriman</string>
+
+
     <string name="authorization_is_under_process">Persetujuan Sedang Dalam Proses</string>
     <string name="contact_chat_our_admin">Silakan kirim WA ke admin kami untuk bantuan di sini</string>
     <string name="whatsapp_message">Hai tim Semaai, Tolong setujui akun saya</string>
     <string name="semaai_support_whatsapp_url">https://api.whatsapp.com/send?phone=%s&amp;text=%s</string>
+
+    <string name="transfer_instruction">Cara Transfer</string>
+    <string name="check_status">Cek Status</string>
+    <string name="order_details">Rincian Pesanan</string>
+    <string name="atm">ATM</string>
+    <string name="m_banking">M-Banking</string>
+    <string name="online_banking">Perbankan Online</string>
+    <string name="payment_pending">Pembayaran Tertunda</string>
+    <string name="processing">Memproses…</string>
+    <string name="please_wait_a_moment">Harap tunggu sebentar</string>
+    <string name="updating_shipping_method_text">Memperbarui metode pengiriman Anda</string>
+    <string name="updating_shipping_address_text">Memperbarui alamat pengiriman Anda</string>
+    <string name="va_text">VA</string>
+    <string name="fetching_order_details">Memuat rincian pesanan</string>
+    <string name="currency_idr">IDR</string>
+    <string name="virtual_account">Virtual Account</string>
+    <string name="durian_pay_text">Durian Pay</string>
+    <string name="text_copied_message">Teks disalin ke clipboard</string>
+    <string name="label">Label</string>
+    <string name="checking_payment_status">Memeriksa status pembayaran Anda</string>
+    <string name="pending">Belum dibayar</string>
+    <string name="quotation_sent_text">Kutipan Dikirim</string>
+    <string name="quotation_sent_text_2">Quotation Sent</string>
+    <string name="fail">Gagal</string>
+    <string name="fail_2">Fail</string>
+    <string name="failed">Gagal</string>
+    <string name="failed_2">Failed</string>
+    <string name="try_again_later_text">Silakan coba lagi nanti</string>
+    <string name="done">DONE</string>
+    <string name="time_expired">Waktu habis</string>
+    <string name="time_expired_2">Time expired</string>
+    <string name="bank">Bank </string>
+    <string name="how_to_transfer">Cara Transfer</string>
+    <string name="paid">Lunas</string>
+    <string name="paid_2">Paid</string>
+
     <string name="app_update_alert_title">Versi Baru Tersedia</string>
     <string name="app_update_alert_description">Harap perbarui aplikasi Anda untuk terus menggunakannya</string>
     <string name="app_update_alert_negative_button_title">Tidak, Terima kasih</string>

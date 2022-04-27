@@ -16,7 +16,6 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.Navigation;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.webkul.mobikul.odoo.BuildConfig;
@@ -202,10 +201,24 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
                 }
             });
+    private void getRecentProductList() {
+        if (AppSharedPref.isRecentViewEnable(getContext())) {
+            SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(getContext());
+            ArrayList<ProductData> productData = sqlLiteDbHelper.getRecentProductList();
+            if (productData.size() > 0) {
+                binding.llRecentViewProducts.setVisibility(View.VISIBLE);
+                binding.rvAlternativeProduct.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+                binding.rvAlternativeProduct.setAdapter(new AlternativeProductsRvAdapter(getActivity(), productData, true));
+            } else {
+                binding.llRecentViewProducts.setVisibility(View.GONE);
+            }
 
             runnable  = () -> binding.bannerViewPager.setCurrentItem(binding.bannerViewPager.getCurrentItem()+1);
 
 
+        } else {
+            binding.llRecentViewProducts.setVisibility(View.GONE);
+        }
     }
 
     public void fetchExistingAddresses() {
