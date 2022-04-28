@@ -69,28 +69,7 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
         val username = binding.usernameEt.text.toString()
         val password = binding.passwordEt.text.toString()
 
-        if (username.isEmpty()) binding.usernameEt.error =
-            String.format(
-                "%s %s",
-                getString(R.string.phone_number_or_username),
-                getString(R.string.error_is_required)
-            )
-
-        if (password.isEmpty()) binding.passwordEt.error =
-            getString(R.string.password) + " " + getString(R.string.error_is_required)
-
-        if (password.length < BuildConfig.MIN_PASSWORD_LENGTH)
-            binding.passwordEt.error = String.format(
-                "%s %s",
-                getString(R.string.password),
-                String.format(
-                    Locale.getDefault(),
-                    getString(R.string.error_password_length_x),
-                    BuildConfig.MIN_PASSWORD_LENGTH
-                )
-            )
-
-        if (username.isNotEmpty() && password.isNotEmpty() && password.length > BuildConfig.MIN_PASSWORD_LENGTH)
+        if (username.isNotEmpty() && password.isNotEmpty())
             lifecycleScope.launch {
                 viewModel.loginIntent.send(LoginIntent.Login(username, password))
             }
