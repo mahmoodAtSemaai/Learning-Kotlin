@@ -32,28 +32,28 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp">
+            android:layout_marginStart="@dimen/size_10"
+            android:layout_marginLeft="@dimen/size_10"
+            android:layout_marginTop="@dimen/size_20">
 
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/drawer_close_btn"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_width="@dimen/size_24"
+                android:layout_height="@dimen/size_24"
+                android:layout_marginStart="@dimen/size_10"
+                android:layout_marginLeft="@dimen/size_10"
                 android:src="@drawable/ic_action_navigation_close">
 
             </androidx.appcompat.widget.AppCompatImageView>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginStart="46dp"
+                android:layout_height="@dimen/size_30"
+                android:layout_marginStart="@dimen/size_46"
                 android:gravity="top"
                 android:text="Main Menu"
-                android:textSize="16sp"
+                android:textSize="@dimen/font_size_16"
                 android:textStyle="bold"
                 app:fontFamily="@font/roboto_medium">
 
@@ -62,11 +62,11 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/size_40"
+                android:layout_height="@dimen/size_40"
                 android:layout_below="@+id/drawer_close_btn"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="18dp"
+                android:layout_marginStart="@dimen/size_12"
+                android:layout_marginTop="@dimen/size_18"
                 android:src="@color/grey_400">
 
             </de.hdodenhof.circleimageview.CircleImageView>
@@ -75,14 +75,14 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/username"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="@dimen/size_50"
                 android:layout_below="@+id/drawer_close_btn"
-                android:layout_marginStart="70dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginStart="@dimen/size_70"
+                android:layout_marginTop="@dimen/size_15"
                 android:fontFamily="@font/roboto_medium"
                 android:gravity="center"
                 android:text="Username"
-                android:textSize="16sp"
+                android:textSize="@dimen/font_size_16"
                 android:textStyle="bold">
 
             </androidx.appcompat.widget.AppCompatTextView>
@@ -93,7 +93,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="@dimen/size_100"
                 android:layout_marginEnd="-1dp"
                 android:layout_marginRight="-1dp"
                 android:orientation="vertical"
@@ -102,27 +102,27 @@
                 <View
                     android:id="@+id/divider_text"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="@dimen/size_1"
                     android:layout_below="@+id/linear_layout"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="@dimen/size_10"
+                    android:layout_marginEnd="@dimen/size_10"
                     android:background="@color/grey_400" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/category_rv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:elevation="1dp"
+                    android:layout_marginStart="@dimen/size_10"
+                    android:layout_marginEnd="@dimen/size_10"
+                    android:elevation="@dimen/size_1"
                     android:nestedScrollingEnabled="false"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:targetApi="lollipop" />
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_height="@dimen/size_55"
+                    android:layout_marginStart="@dimen/size_10"
                     android:drawableStart="@drawable/ic_vector_store_grey400_24dp_wrapper"
                     android:drawableLeft="@drawable/ic_vector_store_grey400_24dp_wrapper"
                     android:drawablePadding="@dimen/spacing_normal"
@@ -131,14 +131,14 @@
                     android:onClick="@{()->handler.onClickMarketplaceIcon()}"
                     android:padding="@dimen/spacing_normal"
                     android:text="@string/marketplace"
-                    android:textSize="15sp"
+                    android:textSize="@dimen/font_size_15"
                     android:visibility="@{AppSharedPref.isMarketplaceAllowed(context) ? View.VISIBLE : View.GONE }" />
 
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_height="@dimen/size_55"
+                    android:layout_marginStart="@dimen/size_10"
                     android:drawableStart="@drawable/ic_setting"
                     android:drawableLeft="@drawable/ic_setting"
                     android:drawablePadding="@dimen/spacing_normal"
@@ -147,45 +147,45 @@
                     android:onClick="@{()->handler.onClickSettings()}"
                     android:padding="@dimen/spacing_normal"
                     android:text="@string/setting"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/font_size_15" />
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:layout_marginStart="26dp"
+                    android:layout_height="@dimen/size_55"
+                    android:layout_marginStart="@dimen/size_26"
                     android:drawablePadding="@dimen/spacing_normal"
                     android:fontFamily="@font/roboto_medium"
                     android:gravity="center_vertical"
                     android:onClick="@{()->handler.shareApp()}"
                     android:text="@string/share_app"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/font_size_16"
                     android:textStyle="bold" />
 
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:layout_marginStart="26dp"
+                    android:layout_height="@dimen/size_55"
+                    android:layout_marginStart="@dimen/size_26"
                     android:drawablePadding="@dimen/spacing_normal"
                     android:fontFamily="@font/roboto_medium"
                     android:gravity="center_vertical"
                     android:onClick="@{()->handler.rateUs()}"
                     android:text="@string/rate_us"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/font_size_16"
                     android:textStyle="bold" />
 
 
                 <LinearLayout
-                    android:layout_width="90dp"
-                    android:layout_height="35dp"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_width="@dimen/size_90"
+                    android:layout_height="@dimen/size_35"
+                    android:layout_marginStart="@dimen/size_25"
+                    android:layout_marginTop="@dimen/size_20"
                     android:orientation="horizontal"
                     android:weightSum="10">
 
                     <TextView
                         android:id="@+id/english_option"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/font_weight_0"
                         android:layout_height="match_parent"
                         android:layout_weight="5"
                         android:background="@color/background_orange"
@@ -193,13 +193,13 @@
                         android:gravity="center"
                         android:text="Eng"
                         android:textColor="@color/white"
-                        android:textSize="16sp">
+                        android:textSize="@dimen/font_size_16">
 
                     </TextView>
 
                     <TextView
                         android:id="@+id/ind_option"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/font_weight_0"
                         android:layout_height="match_parent"
                         android:layout_weight="5"
                         android:background="@color/gray"
@@ -207,7 +207,7 @@
                         android:gravity="center"
                         android:text="Ind"
                         android:textColor="@color/black"
-                        android:textSize="16sp">
+                        android:textSize="@dimen/font_size_16">
 
                     </TextView>
 
@@ -216,7 +216,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="@dimen/size_10"
                     android:drawablePadding="@dimen/spacing_normal"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center"
@@ -227,7 +227,7 @@
 
                 <androidx.legacy.widget.Space
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
+                    android:layout_height="@dimen/font_weight_0"
                     android:layout_weight="1" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -249,24 +249,3 @@
 </layout>
 
 
-    <!--                    <androidx.appcompat.widget.AppCompatTextView-->
-    <!--                        android:layout_width="wrap_content"-->
-    <!--                        android:layout_height="wrap_content"-->
-    <!--                        android:layout_gravity="bottom|center"-->
-    <!--                        android:onClick="@{()->handler.shareApp()}"-->
-    <!--                        android:padding="@dimen/spacing_generic"-->
-    <!--                        android:text="@string/share_app"-->
-    <!--                        android:textColor="?android:attr/textColorSecondary" />-->
-
-    <!--                    <View-->
-    <!--                        style="@style/DividerVertical"-->
-    <!--                        android:layout_margin="@dimen/spacing_generic" />-->
-
-    <!--                    <androidx.appcompat.widget.AppCompatTextView-->
-    <!--                        android:layout_width="wrap_content"-->
-    <!--                        android:layout_height="wrap_content"-->
-    <!--                        android:layout_gravity="bottom|center"-->
-    <!--                        android:onClick="@{()->handler.rateUs()}"-->
-    <!--                        android:padding="@dimen/spacing_generic"-->
-    <!--                        android:text="@string/rate_us"-->
-    <!--                        android:textColor="?android:attr/textColorSecondary" />-->

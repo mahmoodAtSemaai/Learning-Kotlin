@@ -213,23 +213,22 @@ public class ProductData extends BaseObservable implements Parcelable {
         this.mobikulCategoryDetails = mobikulCategoryDetails;
     }
 
-    public  String calculateDiscount(){
-        if(!getPriceReduce().isEmpty()){
+    public String calculateDiscount() {
+        if (!getPriceReduce().isEmpty()) {
             Double original_price = StringtoDouble(priceUnit);
             Double reduced_price = StringtoDouble(priceReduce);
-            double discount =  (((original_price-reduced_price))/original_price)*100;
+            double discount = (((original_price - reduced_price)) / original_price) * 100;
             discount = (double) (Math.round(discount));
-            return  "-"+ discount +"%";
-        }
-        else return "";
+            return "-" + discount + "%";
+        } else return "";
     }
 
-    public Double StringtoDouble(String str){
+    public Double StringtoDouble(String str) {
         String s = str.substring(2);
         String updated_string = "";
-        for(int i=0 ; i<s.length(); i++){
-            if(s.charAt(i)==',') continue;
-            updated_string+=(s.charAt(i));
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == ',') continue;
+            updated_string += (s.charAt(i));
         }
         return Double.parseDouble(updated_string);
     }

@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.Navigation;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.webkul.mobikul.odoo.BuildConfig;
@@ -74,7 +75,6 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     private int BILLING_ADDRESS_POSITION = 1;
     private int COMPANY_ID = 1;
     private boolean mIsFirstCall = true;
-    //    private Toast mToast;
     private CustomToast mToast;
     public static final int VIEW_TYPE_LIST = 1;
     Handler handler = new Handler();
@@ -144,7 +144,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
             @Override
             public void onComplete() {
                 if(binding.refreshLayout.isEnabled() && binding.refreshLayout.isRefreshing())
-                     binding.refreshLayout.setRefreshing(false);
+                    binding.refreshLayout.setRefreshing(false);
             }
         });
 
@@ -153,7 +153,6 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
     @Override
     public void onSuccess(Object object) {
-//        loadHomePage((HomePageResponse) object);
     }
 
     @Override
@@ -167,7 +166,6 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         }
         binding.setData(homePageResponse);
 
-        /*FEATURED CATEGORIES*/
         binding.featuredCategoriesRv.setAdapter(new FeaturedCategoriesAdapter(getContext(), homePageResponse.getFeaturedCategories(), value));
 
 
@@ -177,48 +175,32 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         binding.viewPager2.setUserInputEnabled(false);
         binding.viewPager2.setAdapter(adapter);
 
-        /*BANNER SLIDERS*/
         binding.bannerViewPager.setAdapter(new HomeBannerAdapter(getContext(), homePageResponse.getBannerImages() , binding.bannerViewPager));
-//        binding.bannerDotsTabLayout.setupWithViewPager(binding.bannerViewPager, true);
 
 
-            binding.bannerViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                    if(position==0){
-                        handler.postDelayed(runnable, 5000);
-                    }
-                }
-
-                @Override
-                public void onPageSelected(int position) {
-                    handler.removeCallbacks(runnable);
+        binding.bannerViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if(position==0){
                     handler.postDelayed(runnable, 5000);
                 }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-
-                }
-            });
-    private void getRecentProductList() {
-        if (AppSharedPref.isRecentViewEnable(getContext())) {
-            SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(getContext());
-            ArrayList<ProductData> productData = sqlLiteDbHelper.getRecentProductList();
-            if (productData.size() > 0) {
-                binding.llRecentViewProducts.setVisibility(View.VISIBLE);
-                binding.rvAlternativeProduct.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-                binding.rvAlternativeProduct.setAdapter(new AlternativeProductsRvAdapter(getActivity(), productData, true));
-            } else {
-                binding.llRecentViewProducts.setVisibility(View.GONE);
             }
 
-            runnable  = () -> binding.bannerViewPager.setCurrentItem(binding.bannerViewPager.getCurrentItem()+1);
+            @Override
+            public void onPageSelected(int position) {
+                handler.removeCallbacks(runnable);
+                handler.postDelayed(runnable, 5000);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        runnable  = () -> binding.bannerViewPager.setCurrentItem(binding.bannerViewPager.getCurrentItem()+1);
 
 
-        } else {
-            binding.llRecentViewProducts.setVisibility(View.GONE);
-        }
     }
 
     public void fetchExistingAddresses() {

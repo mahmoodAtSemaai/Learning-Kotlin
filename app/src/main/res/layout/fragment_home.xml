@@ -74,7 +74,7 @@
                         <androidx.viewpager.widget.ViewPager
                             android:id="@+id/banner_view_pager"
                             android:layout_width="match_parent"
-                            android:layout_height="100dp"
+                            android:layout_height="@dimen/banner_height"
                             android:clipToPadding="true"
                             android:nestedScrollingEnabled="false"
                             android:scaleType="fitCenter"
@@ -115,7 +115,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="@color/activityBackground"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                app:layout_constraintTop_toBottomOf="@id/divider_1">
+                >
 
             </androidx.viewpager2.widget.ViewPager2>
 

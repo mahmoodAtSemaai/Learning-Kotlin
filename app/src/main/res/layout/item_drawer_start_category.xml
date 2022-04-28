@@ -16,24 +16,24 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_marginBottom="2dp"
+        android:layout_marginBottom="@dimen/size_2"
         android:layout_height="wrap_content">
 
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/linear_layout"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="@dimen/size_55"
             android:gravity="center"
             android:padding="@dimen/spacing_normal"
-            android:paddingBottom="1dp">
+            android:paddingBottom="@dimen/size_1">
 
 
             <!--without icon application look much better...-->
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/category_iv"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="@dimen/size_18"
+                android:layout_height="@dimen/size_18"
                 android:layout_marginEnd="@dimen/spacing_normal"
                 android:layout_marginRight="@dimen/spacing_normal"
                 android:scaleType="centerInside"
@@ -67,7 +67,7 @@
         <View
             android:id="@+id/divider_text"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/size_1"
             android:layout_below="@+id/linear_layout"
             android:background="@color/grey_400" />
 
@@ -75,15 +75,15 @@
             android:id="@+id/child_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="2dp"
-            android:layout_marginBottom="10dp"
+            android:paddingBottom="@dimen/size_2"
+            android:layout_marginBottom="@dimen/size_10"
             android:visibility="gone"
             android:layout_below="@+id/divider_text"
-            android:layout_marginStart="65dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="10dp" />
+            android:layout_marginStart="@dimen/size_65"
+            android:layout_marginTop="@dimen/size_5"
+            android:layout_marginEnd="@dimen/size_10"
+            android:layout_marginLeft="@dimen/size_60"
+            android:layout_marginRight="@dimen/size_10" />
 
     </RelativeLayout>
 

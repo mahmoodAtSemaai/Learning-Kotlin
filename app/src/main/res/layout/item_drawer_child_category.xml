@@ -16,25 +16,25 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_marginBottom="2dp"
+        android:layout_marginBottom="@dimen/size_2"
         android:layout_height="wrap_content">
 
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/linear_layout"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="@dimen/size_40"
             android:gravity="center"
-            android:paddingStart="15dp"
-            android:paddingLeft="15dp"
-            android:paddingBottom="1dp">
+            android:paddingStart="@dimen/size_15"
+            android:paddingLeft="@dimen/size_15"
+            android:paddingBottom="@dimen/size_1">
 
 
             <!--without icon application look much better...-->
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/category_iv"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="@dimen/size_18"
+                android:layout_height="@dimen/size_18"
                 android:layout_marginEnd="@dimen/spacing_normal"
                 android:layout_marginRight="@dimen/spacing_normal"
                 android:scaleType="centerInside"
@@ -66,7 +66,7 @@
         <View
             android:id="@+id/divider_text"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/size_1"
             android:layout_below="@+id/linear_layout"
             android:background="@color/grey_400" />
 

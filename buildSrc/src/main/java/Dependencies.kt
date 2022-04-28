@@ -84,6 +84,7 @@ object DepVersions {
     const val materialishProgress = "1.0"
     const val navigation = "2.4.1"
     const val navigationfragment="1.4.0"
+    const val nav_version = "2.3.5"
 
 
     //appMarketPlace Modules
@@ -149,6 +150,7 @@ object Dependencies {
     const val googleServices = "com.google.gms:google-services:${DepVersions.googleServices}"
     const val firebaseCrashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:${DepVersions.firebaseCrashlyticsGradle}"
     const val hiltClassPath = "com.google.dagger:hilt-android-gradle-plugin:${DepVersions.hilt}"
+    const val safeargs =  "androidx.navigation:navigation-safe-args-gradle-plugin:${DepVersions.nav_version}"
 
     //App Dependencies
     const val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

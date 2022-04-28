@@ -5,7 +5,6 @@ import androidx.navigation.Navigation
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.handler.home.FragmentNotifier
-//import com.webkul.mobikul.odoo.databinding.ActivityNewDrawerBinding
 import com.webkul.mobikul.odoo.model.home.HomePageResponse
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -25,7 +24,7 @@ class NewDrawerActivity : BaseActivity() {
         val navController =
             Navigation.findNavController(this@NewDrawerActivity, R.id.drawer_fragment)
         val bundle = Bundle()
-        bundle.putParcelable("home_response_data", homePageResponse)
+        bundle.putParcelable(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse)
         navController.setGraph(R.navigation.drawer_layout_navigation, bundle)
     }
 

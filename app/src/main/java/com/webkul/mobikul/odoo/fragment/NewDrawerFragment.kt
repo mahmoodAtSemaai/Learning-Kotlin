@@ -17,8 +17,6 @@ import com.webkul.mobikul.odoo.databinding.FragmentNewDrawerBinding
 import com.webkul.mobikul.odoo.handler.home.HomeActivityHandler
 import com.webkul.mobikul.odoo.helper.AppSharedPref
 import com.webkul.mobikul.odoo.model.home.HomePageResponse
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 
 class NewDrawerFragment : BaseFragment() {
@@ -69,17 +67,13 @@ class NewDrawerFragment : BaseFragment() {
             Toast.makeText(context, R.string.error_something_went_wrong, Toast.LENGTH_SHORT).show()
         }
 
-
-        //Manage language settings
         languageSettings()
-
-
-
-        open_account_fragment()
+        
+        openAccountFragment()
     }
 
 
-    fun open_account_fragment() {
+    fun openAccountFragment() {
         mBinding.profileImage.setOnClickListener {
             val action = NewDrawerFragmentDirections.actionNewDrawerFragmentToAccountFragment2()
             navController.navigate(action)

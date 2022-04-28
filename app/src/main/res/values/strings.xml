@@ -602,5 +602,12 @@
     <string name="profile">Profile</string>
     <string name="english_lang">en_US</string>
     <string name="ind_lang">id_ID</string>
+    <string name="label_home_fragment">HomeFragment</string>
+    <string name="label_wishlist_fragment">WishlistFragment</string>
+    <string name="label_orders_list_fragment">OrderListFragment</string>
+    <string name="label_notifications_fragment">NotificationFragment</string>
+    <string name="label_accounts_fragment">AccountFragment</string>
+    <string name="label_empty_fragment">EmptyFragment</string>
+    <string name="search_all_products_hint">Search All Products</string>
 
 </resources>

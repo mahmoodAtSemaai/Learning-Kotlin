@@ -41,8 +41,6 @@ class NewHomeActivity : BaseActivity() {
     private val RC_CAMERA = 1005
     private val RC_SIGN_IN_SIGN_UP = 1006
     private val TAG = "NewHomeActivity"
-    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
-    private lateinit var mDrawerToggle: ActionBarDrawerToggle
     lateinit var navController : NavController
     private val mBackPressedTime: Long = 0
     private var currentFragmentDisplayed = ""
@@ -68,42 +66,23 @@ class NewHomeActivity : BaseActivity() {
 
 
          binding.searchView.setOnClickListener{
-             binding.searchd.visibility= View.VISIBLE
-             binding.searchd.openSearch()
+             binding.materialSearchView.visibility= View.VISIBLE
+             binding.materialSearchView.openSearch()
          }
-
 
         binding.cartIcon.setOnClickListener{
             startActivity(Intent(this@NewHomeActivity , BagActivity::class.java))
         }
-
-
-
     }
-
-    private fun refreshCurrentFragment(){
-        val id = navController.currentDestination?.id
-        navController.popBackStack(id!!,true)
-        navController.navigate(id)
-    }
-
-
 
     override fun onBackPressed() {
-
-        if(binding.searchd.isVisible){
-            binding.searchd.visibility = View.GONE
-            binding.searchd.closeSearch()
+        if(binding.materialSearchView.isVisible){
+            binding.materialSearchView.visibility = View.GONE
+            binding.materialSearchView.closeSearch()
         }
-        else{
+        else
             super.onBackPressed()
-        }
     }
-
-
-
-
-
 
     private fun openDrawer() {
         binding.drawerIcon.setOnClickListener {
@@ -120,7 +99,6 @@ class NewHomeActivity : BaseActivity() {
          navController = Navigation.findNavController(this, R.id.home_nav_host)
         val bottomNavigationView: BottomNavigationView = binding.homeBottomNav
         NavigationUI.setupWithNavController(bottomNavigationView, navController)
-        //NavigationUI.setupWithNavController(binding.homeToolbar, navController)
     }
 
     fun getHomePageResponse(): HomePageResponse? =
@@ -145,15 +123,11 @@ class NewHomeActivity : BaseActivity() {
 
     private fun getBagItemsCount() {
         val count = AppSharedPref.getCartCount(this@NewHomeActivity, 0)
-        if(count!=0){
+        if (count != 0) {
             binding.badgeInfo.visibility = View.VISIBLE
             binding.badgeInfo.text = count.toString()
-        }
-        else{
+        } else {
             binding.badgeInfo.visibility = View.GONE
         }
-
     }
-
-
 }

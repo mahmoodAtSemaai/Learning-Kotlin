@@ -16,23 +16,7 @@ import com.webkul.mobikul.odoo.databinding.ItemFeaturedCategoryHomeBinding;
 import com.webkul.mobikul.odoo.model.generic.FeaturedCategoryData;
 
 import java.util.List;
-/**
 
- * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
- * @author Webkul <support@webkul.com>
-
- * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
- * @license https://store.webkul.com/license.html ASL Licence
-
- * @link https://store.webkul.com/license.html
-
- */
 
 public class FeaturedCategoriesAdapter extends RecyclerView.Adapter<FeaturedCategoriesAdapter.ViewHolder> {
     @SuppressWarnings("unused")
@@ -62,9 +46,13 @@ public class FeaturedCategoriesAdapter extends RecyclerView.Adapter<FeaturedCate
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final FeaturedCategoryData featuredCategotyData = mFeaturedCategoryDatas.get(position);
+
         holder.mBinding.setData(featuredCategotyData);
+
         holder.itemView.findViewById(R.id.container).setBackgroundResource(selectedPos == position ?
                 R.drawable.featured_categories_selected_item_bg : Color.TRANSPARENT);
+
+
         holder.mBinding.categoryName.setTextColor(selectedPos == position ? ContextCompat.getColor(mContext, R.color.background_orange) : ContextCompat.getColor(mContext, R.color.black));
         if(firstTimeSetup) {
             featuredCategoryDataValue.data(featuredCategotyData , position);

@@ -43,8 +43,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/product_image"
-            android:layout_width="0dp"
-            android:layout_height="270dp"
+            android:layout_width="@dimen/font_weight_0"
+            android:layout_height="@dimen/size_270"
             app:imageType="@{ImageType.PRODUCT_GENERIC}"
             app:imageUrl="@{data.thumbNail}"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -55,20 +55,20 @@
             tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp"/>
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="0dp"
+            android:layout_width="@dimen/font_weight_0"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginLeft="12dp"
+            android:layout_marginLeft="@dimen/size_12"
             app:layout_constraintTop_toBottomOf="@id/product_image"
             android:orientation="vertical"
-            android:layout_marginStart="12dp">
+            android:layout_marginStart="@dimen/size_12">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="Popuk bio konversi alabala babatala"
                 android:text="@{data.name}"
-                android:textSize="16sp"/>
+                android:textSize="@dimen/font_size_16"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/reduced_price"
@@ -78,7 +78,7 @@
                 android:text="@{data.priceReduce}"
                 app:visibility="@{!data.priceReduce.empty}"
                 android:fontFamily="@font/roboto_medium"
-                android:textSize="16sp"/>
+                android:textSize="@dimen/font_size_16"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/original_price"
@@ -88,7 +88,7 @@
                 android:text="@{data.priceUnit}"
                 app:textStyle="@{data.priceReduce.empty ? &quot;bold&quot; : &quot;normal&quot;}"
                 android:background="@{data.priceReduce.empty ?  null : @drawable/bg_strikethrough}"
-                android:textSize="13sp"/>
+                android:textSize="@dimen/font_size_13sp"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/seller_name"
@@ -97,7 +97,7 @@
                 android:text="@{data.brandName}"
                 android:visibility="@{(data.brandName != null &amp;&amp; data.brandName.length() > 0) ? View.VISIBLE : View.GONE}"
                 tools:text="PT Benih Unggul Sejati"
-                android:textSize="13sp"/>
+                android:textSize="@dimen/font_size_13sp"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/stock_value"
@@ -106,7 +106,7 @@
                 android:text="@{`Stock ` + data.availableQuantity}"
                 android:visibility="@{data.availableQuantity > 0 ? View.VISIBLE : View.GONE}"
                 tools:text="Stock 10k"
-                android:textSize="13sp"/>
+                android:textSize="@dimen/font_size_13sp"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

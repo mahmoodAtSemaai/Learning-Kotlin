@@ -45,12 +45,10 @@ public class HomeActivityHandler {
     }
 
     public void rateUs() {
-//        ((HomeActivity) mContext).mBinding.drawerLayout.closeDrawers();
         RateAppDialogFragm.newInstance().show(((BaseActivity) mContext).mSupportFragmentManager, RateAppDialogFragm.class.getSimpleName());
     }
 
     public void shareApp() {
-//        ((HomeActivity) mContext).mBinding.drawerLayout.closeDrawers();
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, APP_PLAYSTORE_URL);
@@ -74,14 +72,12 @@ public class HomeActivityHandler {
         int isDark = mContext.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         SharedPreferences.Editor editor = AppSharedPref.getSharedPreferenceEditor(mContext, themePreference);
         if (Configuration.UI_MODE_NIGHT_NO == isDark) {
-//            ((HomeActivity) mContext).mBinding.themeTextView.setText(R.string.darkMode);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             editor.putBoolean("DARK", true);
             editor.apply();
             editor.commit();
         }
         if (Configuration.UI_MODE_NIGHT_YES == isDark) {
-//            ((HomeActivity) mContext).mBinding.themeTextView.setText(R.string.lightMode);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             editor.putBoolean("DARK", false);
             editor.apply();
@@ -118,8 +114,4 @@ public class HomeActivityHandler {
         mContext.startActivity(intent);
 
     }
-
-    // code for catalog product handler goes here
-
-
 }

@@ -101,14 +101,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected void setActionbarTitle(@Nullable String title) {
-//        if (title == null) {
-//            return;
-//        }
-//        if (getSupportActionBar() != null) {
-//            getSupportActionBar().setTitle(title);
-//        }
-    }
+    protected void setActionbarTitle(@Nullable String title) {}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

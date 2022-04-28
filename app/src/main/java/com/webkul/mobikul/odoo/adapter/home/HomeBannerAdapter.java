@@ -16,23 +16,7 @@ import com.webkul.mobikul.odoo.model.generic.BannerImageData;
 
 import java.util.List;
 
-/**
 
- * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
- * @author Webkul <support@webkul.com>
-
- * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
- * @license https://store.webkul.com/license.html ASL Licence
-
- * @link https://store.webkul.com/license.html
-
- */
 public class HomeBannerAdapter extends PagerAdapter {
 
     private final Context mContext;
@@ -40,13 +24,12 @@ public class HomeBannerAdapter extends PagerAdapter {
     ViewPager viewPager;
     List<BannerImageData> list;
 
-    public HomeBannerAdapter(Context context, List<BannerImageData> bannerImageDatas , ViewPager viewPager) {
+    public HomeBannerAdapter(Context context, List<BannerImageData> bannerImageDatas, ViewPager viewPager) {
         mContext = context;
         mBannerImageDatas = bannerImageDatas;
         this.viewPager = viewPager;
         list = mBannerImageDatas;
     }
-
 
 
     @Override
@@ -62,10 +45,9 @@ public class HomeBannerAdapter extends PagerAdapter {
         itemViewPagerBannerBinding.setHandler(new HomeBannerHandler(mContext, mBannerImageDatas.get(position)));
         itemViewPagerBannerBinding.executePendingBindings();
         container.addView(itemViewPagerBannerBinding.getRoot());
-        if(position==mBannerImageDatas.size()-1){
+        if (position == mBannerImageDatas.size() - 1) {
             viewPager.post(runnable);
         }
-
         return (itemViewPagerBannerBinding.getRoot());
     }
 

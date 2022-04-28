@@ -21,10 +21,6 @@
         android:background="@color/white"
         tools:context=".fragment.CategoryProductFragment">
 
-
-
-
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/product_recycler_view"
             android:layout_width="match_parent"

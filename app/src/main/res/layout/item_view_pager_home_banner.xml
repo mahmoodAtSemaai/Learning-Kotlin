@@ -20,14 +20,14 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        app:cardCornerRadius="5dp"
+        android:layout_height="@dimen/banner_size_small"
+        app:cardCornerRadius="@dimen/size_5"
         app:cardUseCompatPadding="true">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/banner_image"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="@dimen/banner_size_small"
             android:onClick="@{() -> handler.onClickBanner()}"
             android:scaleType="fitXY"
             app:imageUrl="@{data.url}"

@@ -248,9 +248,6 @@ public class WishlistFragment extends BaseFragment implements WishlistProductInf
                                         Helper.getScreenName(getContext()),
                                         "");
 
-                                //Generating Errors
-//                                (((NewHomeActivity) getContext()).getSupportFragmentManager().findFragmentByTag(WishlistFragment
-//                                        .class.getSimpleName())).onResume();
                                 callApi();
                                 AlertDialogHelper.showDefaultSuccessOneLinerDialog(getContext(), wishlistToCartResponse.getMessage());
                             } else {

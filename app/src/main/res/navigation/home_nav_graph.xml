@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.webkul.mobikul.odoo.fragment.HomeFragment"
-        android:label="HomeFragment"
+        android:label="@string/label_home_fragment"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_emptyFragment"
@@ -16,17 +16,17 @@
     <fragment
         android:id="@+id/wishlistFragment"
         android:name="com.webkul.mobikul.odoo.fragment.WishlistFragment"
-        android:label="WishlistFragment"
+        android:label="@string/label_wishlist_fragment"
         tools:layout="@layout/fragment_wishlist"/>
     <fragment
         android:id="@+id/orderListFragment"
         android:name="com.webkul.mobikul.odoo.fragment.OrderListFragment"
-        android:label="OrderListFragment"
+        android:label="@string/label_orders_list_fragment"
         tools:layout="@layout/fragment_order_list"/>
     <fragment
         android:id="@+id/notificationFragment"
         android:name="com.webkul.mobikul.odoo.fragment.NotificationFragment"
-        android:label="NotificationFragment"
+        android:label="@string/label_notifications_fragment"
         tools:layout="@layout/fragment_notification">
         <action
             android:id="@+id/action_notificationFragment_to_emptyFragment"
@@ -35,11 +35,11 @@
     <fragment
         android:id="@+id/accountFragment"
         android:name="com.webkul.mobikul.odoo.fragment.AccountFragment"
-        android:label="AccountFragment"
+        android:label="@string/label_accounts_fragment"
         tools:layout="@layout/fragment_account"/>
     <fragment
         android:id="@+id/emptyFragment"
         android:name="com.webkul.mobikul.odoo.fragment.EmptyFragment"
-        android:label="EmptyFragment"
+        android:label="@string/label_empty_fragment"
         tools:layout="@layout/fragment_empty"/>
 </navigation>

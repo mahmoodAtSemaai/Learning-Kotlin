@@ -5,10 +5,10 @@
             <solid
                 android:color="@color/background_orange"/>
             <corners
-                android:bottomLeftRadius="5dp"
-                android:bottomRightRadius="5dp"
-                android:topRightRadius="5dp"
-                android:topLeftRadius="5dp"
+                android:bottomLeftRadius="@dimen/size_5"
+                android:bottomRightRadius="@dimen/size_5"
+                android:topRightRadius="@dimen/size_5"
+                android:topLeftRadius="@dimen/size_5"
 
                 />
         </shape>

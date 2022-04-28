@@ -17,7 +17,6 @@ import com.webkul.mobikul.odoo.databinding.ItemDrawerChildCategoryBinding
 import com.webkul.mobikul.odoo.helper.CatalogHelper
 import com.webkul.mobikul.odoo.model.generic.CategoryData
 
-
 class NewChildDrawerLayoutAdapter(
     private val mContext: Context,
     private val mCategoriesData: List<CategoryData>,
@@ -37,12 +36,12 @@ class NewChildDrawerLayoutAdapter(
 
     override fun onBindViewHolder(parentViewHolder: CategoryParentViewHolder, parentPosition: Int) {
         parentViewHolder.mBinding?.data = mCategoriesData[parentPosition]
-        parentViewHolder.mBinding?.root!!.setOnClickListener {
+        parentViewHolder.mBinding?.root?.setOnClickListener {
             onClickParentCategoryItem(
                 mCategoriesData[parentPosition]
             )
         }
-        parentViewHolder.mBinding.executePendingBindings()
+        parentViewHolder.mBinding?.executePendingBindings()
     }
 
     override fun getItemCount(): Int {

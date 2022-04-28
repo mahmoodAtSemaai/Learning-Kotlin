@@ -326,8 +326,6 @@ public class CatalogProductActivity extends BaseActivity {
     }
 
     private void initProductCatalogRv() {
-        Log.d(TAG, "onClickView: " + AppSharedPref.isGridview(this));
-
         mBinding.productCatalogRv.setAdapter(new CatalogProductListAdapter(this, mBinding.getData().getProducts(), VIEW_TYPE_LIST));
 
         if (AppSharedPref.isGridview(this)) {
@@ -471,8 +469,6 @@ public class CatalogProductActivity extends BaseActivity {
 
 
     public void onClickViewSwitcher(View view) {
-        Log.d(TAG, "onClickViewSwitcher: " + AppSharedPref.isGridview(this));
-
         if (AppSharedPref.isGridview(this)) {
             mBinding.productCatalogRv.setLayoutManager(new LinearLayoutManager(this));
             mBinding.productCatalogRv.setAdapter(new CatalogProductListAdapter(this, mBinding.getData().getProducts(), VIEW_TYPE_LIST));

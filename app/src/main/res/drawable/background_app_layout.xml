@@ -5,8 +5,8 @@
             <solid
                 android:color="@color/background_appbar_color"/>
             <corners
-                android:bottomLeftRadius="10dp"
-                android:bottomRightRadius="10dp"/>
+                android:bottomLeftRadius="@dimen/size_10"
+                android:bottomRightRadius="@dimen/size_10"/>
         </shape>
     </item>
 </selector>

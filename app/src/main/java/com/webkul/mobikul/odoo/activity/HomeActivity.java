@@ -126,16 +126,12 @@ public class HomeActivity extends BaseActivity implements OnTabSelectListener,/*
 
             }
         });
-        // Get date of first launch
+
         long firstLaunchDate = AppSharedPref.getFirstLaunchDate(this);
-//        Log.i(TAG, "onCreate: FirstLaunchDate "+ firstLaunchDate);
-//        Log.i(TAG, "onCreate: FirstLaunchDate "+ System.currentTimeMillis());
         if (firstLaunchDate == 0) {
             firstLaunchDate = System.currentTimeMillis();
             AppSharedPref.setFirstLaunchDate(this, firstLaunchDate);
         }
-//        Log.i(TAG, "onCreate: LaunchCount "+ AppSharedPref.getLaunchCount(this));
-        // Wait at least n days before opening
         if (AppSharedPref.getLaunchCount(this) >= DEFAULT_LAUNCHES_UNTIL_PROMPT) {
             if (System.currentTimeMillis() >= AppSharedPref.getFirstLaunchDate(this) + (DEFAULT_DAYS_UNTIL_PROMPT * 24 * 60 * 60 * 1000)) {
                 RateAppDialogFragm.newInstance().show(mSupportFragmentManager, RateAppDialogFragm.class.getSimpleName());
@@ -223,8 +219,6 @@ public class HomeActivity extends BaseActivity implements OnTabSelectListener,/*
 
     public void showHomeFrag() {
         if (!mSupportFragmentManager.popBackStackImmediate(HomeFragment.class.getSimpleName(), 0)) { // fragment not in back stack, create it.
-            Log.i(TAG, "showHomeFrag: 2");
-            //FragmentHelper.replaceFragment(R.id.container, this, HomeFragment.newInstance(getIntent().getParcelableExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE)), HomeFragment.class.getSimpleName(), true, true);
         }
     }
 
@@ -317,9 +311,7 @@ public class HomeActivity extends BaseActivity implements OnTabSelectListener,/*
                 if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Fragment fragment = mSupportFragmentManager.findFragmentByTag(AccountFragment.class.getSimpleName());
                     if (fragment != null && fragment.isAdded()) {
-                        Log.i(TAG, "onActivityResult: start pick image ");
                         ((AccountFragment) fragment).mBinding.getHandler().startPickImage();
-//                        ((AccountFragment) fragment).mBinding.getHandler().pickCameraIntent();
                     }
                 } else {
                     SnackbarHelper.getSnackbar(this, getString(R.string.error_permision_required_to_change_profile_image), Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show();

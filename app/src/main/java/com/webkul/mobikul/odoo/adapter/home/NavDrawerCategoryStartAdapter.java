@@ -63,7 +63,6 @@ public class NavDrawerCategoryStartAdapter extends RecyclerView.Adapter<NavDrawe
         parentViewHolder.mBinding.setData(mCategoriesData.get(parentPosition));
         parentViewHolder.mBinding.getRoot().setOnClickListener((view) -> onClickParentCategoryItem(parentViewHolder, mCategoriesData.get(parentPosition)));
         parentViewHolder.mBinding.executePendingBindings();
-
     }
 
     @Override

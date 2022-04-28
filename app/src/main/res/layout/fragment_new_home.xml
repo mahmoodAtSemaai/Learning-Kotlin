@@ -48,7 +48,7 @@
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/banner_view_pager"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="@dimen/layout_height_100"
                     android:clipToPadding="true"
                     android:nestedScrollingEnabled="false"
                     android:scaleType="fitCenter"
@@ -71,7 +71,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="3dp"
+                    android:layout_height="@dimen/dimen_3dp"
                     android:background="@color/grey_300" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -83,10 +83,7 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-
-
         </androidx.core.widget.NestedScrollView>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

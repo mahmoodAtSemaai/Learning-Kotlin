@@ -54,9 +54,7 @@ public class CatalogProductListAdapter extends RecyclerView.Adapter<CatalogProdu
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         if (viewType == VIEW_TYPE_BACK_TO_TOP) {
-//            if(((CatalogProductActivity) mContext).mBinding.productCatalogRv.getLayoutManager() instanceof GridLayoutManager && mProductDatas.size()<=9){
-//                return null;
-//            }
+
             return new ViewHolder(inflater.inflate(R.layout.item_button_back_to_top, parent, false));
         }
         if (viewType == VIEW_TYPE) {
@@ -70,11 +68,9 @@ public class CatalogProductListAdapter extends RecyclerView.Adapter<CatalogProdu
     public void onBindViewHolder(CatalogProductListAdapter.ViewHolder holder, int position) {
         if (position < mProductDatas.size()) {
             final ProductData productData = mProductDatas.get(position);
-//        productData.setContext(mContext);
             if (getItemViewType(position) == VIEW_TYPE) {
                 ((ItemCatalogProductListBinding) holder.mBinding).setData(productData);
                 ((ItemCatalogProductListBinding) holder.mBinding).setHandler(new ProductHandler(mContext, productData));
-                //((ItemCatalogProductListBinding) holder.mBinding).getHandler().setProductListBinding(((ItemCatalogProductListBinding) holder.mBinding));
                 ((ItemCatalogProductListBinding) holder.mBinding).setWishlistEnabled(AppSharedPref.isAllowedWishlist(mContext));
                 ((ItemCatalogProductListBinding) holder.mBinding).setIsLoggedIn(AppSharedPref.isLoggedIn(mContext));
             } else {

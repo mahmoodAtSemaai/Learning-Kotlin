@@ -2,6 +2,7 @@ package com.webkul.mobikul.odoo.activity;
 
 import static com.webkul.mobikul.odoo.constant.ApplicationConstant.DEBOUNCE_REQUEST_TIMEOUT;
 import static com.webkul.mobikul.odoo.constant.ApplicationConstant.MAX_SEARCH_HISTORY_RESULT;
+import static com.webkul.mobikul.odoo.constant.ApplicationConstant.REQUEST_TIMEOUT;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGORY_NAME;
 import static com.webkul.mobikul.odoo.helper.CatalogHelper.CatalogProductRequestType.SEARCH_QUERY;
@@ -21,7 +22,6 @@ import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -37,7 +37,6 @@ import com.webkul.mobikul.odoo.adapter.extra.SearchSuggestionProductAdapter;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.connection.RetrofitClient;
-import com.webkul.mobikul.odoo.custom.MaterialSearchView;
 import com.webkul.mobikul.odoo.database.SearchHistoryContract;
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.databinding.MaterialSearchViewBinding;
@@ -63,9 +62,9 @@ public class SearchActivity extends AppCompatActivity {
     private static final String TAG = "MaterialSearchView";
     private static final int MAX_VOICE_RESULTS = 1;
     public MaterialSearchViewBinding binding;
-    private final Context mContext = this;
-    private boolean mOpen, isFromSubmitResult;
-    private CharSequence mCurrentQuery;
+    private final Context context = this;
+    private boolean open, isFromSubmitResult;
+    private CharSequence currentQuery;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,10 +79,10 @@ public class SearchActivity extends AppCompatActivity {
             return true;
         });
 
-        binding.seachHistoryRv.setAdapter(new SearchHistoryAdapter(mContext, getSearchHistoryList(""), ""));
+        binding.seachHistoryRv.setAdapter(new SearchHistoryAdapter(context, getSearchHistoryList(""), ""));
         RxTextView.textChangeEvents(binding.etSearch).debounce(DEBOUNCE_REQUEST_TIMEOUT, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new CustomObserver<TextViewTextChangeEvent>(mContext) {
+                .subscribe(new CustomObserver<TextViewTextChangeEvent>(context) {
 
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
@@ -94,8 +93,8 @@ public class SearchActivity extends AppCompatActivity {
                     public void onNext(@NonNull TextViewTextChangeEvent textViewTextChangeEvent) {
                         if (!isFromSubmitResult) {
 
-                            ApiConnection.getSearchResponse(mContext, textViewTextChangeEvent.text().toString(), 0, BuildConfig.DEFAULT_NO_OF_SEARCH_PRODUCTS)
-                                    .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).debounce(2, TimeUnit.SECONDS).subscribe(new CustomObserver<CatalogProductResponse>(mContext) {
+                            ApiConnection.getSearchResponse(context, textViewTextChangeEvent.text().toString(), 0, BuildConfig.DEFAULT_NO_OF_SEARCH_PRODUCTS)
+                                    .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).debounce(REQUEST_TIMEOUT, TimeUnit.SECONDS).subscribe(new CustomObserver<CatalogProductResponse>(context) {
                                 @Override
                                 public void onSubscribe(@NonNull Disposable d) {
                                     super.onSubscribe(d);
@@ -105,11 +104,10 @@ public class SearchActivity extends AppCompatActivity {
                                 @Override
                                 public void onNext(@NonNull CatalogProductResponse catalogProductResponse) {
                                     super.onNext(catalogProductResponse);
-                                    Log.d(TAG, "onNext: ");
-                                    FirebaseAnalyticsImpl.logSearchEvent(mContext,textViewTextChangeEvent.text().toString());
+                                    FirebaseAnalyticsImpl.logSearchEvent(context,textViewTextChangeEvent.text().toString());
                                     binding.setSearchSuggestionData(catalogProductResponse);
                                     if (binding.suggestionProductsRv.getAdapter() == null) {
-                                        binding.suggestionProductsRv.setAdapter(new SearchSuggestionProductAdapter(mContext, catalogProductResponse.getProducts(), textViewTextChangeEvent.text().toString()));
+                                        binding.suggestionProductsRv.setAdapter(new SearchSuggestionProductAdapter(context, catalogProductResponse.getProducts(), textViewTextChangeEvent.text().toString()));
                                     } else {
                                         ((SearchSuggestionProductAdapter) binding.suggestionProductsRv.getAdapter()).updateData(catalogProductResponse.getProducts(), textViewTextChangeEvent.text().toString());
                                     }
@@ -148,16 +146,14 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         binding.etSearch.setOnFocusChangeListener((v, hasFocus) -> {
-            // If we gain focus, show keyboard and show suggestions.
             if (hasFocus) {
-//                Helper.showKeyboard(mBinding.etSearch);
                 showSuggestions();
             }
         });
     }
 
     private List<String> getSearchHistoryList(String searchTerm) {
-        Cursor cursor = ((BaseActivity) mContext).mSqLiteDatabase.query(
+        Cursor cursor = ((BaseActivity) context).mSqLiteDatabase.query(
                 SearchHistoryContract.SearchHistoryEntry.TABLE_NAME,
                 new String[]{SearchHistoryContract.SearchHistoryEntry.COLUMN_QUERY},
                 SearchHistoryContract.SearchHistoryEntry.COLUMN_QUERY + " LIKE ?",
@@ -177,13 +173,13 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void deleteAllSearchHistory(){
-        ((BaseActivity) mContext).mSqLiteDatabase.delete(SearchHistoryContract.SearchHistoryEntry.TABLE_NAME,null,null);
+        ((BaseActivity) context).mSqLiteDatabase.delete(SearchHistoryContract.SearchHistoryEntry.TABLE_NAME,null,null);
 
     }
 
     private void onTextChanged(@SuppressWarnings("UnusedParameters") CharSequence newText) {
-        mCurrentQuery = binding.etSearch.getText();
-        if (!TextUtils.isEmpty(mCurrentQuery)) {
+        currentQuery = binding.etSearch.getText();
+        if (!TextUtils.isEmpty(currentQuery)) {
             displayVoiceButton(false);
             displayClearButton(true);
         } else {
@@ -195,19 +191,18 @@ public class SearchActivity extends AppCompatActivity {
     private void onSubmitQuery() {
         CharSequence query = binding.etSearch.getText();
         isFromSubmitResult = true;
-        Helper.hideKeyboard(mContext);
+        Helper.hideKeyboard(context);
         if (query != null && !query.equals("") && TextUtils.getTrimmedLength(query) > 0) {
 
             saveQueryToDb(query.toString(), System.currentTimeMillis());
 
-            Intent intent = new Intent(mContext, CatalogProductActivity.class);
+            Intent intent = new Intent(context, CatalogProductActivity.class);
             intent.setAction(Intent.ACTION_SEARCH);
             intent.putExtra(SearchManager.QUERY, query.toString());
             intent.putExtra(BUNDLE_KEY_CATEGORY_NAME, query.toString());
             intent.putExtra(BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE, SEARCH_QUERY);
-            mContext.startActivity(intent);
+            context.startActivity(intent);
             closeSearch();
-//            mBinding.etSearch.setText("");
         }
     }
 
@@ -227,7 +222,7 @@ public class SearchActivity extends AppCompatActivity {
         if (query != null) {
             BindingAdapterUtils.setHtmlText(binding.etSearch, query.toString());
             binding.etSearch.setSelection(binding.etSearch.length());
-            mCurrentQuery = query;
+            currentQuery = query;
         }
 
         if (submit && !TextUtils.isEmpty(query)) {
@@ -236,12 +231,11 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void closeSearch() {
-        if (!mOpen) {
+        if (!open) {
             return;
         }
         binding.etSearch.setText("");
         dismissSuggestions();
-//        clearFocus();
         AnimatorListenerAdapter listenerAdapter = new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -255,47 +249,41 @@ public class SearchActivity extends AppCompatActivity {
         } else {
             AnimationHelper.fadeOutView(binding.searchLayout);
         }
-        mOpen = false;
-        //setVisibility(View.GONE);
+        open = false;
         RetrofitClient.getDispatcher().cancelAll();
     }
 
     public void onVoiceClicked() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, mContext.getString(R.string.hint_prompt));
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(R.string.hint_prompt));
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, MAX_VOICE_RESULTS); // Quantity of results we want to receive
-        if (mContext instanceof Activity) {
-            ((Activity) mContext).startActivityForResult(intent, RC_MATERIAL_SEARCH_VOICE);
+        if (context instanceof Activity) {
+            ((Activity) context).startActivityForResult(intent, RC_MATERIAL_SEARCH_VOICE);
         }
     }
 
     public void openSearch() {
-        if (mOpen) {
+        if (open) {
             return;
         }
         binding.etSearch.setText("");
-//        mBinding.etSearch.requestFocus();
-
-//        ((SearchHistoryAdapter) mBinding.seachHistoryRv.getAdapter()).updateSearchHistory(getSearchHistoryList(""), "");
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             binding.searchLayout.setVisibility(View.VISIBLE);
             AnimationHelper.circleRevealView(binding.searchBar);
         } else {
             AnimationHelper.fadeInView(binding.searchLayout);
         }
-        //setVisibility(View.VISIBLE);
         initSearchView();
-        mOpen = true;
+        open = true;
     }
 
     public boolean isOpen() {
-        return mOpen;
+        return open;
     }
 
     private void displayVoiceButton(boolean display) {
-        if (display && Helper.isVoiceAvailable(mContext)) {
+        if (display && Helper.isVoiceAvailable(context)) {
             binding.actionVoice.setVisibility(View.VISIBLE);
         } else {
             binding.actionVoice.setVisibility(View.GONE);

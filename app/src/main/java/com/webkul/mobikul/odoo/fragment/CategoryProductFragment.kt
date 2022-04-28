@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.webkul.mobikul.odoo.R
@@ -69,17 +70,9 @@ class CategoryProductFragment : Fragment() {
                     } else {
                         binding.pbCenter.visibility = View.GONE
                         if (mIsFirstCall) {
-                            mIsFirstCall = false
-                            binding.data = catalogProductResponse
-                            catalogProductResponse.setWishlistData()
-                            catalogResponse = catalogProductResponse
-                            val requestTypeIdentifier = CatalogProductRequestType.FEATURED_CATEGORY.toString()
-                            SaveData(activity, catalogProductResponse, requestTypeIdentifier)
-                            if (catalogResponse.products!!.isEmpty()) {
-                                showEmptyFragment()
-                            } else {
-                                initProductCatalogRv()
-                            }
+
+                            isFirstCall(catalogProductResponse)
+
                         } else {
                             /*update offset from new response*/
                             catalogProductResponse.setWishlistData()
@@ -98,6 +91,20 @@ class CategoryProductFragment : Fragment() {
             })
 
 
+    }
+
+    private fun isFirstCall(catalogProductResponse : CatalogProductResponse) {
+        mIsFirstCall = false
+        binding.data = catalogProductResponse
+        catalogProductResponse.setWishlistData()
+        catalogResponse = catalogProductResponse
+        val requestTypeIdentifier = CatalogProductRequestType.FEATURED_CATEGORY.toString()
+        SaveData(activity, catalogProductResponse, requestTypeIdentifier)
+        if (catalogResponse.products!!.isEmpty()) {
+            showEmptyFragment()
+        } else {
+            initProductCatalogRv()
+        }
     }
 
     private fun showEmptyFragment() {
@@ -124,11 +131,10 @@ class CategoryProductFragment : Fragment() {
 
 
     private fun initProductCatalogRv() {
-
         binding.productRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                val lastCompletelyVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastVisibleItemPosition()
+                val lastCompletelyVisibleItemPosition = (recyclerView.layoutManager as GridLayoutManager?)!!.findLastVisibleItemPosition()
                 if (!binding.data?.isLazyLoading!! &&
                     lastCompletelyVisibleItemPosition == binding.productRecyclerView.adapter?.itemCount!! - 1 &&
                     binding.productRecyclerView.adapter?.itemCount!! < binding.data?.totalCount!!
@@ -144,8 +150,8 @@ class CategoryProductFragment : Fragment() {
     }
 
     companion object {
-        var POSITION_ARG = "position_arg"
-        var CATEGORY_ARG = "category_id"
+        var POSITION_ARG = BundleConstant.POSITION_ARG
+        var CATEGORY_ARG = BundleConstant.CATEGORY_ARG
 
         @JvmStatic
         fun newInstance(position: Int, category_id: String) = CategoryProductFragment().apply {

@@ -72,10 +72,10 @@
                 android:layout_marginHorizontal="@dimen/size_10"
                 android:text="@{data.calculateDiscount()}"
                 android:textColor="@color/white"
-                android:textSize="11sp"
+                android:textSize="@dimen/font_size_11sp"
                 android:textStyle="bold"
-                android:padding="5dp"
-                android:layout_marginTop="5dp"
+                android:padding="@dimen/spacing_tiny"
+                android:layout_marginTop="@dimen/spacing_tiny"
                 app:visibility="@{!data.priceReduce.empty}"
                 android:background="@drawable/background_discount_price"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -87,14 +87,17 @@
                 android:id="@+id/tv_product_name"
                 style="@style/medium_normal_text"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
+                android:maxLines="2"
+                android:text="@{data.name}"
+                android:ellipsize="end"
                 android:layout_marginHorizontal="@dimen/size_10"
                 android:layout_marginTop="@dimen/size_8"
-                android:text="@{data.name}"
+                tools:text="Popuk bio konversi alabala babatala"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/discount_price"
-                tools:text="Popuk bio konversi alabala babatala" />
+            />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/reduced_price"
@@ -167,3 +170,6 @@
     </androidx.cardview.widget.CardView>
 
 </layout>
+
+
+
