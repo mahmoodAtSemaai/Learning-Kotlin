@@ -19,8 +19,12 @@ class LogInUseCase @Inject constructor(
     fun login(username: String, password: String): Flow<Resource<LoginResponse>> = flow {
         emit(Resource.Loading)
 
-        val result = loginRepository.logIn()
-        emit(result)
+        if(isValidLogin(username, password)) {
+            val result = loginRepository.logIn()
+            emit(result)
+        }else{
+            //emit error
+        }
     }.flowOn(Dispatchers.IO)
 
     private fun isValidLogin(username: String, password: String) : Boolean{
