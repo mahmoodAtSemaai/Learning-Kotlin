@@ -3,17 +3,15 @@ package com.webkul.mobikul.odoo.features.auth.presentation
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.webkul.mobikul.odoo.BuildConfig
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
-import com.webkul.mobikul.odoo.core.utils.FailureStatus
-import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.databinding.FragmentLoginV1Binding
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -23,7 +21,6 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
 
     override val layoutId = R.layout.fragment_login_v1
     private val viewModel: LoginViewModel by viewModels()
-
 
     companion object {
         fun newInstance() = LoginFragmentV1().also { loginFragment ->
@@ -40,12 +37,10 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
     }
 
     private fun setObservers() {
+
         lifecycleScope.launchWhenCreated {
             viewModel.state.collect {
                 when (it) {
-                    is LoginState.Idle -> {
-
-                    }
                     is LoginState.Loading -> {
                         AlertDialogHelper.showDefaultProgressDialog(context)
                     }
@@ -53,7 +48,6 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
                         val loginResponse = it.data
                         startActivity(Intent())
                     }
-
                     is LoginState.Error -> {
                         val error = it.error
 
@@ -68,21 +62,7 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
         binding.login.setOnClickListener {
             onLoginBtnClicked()
         }
-
-        binding.privacy.setOnClickListener {
-            onPrivacyPolicyClicked()
-        }
-
-        binding.signUpNow.setOnClickListener {
-            onSignUpNowClicked()
-        }
-
-        binding.forgotPassword.setOnClickListener {
-            onForgotPasswordClicked()
-        }
-
     }
-
 
     private fun onLoginBtnClicked() {
 
@@ -112,28 +92,8 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
 
         if (username.isNotEmpty() && password.isNotEmpty() && password.length > BuildConfig.MIN_PASSWORD_LENGTH)
             lifecycleScope.launch {
-                viewModel.userIntent.send(LoginIntent.Login(username, password))
+                viewModel.loginIntent.send(LoginIntent.Login(username, password))
             }
-    }
-
-    private fun onPrivacyPolicyClicked() {
-        TODO("Not yet implemented")
-    }
-
-    private fun onForgotPasswordClicked() {
-        /*  val fragmentManager = requireActivity().supportFragmentManager
-            val forgotPasswordDialogFragment = ForgotPasswordDialogFragment.newInstance(binding.usernameEt.text.toString())
-            forgotPasswordDialogFragment.show(fragmentManager, ForgotPasswordDialogFragment::class.java.simpleName)
-        */
-    }
-
-    private fun onSignUpNowClicked() {
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(
-                R.id.fragment_container_v1,
-                SignUpFragmentV1.newInstance(),
-                SignUpFragmentV1::class.java.simpleName
-            ).commit()
     }
 
 }

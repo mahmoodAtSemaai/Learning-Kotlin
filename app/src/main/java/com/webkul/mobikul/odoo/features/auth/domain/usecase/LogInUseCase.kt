@@ -13,7 +13,7 @@ class LogInUseCase @Inject constructor(
         private val loginRepository: LoginRepository,
 ) {
 
-    operator fun invoke(): Flow<Resource<LoginResponse>> = flow {
+    fun login(): Flow<Resource<LoginResponse>> = flow {
         emit(Resource.Loading)
 
         val result = loginRepository.logIn()
