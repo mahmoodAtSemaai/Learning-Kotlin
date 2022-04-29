@@ -40,12 +40,9 @@
         android:vmSafeMode="true"
         tools:replace="icon,allowBackup">
         <activity
-            android:name=".features.auth.presentation.SignInSignUpActivityV1"
-            android:exported="false" />
-        <activity
             android:name=".activity.UserApprovalActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:exported="true" />
         <activity
             android:name=".activity.UpdateAddressActivity"
             android:exported="true" />
