@@ -7,6 +7,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.webkul.mobikul.odoo.BuildConfig
 import com.webkul.mobikul.odoo.R
+import com.webkul.mobikul.odoo.core.mvicore.IIntent
+import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
 import com.webkul.mobikul.odoo.databinding.FragmentLoginV1Binding
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper
@@ -17,7 +19,7 @@ import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV1Binding>() {
+class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV1Binding>() , IView<LoginIntent,LoginState> {
 
     override val layoutId = R.layout.fragment_login_v1
     private val viewModel: LoginViewModel by viewModels()
@@ -40,19 +42,7 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
 
         lifecycleScope.launchWhenCreated {
             viewModel.state.collect {
-                when (it) {
-                    is LoginState.Loading -> {
-                        AlertDialogHelper.showDefaultProgressDialog(context)
-                    }
-                    is LoginState.Login -> {
-                        val loginResponse = it.data
-                        startActivity(Intent())
-                    }
-                    is LoginState.Error -> {
-                        val error = it.error
-
-                    }
-                }
+                render(it)
             }
         }
     }
@@ -68,10 +58,29 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
 
         val username = binding.usernameEt.text.toString()
         val password = binding.passwordEt.text.toString()
+        triggerIntent(LoginIntent.Login(username, password))
+    }
 
-            lifecycleScope.launch {
-                viewModel.loginIntent.send(LoginIntent.Login(username, password))
+    override fun render(state: LoginState) {
+        when (state) {
+            is LoginState.Loading -> {
+                AlertDialogHelper.showDefaultProgressDialog(context)
             }
+            is LoginState.Login -> {
+                val loginResponse = state.data
+                startActivity(Intent())
+            }
+            is LoginState.Error -> {
+                val error = state.error
+
+            }
+        }
+    }
+
+    override fun triggerIntent(intent: LoginIntent) {
+        lifecycleScope.launch {
+            viewModel.intents.send(intent)
+        }
     }
 
 }
