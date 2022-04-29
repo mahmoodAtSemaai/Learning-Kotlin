@@ -4,7 +4,9 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.webkul.mobikul.odoo.BuildConfig
+import com.webkul.mobikul.odoo.connection.RetrofitClient
 import com.webkul.mobikul.odoo.core.data.local.AppPreferences
+import com.webkul.mobikul.odoo.helper.AppSharedPref
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,12 +28,12 @@ object RetrofitModule {
     private const val DEFAULT_WRITE_TIMEOUT_IN_SEC: Long = 90
     private const val DEFAULT_READ_TIMEOUT_IN_SEC: Long = 90
 
-    private const val AUTHORIZATION="Authorization"
-    private const val CONTENT_TYPE="Content-Type"
-    private const val TEXT_HTML="text/html"
-    private const val SOCIAL_LOGIN="SocialLogin"
-    private const val LOGIN="Login"
-    private const val LANGUAGE="lang"
+    private const val AUTHORIZATION = "Authorization"
+    private const val CONTENT_TYPE = "Content-Type"
+    private const val TEXT_HTML = "text/html"
+    private const val SOCIAL_LOGIN = "SocialLogin"
+    private const val LOGIN = "Login"
+    private const val LANGUAGE = "lang"
 
     @Provides
     @Singleton
@@ -40,6 +42,17 @@ object RetrofitModule {
                 val builder = chain.request().newBuilder()
                 builder.addHeader(AUTHORIZATION, BuildConfig.BASIC_AUTH_KEY)
                         .addHeader(CONTENT_TYPE, TEXT_HTML)
+
+                if (appPreferences.isLoggedIn) {
+                    if (appPreferences.isSocialLoggedIn) {
+                        builder.addHeader(SOCIAL_LOGIN, appPreferences.customerLoginToken!!)
+                    } else {
+                        builder.addHeader(LOGIN, appPreferences.customerLoginToken!!)
+                    }
+                }
+                if (!appPreferences.languageCode.isNullOrEmpty()) {
+                    builder.addHeader(LANGUAGE, appPreferences.languageCode!!)
+                }
 
                 chain.proceed(
                         builder.build()
