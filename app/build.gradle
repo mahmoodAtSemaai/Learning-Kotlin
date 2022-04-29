@@ -109,7 +109,12 @@ dependencies {
             Dependencies.coreKTX,
             Dependencies.remoteConfig,
             Dependencies.remoteConfigKTX,
-            Dependencies.greenRobot
+            Dependencies.greenRobot,
+            Dependencies.lifecycle,
+            Dependencies.lifeData,
+            Dependencies.viewModelState,
+            Dependencies.viewModel,
+            Dependencies.fragmentKtx
     )
 
     androidTestImplementation(

@@ -32,6 +32,7 @@ import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.database.SaveData;
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.databinding.ActivitySplashScreenBinding;
+import com.webkul.mobikul.odoo.features.auth.presentation.SignInSignUpActivityV1;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
@@ -185,7 +186,7 @@ public class SplashScreenActivity extends BaseActivity  {
 
         } else {
             Log.d("TAG", "SplashScreenActivity callApi :--> else waale part mein gaaya h ");
-            Intent i = new Intent(SplashScreenActivity.this, SignInSignUpActivity.class);
+            Intent i = new Intent(SplashScreenActivity.this, SignInSignUpActivityV1.class);
             i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, SplashScreenActivity.class.getSimpleName());
             getSplashPageData(i);
         }
@@ -222,7 +223,7 @@ public class SplashScreenActivity extends BaseActivity  {
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
                                 sweetAlertDialog.dismiss();
                                 AppSharedPref.clearCustomerData(SplashScreenActivity.this);
-                                Intent i = new Intent(SplashScreenActivity.this, SignInSignUpActivity.class);
+                                Intent i = new Intent(SplashScreenActivity.this, SignInSignUpActivityV1.class);
                                 i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, SplashScreenActivity.class.getSimpleName());
                                 getSplashPageData(i);
                             }
@@ -302,7 +303,7 @@ public class SplashScreenActivity extends BaseActivity  {
                                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                                         sweetAlertDialog.dismiss();
                                         AppSharedPref.clearCustomerData(SplashScreenActivity.this);
-                                        Intent i = new Intent(SplashScreenActivity.this, SignInSignUpActivity.class);
+                                        Intent i = new Intent(SplashScreenActivity.this, SignInSignUpActivityV1.class);
                                         i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, SplashScreenActivity.class.getSimpleName());
                                         getSplashPageData(i);
                                     }
