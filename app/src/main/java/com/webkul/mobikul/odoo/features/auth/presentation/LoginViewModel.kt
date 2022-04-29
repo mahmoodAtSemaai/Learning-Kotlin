@@ -18,7 +18,6 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val logInUseCase: LogInUseCase,
-    private val appPreferences: AppPreferences
 ) : BaseViewModel() {
 
     val loginIntent = Channel<LoginIntent>(Channel.UNLIMITED)
@@ -64,7 +63,7 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = LoginState.Loading
             _state.value = try {
-                val login = logInUseCase.login()
+                val login = logInUseCase.invoke(username, password)
                 var loginState: LoginState = LoginState.Idle
                 login.collect {
                     when (it) {

@@ -16,7 +16,7 @@ class LogInUseCase @Inject constructor(
         private val loginRepository: LoginRepository,
 ) {
 
-    fun login(username: String, password: String): Flow<Resource<LoginResponse>> = flow {
+   operator fun invoke(username: String, password: String): Flow<Resource<LoginResponse>> = flow {
         emit(Resource.Loading)
 
         if(isValidLogin(username, password)) {
