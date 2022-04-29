@@ -66,9 +66,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         app:hintEnabled="false">
-                        <!--                       app:error="@{data.usernameError}"
-                                               app:errorEnabled="@{data.displayError}"
-                       -->
+
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/username_et"
                             android:layout_width="match_parent"
@@ -77,7 +75,6 @@
                             android:inputType="phone"
                             android:maxLines="1"
                             />
-                        <!--android:text="@={data.username}"-->
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -103,8 +100,6 @@
                         android:gravity="center"
                         app:hintEnabled="false"
                         app:passwordToggleEnabled="true">
-                        <!-- app:error="@{data.passwordError}"
-                      app:errorEnabled="@{data.displayError}"-->
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/password_et"
@@ -115,7 +110,7 @@
                             android:maxLines="1"
                             android:padding="@dimen/spacing_generic"
                             />
-                        <!-- android:text="@={data.password}"-->
+
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
@@ -130,7 +125,6 @@
                     android:text="@string/login"
                     android:textAllCaps="true"
                     android:textStyle="bold" />
-                <!--  android:onClick="@{() -> handler.signIn()}"-->
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/forgot_password"
@@ -141,9 +135,8 @@
                     android:text="@string/forget_password_heading"
                     android:textColor="?colorAccent"
                   />
-               <!-- app:visibility="@{AppSharedPref.isAllowResetPassword(context)}"
-                android:onClick="@{() -> handler.forgetPassword()}"
--->
+
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/sign_up_now"
                     android:layout_width="wrap_content"
@@ -152,8 +145,7 @@
                     android:gravity="center"
                     app:htmlText="@{@string/signup_text_on_sign_in_page}"
                     tools:text="@string/signup_text_on_sign_in_page" />
-               <!-- android:onClick="@{() -> handler.signUp()}"
-                app:visibility="@{AppSharedPref.isAllowedSignup(context)}"-->
+
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/privacy"
@@ -167,8 +159,6 @@
                     android:textColor="@color/blue_a200"
                     android:textStyle="italic"
                    />
-                <!--android:onClick="@{() -> handler.onPrivacyPolicyClick()}"
-                app:visibility="@{AppSharedPref.getPrivacyURL(context)!=null?View.VISIBLE:View.GONE}"-->
 
                 <androidx.legacy.widget.Space
                     android:layout_width="wrap_content"
