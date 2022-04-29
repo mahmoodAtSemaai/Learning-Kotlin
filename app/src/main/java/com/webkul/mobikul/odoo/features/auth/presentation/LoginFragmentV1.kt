@@ -69,7 +69,7 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
         val username = binding.usernameEt.text.toString()
         val password = binding.passwordEt.text.toString()
 
-        if (username.isNotEmpty() && password.isNotEmpty())
+       // if (username.isNotEmpty() && password.isNotEmpty())
             lifecycleScope.launch {
                 viewModel.loginIntent.send(LoginIntent.Login(username, password))
             }

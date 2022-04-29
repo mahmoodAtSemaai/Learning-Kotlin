@@ -64,7 +64,7 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = LoginState.Loading
             _state.value = try {
-                val login = logInUseCase.login()
+                val login = logInUseCase.invoke(username, password)
                 var loginState: LoginState = LoginState.Idle
                 login.collect {
                     when (it) {
