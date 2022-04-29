@@ -31,7 +31,6 @@ object DepVersions {
 
     const val sweetAlert = "1.3"
     const val circleImageView = "2.2.0"
-    const val picasso="2.71828"
     const val googlePlayService = "11.8.0"
     const val flexbox = "2.0.1"
     const val jsoup = "1.11.3"
@@ -173,7 +172,6 @@ object Dependencies {
     const val glideCompiler = "com.github.bumptech.glide:compiler:${DepVersions.glide}"
 
     const val circleImageView = "de.hdodenhof:circleimageview:${DepVersions.circleImageView}"
-    const val picasso = "com.squareup.picasso:picasso:${DepVersions.picasso}"
 
     const val jsoup = "org.jsoup:jsoup:${DepVersions.jsoup}"
 

@@ -39,9 +39,7 @@
         android:usesCleartextTraffic="true"
         android:vmSafeMode="true"
         tools:replace="icon,allowBackup">
-        <activity android:name=".activity.SearchActivity"
-            android:exported="false">
-        </activity>
+
         <activity
             android:name=".activity.UserApprovalActivity"
             android:exported="true"
@@ -112,6 +110,10 @@
             android:name=".activity.NewHomeActivity"
             android:launchMode="singleTop"
             android:exported="false" />
+        <activity android:name=".activity.SearchActivity"
+            android:screenOrientation="portrait"
+            android:exported="false">
+        </activity>
         <activity android:name=".activity.NewDrawerActivity"
             android:exported="false"
             android:screenOrientation="portrait" />

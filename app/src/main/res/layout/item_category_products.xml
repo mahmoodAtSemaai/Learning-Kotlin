@@ -76,7 +76,7 @@
                 android:textStyle="bold"
                 android:padding="@dimen/spacing_tiny"
                 android:layout_marginTop="@dimen/spacing_tiny"
-                app:visibility="@{!data.priceReduce.empty}"
+                app:visibility="@{data.priceReduce.empty==true ? View.INVISIBLE : View.VISIBLE}"
                 android:background="@drawable/background_discount_price"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -106,12 +106,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/size_10"
                 android:layout_marginTop="@dimen/size_4"
-                android:text="@{data.priceReduce}"
+                android:text="@{data.priceReduce.empty==true ? data.priceUnit : data.priceReduce}"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_product_name"
-                app:visibility="@{!data.priceReduce.empty}"
                 tools:text="Rp999.999.09" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -121,15 +120,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/size_10"
                 android:layout_marginTop="8dp"
-                android:background="@{data.priceReduce.empty ?  null : @drawable/bg_strikethrough}"
+                android:background="@drawable/bg_strikethrough"
                 android:text="@{data.priceUnit}"
-                android:textColor="@{data.priceReduce.empty ?  @color/black : @color/colorDarkGrey}"
+                android:textColor="@{data.priceReduce.empty ?  @color/colorDarkGrey : @color/colorDarkGrey}"
                 android:textSize="@dimen/font_size_13sp"
+                app:visibility="@{data.priceReduce.empty==true ? View.INVISIBLE : View.VISIBLE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.003"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/reduced_price"
-                app:textStyle="@{data.priceReduce.empty ? &quot;bold&quot; : &quot;normal&quot;}"
+                android:textStyle="normal"
                 tools:text="Rp990.999.99" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -141,7 +141,7 @@
                 android:layout_marginTop="@dimen/size_6"
                 android:text="@{data.brandName}"
                 android:textSize="@dimen/font_size_13sp"
-                android:visibility="@{(data.brandName != null &amp;&amp; data.brandName.length() > 0) ? View.VISIBLE : View.GONE}"
+                android:visibility="@{(data.brandName != null &amp;&amp; data.brandName.length() > 0) ? View.VISIBLE : View.INVISIBLE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/original_price"

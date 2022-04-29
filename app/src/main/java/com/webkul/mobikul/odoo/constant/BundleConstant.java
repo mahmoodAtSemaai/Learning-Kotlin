@@ -22,7 +22,6 @@ import org.jetbrains.annotations.Nullable;
 
 public interface BundleConstant {
 
-//    String BUNDLE_KEY_HOME_PAGE_RESPONSE = "HOME_PAGE_RESPONSE";
  String BUNDLE_KEY_HOME_PAGE_RESPONSE = "home_response_data";
 
     String BUNDLE_KEY_LANGUAGE_LIST = "LANGUAGE_LIST";

@@ -52,7 +52,7 @@
                 android:layout_height="@dimen/size_30"
                 android:layout_marginStart="@dimen/size_46"
                 android:gravity="top"
-                android:text="Main Menu"
+                android:text="@string/main_menu"
                 android:textSize="@dimen/font_size_16"
                 android:textStyle="bold"
                 app:fontFamily="@font/roboto_medium">
@@ -81,7 +81,7 @@
                 android:layout_marginTop="@dimen/size_15"
                 android:fontFamily="@font/roboto_medium"
                 android:gravity="center"
-                android:text="Username"
+                android:text="@string/username"
                 android:textSize="@dimen/font_size_16"
                 android:textStyle="bold">
 

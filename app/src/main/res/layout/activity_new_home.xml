@@ -71,6 +71,7 @@
                     android:id="@+id/chat_icon"
                     android:layout_width="@dimen/font_weight_0"
                     android:layout_height="@dimen/hamburger_icon_dimens"
+                    android:visibility="invisible"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:foregroundGravity="center_vertical"
@@ -99,7 +100,7 @@
                         android:layout_marginRight="-9dp"
                         android:background="@drawable/badge_symbol"
                         android:gravity="center"
-                        android:text="1"
+                        android:text="@string/text_one"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_12sp"
                         android:textStyle="bold" />

@@ -74,23 +74,25 @@ class CategoryProductFragment : Fragment() {
                             isFirstCall(catalogProductResponse)
 
                         } else {
-                            /*update offset from new response*/
-                            catalogProductResponse.setWishlistData()
-                            catalogResponse.offset = catalogProductResponse.offset + 10
-                            catalogResponse.limit = catalogProductResponse.limit
-                            val initialSize = catalogResponse.products.size
-                            catalogResponse.products.addAll(catalogProductResponse.products)
-                            val finalSize = catalogResponse.products.size
-                            binding.productRecyclerView.adapter?.notifyItemRangeChanged(initialSize, finalSize - 1)
+                            updateCatalogProductResponse(catalogProductResponse)
                         }
                     }
                 }
-
                 override fun onError(t: Throwable) {
                 }
             })
 
 
+    }
+
+    private fun updateCatalogProductResponse(catalogProductResponse: CatalogProductResponse) {
+        catalogProductResponse.setWishlistData()
+        catalogResponse.offset = catalogProductResponse.offset + 10
+        catalogResponse.limit = catalogProductResponse.limit
+        val initialSize = catalogResponse.products.size
+        catalogResponse.products.addAll(catalogProductResponse.products)
+        val finalSize = catalogResponse.products.size
+        binding.productRecyclerView.adapter?.notifyItemRangeChanged(initialSize, finalSize - 1)
     }
 
     private fun isFirstCall(catalogProductResponse : CatalogProductResponse) {

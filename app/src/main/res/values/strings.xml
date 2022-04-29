@@ -609,5 +609,8 @@
     <string name="label_accounts_fragment">AccountFragment</string>
     <string name="label_empty_fragment">EmptyFragment</string>
     <string name="search_all_products_hint">Search All Products</string>
+    <string name="username">Username</string>
+    <string name="main_menu">Main Menu</string>
+    <string name="text_one">1</string>
 
 </resources>
