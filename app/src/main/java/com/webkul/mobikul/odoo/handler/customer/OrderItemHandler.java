@@ -23,20 +23,20 @@ import com.webkul.mobikul.odoo.model.customer.order.OrderData;
 
 public class OrderItemHandler {
 
-    private final Context mContext;
-    private final OrderData mOrderData;
-    private final String mSource;
+    private final Context context;
+    private final OrderData orderData;
+    private final String source;
 
     public OrderItemHandler(Context context, OrderData orderData, String source) {
-        mContext = context;
-        mOrderData = orderData;
-        mSource = source;
+        this.context = context;
+        this.orderData = orderData;
+        this.source = source;
     }
 
     public void viewOrderDetail() {
-        ((Activity) mContext).setTitle(mContext.getString(R.string.my_order));
-        AnalyticsImpl.INSTANCE.trackOrderSelected(mOrderData.getId(), mSource, mOrderData.getAmountTotal(), mOrderData.getStatus(), mOrderData.getCreateDate());
-        FragmentHelper.replaceFragment(R.id.container, mContext, OrderFragment.newInstance(mOrderData.getUrl()), OrderFragment.class.getSimpleName(), true, false);
+        ((Activity) context).setTitle(context.getString(R.string.my_order));
+        AnalyticsImpl.INSTANCE.trackOrderSelected(orderData.getId(), source, orderData.getAmountTotal(), orderData.getStatus(), orderData.getCreateDate());
+        FragmentHelper.replaceFragment(R.id.container, context, OrderFragment.newInstance(orderData.getId(), ""), OrderFragment.class.getSimpleName(), true, false);
     }
 
 }

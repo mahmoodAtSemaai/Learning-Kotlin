@@ -107,6 +107,10 @@ dependencies {
             Dependencies.stetho,
             Dependencies.stethoOkHttp,
             Dependencies.coreKTX,
+            Dependencies.greenRobot,
+            Dependencies.activity,
+            Dependencies.fragment,
+            Dependencies.remoteConfigKTX
             Dependencies.remoteConfig,
             Dependencies.remoteConfigKTX,
             Dependencies.greenRobot,
@@ -124,10 +128,10 @@ dependencies {
 
     api(
             fileTree(include: ['*.jar'], dir: 'lib'),
-            Dependencies.material,
             Dependencies.cardview,
             Dependencies.viewpager,
             Dependencies.glide,
+            Dependencies.materialDesignSupport,
             Dependencies.circleImageView,
             Dependencies.firebaseCrash,
             Dependencies.firebaseMessaging,

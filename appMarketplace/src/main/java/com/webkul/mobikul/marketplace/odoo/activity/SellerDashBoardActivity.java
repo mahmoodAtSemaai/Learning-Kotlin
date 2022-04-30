@@ -29,6 +29,7 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING
 
 public class SellerDashBoardActivity extends BaseActivity {
     ActivitySellerDashboardBinding mBinding;
+    private static final String TAG = "SellerDashboardActivity";
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

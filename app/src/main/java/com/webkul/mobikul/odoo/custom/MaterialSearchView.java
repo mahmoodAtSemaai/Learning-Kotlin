@@ -143,7 +143,7 @@ public class MaterialSearchView extends FrameLayout {
             public void onNext(@NonNull TextViewTextChangeEvent textViewTextChangeEvent) {
                 if (!isFromSubmitResult) {
 
-                    ApiConnection.getSearchResponse(mContext, new SearchRequest(textViewTextChangeEvent.text().toString(), 0, BuildConfig.DEFAULT_NO_OF_SEARCH_PRODUCTS, CatalogHelper.CatalogProductRequestType.SEARCH_QUERY))
+                    ApiConnection.getSearchResponse(mContext, textViewTextChangeEvent.text().toString(), 0, BuildConfig.DEFAULT_NO_OF_SEARCH_PRODUCTS)
                             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).debounce(2, TimeUnit.SECONDS).subscribe(new CustomObserver<CatalogProductResponse>(mContext) {
                         @Override
                         public void onSubscribe(@NonNull Disposable d) {

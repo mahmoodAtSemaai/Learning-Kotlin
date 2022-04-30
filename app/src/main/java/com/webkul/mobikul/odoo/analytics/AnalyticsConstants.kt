@@ -11,6 +11,9 @@ object AnalyticsConstants {
     // Fragment Tracking
     const val EVENT_FRAGMENTOPENED: String = "Fragment Opened"
     const val EVENT_FRAGMENTCLOSED: String = "Fragment Closed"
+
+    const val EVENT_SCREENOPENED: String = "Screen Opened"
+    const val EVENT_SCREENCLOSED: String = "Screen Closed"
     // Home Screen
     const val EVENT_DRAWER_HAMBURGER_SELECTED = "Drawer Hamburger Selected"
     const val EVENT_SEARCH_SELECTED = "Search Selected"

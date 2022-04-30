@@ -104,7 +104,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
-
                             <com.webkul.mobikul.odoo.custom.WrapContentViewPager
                                 android:id="@+id/product_slider_view_pager"
                                 android:layout_width="match_parent"
@@ -112,7 +111,6 @@
                                 android:background="@color/bottomNavigationBackground"
                                 android:clickable="true"
                                 android:nestedScrollingEnabled="false"
-                                android:paddingTop="@dimen/spacing_generic"
                                 android:scaleType="fitCenter"
                                 tools:ignore="UnusedAttribute" />
 
@@ -130,6 +128,26 @@
                                 android:visibility="@{appSharedPref.isLoggedIn(context) &amp;&amp; appSharedPref.isAllowedWishlist(context) ? View.VISIBLE : View.GONE}"
                                 app:srcCompat="@{data.addedToWishlist ? @drawable/ic_vector_wishlist_red_24dp : @drawable/ic_vector_wishlist_grey_24dp}"
                                 tools:ignore="ContentDescription" />
+
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentBottom="true"
+                                android:visibility="@{data == null ? View.GONE : (data.isNever() ? View.GONE : (data.inStock ? View.GONE : View.VISIBLE))}">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginHorizontal="@dimen/margin_horizontal_button"
+                                    android:padding="@dimen/spacing_tiny"
+                                    android:layout_marginBottom="@dimen/spacing_tiny"
+                                    android:background="@drawable/bg_out_of_stock"
+                                    android:gravity="center"
+                                    android:text="@string/out_of_stock"
+                                    android:textSize="@dimen/text_size_large"
+                                    android:textColor="@color/white" />
+
+                            </FrameLayout>
 
                             <ImageButton
                                 android:layout_width="wrap_content"
@@ -149,19 +167,17 @@
                         <com.google.android.material.tabs.TabLayout
                             android:id="@+id/product_slider_dots_tab_layout"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/tab_dot_switcher_height"
+                            android:layout_height="@dimen/spacing_generic"
                             android:visibility="@{data.images.size() &lt; 2 ? View.INVISIBLE: View.VISIBLE}"
                             app:tabBackground="@drawable/selector_dots_tab_layout"
                             app:tabGravity="center"
                             app:tabIndicatorHeight="0dp" />
-
 
                         <!--MAIN LAYOUT CONTAINER-->
 
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/activity_horizontal_margin"
                             android:background="@color/activityBackground"
                             android:orientation="vertical"
                             android:padding="@dimen/activity_horizontal_margin"
@@ -177,7 +193,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginEnd="@dimen/spacing_generic"
                                     android:layout_marginRight="@dimen/spacing_generic"
-                                    android:layout_marginBottom="@dimen/spacing_generic"
+                                    android:layout_marginBottom="@dimen/spacing_tiny"
                                     android:layout_weight="1"
                                     android:text="@{data.name}"
                                     android:textAllCaps="true"
@@ -200,7 +216,6 @@
                                     android:visibility="@{appSharedPref.isAllowedReview(context) &amp;&amp; data.totalreviewsAvailable &gt; 0 ? View.VISIBLE : View.GONE}"
                                     tools:text="3.5 / 5" />
 
-
                             </androidx.appcompat.widget.LinearLayoutCompat>
 
 
@@ -215,7 +230,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginEnd="@dimen/spacing_generic"
                                     android:layout_marginRight="@dimen/spacing_generic"
-                                    android:layout_marginBottom="@dimen/spacing_generic"
+                                    android:layout_marginBottom="@dimen/spacing_tiny"
                                     android:background="@{data.priceReduce.empty ?  null : @drawable/bg_strikethrough}"
                                     android:gravity="center"
                                     android:maxLines="1"
@@ -241,6 +256,16 @@
 
                             </LinearLayout>
 
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/spacing_normal"
+                                android:gravity="center"
+                                android:maxLines="1"
+                                android:text="@{data.inStock ? (data.isThreshold() ? (data.getAvailableQuantity() > data.getAvailableThreshold() ? @string/in_stock : @string/in_stock_quantity_x(data.getAvailableQuantity())) : @string/in_stock_quantity_x(data.getAvailableQuantity())) : @string/out_of_stock }"
+                                android:visibility="@{data == null ? View.GONE : (data.isNever() ? View.GONE : View.VISIBLE)}"
+                                tools:text="In Stock" />
+
                             <androidx.appcompat.widget.AppCompatButton
                                 android:id="@+id/qty_btn"
                                 android:layout_width="130dp"
@@ -251,29 +276,19 @@
                                 android:drawablePadding="@dimen/spacing_normal"
                                 android:gravity="center"
                                 android:minWidth="@dimen/min_qty_width"
-                                android:onClick="@{()->handler.changeQty()}"
+                                android:onClick="@{() -> data.isNever() ? handler.changeQty() : (data.inStock ? handler.changeQty() : void)}"
                                 android:paddingStart="@dimen/spacing_generic"
                                 android:paddingLeft="@dimen/spacing_generic"
                                 android:paddingEnd="@dimen/spacing_normal"
                                 android:paddingRight="@dimen/spacing_generic"
-                                android:text="@{@string/qty_x_int(data.quantity)}"
+                                android:layout_marginBottom="@dimen/spacing_normal"
+                                android:layout_marginTop="@dimen/spacing_tiny"
+                                android:text="@{data.isNever() ? @string/qty_x_int(data.quantity) : (data.inStock ? @string/qty_x_int(data.quantity) : @string/qty_x_int(0))}"
                                 android:textColor="@android:color/black"
 
                                 tools:text="Qty: 1" />
 
                             <!--android:text="@{@string/qty_x_int(data.quantity)}"-->
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/spacing_generic"
-                                android:layout_marginBottom="@dimen/spacing_generic"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:text="@{data.inStock? @string/forecast_quantity_x(data.getForecastQuantityInt()) : @string/out_of_stock}"
-                                android:textColor="@{data.inStock ? (data.getForecastQuantityInt() &lt; 10 ? @color/yellow_800 : @color/green_400) : @color/red_600}"
-                                android:visibility="@{data.forecastQuantity == null ? View.GONE : View.VISIBLE}"
-                                tools:text="In Stock" />
 
                             <!-- PRODUCT ATTRIBUTES CONTAINER-->
 
@@ -289,7 +304,6 @@
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
                             android:visibility="@{data.seller!=null ? View.VISIBLE : View.GONE}"
                             app:contentPadding="10dp">
@@ -331,16 +345,21 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:drawablePadding="5dp"
+                                            android:layout_marginLeft="@dimen/spacing_generic"
+                                            android:layout_marginStart="@dimen/spacing_generic"
                                             android:gravity="center_vertical"
                                             android:text="@string/sold_by"
-                                            android:textSize="@dimen/text_size_min" />
+                                            android:textSize="@dimen/text_size_small" />
 
                                         <androidx.appcompat.widget.AppCompatTextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
+                                            android:layout_marginLeft="@dimen/spacing_generic"
+                                            android:layout_marginStart="@dimen/spacing_generic"
                                             android:onClick="@{()->handler.onClickSellerName(data.seller.marketplaceSellerId)}"
                                             android:text="@{data.seller.sellerName}"
-                                            android:textColor="@color/colorAccent" />
+                                            android:textColor="@color/colorAccent"
+                                            android:textSize="@dimen/text_size_min"/>
                                     </androidx.appcompat.widget.LinearLayoutCompat>
 
                                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -350,29 +369,85 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:background="@color/colorAccent"
-                                    android:padding="5dp"
+                                    android:padding="@dimen/spacing_generic"
+                                    android:layout_marginTop="@dimen/spacing_generic"
                                     android:text="@{@string/average_rating_out_of_5(data.seller.averageRating)}"
                                     android:textColor="@color/tw__solid_white" />
 
                                 <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginBottom="8dp"
+                                    android:layout_marginBottom="@dimen/spacing_generic"
+                                    android:layout_marginTop="@dimen/spacing_generic"
                                     android:text="@{data.seller.message}" />
 
                             </androidx.appcompat.widget.LinearLayoutCompat>
 
                         </androidx.cardview.widget.CardView>
 
-                        <androidx.appcompat.widget.AppCompatTextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_normal"
-                            android:background="@color/activityBackground"
-                            android:padding="@dimen/spacing_normal"
-                            android:text="@{data.description}"
+                            android:orientation="vertical"
                             app:visibility="@{!data.description.empty}"
-                            tools:text="Short Description" />
+                            android:layout_marginBottom="@dimen/spacing_generic"
+                            android:background="@color/activityBackground"
+                            android:padding="@dimen/spacing_normal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="#000000"
+                                android:textStyle="bold"
+                                android:layout_marginBottom="@dimen/spacing_generic"
+                                android:text="Summary"/>
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@{data.description}"
+                                tools:text="Short Description" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/product_details_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginBottom="@dimen/spacing_generic"
+                            android:background="@color/activityBackground"
+                            android:padding="@dimen/spacing_normal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="#000000"
+                                android:textStyle="bold"
+                                android:layout_marginBottom="@dimen/spacing_generic"
+                                android:text="Product Details"/>
+
+                            <androidx.core.widget.NestedScrollView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/rvProductDetails"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:overScrollMode="never"/>
+
+                                </LinearLayout>
+
+                            </androidx.core.widget.NestedScrollView>
+
+                        </LinearLayout>
+
 
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="match_parent"
@@ -442,9 +517,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/button_height_generic"
                     android:layout_gravity="bottom"
-                    android:background="@color/colorAccent"
+                    android:background="@{data.isNever() ? @color/colorAccent : (data.inStock ? @color/colorAccent : @color/colorDarkGrey)}"
                     android:orientation="horizontal"
-                    android:visibility="@{data == null ? View.GONE : (data.inStock ? View.VISIBLE : View.GONE)}">
+                    android:visibility="@{data == null ? View.GONE : View.VISIBLE}">
 
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -453,13 +528,16 @@
                         android:layout_height="match_parent"
                         android:layout_margin="1dp"
                         android:layout_weight="1"
-                        android:background="@drawable/btn_rounded_corners_accent_bg"
-                        android:drawableStart="@drawable/ic_vector_bag_wrapper"
-                        android:drawableLeft="@drawable/ic_vector_bag_wrapper"
+                        android:background="@{data.isNever() ? @drawable/btn_rounded_corners_accent_bg :  (data.inStock ? @drawable/btn_rounded_corners_accent_bg : @drawable/bg_out_of_stock)}"
+                        android:drawableStart="@{data.isNever() ? @drawable/ic_vector_bag_wrapper : (data.inStock ? @drawable/ic_vector_bag_wrapper : @drawable/ic_vector_bag_disabled)}"
+                        android:drawableLeft="@{data.isNever() ? @drawable/ic_vector_bag_wrapper : (data.inStock ? @drawable/ic_vector_bag_wrapper : @drawable/ic_vector_bag_disabled)}"
                         android:gravity="center"
                         android:onClick="@{() -> handler.addToCart(false)}"
                         android:text="@string/add_to_bag"
-                        android:textColor="#FFFFFF" />
+                        android:textSize="@dimen/text_size_medium"
+                        android:textStyle="bold"
+                        android:textColor="#FFFFFF"
+                        android:enabled="@{data.isNever() ? true : (data.inStock? true : false)}"/>
 
                     <!--<androidx.appcompat.widget.AppCompatButton-->
                     <!--android:id="@+id/buy_now_button"-->

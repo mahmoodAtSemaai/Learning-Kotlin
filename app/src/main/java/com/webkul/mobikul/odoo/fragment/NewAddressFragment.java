@@ -59,23 +59,12 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
 
 
-/**
- * Webkul Software.
- *
- * @author Webkul <support@webkul.com>
- * @package Mobikul App
- * @Category Mobikul
- * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
- * @license https://store.webkul.com/license.html ASL Licence
- * @link https://store.webkul.com/license.html
- */
-
 public class NewAddressFragment extends BaseFragment {
 
     @SuppressWarnings("unused")
-    private static final String TAG = "NewAddressFragment";
+    public static final String TAG = "NewAddressFragment";
     private static final int MAP_PIN_LOCATION_REQUEST_CODE = 103;
-    public FragmentNewAddressBinding mBinding;
+    public FragmentNewAddressBinding binding;
     public HashMap<String, Integer> countryListHashmap = new HashMap<>();
     public HashMap<String, StateData> stateListHashmap = new HashMap<>();
     public HashMap<String, DistrictData> districtListHashmap = new HashMap<>();
@@ -128,14 +117,14 @@ public class NewAddressFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_new_address, container, false);
-        return mBinding.getRoot();
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_new_address, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mBinding.mapMarker.setOnClickListener(new View.OnClickListener() {
+        binding.mapMarker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showMapFragment();
@@ -143,7 +132,7 @@ public class NewAddressFragment extends BaseFragment {
             }
         });
         getActivity().setTitle(getArguments().getString(BUNDLE_KEY_TITLE));
-        mBinding.setAddressType((AddressType) getArguments().getSerializable(BUNDLE_KEY_ADDRESS_TYPE));
+        binding.setAddressType((AddressType) getArguments().getSerializable(BUNDLE_KEY_ADDRESS_TYPE));
         String url = getArguments().getString(BUNDLE_KEY_URL);
         fetchCountry();
         if (url == null) {
@@ -157,7 +146,7 @@ public class NewAddressFragment extends BaseFragment {
             fetchCurrentAddress(url);
         }
 
-        mBinding.saveAddressBtn.setOnClickListener(v -> {
+        binding.saveAddressBtn.setOnClickListener(v -> {
             if (checkIfSubRegionsAreLoading()) {
                 if (isMissingDetails)
                     validateMandatoryFeilds(selectedStateId);
@@ -181,7 +170,7 @@ public class NewAddressFragment extends BaseFragment {
                 resetSpinners(RESET_SPINNERS_FROM_STATE_UPTO_VILLAGE);
                 setCurrentAddressDetails(addressFormResponse);
                 statesAvailable = false;
-                if(addressFormResponse.getStateId().isEmpty())
+                if (addressFormResponse.getStateId().isEmpty())
                     fetchStates(UNSELECTED_POSITION);
                 else
                     fetchStates(Integer.parseInt(addressFormResponse.getStateId()));
@@ -191,13 +180,13 @@ public class NewAddressFragment extends BaseFragment {
 
     private void setCurrentAddressDetails(AddressFormResponse addressFormResponse) {
         this.addressFormResponse = addressFormResponse;
-        mBinding.nameEt.setText(addressFormResponse.getName());
-        mBinding.telephoneEt.setText(addressFormResponse.getPhone());
-        mBinding.streetEt.setText(addressFormResponse.getStreet());
+        binding.nameEt.setText(addressFormResponse.getName());
+        binding.telephoneEt.setText(addressFormResponse.getPhone());
+        binding.streetEt.setText(addressFormResponse.getStreet());
     }
 
     private void validateAddressEditTextFeilds() {
-        if (isValid(mBinding.nameEt) && isValid(mBinding.telephoneEt) && addressRequestBody.village_id != null) {
+        if (isValid(binding.nameEt) && isValid(binding.telephoneEt) && addressRequestBody.village_id != null) {
             makeRequestBody();
         } else {
             SnackbarHelper.getSnackbar(getActivity(), getString(R.string.missing_feilds_in_address_form), Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
@@ -205,9 +194,9 @@ public class NewAddressFragment extends BaseFragment {
     }
 
     private void makeRequestBody() {
-        addressRequestBody.setName(mBinding.nameEt.getText().toString());
-        addressRequestBody.setPhone(mBinding.telephoneEt.getText().toString());
-        addressRequestBody.setStreet(mBinding.streetEt.getText().toString());
+        addressRequestBody.setName(binding.nameEt.getText().toString());
+        addressRequestBody.setPhone(binding.telephoneEt.getText().toString());
+        addressRequestBody.setStreet(binding.streetEt.getText().toString());
         addressRequestBody.setState_id(selectedStateId);
         addressRequestBody.setCountry_id(String.valueOf(COUNTRY_ID));
         callApiToSaveAddress(addressRequestBody);
@@ -239,7 +228,7 @@ public class NewAddressFragment extends BaseFragment {
                 if (baseResponse.isSuccess())
                     AnalyticsImpl.INSTANCE.trackAddressUpdateSuccessfull(analyticsAddressDataModel);
                 else
-                    AnalyticsImpl.INSTANCE.trackAddressUpdateFailed(analyticsAddressDataModel, baseResponse.getResponseCode(),  ErrorConstants.AddressUpdateError.INSTANCE.getErrorType(), baseResponse.getMessage());
+                    AnalyticsImpl.INSTANCE.trackAddressUpdateFailed(analyticsAddressDataModel, baseResponse.getResponseCode(), ErrorConstants.AddressUpdateError.INSTANCE.getErrorType(), baseResponse.getMessage());
             }
 
             @Override
@@ -283,11 +272,11 @@ public class NewAddressFragment extends BaseFragment {
     }
 
     private void setCountrySpinnerAdapter() {
-        mBinding.countrySpinner.setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, countryList));
+        binding.countrySpinner.setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, countryList));
     }
 
     private void setCountrySpinnerSelectionListener() {
-        mBinding.countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 addressRequestBody.setCompany_id(String.valueOf(COMPANY_ID));
@@ -303,16 +292,16 @@ public class NewAddressFragment extends BaseFragment {
     private void resetSpinners(int i) {
         switch (i) {
             case RESET_SPINNERS_FROM_STATE_UPTO_VILLAGE:
-                resetSpinner(mBinding.provinceSpinner);
+                resetSpinner(binding.provinceSpinner);
             case RESET_SPINNERS_FROM_DISTRICT_UPTO_VILLAGE:
-                resetSpinner(mBinding.districtSpinner);
+                resetSpinner(binding.districtSpinner);
             case RESET_SPINNERS_FROM_SUB_DISTRICT_UPTO_VILLAGE:
-                resetSpinner(mBinding.subDistrictSpinner);
+                resetSpinner(binding.subDistrictSpinner);
             case RESET_SPINNERS_VILLAGE:
-                resetSpinner(mBinding.villageSpinner);
+                resetSpinner(binding.villageSpinner);
                 break;
             default:
-                resetSpinner(mBinding.provinceSpinner);
+                resetSpinner(binding.provinceSpinner);
         }
     }
 
@@ -322,7 +311,7 @@ public class NewAddressFragment extends BaseFragment {
     }
 
     private void resetVillageCode(String s) {
-        mBinding.villageCodeEt.setText(s);
+        binding.villageCodeEt.setText(s);
     }
 
 
@@ -340,7 +329,7 @@ public class NewAddressFragment extends BaseFragment {
 
     private void setStateSpinnerItemSelection(int pos) {
         if (pos != UNSELECTED_POSITION)
-            mBinding.provinceSpinner.setSelection(pos);
+            binding.provinceSpinner.setSelection(pos);
     }
 
     private void setUpStateSpinner() {
@@ -351,11 +340,11 @@ public class NewAddressFragment extends BaseFragment {
 
     private void setUpStateSpinnerAdapter() {
         ArrayAdapter stateArrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, statesList);
-        mBinding.provinceSpinner.setAdapter(stateArrayAdapter);
+        binding.provinceSpinner.setAdapter(stateArrayAdapter);
     }
 
     private void setUpStateSpinnerAdapterListener() {
-        mBinding.provinceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.provinceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 onStateSelected(position);
@@ -385,11 +374,11 @@ public class NewAddressFragment extends BaseFragment {
     }
 
     private void setSubRegionFieldsVisibility(boolean show) {
-        mBinding.districtContainer.setVisibility(show ? View.VISIBLE : View.GONE);
-        mBinding.subDistrictContainer.setVisibility(show ? View.VISIBLE : View.GONE);
-        mBinding.villageContainer.setVisibility(show ? View.VISIBLE : View.GONE);
-        mBinding.postalCodeContainer.setVisibility(show ? View.VISIBLE : View.GONE);
-        mBinding.streetContainer.setVisibility(show ? View.VISIBLE : View.GONE);
+        binding.districtContainer.setVisibility(show ? View.VISIBLE : View.GONE);
+        binding.subDistrictContainer.setVisibility(show ? View.VISIBLE : View.GONE);
+        binding.villageContainer.setVisibility(show ? View.VISIBLE : View.GONE);
+        binding.postalCodeContainer.setVisibility(show ? View.VISIBLE : View.GONE);
+        binding.streetContainer.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     private int refreshStatesData(StateListResponse stateListResponse, int stateId) {
@@ -421,7 +410,7 @@ public class NewAddressFragment extends BaseFragment {
 
     private void setDistrictSpinnerSelection(int pos) {
         if (pos != UNSELECTED_POSITION)
-            mBinding.districtSpinner.setSelection(pos);
+            binding.districtSpinner.setSelection(pos);
     }
 
     private int refreshDistrictData(DistrictListResponse districtListResponse) {
@@ -447,11 +436,11 @@ public class NewAddressFragment extends BaseFragment {
 
     private void setUpDistrictSpinnerAdapter() {
         ArrayAdapter districtArrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, districtsList);
-        mBinding.districtSpinner.setAdapter(districtArrayAdapter);
+        binding.districtSpinner.setAdapter(districtArrayAdapter);
     }
 
     private void setUpDistrictSpinnerAdapterListener() {
-        mBinding.districtSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.districtSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 onDistrictSelected(position);
@@ -498,13 +487,13 @@ public class NewAddressFragment extends BaseFragment {
     }
 
     private boolean checkMandatoryFeilds() {
-        return (isValid(mBinding.nameEt) && isValid(mBinding.telephoneEt));
+        return (isValid(binding.nameEt) && isValid(binding.telephoneEt));
     }
 
     private void makeEmptyRequestBody(String unavailable_state_id) {
-        addressRequestBody.setName(mBinding.nameEt.getText().toString());
-        addressRequestBody.setPhone(mBinding.telephoneEt.getText().toString());
-        addressRequestBody.setStreet(mBinding.streetEt.getText().toString());
+        addressRequestBody.setName(binding.nameEt.getText().toString());
+        addressRequestBody.setPhone(binding.telephoneEt.getText().toString());
+        addressRequestBody.setStreet(binding.streetEt.getText().toString());
         addressRequestBody.setState_id(unavailable_state_id);
         addressRequestBody.setDistrict_id("");
         addressRequestBody.setSub_district_id("");
@@ -530,7 +519,7 @@ public class NewAddressFragment extends BaseFragment {
 
     private void setSubDistrictSpinnerSelection(int pos) {
         if (pos != UNSELECTED_POSITION)
-            mBinding.subDistrictSpinner.setSelection(pos);
+            binding.subDistrictSpinner.setSelection(pos);
     }
 
     private int refreshSubdistrictData(SubDistrictListResponse subDistrictListResponse) {
@@ -556,11 +545,11 @@ public class NewAddressFragment extends BaseFragment {
 
     private void setUpSubdistrictSpinnerAdapter() {
         ArrayAdapter districtArrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, subDistrictsList);
-        mBinding.subDistrictSpinner.setAdapter(districtArrayAdapter);
+        binding.subDistrictSpinner.setAdapter(districtArrayAdapter);
     }
 
     private void setUpSubdistrictSpinnerAdapterListener() {
-        mBinding.subDistrictSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.subDistrictSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 onSubDistrictSelected(position);
@@ -597,7 +586,7 @@ public class NewAddressFragment extends BaseFragment {
 
     private void setVillageSpinnerSelection(int pos) {
         if (pos != UNSELECTED_POSITION)
-            mBinding.villageSpinner.setSelection(pos);
+            binding.villageSpinner.setSelection(pos);
     }
 
     private int refreshVillageData(VillageListResponse villageListResponse) {
@@ -623,11 +612,11 @@ public class NewAddressFragment extends BaseFragment {
 
     private void setUpVillageSpinnerAdapter() {
         ArrayAdapter districtArrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, villagesList);
-        mBinding.villageSpinner.setAdapter(districtArrayAdapter);
+        binding.villageSpinner.setAdapter(districtArrayAdapter);
     }
 
     private void setUpVillageSpinnerAdapterListener(VillageListResponse villageListResponse) {
-        mBinding.villageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.villageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 onVillageSelected(villageListResponse, position);
@@ -655,14 +644,14 @@ public class NewAddressFragment extends BaseFragment {
     private void setAvailableVillageData(VillageData villageData) {
         addressRequestBody.setZip(villageData.getZip());
         addressRequestBody.setVillage_id(String.valueOf(villageData.getId()));
-        mBinding.villageCodeEt.setText(villageData.getZip());
+        binding.villageCodeEt.setText(villageData.getZip());
     }
 
     private void setUnavailableVillageData(VillageData villageData) {
         addressRequestBody.setVillage_id(String.valueOf(villageData.getId()));
         setUnserviceableAreaDetails();
         showShortToast(getString(R.string.service_not_availabe_text));
-        mBinding.villageCodeEt.setText("");
+        binding.villageCodeEt.setText("");
         addressRequestBody.setVillage_id("");
     }
 
@@ -695,16 +684,16 @@ public class NewAddressFragment extends BaseFragment {
                 streetSb.append(' ');
             }
         }
-        mBinding.getData().setStreet(streetSb.toString());
-        mBinding.getData().setZip(address.getPostalCode() == null ? "" : address.getPostalCode());
-        int countryPos = mBinding.getData().getCountryStateData().getCountryPositionFromCountryName(address.getCountryName());
+        binding.getData().setStreet(streetSb.toString());
+        binding.getData().setZip(address.getPostalCode() == null ? "" : address.getPostalCode());
+        int countryPos = binding.getData().getCountryStateData().getCountryPositionFromCountryName(address.getCountryName());
 
 
         /*UPDATE STATE AS WELL*/
-        if (!mBinding.getData().getCountryStateData().getStateNameList(countryPos).isEmpty()) {
-            mBinding.getData().setStateId(mBinding.getData().getCountryStateData().getStateId(countryPos, address.getAdminArea()));
+        if (!binding.getData().getCountryStateData().getStateNameList(countryPos).isEmpty()) {
+            binding.getData().setStateId(binding.getData().getCountryStateData().getStateId(countryPos, address.getAdminArea()));
         }
-        mBinding.countrySpinner.setSelection(countryPos);
+        binding.countrySpinner.setSelection(countryPos);
     }
 
     @Override
@@ -746,20 +735,20 @@ public class NewAddressFragment extends BaseFragment {
                 return;
             }
         }
-        MapBottomSheetFragment fragmentDialog = MapBottomSheetFragment.Companion.newInstance(mBinding.getData().getStreet());
+        MapBottomSheetFragment fragmentDialog = MapBottomSheetFragment.Companion.newInstance(binding.getData().getStreet());
         fragmentDialog.setMapListener(address -> {
             String message = address.getAddressLine(0);
             String title = address.getFeatureName();
 
-            mBinding.streetEt.setText(message);
-            mBinding.zipEt.setText(address.getPostalCode());
+            binding.streetEt.setText(message);
+            binding.zipEt.setText(address.getPostalCode());
 
-            if (address.getCountryName() != null && mBinding.getData().getCountryStateData().getCountryNameList(getContext()).contains(address.getCountryName())) {
-                int pos = mBinding.getData().getCountryStateData().getCountryPositionFromCountryName(address.getCountryName());
-                mBinding.countrySpinner.setSelection(pos);
-                if (address.getAdminArea() != null && mBinding.getData().getCountryStateData().getStateNameList(pos).contains(address.getAdminArea())) {
-                    String stateId = mBinding.getData().getCountryStateData().getStateId(pos, address.getAdminArea());
-                    mBinding.provinceSpinner.setSelection(mBinding.getData().getCountryStateData().getStatePosition(pos, stateId));
+            if (address.getCountryName() != null && binding.getData().getCountryStateData().getCountryNameList(getContext()).contains(address.getCountryName())) {
+                int pos = binding.getData().getCountryStateData().getCountryPositionFromCountryName(address.getCountryName());
+                binding.countrySpinner.setSelection(pos);
+                if (address.getAdminArea() != null && binding.getData().getCountryStateData().getStateNameList(pos).contains(address.getAdminArea())) {
+                    String stateId = binding.getData().getCountryStateData().getStateId(pos, address.getAdminArea());
+                    binding.provinceSpinner.setSelection(binding.getData().getCountryStateData().getStatePosition(pos, stateId));
 
                 }
             }
@@ -781,7 +770,7 @@ public class NewAddressFragment extends BaseFragment {
     @androidx.annotation.NonNull
     @Override
     public String getTitle() {
-        return this.getClass().getSimpleName();
+        return TAG;
     }
 
     @Override

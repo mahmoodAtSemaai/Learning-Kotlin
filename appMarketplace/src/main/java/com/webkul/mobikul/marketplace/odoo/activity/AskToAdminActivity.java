@@ -15,6 +15,7 @@ import com.webkul.mobikul.odoo.activity.BaseActivity;
 
 public class AskToAdminActivity extends BaseActivity {
     ActivityAskToAdminBinding mBinding;
+    private static final String TAG = "AskToAdminActivity";
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

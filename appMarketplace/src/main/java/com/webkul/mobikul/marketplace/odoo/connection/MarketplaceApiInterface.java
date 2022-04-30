@@ -17,8 +17,9 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
-import static com.webkul.mobikul.odoo.connection.ApiInterface.MOBIKUL_EXTRAS_SEARCH;
+import static com.webkul.mobikul.odoo.connection.ApiInterface.PRODUCTS_SEARCH;
 
 /**
  * Created by aastha.gupta on 20/9/17.
@@ -44,11 +45,12 @@ interface MarketplaceApiInterface {
             @Path("seller_id") String sellerID
     );
 
-    @POST(MOBIKUL_EXTRAS_SEARCH)
+    @GET(PRODUCTS_SEARCH)
     Observable<CatalogProductResponse> getSellerCollectionData(
-            @Body String sellerCollectionRequestJsonStr
+            @Query("seller_id") String sellerId,
+            @Query("offset") int offset,
+            @Query("limit") int limit
     );
-
 
     @GET(MARKETPLACE_SELLER_REVIEWS)
     Observable<SellerReviewsResponse> getSellerReviewData(

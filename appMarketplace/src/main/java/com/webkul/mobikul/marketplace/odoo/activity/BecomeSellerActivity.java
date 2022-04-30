@@ -23,6 +23,7 @@ import io.reactivex.schedulers.Schedulers;
 public class BecomeSellerActivity extends BaseActivity {
 
     private ActivityBecomeSellerBinding mBinding;
+    private static final String TAG = "BecomeSellerActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

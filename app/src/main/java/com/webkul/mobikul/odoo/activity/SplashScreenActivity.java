@@ -75,7 +75,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class SplashScreenActivity extends BaseActivity  {
     @SuppressWarnings("unused")
-    private static final String TAG = "SplashScreenActivity";
+    private static final String TAG = "SplashActivity";
     private static final int RC_UPDATE_APP_FROM_PLAYSTORE = 1;
     CustomObserver<SplashScreenResponse> splashSubscriber;
     private ActivitySplashScreenBinding mBinding;

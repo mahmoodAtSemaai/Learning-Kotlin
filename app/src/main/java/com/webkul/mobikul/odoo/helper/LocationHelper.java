@@ -4,17 +4,16 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.webkul.mobikul.odoo.BuildConfig;
-import com.webkul.mobikul.odoo.connection.ApiInterface;
-import com.webkul.mobikul.odoo.connection.RetrofitClient;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -30,8 +29,8 @@ import java.util.Locale;
 public class LocationHelper {
     public static final int LOCATION_SUCCESS_RESULT = 0;
     public static final int LOCATION_FAILURE_RESULT = 1;
-    public static final String LOCATION_RECEIVER = BuildConfig.APPLICATION_ID + ".RECEIVER";
-    public static final String LOCATION_DATA_EXTRA = BuildConfig.APPLICATION_ID + ".LOCATION_DATA_EXTRA";
+    public static final String LOCATION_RECEIVER = BuildConfig.LIBRARY_PACKAGE_NAME + ".RECEIVER";
+    public static final String LOCATION_DATA_EXTRA = BuildConfig.LIBRARY_PACKAGE_NAME + ".LOCATION_DATA_EXTRA";
     @SuppressWarnings("unused")
     private static final String TAG = "LocationHelper";
 
@@ -78,6 +77,7 @@ public class LocationHelper {
         }
         return TextUtils.join(delimiter == null ? System.getProperty("line.separator") : delimiter, addressFragments);
     }
+
     public static LatLng getLatLang(Context context, @NotNull String strAddress) {
         LatLng latLng;
         Geocoder coder = new Geocoder(context);
@@ -111,6 +111,5 @@ public class LocationHelper {
         return latLng;
     }
 }
-
 
 

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import
+            alias="View"
+            type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.payments.OrderPaymentData" />
+
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingHorizontal="@dimen/size_12"
+        android:paddingVertical="@dimen/spacing_normal">
+
+        <TextView
+            android:id="@+id/tv_payment_method_text"
+            style="@style/medium_normal_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_generic"
+            android:layout_marginRight="@dimen/spacing_generic"
+            android:text="@string/payment_method"
+            app:layout_constraintEnd_toStartOf="@+id/tv_payment_method"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_payment_method"
+            style="@style/medium_normal_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_generic"
+            android:layout_marginLeft="@dimen/spacing_generic"
+            android:gravity="end"
+            android:text="@{data.paymentMethod}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_payment_method_text"
+            app:layout_constraintTop_toTopOf="@+id/tv_payment_method_text"
+            tools:text="@string/cod_text" />
+
+        <TextView
+            android:id="@+id/tv_total_price_text"
+            style="@style/medium_normal_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_8"
+            android:layout_marginEnd="@dimen/spacing_generic"
+            android:layout_marginRight="@dimen/spacing_generic"
+            android:text="@{@string/total_price_s(data.cartItemCount)}"
+            android:visibility="@{data.totalPriceValue.isEmpty() ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toStartOf="@+id/tv_total_price"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_payment_method"
+            tools:text="Total Price (1 Product)" />
+
+        <TextView
+            android:id="@+id/tv_total_price"
+            style="@style/medium_normal_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_generic"
+            android:layout_marginLeft="@dimen/spacing_generic"
+            android:gravity="end"
+            android:text="@{data.totalPriceValue}"
+            android:visibility="@{data.totalPriceValue.isEmpty() ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_total_price_text"
+            app:layout_constraintTop_toTopOf="@+id/tv_total_price_text"
+            tools:text="Rp47,000" />
+
+        <TextView
+            android:id="@+id/tv_semaai_points_text"
+            style="@style/medium_normal_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_8"
+            android:layout_marginEnd="@dimen/spacing_generic"
+            android:layout_marginRight="@dimen/spacing_generic"
+            android:text="@string/semaai_points_redeemed"
+            android:visibility="@{data.semaaiPointsRedeemedValue.isEmpty() ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toStartOf="@+id/tv_semaai_points"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_total_price" />
+
+        <TextView
+            android:id="@+id/tv_semaai_points"
+            style="@style/medium_normal_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_generic"
+            android:layout_marginLeft="@dimen/spacing_generic"
+            android:gravity="end"
+            android:text="@{data.semaaiPointsRedeemedValue}"
+            android:visibility="@{data.semaaiPointsRedeemedValue.isEmpty() ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_semaai_points_text"
+            app:layout_constraintTop_toTopOf="@+id/tv_semaai_points_text"
+            tools:text="Rp47,000" />
+
+        <TextView
+            android:id="@+id/tv_shipping_method_text"
+            style="@style/medium_normal_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_8"
+            android:layout_marginEnd="@dimen/spacing_generic"
+            android:layout_marginRight="@dimen/spacing_generic"
+            android:text="@string/shipping"
+            android:visibility="@{data.shippingMethodCostValue.isEmpty() ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toStartOf="@+id/tv_shipping_method_cost"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_semaai_points" />
+
+        <TextView
+            android:id="@+id/tv_shipping_method_cost"
+            style="@style/medium_normal_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_generic"
+            android:layout_marginLeft="@dimen/spacing_generic"
+            android:gravity="end"
+            android:text="@{data.shippingMethodCostValue}"
+            android:visibility="@{data.shippingMethodCostValue.isEmpty() ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_shipping_method_text"
+            app:layout_constraintTop_toTopOf="@+id/tv_shipping_method_text"
+            tools:text="Rp74,000" />
+
+        <TextView
+            android:id="@+id/tv_total_payment_text"
+            style="@style/medium_bold_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_8"
+            android:layout_marginEnd="@dimen/size_8"
+            android:layout_marginRight="@dimen/size_12"
+            android:text="@string/total_payment"
+            android:textAllCaps="false"
+            android:textSize="@dimen/font_size_18"
+            android:visibility="@{data.netPriceValue.isEmpty() ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toStartOf="@+id/tv_total_payment"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_shipping_method_cost" />
+
+        <TextView
+            android:id="@+id/tv_total_payment"
+            style="@style/large_bold_title_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_generic"
+            android:layout_marginLeft="@dimen/spacing_generic"
+            android:gravity="end"
+            android:text="@{data.netPriceValue}"
+            android:textAllCaps="false"
+            android:textSize="@dimen/font_size_18"
+            android:visibility="@{data.netPriceValue.isEmpty() ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_total_payment_text"
+            app:layout_constraintTop_toTopOf="@+id/tv_total_payment_text"
+            tools:text="Rp74,000" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

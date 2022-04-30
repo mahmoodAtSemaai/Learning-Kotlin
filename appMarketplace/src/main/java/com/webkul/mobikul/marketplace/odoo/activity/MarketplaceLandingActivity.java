@@ -30,6 +30,7 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING
 
 public class MarketplaceLandingActivity extends BaseActivity {
     private ActivityMarketplaceLandingBinding mBinding;
+    private static final String TAG = "MarketPlaceLandingActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

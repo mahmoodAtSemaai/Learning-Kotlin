@@ -16,25 +16,25 @@ interface BaseAnalytics {
     fun trackActivityOpened(activityTitle: String) {
         val tempMap = HashMap<String, String>()
         tempMap["title"] = activityTitle
-        trackAnyEvent(AnalyticsConstants.EVENT_ACTIVITYOPENED, tempMap)
+        trackAnyEvent("$activityTitle ${AnalyticsConstants.EVENT_SCREENOPENED}", tempMap)
     }
 
     fun trackActivityClosed(activityTitle: String) {
         val tempMap = HashMap<String, String>()
         tempMap["title"] = activityTitle
-        trackAnyEvent(AnalyticsConstants.EVENT_ACTIVITYCLOSED, tempMap)
+        trackAnyEvent("$activityTitle ${AnalyticsConstants.EVENT_SCREENCLOSED}", tempMap)
 
     }
     fun trackFragmentOpened(fragmentTitle: String) {
         val tempMap = HashMap<String, String>()
         tempMap["title"] = fragmentTitle
-        trackAnyEvent(AnalyticsConstants.EVENT_FRAGMENTOPENED, tempMap)
+        trackAnyEvent("$fragmentTitle ${AnalyticsConstants.EVENT_SCREENOPENED}", tempMap)
     }
 
     fun trackFragmentClosed(fragmentTitle: String) {
         val tempMap = HashMap<String, String>()
         tempMap["title"] = fragmentTitle
-        trackAnyEvent(AnalyticsConstants.EVENT_FRAGMENTCLOSED, tempMap)
+        trackAnyEvent("$fragmentTitle ${AnalyticsConstants.EVENT_SCREENCLOSED}", tempMap)
 
     }
 

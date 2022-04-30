@@ -17,23 +17,23 @@ public class OrderReviewRequest {
     private final String KEY_ACQUIRER_ID = "acquirerId";
     @SuppressWarnings("FieldCanBeLocal")
     private final String KEY_SHIPPING_ID = "shippingId";
-    private final String mShippingAddressId;
-    private final String mAcquirerId;
+    private final String shippingAddressId;
+    private final String paymentAcquirerId;
     private String shippingMethodId;
 
 
     public OrderReviewRequest(String shippingAddressId, String shippingMethodId, String acquirerId) {
-        mShippingAddressId = shippingAddressId;
+        this.shippingAddressId = shippingAddressId;
         this.shippingMethodId = shippingMethodId;
-        mAcquirerId = acquirerId;
+        this.paymentAcquirerId = acquirerId;
     }
 
     @Override
     public String toString() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(KEY_SHIPPING_ADDRESS_ID, mShippingAddressId);
-            jsonObject.put(KEY_ACQUIRER_ID, mAcquirerId);
+            jsonObject.put(KEY_SHIPPING_ADDRESS_ID, shippingAddressId);
+            jsonObject.put(KEY_ACQUIRER_ID, paymentAcquirerId);
             if (!shippingMethodId.isEmpty()) {
                 jsonObject.put(KEY_SHIPPING_ID, shippingMethodId);
             }

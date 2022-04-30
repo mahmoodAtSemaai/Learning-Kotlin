@@ -66,10 +66,11 @@
                             app:tabIndicatorHeight="0dp"
                             app:tabPaddingStart="@dimen/spacing_generic"
                             tools:background="@color/bb_tabletRightBorderDark" />
+
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="3dp"
-                            android:background="@color/grey_300"/>
+                            android:background="@color/grey_300" />
                         <!--Categories-->
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -90,25 +91,27 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical" />
+
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="3dp"
-                            android:background="@color/grey_300"/>
+                            android:background="@color/grey_300" />
 
                         <LinearLayout
                             android:id="@+id/llRecentViewProducts"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
+
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/recent_view_products"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textStyle="bold"
+                                android:paddingLeft="@dimen/spacing_normal"
                                 android:paddingTop="10dp"
                                 android:paddingBottom="@dimen/spacing_tiny"
-                                android:paddingLeft="@dimen/spacing_normal"/>
+                                android:text="@string/recent_view_products"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:textStyle="bold" />
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rvAlternativeProduct"
@@ -116,6 +119,7 @@
                                 android:layout_height="wrap_content" />
 
                         </LinearLayout>
+
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 

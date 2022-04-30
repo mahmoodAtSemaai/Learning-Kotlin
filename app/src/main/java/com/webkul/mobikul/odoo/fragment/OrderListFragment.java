@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,7 +18,7 @@ import android.view.ViewGroup;
 
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
-import com.webkul.mobikul.odoo.adapter.catalog.OrderRvAdapter;
+import com.webkul.mobikul.odoo.adapter.catalog.OrdersAdapter;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.databinding.FragmentOrderListBinding;
@@ -27,6 +26,7 @@ import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.FragmentHelper;
 import com.webkul.mobikul.odoo.helper.Helper;
+import com.webkul.mobikul.odoo.helper.IntentHelper;
 import com.webkul.mobikul.odoo.model.customer.order.MyOrderReponse;
 import com.webkul.mobikul.odoo.model.request.BaseLazyRequest;
 
@@ -38,22 +38,13 @@ import io.reactivex.schedulers.Schedulers;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
 
 
-/**
- * Webkul Software.
- *
- * @author Webkul <support@webkul.com>
- * @package Mobikul App
- * @Category Mobikul
- * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
- * @license https://store.webkul.com/license.html ASL Licence
- * @link https://store.webkul.com/license.html
- */
 public class OrderListFragment extends BaseFragment {
     @SuppressWarnings("unused")
     private static final String TAG = "OrderListFragment";
-    private FragmentOrderListBinding mBinding;
+    private FragmentOrderListBinding binding;
     private boolean mIsFirstCall = true;
     private int mOffset;
+    private int pageSize = 10;
 
 
     public static OrderListFragment newInstance() {
@@ -62,66 +53,27 @@ public class OrderListFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_order_list, container, false);
-        return mBinding.getRoot();
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_order_list, container, false);
+        setOffsetData();
+        return binding.getRoot();
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        /*INTIALIZE */
+    private void setOffsetData() {
         mIsFirstCall = true;
         mOffset = 0;
         callApi();
     }
 
     private void callApi() {
-        ApiConnection.getOrders(getContext(), new BaseLazyRequest(mOffset, AppSharedPref.getItemsPerPage(getContext()))).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<MyOrderReponse>(getContext()) {
+        ApiConnection.getSaleOrders(getContext(), new BaseLazyRequest(mOffset, pageSize)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<MyOrderReponse>(requireContext()) {
 
             @Override
             public void onNext(@NonNull MyOrderReponse myOrderReponse) {
                 super.onNext(myOrderReponse);
                 if (myOrderReponse.isAccessDenied()) {
-                    AlertDialogHelper.showDefaultWarningDialogWithDismissListener(getContext(), getString(R.string.error_login_failure), getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            sweetAlertDialog.dismiss();
-                            AppSharedPref.clearCustomerData(getContext());
-                            Intent i = new Intent(getContext(), SignInSignUpActivity.class);
-                            i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, getActivity().getClass().getSimpleName());
-                            startActivity(i);
-                        }
-                    });
+                    IntentHelper.redirectToSignUpActivity(requireContext());
                 } else {
-                    if (mIsFirstCall) {
-                        mIsFirstCall = false;
-                        mBinding.setData(myOrderReponse);
-
-                        /*BETTER REPLACE SOME CONTAINER INSTEAD OF WHOLE PAGE android.R.id.content */
-                        if (mBinding.getData().getOrders().isEmpty()) {
-                            FragmentHelper.replaceFragment(R.id.container, getContext(), EmptyFragment.newInstance(R.drawable.ic_vector_empty_order, getString(R.string.no_order_placed), "", true,
-                                    EmptyFragment.EmptyFragType.TYPE_ORDER.ordinal()), EmptyFragment.class.getSimpleName(), false, false);
-                        } else {
-                            mBinding.orderRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                                @Override
-                                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                                    super.onScrollStateChanged(recyclerView, newState);
-                                    int lastCompletelyVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-                                    /*Logic is working fine for lazy loading*/
-                                    if (!mBinding.getData().isLazyLoading() && lastCompletelyVisibleItemPosition == mBinding.orderRv.getAdapter().getItemCount() - 1 && mBinding.orderRv.getAdapter().getItemCount() < mBinding.getData().getTotalCount()) {
-                                        mOffset += AppSharedPref.getItemsPerPage(getContext());
-                                        callApi();
-                                        mBinding.getData().setLazyLoading(true);
-                                    }
-                                }
-                            });
-                            mBinding.orderRv.setAdapter(new OrderRvAdapter(getContext(), mBinding.getData().getOrders(), TAG));
-                        }
-                    } else {
-                        mBinding.getData().setLazyLoading(false);
-                        mBinding.getData().getOrders().addAll(myOrderReponse.getOrders());
-                        mBinding.orderRv.getAdapter().notifyDataSetChanged();
-                    }
+                    handleOrdersResponse(myOrderReponse);
                 }
             }
 
@@ -138,6 +90,37 @@ public class OrderListFragment extends BaseFragment {
         });
     }
 
+    private void handleOrdersResponse(MyOrderReponse myOrderReponse) {
+        if (mIsFirstCall) {
+            mIsFirstCall = false;
+            binding.setData(myOrderReponse);
+
+            /*BETTER REPLACE SOME CONTAINER INSTEAD OF WHOLE PAGE android.R.id.content */
+            if (binding.getData().getOrders().isEmpty()) {
+                FragmentHelper.replaceFragment(R.id.container, getContext(), EmptyFragment.newInstance(R.drawable.ic_vector_empty_order, getString(R.string.no_order_placed), "", true,
+                        EmptyFragment.EmptyFragType.TYPE_ORDER.ordinal()), EmptyFragment.class.getSimpleName(), false, false);
+            } else {
+                binding.orderRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                        super.onScrollStateChanged(recyclerView, newState);
+                        int lastCompletelyVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+                        if (!binding.getData().isLazyLoading() && lastCompletelyVisibleItemPosition == binding.orderRv.getAdapter().getItemCount() - 1 && binding.orderRv.getAdapter().getItemCount() < binding.getData().getTotalCount()) {
+                            mOffset += pageSize;
+                            callApi();
+                            binding.getData().setLazyLoading(true);
+                        }
+                    }
+                });
+                binding.orderRv.setAdapter(new OrdersAdapter(getContext(), binding.getData().getOrders(), TAG));
+            }
+        } else {
+            binding.getData().setLazyLoading(false);
+            binding.getData().getOrders().addAll(myOrderReponse.getOrders());
+            binding.orderRv.getAdapter().notifyDataSetChanged();
+        }
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         Helper.hiderAllMenuItems(menu);
@@ -152,7 +135,7 @@ public class OrderListFragment extends BaseFragment {
     @androidx.annotation.NonNull
     @Override
     public String getTitle() {
-        return this.getClass().getSimpleName();
+        return TAG;
     }
 
     @Override

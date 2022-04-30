@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.payments.Result" />
+
+        <variable
+            name="mobileBankingExpanded"
+            type="boolean" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/btn_payment_status"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".fragment.PaymentVirtualAccountFragment">
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_payment_status_desc"
+                    style="@style/large_bold_title_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/size_20"
+                    android:layout_marginTop="@dimen/size_16"
+                    android:text="@string/due_payment"
+                    android:textAllCaps="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/due_payment" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_payment_due_date"
+                    style="@style/medium_bold_text_no_caps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{data.expireDate}"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_payment_due_date_time"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/tv_payment_status_desc"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_payment_status_desc"
+                    tools:text="Wednesday, 26 January 2022" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_payment_due_date_time"
+                    style="@style/medium_bold_text_no_caps"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="@{data.expireTime}"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_payment_status_desc"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/tv_payment_due_date"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_payment_status_desc"
+                    tools:text="23:59:20" />
+
+                <include
+                    android:id="@+id/horizontal_divider_1"
+                    layout="@layout/divider_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_6"
+                    android:layout_marginTop="@dimen/size_16"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_payment_due_date" />
+
+                <ImageView
+                    android:id="@+id/iv_virtual_account"
+                    android:layout_width="@dimen/size_48"
+                    android:layout_height="@dimen/size_48"
+                    app:imageUrl="@{data.bank.thumbnail}"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_virtual_account_bank"
+                    app:layout_constraintStart_toStartOf="@+id/divider_2"
+                    app:layout_constraintTop_toTopOf="@+id/tv_virtual_account_bank"
+                    tools:src="@drawable/ic_bank_bni_logo" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_virtual_account_bank"
+                    style="@style/large_bold_title_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/size_12"
+                    android:layout_marginTop="@dimen/size_12"
+                    android:text='@{String.format("%s (%s)", data.bank.name, @string/virtual_account)}'
+                    android:textAllCaps="false"
+                    app:layout_constraintEnd_toEndOf="@+id/divider_2"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/iv_virtual_account"
+                    app:layout_constraintTop_toBottomOf="@+id/horizontal_divider_1"
+                    tools:text="BNI (Virtual Payment)" />
+
+                <include
+                    android:id="@+id/divider_2"
+                    layout="@layout/divider_horizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/size_2"
+                    android:layout_marginHorizontal="@dimen/size_20"
+                    android:layout_marginTop="@dimen/size_12"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_virtual_account_bank" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_account_number_title"
+                    style="@style/medium_bold_text_no_caps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/size_20"
+                    android:layout_marginLeft="@dimen/size_20"
+                    android:layout_marginTop="@dimen/size_16"
+                    android:text="@string/account_number"
+                    app:layout_constraintStart_toStartOf="@+id/divider_2"
+                    app:layout_constraintTop_toBottomOf="@+id/divider_2" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_account_number"
+                    style="@style/large_bold_title_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/size_24"
+                    android:layout_marginRight="@dimen/size_24"
+                    android:drawableEnd="@drawable/ic_account_number"
+                    android:drawableRight="@drawable/ic_account_number"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:paddingVertical="@dimen/size_8"
+                    android:text="@{data.meta.formattedAccountNumber}"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/font_size_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/tv_account_number_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_account_number_title"
+                    tools:text="123 456 7869 1901" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_total_payment_title"
+                    style="@style/medium_bold_text_no_caps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/size_20"
+                    android:layout_marginLeft="@dimen/size_20"
+                    android:layout_marginTop="@dimen/size_16"
+                    android:text="@string/total_payment"
+                    app:layout_constraintStart_toStartOf="@+id/divider_2"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_account_number" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_payment_amount"
+                    style="@style/large_bold_title_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:paddingVertical="@dimen/size_8"
+                    android:text="@{data.meta.paidAmount}"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/font_size_24"
+                    app:layout_constraintStart_toStartOf="@+id/tv_total_payment_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_total_payment_title"
+                    tools:text="Rp47,300" />
+
+                <TextView
+                    style="@style/medium_bold_text_no_caps"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="@string/payment_pending"
+                    android:textColor="@color/colorAccent"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_payment_amount"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_account_number"
+                    app:layout_constraintStart_toEndOf="@+id/tv_payment_amount"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_total_payment_title" />
+
+
+                <include
+                    android:id="@+id/horizontal_divider_2"
+                    layout="@layout/divider_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_6"
+                    android:layout_marginTop="@dimen/size_16"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_payment_amount" />
+
+
+                <include
+                    android:id="@+id/banking_instruction"
+                    layout="@layout/payment_instruction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    app:layout_constraintTop_toBottomOf="@id/horizontal_divider_2" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+        <Button
+            android:id="@+id/btn_payment_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:paddingHorizontal="@dimen/size_24"
+            android:text="@string/payment_done"
+            android:textSize="@dimen/font_size_20"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_order_details"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/btn_order_details"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:text="@string/ok"
+            android:textSize="@dimen/font_size_20"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn_payment_status" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

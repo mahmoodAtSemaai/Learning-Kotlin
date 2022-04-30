@@ -48,6 +48,9 @@
         android:onClick="@{() -> handler.viewProduct()}"
         android:orientation="horizontal">
 
+        <FrameLayout
+            android:layout_width="@dimen/product_image_generic"
+            android:layout_height="@dimen/product_image_generic">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/product_image"
@@ -60,6 +63,20 @@
             app:placeholder="@{@drawable/ic_vector_odoo_placeholder_grey400_48dp}"
             tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_top_grid"
+                android:layout_marginHorizontal="@dimen/spacing_normal"
+                android:padding="@dimen/spacing_min"
+                android:background="@drawable/bg_out_of_stock"
+                android:gravity="center"
+                android:text="@string/out_of_stock"
+                android:textSize="@dimen/text_size_min"
+                android:textColor="@color/white"
+                android:visibility="@{data.isNever() ? View.GONE : (data.inStock ? View.GONE : View.VISIBLE)}"/>
+
+        </FrameLayout>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="0dp"

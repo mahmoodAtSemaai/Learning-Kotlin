@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
                 android:gravity="center_vertical|end"
-                android:onClick="@{(v)->handler.viewAll(data.url, data.title)}"
+                android:onClick="@{(v)->handler.viewAll(data.sliderId, data.title)}"
                 android:text="@string/view_all"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_small"

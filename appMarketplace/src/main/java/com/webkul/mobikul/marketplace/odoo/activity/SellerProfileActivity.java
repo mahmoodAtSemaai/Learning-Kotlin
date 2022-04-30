@@ -39,6 +39,7 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING
 public class SellerProfileActivity extends BaseActivity {
     private final int REQUEST_CODE_LOGIN = 10001;
     ActivitySellerProfileBinding mBinding;
+    private static final String TAG = "SellerProfileActivity";
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

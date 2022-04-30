@@ -17,6 +17,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class SellerOrderDetailsActivity extends BaseActivity {
+    private static final String TAG = "SellerOrderDetailsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

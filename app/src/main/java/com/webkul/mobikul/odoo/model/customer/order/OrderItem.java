@@ -39,15 +39,21 @@ public class OrderItem {
     @Expose
     private String priceSubtotal;
 
+    @SerializedName("product_id")
+    @Expose
+    private String productId;
     @SerializedName("templateId")
     @Expose
     private String templateId;
     @SerializedName("qty")
     @Expose
-    private String qty;
+    private Double qty;
     @SerializedName("thumbNail")
     @Expose
     private String thumbNail;
+    @SerializedName("unit_type")
+    @Expose
+    private String unit_type;
 
     public String getDiscount() {
         if (discount == null) {
@@ -122,6 +128,13 @@ public class OrderItem {
     }
 
 
+    public String getProductId() {
+        if (productId == null) {
+            return "";
+        }
+        return productId;
+    }
+
     public String getTemplateId() {
         if (templateId == null) {
             return "";
@@ -129,12 +142,12 @@ public class OrderItem {
         return templateId;
     }
 
-    public String getQty() {
+    public int getQty() {
         if (qty == null) {
-            return "";
+            return 0;
         }
 
-        return qty;
+        return qty.intValue();
     }
 
     public String getThumbNail() {
@@ -142,5 +155,9 @@ public class OrderItem {
             return "";
         }
         return thumbNail;
+    }
+
+    public String getUnit_type() {
+        return unit_type;
     }
 }

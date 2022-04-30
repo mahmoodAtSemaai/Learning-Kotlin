@@ -9,7 +9,7 @@ import com.webkul.mobikul.odoo.helper.Helper
 abstract class BaseFragment : Fragment() {
     override fun onStop() {
         super.onStop()
-        AnalyticsImpl.trackFragmentClosed(Helper.getScreenName(title))
+        trackAnalyticsEvent(AnalyticsEvent.FRAGMENT_CLOSED)
         Log.i(TAG, "onStop: ")
         // FIXME: 25/8/17 Changed for Review backpress to work.
         if (this !is ProductReviewFragment) {
@@ -23,6 +23,24 @@ abstract class BaseFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        AnalyticsImpl.trackFragmentOpened(Helper.getScreenName(title))
+        trackAnalyticsEvent(AnalyticsEvent.FRAGMENT_OPENED)
+    }
+
+    private fun trackAnalyticsEvent(event: AnalyticsEvent) {
+        if(this !is EmptyFragment) {
+            when(event) {
+                AnalyticsEvent.FRAGMENT_CLOSED -> {
+                    AnalyticsImpl.trackFragmentClosed(Helper.getScreenName(title))
+                }
+                AnalyticsEvent.FRAGMENT_OPENED -> {
+                    AnalyticsImpl.trackFragmentOpened(Helper.getScreenName(title))
+                }
+            }
+        }
+    }
+
+    private enum class AnalyticsEvent {
+        FRAGMENT_OPENED,
+        FRAGMENT_CLOSED
     }
 }

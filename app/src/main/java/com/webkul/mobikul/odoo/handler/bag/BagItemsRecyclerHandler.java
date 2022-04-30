@@ -29,6 +29,7 @@ import io.reactivex.schedulers.Schedulers;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_NAME;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID;
 
 
 /**
@@ -111,7 +112,8 @@ public class BagItemsRecyclerHandler implements ChangeQtyDialogFragment.OnQtyCha
 
     public void viewProduct() {
         Intent intent = new Intent(mContext, ((OdooApplication) mContext.getApplicationContext()).getProductActivity());
-        intent.putExtra(BUNDLE_KEY_PRODUCT_ID, mData.getTemplateId());
+        intent.putExtra(BUNDLE_KEY_PRODUCT_ID, mData.getProductId());
+        intent.putExtra(BUNDLE_KEY_PRODUCT_TEMPLATE_ID, mData.getTemplateId());
         intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, mData.getName());
         mContext.startActivity(intent);
     }
@@ -125,6 +127,25 @@ public class BagItemsRecyclerHandler implements ChangeQtyDialogFragment.OnQtyCha
     @Override
     public void onQtyChanged(int qty) {
         Toast.makeText(mContext, R.string.updating_bag, Toast.LENGTH_SHORT).show();
+        hitUpdateCartApi(qty);
+    }
+
+    private Boolean isQuantityExceeding(int qty) {
+        return qty > mData.getAvailableQuantity();
+    }
+
+    private void showQuantityWarning(String message) {
+        new SweetAlertDialog(mContext, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+            .setCustomImage(R.drawable.ic_warning)
+            .setTitleText("")
+            .setContentText(message)
+            .setConfirmText(mContext.getString(R.string.continue_))
+            .setConfirmClickListener(sweetAlertDialog -> {
+                sweetAlertDialog.dismiss();
+            }).show();
+    }
+
+    public void hitUpdateCartApi(int qty) {
         ApiConnection.updateCart(mContext, mData.getLineId(), qty).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<BaseResponse>(mContext) {
 
             /*not adding this subscription to Composite Disposable list as ChangeQtyDialogFragment dismiss occur after when this request is subscribed and thus cancelled on its dismissal.*/
@@ -152,7 +173,7 @@ public class BagItemsRecyclerHandler implements ChangeQtyDialogFragment.OnQtyCha
                     ((BagActivity) mContext).getCartData();
                 } else {
                     AnalyticsImpl.INSTANCE.trackItemQuantityChangeFailed(baseResponse.getMessage(), baseResponse.getResponseCode(), "");
-                    AlertDialogHelper.showDefaultErrorDialog(mContext, mContext.getString(R.string.error_something_went_wrong), baseResponse.getMessage());
+                    showQuantityWarning(baseResponse.getMessage().replace(".0", ""));
                 }
             }
 

@@ -51,7 +51,7 @@ import static com.webkul.mobikul.odoo.database.SearchHistoryContract.SearchHisto
 
 public class SettingsActivity extends BaseActivity {
     private ActivitySettingsBinding mBinding;
-
+    private static final String TAG = "SettingsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
