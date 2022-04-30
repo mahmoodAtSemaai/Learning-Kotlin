@@ -1,19 +1,16 @@
 package com.webkul.mobikul.odoo.features.auth.presentation
 
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.webkul.mobikul.odoo.core.data.local.AppPreferences
 import com.webkul.mobikul.odoo.core.mvicore.IModel
 import com.webkul.mobikul.odoo.core.platform.BaseViewModel
 import com.webkul.mobikul.odoo.core.utils.Resource
+import com.webkul.mobikul.odoo.features.auth.domain.enums.AuthFieldsValidation
 import com.webkul.mobikul.odoo.features.auth.domain.usecase.LogInUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,8 +18,9 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val logInUseCase: LogInUseCase,
     private val appPreferences: AppPreferences
-) : BaseViewModel(), IModel<LoginState,LoginIntent> {
+) : BaseViewModel(), IModel<LoginState, LoginIntent> {
 
+    val loginIntent = Channel<LoginIntent>(Channel.UNLIMITED)
 
     override val intents: Channel<LoginIntent> = Channel<LoginIntent>(Channel.UNLIMITED)
 
@@ -54,15 +52,21 @@ class LoginViewModel @Inject constructor(
             _state.value = try {
                 val login = logInUseCase.invoke(username, password)
                 var loginState: LoginState = LoginState.Idle
-                login.collect {
-                    when (it) {
-                        is Resource.Default -> {
+
+                login.catch {
+                        when(it.message?.toInt()){
+                            AuthFieldsValidation.EMPTY_EMAIL.value -> loginState =  LoginState.InvalidLoginDetailsError(AuthFieldsValidation.EMPTY_EMAIL)
+                             AuthFieldsValidation.EMPTY_PASSWORD.value ->loginState =  LoginState.InvalidLoginDetailsError(AuthFieldsValidation.EMPTY_PASSWORD)
+                             AuthFieldsValidation.INVALID_PASSWORD.value ->loginState =  LoginState.InvalidLoginDetailsError(AuthFieldsValidation.INVALID_PASSWORD)
                         }
-                        is Resource.Failure -> loginState = LoginState.Error("Error Message")
-                        is Resource.Loading -> loginState = LoginState.Loading
-                        is Resource.Success -> loginState = LoginState.Login(it.value)
+                }.collect {
+                        when (it) {
+                            is Resource.Default -> {}
+                            is Resource.Failure -> loginState = LoginState.Error("Error Message")
+                            is Resource.Loading -> loginState = LoginState.Loading
+                            is Resource.Success -> loginState = LoginState.Login(it.value)
+                        }
                     }
-                }
                 loginState
             } catch (e: Exception) {
                 LoginState.Error(e.localizedMessage)

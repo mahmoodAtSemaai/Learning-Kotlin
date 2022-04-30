@@ -48,9 +48,11 @@ class AppPreferences @Inject constructor(private val context: Context) {
             return splashPreferences.getString(KEY_LANGUAGE_CODE, "")
         }
 
-    val customerLoginToken: String?
+    var customerLoginToken: String?
         get() {
             return customerPreferences.getString(KEY_CUSTOMER_LOGIN_BASE_64_STR, "")
         }
-
+        set(value) = customerPreferences.edit {
+            it.putString(KEY_CUSTOMER_LOGIN_BASE_64_STR,value)
+        }
 }

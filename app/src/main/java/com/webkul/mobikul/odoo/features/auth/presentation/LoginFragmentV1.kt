@@ -11,6 +11,7 @@ import com.webkul.mobikul.odoo.core.mvicore.IIntent
 import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
 import com.webkul.mobikul.odoo.databinding.FragmentLoginV1Binding
+import com.webkul.mobikul.odoo.features.auth.domain.enums.AuthFieldsValidation
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -55,7 +56,6 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
     }
 
     private fun onLoginBtnClicked() {
-
         val username = binding.usernameEt.text.toString()
         val password = binding.passwordEt.text.toString()
         triggerIntent(LoginIntent.Login(username, password))
@@ -71,9 +71,19 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
                // startActivity(Intent())
             }
             is LoginState.Error -> {
-              //  val error = state.error
-
+                AlertDialogHelper.dismiss(requireContext())
+                val error = state.error
             }
+            is LoginState.InvalidLoginDetailsError -> {
+                AlertDialogHelper.dismiss(requireContext())
+                when (state.uiError.value) {
+                    AuthFieldsValidation.EMPTY_EMAIL.value -> setEmptyUsernameError()
+                    AuthFieldsValidation.EMPTY_PASSWORD.value -> setEmptyPasswordError()
+                    AuthFieldsValidation.INVALID_PASSWORD.value -> setInvalidPasswordError()
+                }
+            }
+
+            is LoginState.Idle -> {}
         }
     }
 
@@ -82,5 +92,35 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
             viewModel.intents.send(intent)
         }
     }
+
+    private fun setEmptyUsernameError() {
+        binding.usernameEt.error = String.format(
+            Locale.getDefault(),
+            "%s %s",
+            getString(R.string.phone_number_or_username),
+            getString(R.string.error_is_required)
+        )
+    }
+
+    private fun setEmptyPasswordError() {
+        binding.passwordEt.error = String.format(
+            Locale.getDefault(),
+            getString(R.string.password) + " " + getString(R.string.error_is_required)
+        )
+    }
+
+    private fun setInvalidPasswordError() {
+        binding.passwordEt.error = String.format(
+            "%s %s",
+            getString(R.string.password),
+            String.format(
+                Locale.getDefault(),
+                getString(R.string.error_password_length_x),
+                BuildConfig.MIN_PASSWORD_LENGTH
+            )
+        )
+
+    }
+
 
 }
