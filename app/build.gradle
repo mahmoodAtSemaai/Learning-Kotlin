@@ -110,7 +110,6 @@ dependencies {
             Dependencies.greenRobot,
             Dependencies.activity,
             Dependencies.fragment,
-            Dependencies.remoteConfigKTX
             Dependencies.remoteConfig,
             Dependencies.remoteConfigKTX,
             Dependencies.greenRobot,
