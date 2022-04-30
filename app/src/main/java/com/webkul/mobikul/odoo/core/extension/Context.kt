@@ -6,6 +6,9 @@ import android.util.DisplayMetrics
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
+import cn.pedant.SweetAlert.SweetAlertDialog
+import com.webkul.mobikul.odoo.R
+import com.webkul.mobikul.odoo.helper.ColorHelper
 import java.io.IOException
 import java.nio.charset.Charset
 
@@ -60,3 +63,12 @@ fun Context.getCompatColor(@ColorRes colorInt: Int): Int =
  */
 fun Context.getCompatDrawable(@DrawableRes drawableRes: Int): Drawable? =
     ContextCompat.getDrawable(this, drawableRes)
+
+
+fun Context.getDefaultProgressDialog() : SweetAlertDialog {
+    val sweetAlertDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+    sweetAlertDialog.titleText =getString(R.string.please_wait)
+    sweetAlertDialog.progressHelper.barColor = ColorHelper.getColor(this, R.attr.colorAccent)
+    sweetAlertDialog.setCancelable(false)
+    return sweetAlertDialog
+}

@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.webkul.mobikul.odoo.BuildConfig
 import com.webkul.mobikul.odoo.R
+import com.webkul.mobikul.odoo.core.extension.getDefaultProgressDialog
 import com.webkul.mobikul.odoo.core.mvicore.IIntent
 import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
@@ -24,6 +26,7 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
 
     override val layoutId = R.layout.fragment_login_v1
     private val viewModel: LoginViewModel by viewModels()
+    private lateinit var progressDialog:SweetAlertDialog
 
     companion object {
         fun newInstance() = LoginFragmentV1().also { loginFragment ->
@@ -34,7 +37,7 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        progressDialog = requireContext().getDefaultProgressDialog()
         setObservers()
         setOnClickListeners()
     }
@@ -64,18 +67,19 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
     override fun render(state: LoginState) {
         when (state) {
             is LoginState.Loading -> {
-               // AlertDialogHelper.showDefaultProgressDialog(context)
+                progressDialog.show()
             }
             is LoginState.Login -> {
-               // val loginResponse = state.data
+                progressDialog.dismiss()
                // startActivity(Intent())
             }
             is LoginState.Error -> {
-                AlertDialogHelper.dismiss(requireContext())
+                progressDialog.dismiss()
+
                 val error = state.error
             }
             is LoginState.InvalidLoginDetailsError -> {
-                AlertDialogHelper.dismiss(requireContext())
+                progressDialog.dismiss()
                 when (state.uiError.value) {
                     AuthFieldsValidation.EMPTY_EMAIL.value -> setEmptyUsernameError()
                     AuthFieldsValidation.EMPTY_PASSWORD.value -> setEmptyPasswordError()
