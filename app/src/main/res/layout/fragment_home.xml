@@ -17,10 +17,6 @@
 
     </data>
 
-
-
-
-
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     android:layout_width="match_parent"
     android:id="@+id/refresh_layout"
@@ -41,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:nestedScrollingEnabled="false"
+            android:nestedScrollingEnabled="true"
             android:orientation="horizontal"
             android:visibility="@{data.featuredCategories.empty ? View.GONE : View.VISIBLE}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

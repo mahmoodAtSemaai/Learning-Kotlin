@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,13 +18,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.webkul.mobikul.odoo.R;
-import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.adapter.catalog.OrderAdapter;
 import com.webkul.mobikul.odoo.adapter.catalog.OrdersAdapter;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.databinding.FragmentOrderListBinding;
-import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.FragmentHelper;
 import com.webkul.mobikul.odoo.helper.Helper;
@@ -31,7 +30,6 @@ import com.webkul.mobikul.odoo.helper.IntentHelper;
 import com.webkul.mobikul.odoo.model.customer.order.MyOrderReponse;
 import com.webkul.mobikul.odoo.model.request.BaseLazyRequest;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
@@ -59,6 +57,8 @@ public class OrderListFragment extends BaseFragment {
         return binding.getRoot();
     }
 
+
+
     private void setOffsetData() {
         mIsFirstCall = true;
         mOffset = 0;
@@ -66,11 +66,12 @@ public class OrderListFragment extends BaseFragment {
     }
 
     private void callApi() {
-        ApiConnection.getSaleOrders(getContext(), new BaseLazyRequest(mOffset, pageSize)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<MyOrderReponse>(requireContext()) {
+        ApiConnection.getSaleOrders(getContext(), new BaseLazyRequest(mOffset ,10)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<MyOrderReponse>(requireContext()) {
 
             @Override
             public void onNext(@NonNull MyOrderReponse myOrderReponse) {
                 super.onNext(myOrderReponse);
+
                 if (myOrderReponse.isAccessDenied()) {
                     IntentHelper.redirectToSignUpActivity(requireContext());
                 } else {
@@ -101,6 +102,7 @@ public class OrderListFragment extends BaseFragment {
                 FragmentHelper.replaceFragment(R.id.container, getContext(), EmptyFragment.newInstance(R.drawable.ic_vector_empty_order, getString(R.string.no_order_placed), "", true,
                         EmptyFragment.EmptyFragType.TYPE_ORDER.ordinal()), EmptyFragment.class.getSimpleName(), false, false);
             } else {
+
                 binding.orderRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
                     public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

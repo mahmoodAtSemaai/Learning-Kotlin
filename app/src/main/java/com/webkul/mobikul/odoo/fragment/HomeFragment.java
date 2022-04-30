@@ -8,13 +8,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
@@ -75,6 +78,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     private int BILLING_ADDRESS_POSITION = 1;
     private int COMPANY_ID = 1;
     private boolean mIsFirstCall = true;
+    private boolean isImageVisible = false;
     private CustomToast mToast;
     public static final int VIEW_TYPE_LIST = 1;
     Handler handler = new Handler();
@@ -168,12 +172,33 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
         binding.featuredCategoriesRv.setAdapter(new FeaturedCategoriesAdapter(getContext(), homePageResponse.getFeaturedCategories(), value));
 
+        binding.featuredCategoriesRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@androidx.annotation.NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                     if(newState== AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
+                         binding.refreshLayout.setEnabled(false);
+                     if(newState==AbsListView.OnScrollListener.SCROLL_STATE_FLING)
+                         binding.refreshLayout.setEnabled(false);
+                     if(newState==AbsListView.OnScrollListener.SCROLL_STATE_IDLE)
+                         binding.refreshLayout.setEnabled(true);
+            }
+        });
 
         List<FeaturedCategoryData> fragment = homePageResponse.getFeaturedCategories();
 
         CategoryProductAdapter adapter = new CategoryProductAdapter((NewHomeActivity) requireContext(), fragment);
         binding.viewPager2.setUserInputEnabled(false);
         binding.viewPager2.setAdapter(adapter);
+
+
+        for (int i = 0; i < homePageResponse.getBannerImages().size(); i++) {
+            if (!homePageResponse.getBannerImages().get(i).getUrl().equals("false")) {
+                isImageVisible=true;
+                break;
+            }
+        }
+        if(!isImageVisible) binding.appBarLayout.setVisibility(View.GONE);
 
         binding.bannerViewPager.setAdapter(new HomeBannerAdapter(getContext(), homePageResponse.getBannerImages() , binding.bannerViewPager));
 

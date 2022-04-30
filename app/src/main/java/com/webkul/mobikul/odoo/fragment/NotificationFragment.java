@@ -46,23 +46,6 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_EMPTY_F
 import org.greenrobot.eventbus.EventBus;
 
 
-/**
-
- * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
- * @author Webkul <support@webkul.com>
-
- * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
- * @license https://store.webkul.com/license.html ASL Licence
-
- * @link https://store.webkul.com/license.html
-
- */
 public class NotificationFragment extends BaseFragment {
     @SuppressWarnings("unused")
     private static final String TAG = "NotificationFragment";
@@ -126,9 +109,10 @@ public class NotificationFragment extends BaseFragment {
                         mBinding.emptyLayout.setHandler(new EmptyFragmentHandler(getContext()));
 
                     } else {
+
+                        mBinding.progressBar.setVisibility(View.GONE);
                         new SaveData(getActivity(), notificationMessagesResponse);
                         mBinding.notificationListRv.setAdapter(new NotificationMessageAdapter(getContext(), notificationMessagesResponse.getAllNotificationMessages()));
-//                    if (Helper.isNetworkAvailable(getContext())) {
                         ItemTouchHelper swipeToDismissTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
                             @Override
                             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {

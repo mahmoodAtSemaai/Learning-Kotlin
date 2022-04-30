@@ -138,5 +138,8 @@ class NewDrawerFragment : BaseFragment() {
         }
     }
 
-
+    override fun onResume() {
+        super.onResume()
+        mBinding.customerName =AppSharedPref.getCustomerName(context)
+    }
 }

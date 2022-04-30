@@ -19,6 +19,15 @@
             name="handler"
             type="com.webkul.mobikul.odoo.handler.home.HomeActivityHandler" />
 
+        <import type="com.webkul.mobikul.odoo.helper.ImageHelper.ImageType" />
+
+        <import type="com.bumptech.glide.load.engine.DiskCacheStrategy" />
+
+        <variable
+            name="customerName"
+            type="String" />
+
+
     </data>
 
 
@@ -43,9 +52,7 @@
                 android:layout_height="@dimen/size_24"
                 android:layout_marginStart="@dimen/size_10"
                 android:layout_marginLeft="@dimen/size_10"
-                android:src="@drawable/ic_action_navigation_close">
-
-            </androidx.appcompat.widget.AppCompatImageView>
+                android:src="@drawable/ic_action_navigation_close"></androidx.appcompat.widget.AppCompatImageView>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -67,7 +74,12 @@
                 android:layout_below="@+id/drawer_close_btn"
                 android:layout_marginStart="@dimen/size_12"
                 android:layout_marginTop="@dimen/size_18"
-                android:src="@color/grey_400">
+                android:src="@color/grey_400"
+                app:diskCacheStrategy="@{DiskCacheStrategy.NONE}"
+                app:imageType="@{ImageType.PROFILE_PIC_GENERIC}"
+                app:imageUrl="@{AppSharedPref.getCustomerProfileImage(context)}"
+                app:placeholder="@{@drawable/ic_men_avatar}"
+                app:skipMemoryCache="@{true}">
 
             </de.hdodenhof.circleimageview.CircleImageView>
 
@@ -81,7 +93,7 @@
                 android:layout_marginTop="@dimen/size_15"
                 android:fontFamily="@font/roboto_medium"
                 android:gravity="center"
-                android:text="@string/username"
+                android:text="@{customerName}"
                 android:textSize="@dimen/font_size_16"
                 android:textStyle="bold">
 
