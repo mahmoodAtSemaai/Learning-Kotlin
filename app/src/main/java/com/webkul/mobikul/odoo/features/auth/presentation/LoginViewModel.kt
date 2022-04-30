@@ -3,7 +3,6 @@ package com.webkul.mobikul.odoo.features.auth.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.webkul.mobikul.odoo.core.data.local.AppPreferences
-import com.webkul.mobikul.odoo.core.mvicore.IModel
 import com.webkul.mobikul.odoo.core.platform.BaseViewModel
 import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.features.auth.domain.usecase.LogInUseCase
@@ -20,26 +19,25 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val logInUseCase: LogInUseCase,
     private val appPreferences: AppPreferences
-) : BaseViewModel(), IModel<LoginState,LoginIntent> {
+) : BaseViewModel() {
+
+    val loginIntent = Channel<LoginIntent>(Channel.UNLIMITED)
 
     private val loginAction = Channel<LoginAction>(Channel.UNLIMITED)
 
-    override val intents: Channel<LoginIntent>
-        get() = Channel<LoginIntent>(Channel.UNLIMITED)
-
     private val _state = MutableStateFlow<LoginState>(LoginState.Idle)
-    override val state: StateFlow<LoginState>
+    val state: StateFlow<LoginState>
         get() = _state
 
 
     init {
-        handlerIntent()
+        handleLoginIntent()
         handleLoginAction()
     }
 
-    override fun handlerIntent() {
+    private fun handleLoginIntent() {
         viewModelScope.launch {
-            intents.consumeAsFlow().collect {
+            loginIntent.consumeAsFlow().collect {
                 when (it) {
                     is LoginIntent.Login -> loginAction.send(
                         LoginAction.Login(
@@ -51,7 +49,6 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
-
 
     private fun handleLoginAction() {
         viewModelScope.launch {
@@ -84,7 +81,6 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
-
 
 
 }
