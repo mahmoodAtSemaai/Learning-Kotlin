@@ -20,7 +20,7 @@ class LogInUseCase @Inject constructor(
         emit(Resource.Loading)
 
         if (isValidLogin(username, password)) {
-            val result = loginRepository.logIn()
+            val result = loginRepository.logIn(username,password)
             emit(result)
         } else {
 

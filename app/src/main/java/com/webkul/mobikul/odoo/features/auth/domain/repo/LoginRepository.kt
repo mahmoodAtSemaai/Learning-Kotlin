@@ -6,5 +6,5 @@ import com.webkul.mobikul.odoo.model.customer.signin.LoginResponse
 
 interface LoginRepository : Repository {
 
-  suspend fun logIn(): Resource<LoginResponse>
+  suspend fun logIn(username: String, password: String): Resource<LoginResponse>
 }
