@@ -32,7 +32,6 @@ import io.reactivex.Observable;
 /**
  * Created by Shubham Agarwal on 5/1/17. @Webkul Software Pvt. Ltd
  */
-@HiltAndroidApp
 public class OdooApplication extends MultiDexApplication implements LifecycleObserver {
     @Override
     public void onCreate() {
