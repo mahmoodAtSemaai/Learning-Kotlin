@@ -64,14 +64,14 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
     override fun render(state: LoginState) {
         when (state) {
             is LoginState.Loading -> {
-                AlertDialogHelper.showDefaultProgressDialog(context)
+               // AlertDialogHelper.showDefaultProgressDialog(context)
             }
             is LoginState.Login -> {
-                val loginResponse = state.data
-                startActivity(Intent())
+               // val loginResponse = state.data
+               // startActivity(Intent())
             }
             is LoginState.Error -> {
-                val error = state.error
+              //  val error = state.error
 
             }
         }

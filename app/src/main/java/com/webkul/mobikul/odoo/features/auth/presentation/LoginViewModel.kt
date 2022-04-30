@@ -23,7 +23,6 @@ class LoginViewModel @Inject constructor(
     private val appPreferences: AppPreferences
 ) : BaseViewModel(), IModel<LoginState,LoginIntent> {
 
-    private val loginAction = Channel<LoginAction>(Channel.UNLIMITED)
 
     override val intents: Channel<LoginIntent> = Channel<LoginIntent>(Channel.UNLIMITED)
 
@@ -34,40 +33,20 @@ class LoginViewModel @Inject constructor(
 
     init {
         handlerIntent()
-        handleLoginAction()
     }
 
     override fun handlerIntent() {
         viewModelScope.launch {
             intents.consumeAsFlow().collect {
                 when (it) {
-                    is LoginIntent.Login -> {
-                        loginAction.send(
-                            LoginAction.Login(
-                                it.username,
-                                it.password
-                            )
-                        )
-                        Log.e("Test","login")
-                    }
-                    else -> {
-                        Log.e("Test","Else")
-                    }
+                    is LoginIntent.Login -> loginUser(it.username,it.password)
                 }
             }
         }
     }
 
 
-    private fun handleLoginAction() {
-        viewModelScope.launch {
-            loginAction.consumeAsFlow().collect {
-                when (it) {
-                    is LoginAction.Login -> loginUser(it.username, it.password)
-                }
-            }
-        }
-    }
+
 
     private fun loginUser(username: String, password: String) {
         viewModelScope.launch {

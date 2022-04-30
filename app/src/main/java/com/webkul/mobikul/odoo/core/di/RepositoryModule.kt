@@ -1,5 +1,6 @@
 package com.webkul.mobikul.odoo.core.di
 
+import com.webkul.mobikul.odoo.core.data.local.AppPreferences
 import com.webkul.mobikul.odoo.features.auth.data.remoteSource.LoginRemoteDataSource
 import com.webkul.mobikul.odoo.features.auth.data.repo.LoginRepositoryImpl
 import com.webkul.mobikul.odoo.features.auth.domain.repo.LoginRepository
@@ -18,5 +19,6 @@ class RepositoryModule {
     @Singleton
     fun provideAuthRepository(
             remoteDataSource: LoginRemoteDataSource,
-    ): LoginRepository = LoginRepositoryImpl(remoteDataSource)
+            appPreferences: AppPreferences
+    ): LoginRepository = LoginRepositoryImpl(remoteDataSource,appPreferences)
 }
