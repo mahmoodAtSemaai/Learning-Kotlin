@@ -2,6 +2,8 @@ package com.webkul.mobikul.odoo.model.request;
 
 import android.text.TextUtils;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,49 +20,52 @@ public class PlaceOrderRequest {
     private final String KEY_PAYMENT_STATUS = "paymentStatus";
     @SuppressWarnings("FieldCanBeLocal")
     private final String KEY_TRANSACTION_ID = "transaction_id";
+    @SuppressWarnings("FieldCanBeLocal")
+    private final String KEY_USE_POINTS = "use_points";
 
 
-    private final String mPaymentReference;
-    private final String mPaymentStatus;
-    private final int mTransactionId;
+    private final String paymentReference;
+    private final String paymentStatus;
+    private final int transactionId;
+    private final Boolean usePoints;
 
-
-//    public PlaceOrderRequest(String paymentReference, String paymentStatus) {
-//        mPaymentReference = paymentReference;
-//        mPaymentStatus = paymentStatus;
-//    }
-
-    public PlaceOrderRequest(String paymentReference, String paymentStatus, int transactionId) {
-        this.mPaymentReference = paymentReference;
-        this.mPaymentStatus = paymentStatus;
-        this.mTransactionId = transactionId;
+    public PlaceOrderRequest(String paymentReference, String paymentStatus, int transactionId, Boolean usePoints) {
+        this.paymentReference = paymentReference;
+        this.paymentStatus = paymentStatus;
+        this.transactionId = transactionId;
+        this.usePoints = usePoints;
     }
 
 
-    public PlaceOrderRequest(int transactionId) {
-        mPaymentReference = "";
-        mPaymentStatus = "";
-        mTransactionId = transactionId;
+    public PlaceOrderRequest(int transactionId, Boolean usePoints) {
+        paymentReference = "";
+        paymentStatus = "";
+        this.usePoints = usePoints;
+        this.transactionId = transactionId;
     }
 
     @SuppressWarnings("WeakerAccess")
     public String getPaymentReference() {
-        if (mPaymentReference == null) {
+        if (paymentReference == null) {
             return "";
         }
-        return mPaymentReference;
+        return paymentReference;
     }
 
     @SuppressWarnings("WeakerAccess")
     public String getPaymentStatus() {
-        if (mPaymentStatus == null) {
+        if (paymentStatus == null) {
             return "";
         }
-        return mPaymentStatus;
+        return paymentStatus;
     }
 
     public int getTransactionId() {
-        return mTransactionId;
+        return transactionId;
+    }
+
+    public Boolean getUsePoints() {
+        return usePoints;
     }
 
 
@@ -80,6 +85,7 @@ public class PlaceOrderRequest {
             if (getTransactionId() != 0){
                 jsonObject.put(KEY_TRANSACTION_ID, getTransactionId());
             }
+            jsonObject.put(KEY_USE_POINTS, getUsePoints());
         } catch (JSONException e) {
             e.printStackTrace();
         }

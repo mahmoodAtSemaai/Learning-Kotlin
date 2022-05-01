@@ -58,8 +58,8 @@ import io.reactivex.schedulers.Schedulers;
 public class SignUpHandler {
     @SuppressWarnings("unused")
     protected static final String TAG = "SignUpHandler";
-    protected final Context mContext;
-    protected final SignUpData mData;
+    protected final Context context;
+    protected final SignUpData data;
     protected FragmentSignUpBinding mBinding;
     protected boolean isSeller = false;
     protected boolean isTermAndCondition = false;
@@ -68,72 +68,73 @@ public class SignUpHandler {
 
 
     public SignUpHandler(Context context, SignUpData data, FragmentSignUpBinding mBinding) {
-        mContext = context;
-        mData = data;
+        this.context = context;
+        this.data = data;
         this.mBinding = mBinding;
     }
 
     public void signUp() {
 
-        Helper.hideKeyboard((AppCompatActivity) mContext);
-        if (mData.isFormValidated()) {
-            if (AppSharedPref.isTermAndCondition(mContext)) {
+        Helper.hideKeyboard((AppCompatActivity) context);
+        if (data.isFormValidated()) {
+            if (AppSharedPref.isTermAndCondition(context)) {
                 if (isTermAndCondition) {
 
                     if (BuildConfig.isMarketplace && isSeller) {
                         if (isMarketplaceTermAndCondition) {
-                            handleSignUp(mData);
+                            handleSignUp(data);
                         } else {
-                            SnackbarHelper.getSnackbar((Activity) mContext, mContext.getString(R.string.plese_accept_tnc), Snackbar.LENGTH_LONG).show();
+                            SnackbarHelper.getSnackbar((Activity) context, context.getString(R.string.plese_accept_tnc), Snackbar.LENGTH_LONG).show();
                         }
                     } else {
-                        handleSignUp(mData);
+                        handleSignUp(data);
                     }
                 } else {
-                    SnackbarHelper.getSnackbar((Activity) mContext, mContext.getString(R.string.plese_accept_tnc), Snackbar.LENGTH_LONG).show();
+                    SnackbarHelper.getSnackbar((Activity) context, context.getString(R.string.plese_accept_tnc), Snackbar.LENGTH_LONG).show();
                 }
             } else {
-                handleSignUp(mData);
+                handleSignUp(data);
             }
         } else {
-            SnackbarHelper.getSnackbar((Activity) mContext, mContext.getString(R.string.error_enter_valid_login_details), Snackbar.LENGTH_LONG).show();
+            SnackbarHelper.getSnackbar((Activity) context, context.getString(R.string.error_enter_valid_login_details), Snackbar.LENGTH_LONG).show();
         }
     }
 
-    public void handleSignUp(SignUpData mData) {
-        AlertDialogHelper.showDefaultProgressDialog(mContext);
-        AppSharedPref.setCustomerLoginBase64Str(mContext, Base64.encodeToString(new AuthenticationRequest(this.mData.getPhoneNumber(), this.mData.getPassword()).toString().getBytes(), Base64.NO_WRAP));
+    public void handleSignUp(SignUpData data) {
+        AlertDialogHelper.showDefaultProgressDialog(context);
+        AppSharedPref.setCustomerLoginBase64Str(context, Base64.encodeToString(new AuthenticationRequest(this.data.getPhoneNumber(), this.data.getPassword()).toString().getBytes(), Base64.NO_WRAP));
+
         AnalyticsImpl.INSTANCE.trackSignupSelected(AnalyticsSourceConstants.EVENT_SOURCE_SIGNUP,
-                AnalyticsSourceConstants.EVENT_SOURCE_PROPERTY_MOBILE, mData.getName(), Helper.getStringDateAndTime(), isSeller, countryId);
-        callSignUpApi(mContext, new SignUpRequest(mContext, this.mData.getName(), this.mData.getPhoneNumber(), this.mData.getPassword(), false, isSeller, this.mData.getProfileURL(), countryId));
+                AnalyticsSourceConstants.EVENT_SOURCE_PROPERTY_MOBILE, data.getName(), Helper.getStringDateAndTime(), isSeller, countryId);
+        callSignUpApi(context, new SignUpRequest(context, this.data.getName(), this.data.getPhoneNumber(), this.data.getPassword(), this.data.getReferralCode(), false, isSeller, this.data.getProfileURL(), countryId));
     }
 
-    private void callSignUpApi(Context mContext, SignUpRequest signUpRequest) {
-        ApiConnection.signUp(mContext, signUpRequest).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(getSignUpResponseObserver(mContext));
+    private void callSignUpApi(Context context, SignUpRequest signUpRequest) {
+        ApiConnection.signUp(context, signUpRequest).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(getSignUpResponseObserver(context));
 
     }
 
-    private Observer<? super SignUpResponse> getSignUpResponseObserver(Context mContext) {
-        return new CustomObserver<SignUpResponse>(mContext) {
+    private Observer<? super SignUpResponse> getSignUpResponseObserver(Context context) {
+        return new CustomObserver<SignUpResponse>(context) {
             @Override
             public void onNext(@NonNull SignUpResponse signUpResponse) {
                 super.onNext(signUpResponse);
                 if (signUpResponse.isSuccess()) {
                     AnalyticsImpl.INSTANCE.trackSignupSuccessfull(AnalyticsSourceConstants.EVENT_SOURCE_SIGNUP,
                             AnalyticsSourceConstants.EVENT_SOURCE_PROPERTY_MOBILE,
-                            mData.getName(),
+                            data.getName(),
                             Helper.getStringDateAndTime(),
                             isSeller,
                             countryId);
 
-                    fetchBillingAddress(mContext, signUpResponse);
+                    fetchBillingAddress(context, signUpResponse);
                 } else {
                     AnalyticsImpl.INSTANCE.trackSignupFailed(
                             (long) signUpResponse.getResponseCode(), ErrorConstants.SignupError.INSTANCE.getErrorType(), signUpResponse.getMessage()
                     );
-                    AppSharedPref.setCustomerLoginBase64Str(mContext, "");
-                    SnackbarHelper.getSnackbar((Activity) mContext, signUpResponse.getMessage(), Snackbar.LENGTH_LONG, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
+                    AppSharedPref.setCustomerLoginBase64Str(context, "");
+                    SnackbarHelper.getSnackbar((Activity) context, signUpResponse.getMessage(), Snackbar.LENGTH_LONG, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
                 }
             }
 
@@ -154,63 +155,63 @@ public class SignUpHandler {
         };
     }
 
-    private void fetchBillingAddress(Context mContext, SignUpResponse signUpResponse) {
-        ApiConnection.getAddressBookData(mContext, new BaseLazyRequest(0, 1)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(getAddressResponseObserver(mContext, signUpResponse));
+    private void fetchBillingAddress(Context context, SignUpResponse signUpResponse) {
+        ApiConnection.getAddressBookData(context, new BaseLazyRequest(0, 1)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(getAddressResponseObserver(context, signUpResponse));
     }
 
-    private Observer<? super MyAddressesResponse> getAddressResponseObserver(Context mContext, SignUpResponse signUpResponse) {
-        return new CustomObserver<MyAddressesResponse>(mContext) {
+    private Observer<? super MyAddressesResponse> getAddressResponseObserver(Context context, SignUpResponse signUpResponse) {
+        return new CustomObserver<MyAddressesResponse>(context) {
             @Override
             public void onNext(@NonNull MyAddressesResponse myAddressesResponse) {
                 super.onNext(myAddressesResponse);
                 String billingAddressUrl = myAddressesResponse.getAddresses().get(0).getUrl();
-                showAlertDialogForFingerPrintVerification(mContext, signUpResponse, billingAddressUrl);
+                showAlertDialogForFingerPrintVerification(context, signUpResponse, billingAddressUrl);
             }
         };
     }
 
-    private void showAlertDialogForFingerPrintVerification(Context mContext, SignUpResponse signUpResponse, String billingAddressUrl) {
-        new SweetAlertDialog(mContext, SweetAlertDialog.SUCCESS_TYPE)
-                .setTitleText(mContext.getString(R.string.account_created_successfully))
+    private void showAlertDialogForFingerPrintVerification(Context context, SignUpResponse signUpResponse, String billingAddressUrl) {
+        new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
+                .setTitleText(context.getString(R.string.account_created_successfully))
                 .setContentText(signUpResponse.getMessage())
-                .setConfirmText(mContext.getString(R.string.continue_shopping))
+                .setConfirmText(context.getString(R.string.continue_shopping))
                 .setConfirmClickListener(sweetAlertDialog -> {
                     sweetAlertDialog.dismiss();
                     FingerPrintLoginHelper fingerPrintLoginHelper = new FingerPrintLoginHelper();
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        fingerPrintLoginHelper.askForFingerprintLogin(mContext, null, null, signUpResponse, SignUpHandler.this.mData, billingAddressUrl);
+                        fingerPrintLoginHelper.askForFingerprintLogin(context, null, null, signUpResponse, SignUpHandler.this.data, billingAddressUrl);
                     } else {
-                        AppSharedPref.setIsAllowedFingerprintLogin(mContext, false);
-                        fingerPrintLoginHelper.navigateToHomeAfterAnalyticsSetup(mContext, null, null, signUpResponse, SignUpHandler.this.mData, billingAddressUrl);
+                        AppSharedPref.setIsAllowedFingerprintLogin(context, false);
+                        fingerPrintLoginHelper.navigateToHomeAfterAnalyticsSetup(context, null, null, signUpResponse, SignUpHandler.this.data, billingAddressUrl);
                     }
                 }).show();
     }
 
     public void viewTermNCond() {
-        ApiConnection.getTermAndCondition(mContext).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<TermAndConditionResponse>(mContext) {
+        ApiConnection.getTermAndCondition(context).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<TermAndConditionResponse>(context) {
 
             @Override
             public void onSubscribe(@NonNull Disposable d) {
                 super.onSubscribe(d);
-                AlertDialogHelper.showDefaultProgressDialog(mContext);
+                AlertDialogHelper.showDefaultProgressDialog(context);
             }
 
             @Override
             public void onNext(@NonNull TermAndConditionResponse termAndConditionResponse) {
                 super.onNext(termAndConditionResponse);
                 if (termAndConditionResponse.isSuccess()) {
-                    LinearLayout addedLayout = new LinearLayout(mContext);
+                    LinearLayout addedLayout = new LinearLayout(context);
                     addedLayout.setOrientation(LinearLayout.VERTICAL);
-                    WebView myWebView = new WebView(mContext);
+                    WebView myWebView = new WebView(context);
 
                     // enable webview
-                    Helper.enableDarkModeInWebView(mContext, myWebView);
+                    Helper.enableDarkModeInWebView(context, myWebView);
 
                     String mime = "text/html";
                     String encoding = "utf-8";
                     myWebView.loadDataWithBaseURL("", termAndConditionResponse.getTermsAndConditions(), mime, encoding, "");
                     addedLayout.addView(myWebView);
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(context);
                     dialog.setView(addedLayout);
                     dialog.show();
                 }
@@ -229,8 +230,8 @@ public class SignUpHandler {
     }
 
     public void signIn() {
-        Helper.hideKeyboard((AppCompatActivity) mContext);
-        FragmentHelper.replaceFragment(android.R.id.content, mContext, LoginFragment.newInstance(), LoginFragment.class.getSimpleName(), false, false);
+        Helper.hideKeyboard((AppCompatActivity) context);
+        FragmentHelper.replaceFragment(android.R.id.content, context, LoginFragment.newInstance(), LoginFragment.class.getSimpleName(), false, false);
     }
 
     public boolean isSeller() {
@@ -242,7 +243,7 @@ public class SignUpHandler {
         if (seller) {
             mBinding.countryLayout.setVisibility(View.VISIBLE);
             mBinding.urlLayout.setVisibility(View.VISIBLE);
-            if (AppSharedPref.isTermAndCondition(mContext)) {
+            if (AppSharedPref.isTermAndCondition(context)) {
                 mBinding.marketplaceTncLayout.setVisibility(View.VISIBLE);
             } else {
                 mBinding.marketplaceTncLayout.setVisibility(View.GONE);

@@ -15,6 +15,7 @@
     <color name="appBackground">@color/grey_200</color>
     <color name="windowBackground">@color/grey_200</color>
     <color name="selectedTabBackground">@color/colorPrimary</color>
+    <color name="account_background">#FEE6D1</color>
 
 
 

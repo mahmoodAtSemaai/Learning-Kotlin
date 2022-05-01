@@ -166,9 +166,20 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/taxes"
-                        app:layout_constraintEnd_toEndOf="@+id/tv_total_heading"
+                        app:layout_constraintEnd_toEndOf="@+id/tv_subtotal_heading"
                         app:layout_constraintStart_toStartOf="@+id/tv_subtotal_heading"
                         app:layout_constraintTop_toBottomOf="@id/tv_subtotal_heading" />
+
+                    <TextView
+                        android:id="@+id/tv_points_redeemed_heading"
+                        style="@style/medium_normal_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/semaai_points_redeemed"
+                        app:layout_constraintEnd_toEndOf="@+id/tv_total_heading"
+                        app:layout_constraintStart_toStartOf="@+id/tv_taxes_heading"
+                        app:layout_constraintTop_toBottomOf="@id/tv_taxes_heading"
+                        android:visibility="@{data.pointsRedeemed == null ? View.GONE : View.VISIBLE}"/>
 
                     <TextView
                         android:id="@+id/tv_total_heading"
@@ -181,7 +192,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/tv_total_value"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="@+id/tv_subtotal_heading"
-                        app:layout_constraintTop_toBottomOf="@id/tv_taxes_heading" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_points_redeemed_heading" />
 
                     <TextView
                         android:id="@+id/tv_total_value"
@@ -208,6 +219,21 @@
                         app:layout_constraintStart_toStartOf="@+id/tv_total_value"
                         app:layout_constraintTop_toBottomOf="@+id/tv_subtotal_heading"
                         tools:text="$1000.0000" />
+
+                    <TextView
+                        android:id="@+id/tv_points_redeemed_value"
+                        style="@style/medium_normal_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="1dp"
+                        android:text="@{data.pointsRedeemed.value}"
+                        android:textSize="@dimen/font_size_14"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_points_redeemed_heading"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline10"
+                        app:layout_constraintStart_toStartOf="@+id/tv_total_value"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_taxes_heading"
+                        tools:text="$1000.0000"
+                        android:visibility="@{data.pointsRedeemed == null ? View.GONE : View.VISIBLE}"/>
 
                     <TextView
                         android:id="@+id/tv_subtotal_value"
@@ -240,7 +266,7 @@
                         android:background="@drawable/shape_rectangular_white_bg_gray_border_1dp"
                         android:paddingHorizontal="@dimen/size_12"
                         android:paddingVertical="@dimen/size_8"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         app:layout_constraintEnd_toStartOf="@+id/guideline10"
                         app:layout_constraintStart_toStartOf="@+id/guideline9"
                         app:layout_constraintTop_toBottomOf="@+id/view3">
@@ -267,23 +293,20 @@
                             android:gravity="end"
                             android:text="10.000"
                             app:layout_constraintBottom_toBottomOf="@+id/tv_semaai_points_text"
-                            app:layout_constraintEnd_toStartOf="@+id/iv_semaai_points"
+                            app:layout_constraintEnd_toStartOf="@+id/cb_use_points"
                             app:layout_constraintStart_toEndOf="@+id/tv_semaai_points_text"
                             app:layout_constraintTop_toTopOf="@+id/tv_semaai_points_text"
                             tools:text="10.000" />
 
 
-                        <ImageView
-                            android:id="@+id/iv_semaai_points"
-                            android:layout_width="@dimen/size_16"
-                            android:layout_height="@dimen/size_16"
-                            android:background="@drawable/radio_button_unselected_state"
-                            android:button="@null"
+                        <CheckBox
+                            android:id="@+id/cb_use_points"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:checked="false"
                             app:layout_constraintBottom_toBottomOf="@+id/tv_semaai_points"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="@+id/tv_semaai_points" />
-
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -333,9 +356,7 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
 
             </androidx.core.widget.NestedScrollView>
 

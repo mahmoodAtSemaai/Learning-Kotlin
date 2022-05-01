@@ -224,7 +224,7 @@
             android:background="@color/grey_bg"
             android:gravity="center_horizontal"
             android:paddingBottom="@dimen/size_6"
-            android:text="@{data.amountTotal}"
+            android:text="@{data.grandTotal}"
             android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_confirm_order"

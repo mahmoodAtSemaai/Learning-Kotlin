@@ -41,6 +41,49 @@
                         android:gravity="center"
                         android:orientation="vertical">
 
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_generic"
+                            android:fitsSystemWindows="true"
+                            android:gravity="center_horizontal">
+
+                            <View
+                                style="@style/DividerHorizontal"
+                                android:layout_height="@dimen/points_divider_height"
+                                android:layout_marginTop="@dimen/points_divider_top_margin"/>
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="@dimen/points_box_spacing_external_large"
+                                android:layout_marginTop="@dimen/spacing_generic">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/points_background"
+                                    android:drawableLeft="@drawable/ic_vector_loyalty_points"
+                                    android:drawablePadding="@dimen/points_box_spacing"
+                                    android:drawableStart="@drawable/ic_vector_loyalty_points"
+                                    android:gravity="center|start"
+                                    android:padding="@dimen/points_box_top_margin"
+                                    android:text="@string/points" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/loyalty_points"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textStyle="bold"
+                                    android:gravity="center|end"
+                                    android:padding="@dimen/points_box_top_margin"
+                                    android:text="" />
+
+                            </androidx.cardview.widget.CardView>
+
+                        </RelativeLayout>
+
+
                         <!--BANNER SLIDERS-->
 
                         <androidx.viewpager.widget.ViewPager
