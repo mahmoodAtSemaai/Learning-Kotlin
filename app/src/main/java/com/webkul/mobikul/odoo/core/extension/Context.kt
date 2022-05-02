@@ -1,19 +1,27 @@
 package com.webkul.mobikul.odoo.core.extension
 
+import android.app.Activity
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.net.Uri
+import android.os.Parcelable
 import android.util.DisplayMetrics
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.webkul.mobikul.odoo.R
+import com.webkul.mobikul.odoo.core.utils.Resource
+import com.webkul.mobikul.odoo.helper.AppSharedPref
 import com.webkul.mobikul.odoo.helper.ColorHelper
 import java.io.IOException
 import java.nio.charset.Charset
 
 /**
- * Loads content of file from assets as String using UTF-8 charset
+     * Loads content of file from assets as String using UTF-8 charset
  */
 fun Context.loadFromAsset(jsonName: String): String? {
     var stream: String? = null
@@ -71,4 +79,27 @@ fun Context.getDefaultProgressDialog() : SweetAlertDialog {
     sweetAlertDialog.progressHelper.barColor = ColorHelper.getColor(this, R.attr.colorAccent)
     sweetAlertDialog.setCancelable(false)
     return sweetAlertDialog
+}
+
+fun Context.onPrivacyPolicyClick():Resource<Intent> {
+    val pm: PackageManager = packageManager
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(AppSharedPref.getPrivacyURL(this)))
+    val intents: MutableList<Intent> = ArrayList()
+    val list = pm.queryIntentActivities(intent, 0)
+    for (info in list) {
+        val viewIntent = Intent(intent)
+        viewIntent.component = ComponentName(info.activityInfo.packageName, info.activityInfo.name)
+        viewIntent.setPackage(info.activityInfo.packageName)
+        intents.add(viewIntent)
+    }
+    for (cur in intents) {
+        if (cur.component!!.className.equals(
+                "com.webkul.mobikul.odoo.activity.SplashScreenActivity",
+                ignoreCase = true
+            )
+        ) intents.remove(cur)
+
+    }
+    intent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intents.toTypedArray<Parcelable>())
+    return Resource.Success(intent)
 }
