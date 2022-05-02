@@ -20,7 +20,7 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideAuthRepository(
+    fun provideLoginRepository(
             remoteDataSource: LoginRemoteDataSource,
             appPreferences: AppPreferences
     ): LoginRepository = LoginRepositoryImpl(remoteDataSource,appPreferences)
