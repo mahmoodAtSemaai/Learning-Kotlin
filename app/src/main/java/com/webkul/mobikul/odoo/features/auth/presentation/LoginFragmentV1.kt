@@ -1,7 +1,7 @@
 package com.webkul.mobikul.odoo.features.auth.presentation
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -12,7 +12,7 @@ import com.webkul.mobikul.odoo.core.extension.getDefaultProgressDialog
 import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
 import com.webkul.mobikul.odoo.databinding.FragmentLoginV1Binding
-import com.webkul.mobikul.odoo.features.auth.domain.enums.AuthFieldsValidation
+import com.webkul.mobikul.odoo.features.auth.domain.enums.LoginFieldsValidation
 import com.webkul.mobikul.odoo.helper.ApiRequestHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -42,6 +42,7 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
     }
 
     private fun setObservers() {
+
         lifecycleScope.launchWhenCreated {
             viewModel.state.collect {
                 render(it)
@@ -73,14 +74,14 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
             is LoginState.Error -> {
                 progressDialog.dismiss()
 
-                val error = state.error
+              //  val error = state.error
             }
             is LoginState.InvalidLoginDetailsError -> {
                 progressDialog.dismiss()
                 when (state.uiError.value) {
-                    AuthFieldsValidation.EMPTY_EMAIL.value -> setEmptyUsernameError()
-                    AuthFieldsValidation.EMPTY_PASSWORD.value -> setEmptyPasswordError()
-                    AuthFieldsValidation.INVALID_PASSWORD.value -> setInvalidPasswordError()
+                    LoginFieldsValidation.EMPTY_EMAIL.value -> setEmptyUsernameError()
+                    LoginFieldsValidation.EMPTY_PASSWORD.value -> setEmptyPasswordError()
+                    LoginFieldsValidation.INVALID_PASSWORD.value -> setInvalidPasswordError()
                 }
             }
             is LoginState.PrivacyPolicy -> {
@@ -108,7 +109,6 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
 
     private fun onPrivacyPolicyClicked() {
         triggerIntent(LoginIntent.PrivacyPolicy)
-        Log.d("testing", "Intent trigered")
     }
 
 

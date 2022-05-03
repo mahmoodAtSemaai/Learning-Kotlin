@@ -1,13 +1,12 @@
 package com.webkul.mobikul.odoo.features.auth.presentation
 
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.webkul.mobikul.odoo.core.data.local.AppPreferences
 import com.webkul.mobikul.odoo.core.mvicore.IModel
 import com.webkul.mobikul.odoo.core.platform.BaseViewModel
 import com.webkul.mobikul.odoo.core.utils.Resource
-import com.webkul.mobikul.odoo.features.auth.domain.enums.AuthFieldsValidation
+import com.webkul.mobikul.odoo.features.auth.domain.enums.LoginFieldsValidation
 import com.webkul.mobikul.odoo.features.auth.domain.usecase.LogInUseCase
 import com.webkul.mobikul.odoo.features.auth.domain.usecase.ViewPrivacyPolicyUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +21,6 @@ class LoginViewModel @Inject constructor(
     private val viewPrivacyPolicyUseCase: ViewPrivacyPolicyUseCase
 ) : BaseViewModel(), IModel<LoginState, LoginIntent> {
 
-    val loginIntent = Channel<LoginIntent>(Channel.UNLIMITED)
 
     override val intents: Channel<LoginIntent> = Channel<LoginIntent>(Channel.UNLIMITED)
 
@@ -42,8 +40,6 @@ class LoginViewModel @Inject constructor(
                     is LoginIntent.Login -> loginUser(it.username, it.password)
                     is LoginIntent.PrivacyPolicy -> {
                         viewPrivacyPolicy()
-                        Log.d("testing" , "Intent recived 1 ")
-
                     }
                 }
             }
@@ -52,8 +48,6 @@ class LoginViewModel @Inject constructor(
 
     private fun viewPrivacyPolicy() {
         viewModelScope.launch {
-            Log.d("testing" , "Intent recived 2 ")
-
             _state.value = LoginState.Loading
             _state.value = try {
                 val intent = viewPrivacyPolicyUseCase.invoke()
@@ -62,7 +56,7 @@ class LoginViewModel @Inject constructor(
                 intent.collect{
                     loginState = when(it){
                         is  Resource.Default -> TODO()
-                        is Resource.Failure -> LoginState.Error("Error Message")
+                        is Resource.Failure -> LoginState.Error(it.message)
                         is  Resource.Loading -> LoginState.Loading
                         is Resource.Success -> LoginState.PrivacyPolicy(it.value)
                     }
@@ -85,14 +79,11 @@ class LoginViewModel @Inject constructor(
                 var loginState: LoginState = LoginState.Idle
 
                 login.catch {
-                    when (it.message?.toInt()) {
-                        AuthFieldsValidation.EMPTY_EMAIL.value -> loginState =
-                            LoginState.InvalidLoginDetailsError(AuthFieldsValidation.EMPTY_EMAIL)
-                        AuthFieldsValidation.EMPTY_PASSWORD.value -> loginState =
-                            LoginState.InvalidLoginDetailsError(AuthFieldsValidation.EMPTY_PASSWORD)
-                        AuthFieldsValidation.INVALID_PASSWORD.value -> loginState =
-                            LoginState.InvalidLoginDetailsError(AuthFieldsValidation.INVALID_PASSWORD)
-                    }
+                        when(it.message?.toInt()){
+                            LoginFieldsValidation.EMPTY_EMAIL.value -> loginState =  LoginState.InvalidLoginDetailsError(LoginFieldsValidation.EMPTY_EMAIL)
+                            LoginFieldsValidation.EMPTY_PASSWORD.value ->loginState =  LoginState.InvalidLoginDetailsError(LoginFieldsValidation.EMPTY_PASSWORD)
+                            LoginFieldsValidation.INVALID_PASSWORD.value ->loginState =  LoginState.InvalidLoginDetailsError(LoginFieldsValidation.INVALID_PASSWORD)
+                        }
                 }.collect {
                     when (it) {
                         is Resource.Default -> {}
@@ -107,6 +98,7 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
+
 
 
 }

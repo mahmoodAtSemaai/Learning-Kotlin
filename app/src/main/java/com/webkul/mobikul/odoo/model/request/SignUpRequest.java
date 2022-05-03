@@ -52,6 +52,10 @@ public class SignUpRequest extends RegisterDeviceTokenRequest {
         this.idCountry = countryID;
     }
 
+   /* public SignUpRequest toSignUpRequest(){
+
+    }*/
+
     public SignUpRequest(Context context, String name, String login, @NonNull String password, boolean isSocialLogin, String authProvider, String authUserId) {
         this(context, name, login, password, isSocialLogin, false, "", "");
         mAuthProvider = authProvider;
