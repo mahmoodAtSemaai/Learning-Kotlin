@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.databinding.ItemViewPagerHomeBannerBinding;
 import com.webkul.mobikul.odoo.handler.home.HomeBannerHandler;
@@ -24,6 +25,7 @@ public class HomeBannerAdapter extends PagerAdapter {
     private List<BannerImageData> mBannerImageDatas;
     ViewPager viewPager;
     List<BannerImageData> list;
+    TabLayout dotstablayout;
 
     public HomeBannerAdapter(Context context, List<BannerImageData> bannerImageDatas, ViewPager viewPager) {
         mContext = context;
@@ -46,9 +48,7 @@ public class HomeBannerAdapter extends PagerAdapter {
         itemViewPagerBannerBinding.setHandler(new HomeBannerHandler(mContext, mBannerImageDatas.get(position)));
         itemViewPagerBannerBinding.executePendingBindings();
         container.addView(itemViewPagerBannerBinding.getRoot());
-        if (position == mBannerImageDatas.size() - 1) {
-            viewPager.post(runnable);
-        }
+
         return (itemViewPagerBannerBinding.getRoot());
     }
 
@@ -62,11 +62,4 @@ public class HomeBannerAdapter extends PagerAdapter {
         return view == object;
     }
 
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            mBannerImageDatas.addAll(list);
-            notifyDataSetChanged();
-        }
-    };
 }

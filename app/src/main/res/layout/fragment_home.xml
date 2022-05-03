@@ -62,10 +62,10 @@
                     android:layout_height="wrap_content"
                     app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                       >
 
                         <androidx.viewpager.widget.ViewPager
                             android:id="@+id/banner_view_pager"
@@ -74,7 +74,6 @@
                             android:clipToPadding="true"
                             android:nestedScrollingEnabled="false"
                             android:scaleType="fitCenter"
-                            app:layout_constraintTop_toBottomOf="@id/featured_categories_rv"
                             tools:ignore="UnusedAttribute" />
 
 
@@ -82,23 +81,24 @@
                             android:id="@+id/banner_dots_tab_layout"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/tab_dot_switcher_height"
-                            android:layout_marginBottom="@dimen/spacing_generic"
                             android:visibility="@{data.bannerImages.empty? View.GONE : View.VISIBLE}"
-                            app:layout_constraintTop_toBottomOf="@id/banner_view_pager"
                             app:tabBackground="@drawable/selector_dots_tab_layout"
                             app:tabGravity="center"
                             app:tabIndicatorHeight="0dp"
+                            android:layout_alignParentBottom="true"
+                            android:paddingBottom="@dimen/size_10"
                             app:tabPaddingStart="@dimen/spacing_generic"
                             tools:background="@color/bb_tabletRightBorderDark" />
 
                         <View
                             android:id="@+id/divider_1"
+                            android:visibility="gone"
                             android:layout_width="match_parent"
-                            android:layout_height="3dp"
+                            android:layout_height="@dimen/dimen_3dp"
                             android:background="@color/grey_300"
                             app:layout_constraintTop_toBottomOf="@id/banner_dots_tab_layout" />
 
-                    </LinearLayout>
+                    </RelativeLayout>
 
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
 

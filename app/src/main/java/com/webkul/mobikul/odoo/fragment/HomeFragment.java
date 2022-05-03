@@ -51,6 +51,7 @@ import com.webkul.mobikul.odoo.model.customer.address.AddressData;
 import com.webkul.mobikul.odoo.model.customer.address.AddressFormResponse;
 import com.webkul.mobikul.odoo.model.customer.address.MyAddressesResponse;
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.StateListResponse;
+import com.webkul.mobikul.odoo.model.generic.BannerImageData;
 import com.webkul.mobikul.odoo.model.generic.FeaturedCategoryData;
 import com.webkul.mobikul.odoo.model.generic.StateData;
 import com.webkul.mobikul.odoo.model.home.HomePageResponse;
@@ -200,6 +201,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         }
         if(!isImageVisible) binding.appBarLayout.setVisibility(View.GONE);
 
+        binding.bannerDotsTabLayout.setupWithViewPager(binding.bannerViewPager, true);
         binding.bannerViewPager.setAdapter(new HomeBannerAdapter(getContext(), homePageResponse.getBannerImages() , binding.bannerViewPager));
 
 
@@ -223,9 +225,13 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
             }
         });
 
-        runnable  = () -> binding.bannerViewPager.setCurrentItem(binding.bannerViewPager.getCurrentItem()+1);
-
-
+        runnable  = () -> {
+            int position = binding.bannerViewPager.getCurrentItem();
+            if(position < homePageResponse.getBannerImages().size() -1)
+            binding.bannerViewPager.setCurrentItem(position + 1);
+            else
+            binding.bannerViewPager.setCurrentItem(0);
+        };
     }
 
     public void fetchExistingAddresses() {

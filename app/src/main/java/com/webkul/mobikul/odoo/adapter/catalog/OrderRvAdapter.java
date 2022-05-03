@@ -3,8 +3,12 @@ package com.webkul.mobikul.odoo.adapter.catalog;
 import android.content.Context;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +20,7 @@ import com.webkul.mobikul.odoo.model.customer.order.OrderData;
 
 import java.util.List;
 
-/**
- * Webkul Software.
- *
- * @author Webkul <support@webkul.com>
- * @package Mobikul App
- * @Category Mobikul
- * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
- * @license https://store.webkul.com/license.html ASL Licence
- * @link https://store.webkul.com/license.html
- */
-
-public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> {
+public class OrderRvAdapter extends RecyclerView.Adapter<OrderRvAdapter.ViewHolder> {
     @SuppressWarnings("unused")
     private static final String TAG = "OrderRvAdapter";
 
@@ -35,7 +28,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     private final List<OrderData> mOrderDatas;
     private final String mSourceActivity;
 
-    public OrderAdapter(Context context, List<OrderData> orderDatas, String sourceActivity) {
+    public OrderRvAdapter(Context context, List<OrderData> orderDatas, String sourceActivity) {
         mContext = context;
         mOrderDatas = orderDatas;
         mSourceActivity = sourceActivity;
@@ -58,6 +51,20 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         holder.mBinding.setData(orderData);
         holder.mBinding.setHandler(new OrderItemHandler(mContext, orderData, mSourceActivity));
         holder.mBinding.executePendingBindings();
+
+        holder.mBinding.orderLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                NavController navController = Navigation.findNavController(view);
+
+                Fragment fragment = new Fragment();
+                Bundle bundle = new Bundle();
+                bundle.putInt("orderid" , Integer.parseInt(mOrderDatas.get(holder.getAdapterPosition()).getId()));
+                fragment.setArguments(bundle);
+                navController.navigate(R.id.action_orderListFragment_to_orderFragment , bundle);
+            }
+        });
     }
 
     @Override

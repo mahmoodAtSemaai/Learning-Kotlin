@@ -31,10 +31,11 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:id="@+id/order_layout"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:foreground="?attr/selectableItemBackground"
-        android:onClick="@{()->handler.viewOrderDetail()}">
+        >
 
         <TableLayout
             android:layout_width="match_parent"

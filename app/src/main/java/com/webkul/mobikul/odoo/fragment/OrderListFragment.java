@@ -7,23 +7,20 @@ import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.webkul.mobikul.odoo.R;
-import com.webkul.mobikul.odoo.adapter.catalog.OrderAdapter;
-import com.webkul.mobikul.odoo.adapter.catalog.OrdersAdapter;
+import com.webkul.mobikul.odoo.adapter.catalog.OrderRvAdapter;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.databinding.FragmentOrderListBinding;
-import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.FragmentHelper;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.IntentHelper;
@@ -44,6 +41,8 @@ public class OrderListFragment extends BaseFragment {
     private boolean mIsFirstCall = true;
     private int mOffset;
     private int pageSize = 10;
+    NavController navController;
+
 
 
     public static OrderListFragment newInstance() {
@@ -58,6 +57,12 @@ public class OrderListFragment extends BaseFragment {
     }
 
 
+    @Override
+    public void onViewCreated(@androidx.annotation.NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
+
+    }
 
     private void setOffsetData() {
         mIsFirstCall = true;
@@ -115,7 +120,7 @@ public class OrderListFragment extends BaseFragment {
                         }
                     }
                 });
-                binding.orderRv.setAdapter(new OrdersAdapter(getContext(), binding.getData().getOrders(), TAG));
+                binding.orderRv.setAdapter(new OrderRvAdapter(getContext(), binding.getData().getOrders(), TAG));
             }
         } else {
             binding.getData().setLazyLoading(false);

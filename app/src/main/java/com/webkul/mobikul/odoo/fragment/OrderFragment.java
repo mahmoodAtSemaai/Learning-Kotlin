@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.navigation.NavArgs;
 import androidx.recyclerview.widget.DividerItemDecoration;
 
 import android.view.LayoutInflater;
@@ -93,10 +94,12 @@ public class OrderFragment extends BaseFragment {
     }
 
     private int getOrderIdFromArguments() {
-        if (getArguments().containsKey(BUNDLE_KEY_CHECKOUT))
-            ((FragmentContainerActivity) getActivity()).setToolbarText(getArguments().getString(BUNDLE_KEY_CHECKOUT));
-        return Integer.parseInt(getArguments().getString(BUNDLE_KEY_ORDER_ID));
+        assert getArguments() != null;
+        return getArguments().getInt("orderid");
     }
+
+
+
 
 
     private void getOrderDetails(int orderId) {
@@ -126,11 +129,16 @@ public class OrderFragment extends BaseFragment {
     }
 
     private void handleOrderDataResponse(OrderDataResponse orderDataResponse) {
-        binding.setData(orderDataResponse);
-        setTextOnViews(orderDataResponse);
-        binding.executePendingBindings();
-        setupRecyclerView(orderDataResponse);
-        setViewGroupVisibility(orderDataResponse);
+        try{
+            binding.setData(orderDataResponse);
+            setTextOnViews(orderDataResponse);
+            binding.executePendingBindings();
+            setupRecyclerView(orderDataResponse);
+            setViewGroupVisibility(orderDataResponse);
+        }catch (Exception e){
+            Toast.makeText(getContext() , R.string.error_something_went_wrong , Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 
@@ -181,13 +189,13 @@ public class OrderFragment extends BaseFragment {
     }
 
     private void setTextOnViews(OrderDataResponse orderDataResponse) {
-        String codText = getString(R.string.cod_text);
-        String paymentMode = orderDataResponse.getPaymentMode().equalsIgnoreCase(codText) ?
-                codText : orderDataResponse.getBank().getName() + " " + orderDataResponse.getPaymentMode();
-        OrderPaymentData orderPaymentData = new OrderPaymentData(paymentMode, orderDataResponse.getAmountTotal(),
-                "(" + orderDataResponse.getItems().size() + " " + getString(R.string.product) + ")", "", orderDataResponse.getDelivery().getTotal(), "",
-                orderDataResponse.getAmountTotal());
-        binding.paymentDetails.setData(orderPaymentData);
+            String codText = getString(R.string.cod_text);
+            String paymentMode = orderDataResponse.getPaymentMode().equalsIgnoreCase(codText) ?
+                    codText : orderDataResponse.getBank().getName() + " " + orderDataResponse.getPaymentMode();
+            OrderPaymentData orderPaymentData = new OrderPaymentData(paymentMode, orderDataResponse.getAmountTotal(),
+                    "(" + orderDataResponse.getItems().size() + " " + getString(R.string.product) + ")", "", orderDataResponse.getDelivery().getTotal(), "",
+                    orderDataResponse.getAmountTotal());
+            binding.paymentDetails.setData(orderPaymentData);
     }
 
 

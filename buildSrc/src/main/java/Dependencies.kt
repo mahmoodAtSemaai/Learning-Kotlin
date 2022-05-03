@@ -83,7 +83,7 @@ object DepVersions {
     const val materialishProgress = "1.0"
     const val navigation = "2.4.1"
     const val navigationfragment="1.4.0"
-    const val nav_version = "2.3.5"
+    const val nav_version = "2.4.1"
 
 
     //appMarketPlace Modules

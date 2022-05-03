@@ -20,7 +20,10 @@
         android:id="@+id/container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spacing_generic">
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginBottom="4dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -32,7 +35,7 @@
                 android:id="@+id/product_iv"
                 android:layout_width="@dimen/size_45"
                 android:layout_gravity="center_horizontal"
-                android:layout_height="@dimen/size_45"
+                android:layout_height="@dimen/size_50"
                 android:background="@color/activityBackground"
                 android:scaleType="fitXY"
                 app:imageType="@{ImageType.PRODUCT_TINY}"
@@ -44,21 +47,18 @@
 
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/size_75"
                 android:id="@+id/category_name"
-                android:layout_height="match_parent"
+                android:layout_height="@dimen/size_32"
                 android:gravity="center"
-                android:maxLines="1"
-                android:paddingBottom="@dimen/spacing_tiny"
-                android:paddingEnd="@dimen/spacing_tiny"
-                android:paddingLeft="@dimen/spacing_tiny"
-                android:paddingRight="@dimen/spacing_tiny"
-                android:paddingStart="@dimen/spacing_tiny"
-                android:paddingTop="@dimen/spacing_tiny"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:paddingBottom="@dimen/size_1"
+                android:paddingTop="@dimen/size_1"
+                app:htmlText="@{data.categoryName}"
                 android:textAllCaps="false"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/text_size_min"
-                app:htmlText="@{data.categoryName}"
+                android:textSize="@dimen/font_size_12"
                 tools:text="Magento" />
 
         </LinearLayout>
@@ -67,3 +67,4 @@
     </LinearLayout>
 
 </layout>
+
