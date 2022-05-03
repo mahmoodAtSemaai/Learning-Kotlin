@@ -46,6 +46,7 @@ import com.webkul.mobikul.odoo.model.extra.SplashScreenActivityData;
 import com.webkul.mobikul.odoo.model.extra.SplashScreenResponse;
 import com.webkul.mobikul.odoo.model.home.HomePageResponse;
 import com.webkul.mobikul.odoo.model.user.UserModel;
+import com.webkul.mobikul.odoo.updates.AppUpdateHelper;
 
 import java.util.Map;
 
@@ -56,24 +57,17 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
 
 /**
-
  * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
+ *
  * @author Webkul <support@webkul.com>
-
+ * @package Mobikul App
+ * @Category Mobikul
  * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
  * @license https://store.webkul.com/license.html ASL Licence
-
  * @link https://store.webkul.com/license.html
-
  */
 
-public class SplashScreenActivity extends BaseActivity  {
+public class SplashScreenActivity extends BaseActivity {
     @SuppressWarnings("unused")
     private static final String TAG = "SplashActivity";
     private static final int RC_UPDATE_APP_FROM_PLAYSTORE = 1;
@@ -91,9 +85,9 @@ public class SplashScreenActivity extends BaseActivity  {
         if (!AppSharedPref.getLanguageCode(this).isEmpty()) {
             BaseActivity.setLocale(this, false);
         }
-        if (AppSharedPref.getUserAnalyticsId(this) == null && AppSharedPref.isLoggedIn(SplashScreenActivity.this) ) {
+        if (AppSharedPref.getUserAnalyticsId(this) == null && AppSharedPref.isLoggedIn(SplashScreenActivity.this)) {
 
-            ApiConnection.getUserAnalytics(this).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()) .subscribe(new CustomObserver<UserAnalyticsResponse>(this) {
+            ApiConnection.getUserAnalytics(this).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<UserAnalyticsResponse>(this) {
                 @Override
                 public void onNext(@androidx.annotation.NonNull UserAnalyticsResponse userAnalyticsResponse) {
 
@@ -103,7 +97,7 @@ public class SplashScreenActivity extends BaseActivity  {
                             userAnalyticsResponse.getName(),
                             userAnalyticsResponse.isSeller()
                     ));
-                   AppSharedPref.setUserAnalyticsId(getBaseContext(), userAnalyticsResponse.getAnalyticsId());
+                    AppSharedPref.setUserAnalyticsId(getBaseContext(), userAnalyticsResponse.getAnalyticsId());
                     callApi();
                     super.onNext(userAnalyticsResponse);
                 }
@@ -115,16 +109,13 @@ public class SplashScreenActivity extends BaseActivity  {
                     callApi();
                 }
             });
-        }
-        else
-        {
+        } else {
             int darkModeFlag = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
             boolean isDark = AppSharedPref.isDarkMode(this);
             if (isDark || darkModeFlag == Configuration.UI_MODE_NIGHT_YES) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 AppSharedPref.setDarkMode(this, true);
-            }
-            else{
+            } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             }
 
@@ -138,8 +129,6 @@ public class SplashScreenActivity extends BaseActivity  {
 
 
     }
-
-
 
 
     @Override
@@ -168,7 +157,7 @@ public class SplashScreenActivity extends BaseActivity  {
 
 
         if (AppSharedPref.isLoggedIn(SplashScreenActivity.this) || AppSharedPref.isAllowedGuestCheckout(this)) {
-            Log.d("TAG", "SplashScreenActivity callApi isNetworkAvailable :-->" +NetworkHelper.isNetworkAvailable(SplashScreenActivity.this));
+            Log.d("TAG", "SplashScreenActivity callApi isNetworkAvailable :-->" + NetworkHelper.isNetworkAvailable(SplashScreenActivity.this));
             if (NetworkHelper.isNetworkAvailable(this)) {
                 initSplashScreenAPI();
             } else {
@@ -186,7 +175,12 @@ public class SplashScreenActivity extends BaseActivity  {
 
         } else {
             Log.d("TAG", "SplashScreenActivity callApi :--> else waale part mein gaaya h ");
-            Intent i = new Intent(SplashScreenActivity.this, SignInSignUpActivityV1.class);
+            Intent i;
+            if (AppUpdateHelper.getAuthRevampEnabled()) {
+                i = new Intent(SplashScreenActivity.this, SignInSignUpActivityV1.class);
+            } else {
+                i = new Intent(SplashScreenActivity.this, SignInSignUpActivity.class);
+            }
             i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, SplashScreenActivity.class.getSimpleName());
             getSplashPageData(i);
         }
@@ -199,10 +193,10 @@ public class SplashScreenActivity extends BaseActivity  {
         Observable.zip(splashScreenDataObservable, homePageResponseObservable, (SplashScreenResponse splashScreenResponse, HomePageResponse homePageResponse) -> {
             splashScreenResponse.updateSharedPref(SplashScreenActivity.this);
             new SaveData(SplashScreenActivity.this, splashScreenResponse);
-            if (splashScreenResponse.isAccessDenied()){
+            if (splashScreenResponse.isAccessDenied()) {
                 homePageResponse.setAccessDenied(true);
             }
-            if (homePageResponse.isAccessDenied()){
+            if (homePageResponse.isAccessDenied()) {
                 homePageResponse.setAccessDenied(true);
             }
             return homePageResponse;
@@ -217,7 +211,7 @@ public class SplashScreenActivity extends BaseActivity  {
                     startActivity(intent);
                 } else {
 
-                    if (homePageResponse.isAccessDenied()){
+                    if (homePageResponse.isAccessDenied()) {
                         AlertDialogHelper.showDefaultWarningDialogWithDismissListener(SplashScreenActivity.this, getString(R.string.error_login_failure), getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
@@ -228,7 +222,7 @@ public class SplashScreenActivity extends BaseActivity  {
                                 getSplashPageData(i);
                             }
                         });
-                    }else {
+                    } else {
 
                         AlertDialogHelper.showDefaultWarningDialog(SplashScreenActivity.this, getString(R.string.error_login_failure), homePageResponse.getMessage());
                     }
@@ -256,7 +250,7 @@ public class SplashScreenActivity extends BaseActivity  {
                     @Override
                     public void onNext(@androidx.annotation.NonNull SplashScreenResponse splashScreenResponse) {
                         super.onNext(splashScreenResponse);
-                        if(!splashScreenResponse.isUserApproved()) {
+                        if (!splashScreenResponse.isUserApproved()) {
                             // user not approved => redirect to user unapproved screen
                             IntentHelper.goToUserUnapprovedScreen(SplashScreenActivity.this);
                             finish();
@@ -284,10 +278,10 @@ public class SplashScreenActivity extends BaseActivity  {
                     @Override
                     public void onNext(@androidx.annotation.NonNull HomePageResponse homePageResponse) {
                         super.onNext(homePageResponse);
-                        if (splashScreenResponse.isAccessDenied()){
+                        if (splashScreenResponse.isAccessDenied()) {
                             homePageResponse.setAccessDenied(true);
                         }
-                        if (homePageResponse.isAccessDenied()){
+                        if (homePageResponse.isAccessDenied()) {
                             homePageResponse.setAccessDenied(true);
                         }
                         if (homePageResponse.isSuccess()) {
@@ -297,7 +291,7 @@ public class SplashScreenActivity extends BaseActivity  {
                             startActivity(intent);
                         } else {
 
-                            if (homePageResponse.isAccessDenied()){
+                            if (homePageResponse.isAccessDenied()) {
                                 AlertDialogHelper.showDefaultWarningDialogWithDismissListener(SplashScreenActivity.this, getString(R.string.error_login_failure), getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
                                     @Override
                                     public void onClick(SweetAlertDialog sweetAlertDialog) {
@@ -308,7 +302,7 @@ public class SplashScreenActivity extends BaseActivity  {
                                         getSplashPageData(i);
                                     }
                                 });
-                            }else {
+                            } else {
 
                                 AlertDialogHelper.showDefaultWarningDialog(SplashScreenActivity.this, getString(R.string.error_login_failure), homePageResponse.getMessage());
                             }
@@ -368,7 +362,6 @@ public class SplashScreenActivity extends BaseActivity  {
         ApiConnection.getSplashPageData(this).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(splashSubscriber);
     }
-
 
 
     private Intent getNotificationIntent() {
