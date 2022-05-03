@@ -143,7 +143,6 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         }
         new SaveData(getActivity(), homePageResponse);
         loadHomePage(homePageResponse, false);
-        getLoyaltyPoints();
     }
 
     private void hitApiForFetchingData() {
@@ -164,7 +163,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
                     binding.refreshLayout.setRefreshing(false);
             }
         });
-        getLoyaltyPoints();
+
 
     }
 
@@ -374,33 +373,9 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         AppSharedPref.clearCustomerData(getContext());
     }
 
-    public void getLoyaltyPoints() {
-        hitApiForLoyaltyPoints(AppSharedPref.getCustomerId(getContext()));
-    }
 
-    public void hitApiForLoyaltyPoints(String userId){
-        ApiConnection.getLoyaltyPoints(getContext(), userId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<ReferralResponse>(getContext()) {
 
-            @Override
-            public void onNext(@io.reactivex.annotations.NonNull ReferralResponse response) {
-                super.onNext(response);
-                handleLoyaltyPointsResponse(response);
-            }
-        });
-    }
 
-    public void handleLoyaltyPointsResponse(ReferralResponse response) {
-        if (response.getStatus() == ApplicationConstant.SUCCESS) {
-            showPoints(response.getRedeemHistory());
-        }
-        else {
-            SnackbarHelper.getSnackbar((Activity) getContext(), response.getMessage(), Snackbar.LENGTH_LONG, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
-        }
-    }
-
-    public void showPoints(Integer loyaltyPoints) {
-        binding.loyaltyPoints.setText(loyaltyPoints.toString());
-    }
 
     @Override
     public void onStart() {

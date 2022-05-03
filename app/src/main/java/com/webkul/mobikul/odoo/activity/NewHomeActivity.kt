@@ -1,31 +1,29 @@
 package com.webkul.mobikul.odoo.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.*
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.webkul.mobikul.odoo.R
-import com.webkul.mobikul.odoo.adapter.cart.BagItemsRecyclerAdapter
 import com.webkul.mobikul.odoo.connection.ApiConnection
 import com.webkul.mobikul.odoo.connection.CustomObserver
+import com.webkul.mobikul.odoo.constant.ApplicationConstant
 import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE
 import com.webkul.mobikul.odoo.databinding.ActivityNewHomeBinding
-import com.webkul.mobikul.odoo.fragment.EmptyFragment
-import com.webkul.mobikul.odoo.handler.bag.BagActivityHandler
 import com.webkul.mobikul.odoo.handler.home.FragmentNotifier.HomeActivityFragments
 import com.webkul.mobikul.odoo.helper.*
-import com.webkul.mobikul.odoo.model.cart.BagResponse
+import com.webkul.mobikul.odoo.model.ReferralResponse
 import com.webkul.mobikul.odoo.model.home.HomePageResponse
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -63,6 +61,7 @@ class NewHomeActivity : BaseActivity() {
         //Open the Navigation Drawer
         openDrawer()
         getBagItemsCount()
+        getLoyaltyPoints()
 
 
          binding.searchView.setOnClickListener{
@@ -95,6 +94,39 @@ class NewHomeActivity : BaseActivity() {
 
     override fun getScreenTitle(): String = TAG
 
+    fun getLoyaltyPoints() {
+        hitApiForLoyaltyPoints(AppSharedPref.getCustomerId(this@NewHomeActivity))
+    }
+
+    fun hitApiForLoyaltyPoints(userId: String?) {
+        ApiConnection.getLoyaltyPoints(this@NewHomeActivity, userId).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : CustomObserver<ReferralResponse?>(this@NewHomeActivity) {
+                override fun onNext(response: ReferralResponse) {
+                    super.onNext(response)
+                    handleLoyaltyPointsResponse(response)
+                }
+            })
+    }
+
+    fun handleLoyaltyPointsResponse(response: ReferralResponse) {
+        if (response.status == ApplicationConstant.SUCCESS) {
+            showPoints(response.redeemHistory)
+        } else {
+            SnackbarHelper.getSnackbar(
+                (this@NewHomeActivity as Activity?)!!,
+                response.message,
+                Snackbar.LENGTH_LONG,
+                SnackbarHelper.SnackbarType.TYPE_WARNING
+            ).show()
+        }
+    }
+
+
+    fun showPoints(loyaltyPoints: Int) {
+        binding.loyaltyPoints.text=loyaltyPoints.toString()
+    }
+
     private fun setupUIController() {
          navController = Navigation.findNavController(this, R.id.home_nav_host)
         val bottomNavigationView: BottomNavigationView = binding.homeBottomNav
@@ -118,6 +150,7 @@ class NewHomeActivity : BaseActivity() {
 
     override fun onResume() {
         getBagItemsCount()
+        getLoyaltyPoints()
         super.onResume()
     }
 

@@ -44,7 +44,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/search_view"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/font_weight_0"
                     android:layout_height="@dimen/search_item_view"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
@@ -55,27 +55,98 @@
                     android:gravity="center"
                     android:hint="@string/search_all_products_hint"
                     android:paddingStart="@dimen/padding_start"
+                    android:layout_marginEnd="@dimen/size_5"
                     android:paddingLeft="@dimen/padding_start"
                     android:paddingEnd="@dimen/padding_end"
                     android:paddingRight="@dimen/padding_end"
-                    android:textSize="@dimen/font_size_12">
+                    android:textSize="@dimen/font_size_12"
+                    android:layout_marginRight="5dp">
 
                 </androidx.appcompat.widget.AppCompatTextView>
 
-                <Space
+                <RelativeLayout
                     android:layout_width="@dimen/font_weight_0"
+                    android:layout_weight="2.5"
+                    android:layout_marginEnd="@dimen/size_6"
+                    android:backgroundTint="@color/background_appbar_color"
                     android:layout_height="match_parent"
-                    android:layout_weight="2.5">
+                    android:background="@drawable/search_background"
+                    android:gravity="center_horizontal"
+                    android:layout_marginRight="@dimen/size_8">
 
-                </Space>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/search_item_view"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/search_background"
+
+                        >
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="@dimen/size_29"
+                            android:layout_marginLeft="@dimen/size_27"
+                            android:layout_marginTop="@dimen/size_4"
+                            android:layout_marginEnd="@dimen/size_2"
+                            android:layout_marginRight="@dimen/size_1"
+                            android:layout_marginBottom="@dimen/size_6"
+                            android:orientation="vertical"
+                            android:weightSum="10">
+
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/font_weight_0"
+                                android:layout_weight="5"
+                                android:drawablePadding="@dimen/points_box_spacing"
+                                android:gravity="center|start"
+                                android:text="@string/points"
+                                android:textAlignment="textStart"
+                                android:textSize="@dimen/font_size_9" />
+
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/loyalty_points"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/font_weight_0"
+                                android:layout_weight="5"
+                                android:gravity="start"
+                                android:text=""
+                                android:textAlignment="textStart"
+                                android:textSize="@dimen/size_10"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="@dimen/size_25"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="@dimen/size_2"
+                            android:layout_marginLeft="@dimen/size_2"
+                            android:layout_marginTop="@dimen/size_10"
+                            android:layout_marginBottom="@dimen/size_10"
+                            android:src="@drawable/points"
+                             >
+
+
+                        </androidx.appcompat.widget.AppCompatImageView>
+
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/chat_icon"
                     android:layout_width="@dimen/font_weight_0"
                     android:layout_height="@dimen/hamburger_icon_dimens"
-                    android:visibility="invisible"
                     android:layout_gravity="center"
                     android:layout_weight="1"
+                    android:visibility="invisible"
                     android:foregroundGravity="center_vertical"
                     android:src="@drawable/chat_icon" />
 

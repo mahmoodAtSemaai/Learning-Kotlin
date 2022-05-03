@@ -222,6 +222,8 @@ public class HomeActivity extends BaseActivity implements OnTabSelectListener,/*
         }
     }
 
+
+
     private void showNotificationFrag() {
         if (!mSupportFragmentManager.popBackStackImmediate(NotificationFragment.class.getSimpleName(), 0)) { //fragment not in back stack, create it.
             FragmentHelper.replaceFragment(R.id.container, this, NotificationFragment.newInstance(), NotificationFragment.class.getSimpleName(), true, true);
