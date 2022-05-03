@@ -16,6 +16,9 @@ class AppPreferences @Inject constructor(private val context: Context) {
         private const val KEY_CUSTOMER_LOGIN_BASE_64_STR = "CUSTOMER_LOGIN_BASE_64_STR"
         private const val KEY_CUSTOMER_IS_SOCIAL_LOGGED_IN = "CUSTOMER_IS_SOCIAL_LOGGED_IN"
         private const val KEY_LANGUAGE_CODE = "language_code"
+
+        private const val PRIVACY_POLICY_URL = "PRIVACY_POLICY_URL"
+
     }
 
     private val customerPreferences: SharedPreferences = context.getSharedPreferences(CUSTOMER_PREF_NAME, MODE)
@@ -55,4 +58,7 @@ class AppPreferences @Inject constructor(private val context: Context) {
         set(value) = customerPreferences.edit {
             it.putString(KEY_CUSTOMER_LOGIN_BASE_64_STR,value)
         }
+
+    val privacyUrl: String?
+    get() = splashPreferences.getString(PRIVACY_POLICY_URL,"")
 }

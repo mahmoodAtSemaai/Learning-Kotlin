@@ -1,7 +1,7 @@
 package com.webkul.mobikul.odoo.features.auth.presentation
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -9,24 +9,23 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import com.webkul.mobikul.odoo.BuildConfig
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.core.extension.getDefaultProgressDialog
-import com.webkul.mobikul.odoo.core.mvicore.IIntent
 import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
 import com.webkul.mobikul.odoo.databinding.FragmentLoginV1Binding
 import com.webkul.mobikul.odoo.features.auth.domain.enums.AuthFieldsValidation
-import com.webkul.mobikul.odoo.helper.AlertDialogHelper
+import com.webkul.mobikul.odoo.helper.ApiRequestHelper
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV1Binding>() , IView<LoginIntent,LoginState> {
+class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV1Binding>(),
+    IView<LoginIntent, LoginState> {
 
     override val layoutId = R.layout.fragment_login_v1
     private val viewModel: LoginViewModel by viewModels()
-    private lateinit var progressDialog:SweetAlertDialog
+    private lateinit var progressDialog: SweetAlertDialog
 
     companion object {
         fun newInstance() = LoginFragmentV1().also { loginFragment ->
@@ -43,7 +42,6 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
     }
 
     private fun setObservers() {
-
         lifecycleScope.launchWhenCreated {
             viewModel.state.collect {
                 render(it)
@@ -51,18 +49,17 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
         }
     }
 
+
     private fun setOnClickListeners() {
 
         binding.login.setOnClickListener {
             onLoginBtnClicked()
         }
+        binding.privacyPolicy.setOnClickListener {
+            onPrivacyPolicyClicked()
+        }
     }
 
-    private fun onLoginBtnClicked() {
-        val username = binding.usernameEt.text.toString()
-        val password = binding.passwordEt.text.toString()
-        triggerIntent(LoginIntent.Login(username, password))
-    }
 
     override fun render(state: LoginState) {
         when (state) {
@@ -71,7 +68,7 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
             }
             is LoginState.Login -> {
                 progressDialog.dismiss()
-               // startActivity(Intent())
+                ApiRequestHelper.callHomePageApi(requireActivity())
             }
             is LoginState.Error -> {
                 progressDialog.dismiss()
@@ -86,16 +83,34 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
                     AuthFieldsValidation.INVALID_PASSWORD.value -> setInvalidPasswordError()
                 }
             }
+            is LoginState.PrivacyPolicy -> {
+                progressDialog.dismiss()
+                requireContext().startActivity(state.intent)
+            }
 
             is LoginState.Idle -> {}
         }
     }
+
 
     override fun triggerIntent(intent: LoginIntent) {
         lifecycleScope.launch {
             viewModel.intents.send(intent)
         }
     }
+
+
+    private fun onLoginBtnClicked() {
+        val username = binding.usernameEt.text.toString()
+        val password = binding.passwordEt.text.toString()
+        triggerIntent(LoginIntent.Login(username, password))
+    }
+
+    private fun onPrivacyPolicyClicked() {
+        triggerIntent(LoginIntent.PrivacyPolicy)
+        Log.d("testing", "Intent trigered")
+    }
+
 
     private fun setEmptyUsernameError() {
         binding.usernameEt.error = String.format(
