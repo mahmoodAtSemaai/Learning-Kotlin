@@ -4,4 +4,8 @@
         <key>remoteAppVersion</key>
         <value>1.0.0</value>
     </entry>
+    <entry>
+        <key>feature_auth_revamp_enabled</key>
+        <value>false</value>
+    </entry>
 </defaultsMap>
