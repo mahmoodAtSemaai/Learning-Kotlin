@@ -42,6 +42,11 @@ public class OrderReviewResponse extends BaseResponse implements Parcelable {
     @SerializedName("name")
     @Expose
     private String name;
+
+    @SerializedName("pointsRedeemed")
+    @Expose
+    private KeyValuePairData pointsRedeemed;
+
     @SerializedName("paymentData")
     @Expose
     private PaymentAcquirerData paymentAcquirerData;
@@ -121,6 +126,10 @@ public class OrderReviewResponse extends BaseResponse implements Parcelable {
         }
 
         return tax;
+    }
+
+    public KeyValuePairData getPointsRedeemed() {
+        return pointsRedeemed;
     }
 
     public String getName() {

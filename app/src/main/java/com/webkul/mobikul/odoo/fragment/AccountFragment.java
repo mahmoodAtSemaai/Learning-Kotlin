@@ -19,6 +19,7 @@ import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
+import com.webkul.mobikul.odoo.constant.ApplicationConstant;
 import com.webkul.mobikul.odoo.databinding.FragmentAccountBinding;
 import com.webkul.mobikul.odoo.dialog_frag.ProfilePictureDialogFragment;
 import com.webkul.mobikul.odoo.handler.customer.AccountFragmentHandler;
@@ -28,6 +29,7 @@ import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.ImageHelper;
 import com.webkul.mobikul.odoo.helper.SnackbarHelper;
+import com.webkul.mobikul.odoo.model.ReferralResponse;
 import com.webkul.mobikul.odoo.model.customer.account.SaveCustomerDetailResponse;
 import com.webkul.mobikul.odoo.model.request.SaveCustomerDetailRequest;
 
@@ -48,7 +50,7 @@ public class AccountFragment extends BaseFragment {
     @SuppressWarnings("unused")
     private static final String TAG = "AccountFragment";
     public FragmentAccountBinding mBinding;
-
+    public String referralCode;
     public static AccountFragment newInstance() {
         return new AccountFragment();
     }
@@ -223,6 +225,7 @@ public class AccountFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mBinding.setHandler(new AccountFragmentHandler(getContext(), this));
+        hitApiForReferralCode();
     }
 
     @Override
@@ -346,4 +349,44 @@ public class AccountFragment extends BaseFragment {
     public void setTitle(@NonNull String title) {
 
     }
+
+    public void hitApiForReferralCode(){
+
+        ApiConnection.getReferralCode(getContext(), AppSharedPref.getCustomerId(getContext())).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<ReferralResponse>(getContext()) {
+            @Override
+            public void onNext(@io.reactivex.annotations.NonNull ReferralResponse response) {
+                super.onNext(response);
+                handleReferralResponse(response);
+            }
+        });
+    }
+
+    public void handleReferralResponse(ReferralResponse response){
+        if (response.getStatus() == ApplicationConstant.SUCCESS || response.getStatus() == ApplicationConstant.CREATED) {
+            showReferralCode(response.getReferralCode());
+        }
+        else if(response.getStatus() == ApplicationConstant.NOT_FOUND){
+            hitApiToGenerateReferralCode(AppSharedPref.getCustomerId(getContext()));
+        }
+        else {
+            SnackbarHelper.getSnackbar((Activity) getContext(), response.getMessage(), Snackbar.LENGTH_LONG, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
+        }
+    }
+
+    public void hitApiToGenerateReferralCode(String userId){
+        ApiConnection.generateReferralCode(getContext(), userId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<ReferralResponse>(getContext()) {
+            @Override
+            public void onNext(@io.reactivex.annotations.NonNull ReferralResponse response) {
+                super.onNext(response);
+                handleReferralResponse(response);
+            }
+        });
+    }
+
+    public void showReferralCode(String code){
+        AppSharedPref.setReferralCode(getContext(), code);
+        String message = getContext().getString(R.string.copy_referral_code) + ": " + code;
+        mBinding.referralCode.setText(message);
+    }
+
 }

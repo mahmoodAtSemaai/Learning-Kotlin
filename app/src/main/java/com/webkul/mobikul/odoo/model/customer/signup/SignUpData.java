@@ -29,6 +29,7 @@ public class SignUpData extends BaseObservable {
     private boolean displayError;
     private Context mContext;
     private boolean isTermAndCondition = false;
+    private String referralCode;
 
     // Marketplace required fields
     private String profileURL;
@@ -188,6 +189,19 @@ public class SignUpData extends BaseObservable {
 
 
         return "";
+    }
+
+    @Bindable
+    public String getReferralCode() {
+        if (referralCode == null) {
+            return "";
+        }
+        return referralCode;
+    }
+
+    public void setReferralCode(String referralCode) {
+        this.referralCode = referralCode;
+        notifyPropertyChanged(BR.referralCode);
     }
 
 

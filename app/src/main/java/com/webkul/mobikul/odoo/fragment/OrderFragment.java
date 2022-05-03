@@ -99,11 +99,8 @@ public class OrderFragment extends BaseFragment {
     }
 
 
-
-
-
     private void getOrderDetails(int orderId) {
-        ApiConnection.getOrderData(requireContext(), orderId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<OrderDataResponse>(requireContext()) {
+        ApiConnection.getOrderData(requireContext(), orderId, false).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<OrderDataResponse>(requireContext()) {
             @Override
             public void onSubscribe(Disposable d) {
                 super.onSubscribe(d);
@@ -189,13 +186,13 @@ public class OrderFragment extends BaseFragment {
     }
 
     private void setTextOnViews(OrderDataResponse orderDataResponse) {
-            String codText = getString(R.string.cod_text);
-            String paymentMode = orderDataResponse.getPaymentMode().equalsIgnoreCase(codText) ?
-                    codText : orderDataResponse.getBank().getName() + " " + orderDataResponse.getPaymentMode();
-            OrderPaymentData orderPaymentData = new OrderPaymentData(paymentMode, orderDataResponse.getAmountTotal(),
-                    "(" + orderDataResponse.getItems().size() + " " + getString(R.string.product) + ")", "", orderDataResponse.getDelivery().getTotal(), "",
-                    orderDataResponse.getAmountTotal());
-            binding.paymentDetails.setData(orderPaymentData);
+        String codText = getString(R.string.cod_text);
+        String paymentMode = orderDataResponse.getPaymentMode().equalsIgnoreCase(codText) ?
+                codText : orderDataResponse.getBank().getName() + " " + orderDataResponse.getPaymentMode();
+        OrderPaymentData orderPaymentData = new OrderPaymentData(paymentMode, orderDataResponse.getAmountTotal(),
+                "(" + orderDataResponse.getItems().size() + " " + getString(R.string.product) + ")", orderDataResponse.getPointsRedeemed(), orderDataResponse.getDelivery().getTotal(), "",
+                orderDataResponse.getGrandTotal());
+        binding.paymentDetails.setData(orderPaymentData);
     }
 
 

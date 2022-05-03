@@ -3,6 +3,8 @@ package com.webkul.mobikul.odoo.fragment;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_URL;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +23,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.appbar.AppBarLayout;
 import com.webkul.mobikul.odoo.BuildConfig;
 import com.webkul.mobikul.odoo.R;
@@ -36,16 +40,21 @@ import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.connection.CustomRetrofitCallback;
 import com.webkul.mobikul.odoo.constant.BundleConstant;
 import com.webkul.mobikul.odoo.custom.CustomToast;
+import com.webkul.mobikul.odoo.constant.ApplicationConstant;
 import com.webkul.mobikul.odoo.database.SaveData;
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.databinding.FragmentHomeBinding;
 import com.webkul.mobikul.odoo.handler.home.FragmentNotifier;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
+import com.webkul.mobikul.odoo.helper.ApiRequestHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.CatalogHelper;
 import com.webkul.mobikul.odoo.helper.Helper;
+import com.webkul.mobikul.odoo.helper.SnackbarHelper;
+import com.webkul.mobikul.odoo.helper.ViewHelper;
 import com.webkul.mobikul.odoo.helper.NetworkHelper;
 import com.webkul.mobikul.odoo.model.BaseResponse;
+import com.webkul.mobikul.odoo.model.ReferralResponse;
 import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse;
 import com.webkul.mobikul.odoo.model.customer.address.AddressData;
 import com.webkul.mobikul.odoo.model.customer.address.AddressFormResponse;
@@ -59,6 +68,8 @@ import com.webkul.mobikul.odoo.model.request.BaseLazyRequest;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.sql.Ref;
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -132,6 +143,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         }
         new SaveData(getActivity(), homePageResponse);
         loadHomePage(homePageResponse, false);
+        getLoyaltyPoints();
     }
 
     private void hitApiForFetchingData() {
@@ -152,6 +164,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
                     binding.refreshLayout.setRefreshing(false);
             }
         });
+        getLoyaltyPoints();
 
     }
 
@@ -248,7 +261,6 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         };
     }
 
-
     private void checkIfAddressExists(MyAddressesResponse myAddressesResponse) {
         if (myAddressesResponse.isAccessDenied()) {
             showAlertDialog(getString(R.string.error_login_failure), getString(R.string.access_denied_message));
@@ -343,6 +355,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
                 .putExtra(BUNDLE_KEY_URL, addressData.getUrl()));
     }
 
+
     private void showAlertDialog(String title, String message) {
         AlertDialogHelper.showDefaultWarningDialogWithDismissListener(getContext(), title, message, sweetAlertDialog -> {
             sweetAlertDialog.dismiss();
@@ -359,6 +372,34 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
     private void clearCustomerDataFromSharedPref() {
         AppSharedPref.clearCustomerData(getContext());
+    }
+
+    public void getLoyaltyPoints() {
+        hitApiForLoyaltyPoints(AppSharedPref.getCustomerId(getContext()));
+    }
+
+    public void hitApiForLoyaltyPoints(String userId){
+        ApiConnection.getLoyaltyPoints(getContext(), userId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<ReferralResponse>(getContext()) {
+
+            @Override
+            public void onNext(@io.reactivex.annotations.NonNull ReferralResponse response) {
+                super.onNext(response);
+                handleLoyaltyPointsResponse(response);
+            }
+        });
+    }
+
+    public void handleLoyaltyPointsResponse(ReferralResponse response) {
+        if (response.getStatus() == ApplicationConstant.SUCCESS) {
+            showPoints(response.getRedeemHistory());
+        }
+        else {
+            SnackbarHelper.getSnackbar((Activity) getContext(), response.getMessage(), Snackbar.LENGTH_LONG, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
+        }
+    }
+
+    public void showPoints(Integer loyaltyPoints) {
+        binding.loyaltyPoints.setText(loyaltyPoints.toString());
     }
 
     @Override

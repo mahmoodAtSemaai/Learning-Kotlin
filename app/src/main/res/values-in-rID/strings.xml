@@ -149,6 +149,7 @@
     <string name="error_fb_sign_in">Tidak bisa masuk menggunakan Facebook. Silakan coba lagi.</string>
     <string name="view_term_and_cond">Lihat Syarat dan Ketentuan</string>
     <string name="i_agree_with_term_and_condition">Saya setuju dengan Syarat dan Ketentuan</string>
+    <string name="enter_referral_code">Masukkan kode referral di sini</string>
     <!---->
     <!---->
     <!--ACCOUNT FRAGMENT-->
@@ -232,6 +233,20 @@
     <string name="you_have_no_products_in_your_wishlist">Anda tidak punya produk di dalam wishlist Anda</string>
     <string name="move_to_wishlist">Pindahkan ke Wishlist</string>
     <string name="move_to_bag">Pindahkan ke keranjang</string>
+    <!---->
+    <!---->
+    <!--Referral Code and Points-->
+    <string name="gen_referral_code">Buat Kode Referral</string>
+    <string name="copy_referral_code">Salin Kode Referral</string>
+    <string name="referral_code">Kode Referral</string>
+    <string name="share_referral_code">Bagikan Kode Referral</string>
+    <string name="semaai_points_balance">Saldo Poin Semaai</string>
+    <string name="points">Poin Semaai</string>
+    <string name="referral_code_is">Kode Referral Anda adalah</string>
+    <string name="lets_use_this_code">Yuk pakai kode referral</string>
+    <string name="referral_code_share_message">Anda dapat membagikannya dengan teman-teman dengan mengklik tombol di bawah ini.</string>
+    <string name="for_purchasing">untuk belanja kebutuhan pertanian terlengkap hanya di aplikasi Semaai! Install di</string>
+
     <!---->
     <!---->
     <!--ADDRESS BOOK -->

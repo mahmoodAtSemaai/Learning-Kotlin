@@ -30,6 +30,9 @@ public class BagResponse extends BaseResponse {
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("pointsRedeemed")
+    @Expose
+    private KeyValuePairData pointsRedeemed;
     @SerializedName("order_id")
     @Expose
     private int orderId;
@@ -60,6 +63,10 @@ public class BagResponse extends BaseResponse {
         }
 
         return subtotal;
+    }
+
+    public KeyValuePairData getPointsRedeemed() {
+        return pointsRedeemed;
     }
 
     public List<BagItemData> getItems() {
