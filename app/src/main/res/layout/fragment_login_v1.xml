@@ -62,6 +62,7 @@
 
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/username_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -95,6 +96,7 @@
 
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/password_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"

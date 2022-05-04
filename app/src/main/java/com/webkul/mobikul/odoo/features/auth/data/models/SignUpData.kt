@@ -1,5 +1,4 @@
-package com.webkul.mobikul.odoo.features.auth.presentation
-
+package com.webkul.mobikul.odoo.features.auth.data.models
 
 data class SignUpData(
     var phoneNumber: String = "",
@@ -10,4 +9,6 @@ data class SignUpData(
     var isSeller:Boolean = false,
     var profileURL:String = "",
     var country:Any? = "",
-)
+    var isMarketPlaceTermAndCondition:Boolean = false,
+
+    )

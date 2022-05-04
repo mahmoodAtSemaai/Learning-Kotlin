@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.webkul.mobikul.odoo.core.mvicore.IModel
 import com.webkul.mobikul.odoo.core.platform.BaseViewModel
 import com.webkul.mobikul.odoo.core.utils.Resource
+import com.webkul.mobikul.odoo.features.auth.data.models.SignUpData
 import com.webkul.mobikul.odoo.features.auth.domain.enums.SignUpFieldsValidation
 import com.webkul.mobikul.odoo.features.auth.domain.usecase.SignUpUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -59,12 +60,19 @@ class SignUpViewModel @Inject constructor(
                 signUp.catch {
                     when (it.message?.toInt()) {
                         SignUpFieldsValidation.EMPTY_PHONE_NO.value -> signUpState = SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_PHONE_NO)
+                        SignUpFieldsValidation.EMPTY_NAME.value -> signUpState = SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_NAME)
                         SignUpFieldsValidation.EMPTY_PASSWORD.value -> signUpState = SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_PASSWORD)
                         SignUpFieldsValidation.INVALID_PASSWORD.value -> signUpState = SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.INVALID_PASSWORD)
+                        SignUpFieldsValidation.UNEQUAL_PASS_AND_CONFIRM_PASS.value -> signUpState = SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.UNEQUAL_PASS_AND_CONFIRM_PASS)
+                        SignUpFieldsValidation.EMPTY_TERMS_CONDITIONS.value -> signUpState = SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_TERMS_CONDITIONS)
+                        SignUpFieldsValidation.EMPTY_PROFILE_URL.value -> signUpState = SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_PROFILE_URL)
+                        SignUpFieldsValidation.EMPTY_COUNTRY.value -> signUpState = SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_COUNTRY)
+
+
                     }
                 }.collect {
                     when (it) {
-                        is Resource.Default -> {}
+                        is Resource.Default -> signUpState = SignUpState.Idle
                         is Resource.Failure -> signUpState = SignUpState.Error("Error Message")
                         is Resource.Loading -> signUpState = SignUpState.Loading
                         is Resource.Success -> signUpState = SignUpState.SignUp(it.value)

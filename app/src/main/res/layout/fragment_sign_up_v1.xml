@@ -69,6 +69,7 @@
 
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/email_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -103,6 +104,7 @@
 
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/name_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -136,6 +138,7 @@
 
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/password_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -170,6 +173,7 @@
 
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/confirm_password_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -258,6 +262,7 @@
 
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/profile_url_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -286,6 +291,7 @@
                     android:orientation="vertical"
                     tools:visibility="visible">
                     <CheckBox
+                        android:id="@+id/marketplace_tnc_cb"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="start"
@@ -294,6 +300,7 @@
                         tools:visibility="visible"/>
 
                     <TextView
+                        android:id="@+id/view_marketplace_tnc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -302,7 +309,6 @@
                         android:textColor="@color/colorAccent"
                         tools:visibility="visible"
                         />
-                    />
 
                 </LinearLayout>
 

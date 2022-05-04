@@ -113,7 +113,7 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
 
 
     private fun setEmptyUsernameError() {
-        binding.usernameEt.error = String.format(
+        binding.usernameLayout.error = String.format(
             Locale.getDefault(),
             "%s %s",
             getString(R.string.phone_number_or_username),
@@ -122,14 +122,14 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
     }
 
     private fun setEmptyPasswordError() {
-        binding.passwordEt.error = String.format(
+        binding.passwordLayout.error = String.format(
             Locale.getDefault(),
             getString(R.string.password) + " " + getString(R.string.error_is_required)
         )
     }
 
     private fun setInvalidPasswordError() {
-        binding.passwordEt.error = String.format(
+        binding.passwordLayout.error = String.format(
             "%s %s",
             getString(R.string.password),
             String.format(
