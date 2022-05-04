@@ -7,9 +7,13 @@ import com.webkul.mobikul.odoo.features.auth.data.remoteSource.LoginRemoteDataSo
 import com.webkul.mobikul.odoo.features.auth.data.remoteSource.SignUpRemoteDataSource
 import com.webkul.mobikul.odoo.features.auth.domain.repo.LoginRepository
 import com.webkul.mobikul.odoo.features.auth.domain.repo.SignUpRepository
+import com.webkul.mobikul.odoo.model.customer.address.MyAddressesResponse
 import com.webkul.mobikul.odoo.model.customer.signin.LoginResponse
 import com.webkul.mobikul.odoo.model.customer.signup.SignUpResponse
+import com.webkul.mobikul.odoo.model.customer.signup.TermAndConditionResponse
+import com.webkul.mobikul.odoo.model.generic.CountryStateData
 import com.webkul.mobikul.odoo.model.request.AuthenticationRequest
+import com.webkul.mobikul.odoo.model.request.BaseLazyRequest
 import com.webkul.mobikul.odoo.model.request.SignUpRequest
 import javax.inject.Inject
 
@@ -27,4 +31,22 @@ class SignUpRepositoryImpl @Inject constructor(
         )
         return remoteDataSource.signUp(signUpRequest)
     }
+
+    override suspend fun getAddressBookData(baseLazyRequest: BaseLazyRequest): Resource<MyAddressesResponse> {
+        return remoteDataSource.getAddressBookData(baseLazyRequest)
+    }
+
+    override suspend fun getCountryStateData(): Resource<CountryStateData> {
+        return remoteDataSource.getCountryStateData()
+    }
+
+    override suspend fun getTermAndCondition(): Resource<TermAndConditionResponse> {
+        return remoteDataSource.getTermAndCondition()
+    }
+
+    override suspend fun getSellerTerms(): Resource<TermAndConditionResponse> {
+        return remoteDataSource.getSellerTerms()
+    }
+
+
 }

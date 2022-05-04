@@ -12,7 +12,4 @@ interface AuthServices {
     @POST(ApiInterface.MOBIKUL_CUSTOMER_SIGN_IN)
     suspend fun signIn(@Body registerDeviceTokenRequestStr: String?): LoginResponse
 
-
-    @POST(ApiInterface.MOBIKUL_CUSTOMER_SIGN_UP)
-    suspend fun signUp(@Body signUpReqeustJsonStr: String?): SignUpResponse
 }
