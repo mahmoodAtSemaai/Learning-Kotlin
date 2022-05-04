@@ -8,7 +8,7 @@ data class SignUpData(
     var isTermAndCondition:Boolean = false,
     var isSeller:Boolean = false,
     var profileURL:String = "",
-    var country:Any? = "",
+    var country:String = "",
     var isMarketPlaceTermAndCondition:Boolean = false,
 
     )

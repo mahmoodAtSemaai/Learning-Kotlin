@@ -6,6 +6,7 @@ import com.webkul.mobikul.odoo.core.platform.BaseViewModel
 import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.features.auth.data.models.SignUpData
 import com.webkul.mobikul.odoo.features.auth.domain.enums.SignUpFieldsValidation
+import com.webkul.mobikul.odoo.features.auth.domain.usecase.CountryStateUseCase
 import com.webkul.mobikul.odoo.features.auth.domain.usecase.SignUpUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -19,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val signUpUseCase: SignUpUseCase,
+    private val countryStateUseCase: CountryStateUseCase
 ) : BaseViewModel(), IModel<SignUpState, SignUpIntent> {
 
     override val intents: Channel<SignUpIntent> = Channel(Channel.UNLIMITED)
@@ -37,6 +39,7 @@ class SignUpViewModel @Inject constructor(
                 when (it) {
                     is SignUpIntent.SignUp -> signUpUser(it.signUpData)
                     is SignUpIntent.IsSeller -> showSellerView(it.isSeller)
+                   is  SignUpIntent.GetCountryStateData -> getCountryStateData()
                 }
             }
         }
@@ -46,6 +49,30 @@ class SignUpViewModel @Inject constructor(
     private fun showSellerView(isSeller: Boolean) {
         viewModelScope.launch {
             _state.value = SignUpState.IsSeller(isSeller)
+        }
+    }
+
+    private fun getCountryStateData() {
+        viewModelScope.launch {
+            _state.value = SignUpState.Idle
+            _state.value = try {
+                val signUp = countryStateUseCase.invoke()
+                var signUpState: SignUpState = SignUpState.Idle
+
+                signUp.collect {
+                    signUpState = when (it) {
+                        is Resource.Default -> SignUpState.Idle
+                        is Resource.Failure -> SignUpState.Idle
+                        is Resource.Loading -> SignUpState.Idle
+                        is Resource.Success -> SignUpState.CountryStateDataSuccess(it.value)
+                    }
+
+                }
+                signUpState
+            } catch (e: Exception) {
+                //SignUpState.Error(e.localizedMessage)
+                SignUpState.Idle
+            }
         }
     }
 
@@ -59,14 +86,22 @@ class SignUpViewModel @Inject constructor(
 
                 signUp.catch {
                     when (it.message?.toInt()) {
-                        SignUpFieldsValidation.EMPTY_PHONE_NO.value -> signUpState = SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_PHONE_NO)
-                        SignUpFieldsValidation.EMPTY_NAME.value -> signUpState = SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_NAME)
-                        SignUpFieldsValidation.EMPTY_PASSWORD.value -> signUpState = SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_PASSWORD)
-                        SignUpFieldsValidation.INVALID_PASSWORD.value -> signUpState = SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.INVALID_PASSWORD)
-                        SignUpFieldsValidation.UNEQUAL_PASS_AND_CONFIRM_PASS.value -> signUpState = SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.UNEQUAL_PASS_AND_CONFIRM_PASS)
-                        SignUpFieldsValidation.EMPTY_TERMS_CONDITIONS.value -> signUpState = SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_TERMS_CONDITIONS)
-                        SignUpFieldsValidation.EMPTY_PROFILE_URL.value -> signUpState = SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_PROFILE_URL)
-                        SignUpFieldsValidation.EMPTY_COUNTRY.value -> signUpState = SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_COUNTRY)
+                        SignUpFieldsValidation.EMPTY_PHONE_NO.value -> signUpState =
+                            SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_PHONE_NO)
+                        SignUpFieldsValidation.EMPTY_NAME.value -> signUpState =
+                            SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_NAME)
+                        SignUpFieldsValidation.EMPTY_PASSWORD.value -> signUpState =
+                            SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_PASSWORD)
+                        SignUpFieldsValidation.INVALID_PASSWORD.value -> signUpState =
+                            SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.INVALID_PASSWORD)
+                        SignUpFieldsValidation.UNEQUAL_PASS_AND_CONFIRM_PASS.value -> signUpState =
+                            SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.UNEQUAL_PASS_AND_CONFIRM_PASS)
+                        SignUpFieldsValidation.EMPTY_TERMS_CONDITIONS.value -> signUpState =
+                            SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_TERMS_CONDITIONS)
+                        SignUpFieldsValidation.EMPTY_PROFILE_URL.value -> signUpState =
+                            SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_PROFILE_URL)
+                        SignUpFieldsValidation.EMPTY_COUNTRY.value -> signUpState =
+                            SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_COUNTRY)
 
 
                     }

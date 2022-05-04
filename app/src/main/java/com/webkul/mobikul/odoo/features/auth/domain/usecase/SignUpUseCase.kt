@@ -1,5 +1,6 @@
 package com.webkul.mobikul.odoo.features.auth.domain.usecase
 
+import android.content.Context
 import com.webkul.mobikul.odoo.BuildConfig
 import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.features.auth.data.models.SignUpData
@@ -7,13 +8,17 @@ import com.webkul.mobikul.odoo.features.auth.domain.enums.SignUpFieldsValidation
 import com.webkul.mobikul.odoo.features.auth.domain.enums.SignUpValidationException
 import com.webkul.mobikul.odoo.features.auth.domain.repo.SignUpRepository
 import com.webkul.mobikul.odoo.model.customer.signup.SignUpResponse
+import com.webkul.mobikul.odoo.model.request.SignUpRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class SignUpUseCase @Inject constructor(private val signUpRepository: SignUpRepository) {
+class SignUpUseCase @Inject constructor(
+    private val signUpRepository: SignUpRepository,
+    private val context: Context
+) {
 
     @Throws(SignUpValidationException::class)
     operator fun invoke(signUpData: SignUpData): Flow<Resource<SignUpResponse>> = flow {
@@ -21,11 +26,9 @@ class SignUpUseCase @Inject constructor(private val signUpRepository: SignUpRepo
         emit(Resource.Loading)
 
         if (isValidLogin(signUpData)) {
-
-            //  val signUpRequest = SignUpRequest()
-
-            //   val result = signUpRepository.signUp(signUpData)
-            //  emit(result)
+            val signUpRequest = SignUpRequest(context, signUpData)
+            val result = signUpRepository.signUp(signUpRequest)
+            emit(result)
         }
 
     }.flowOn(Dispatchers.IO)
@@ -63,7 +66,7 @@ class SignUpUseCase @Inject constructor(private val signUpRepository: SignUpRepo
                 SignUpFieldsValidation.EMPTY_PROFILE_URL.value.toString()
             )
 
-            if (signUpData.country.toString().isEmpty()) throw SignUpValidationException(
+            if (signUpData.country.isEmpty()) throw SignUpValidationException(
                 SignUpFieldsValidation.EMPTY_COUNTRY.value.toString()
             )
 

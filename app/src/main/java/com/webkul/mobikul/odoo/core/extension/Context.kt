@@ -1,6 +1,5 @@
 package com.webkul.mobikul.odoo.core.extension
 
-import android.app.Activity
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -13,6 +12,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import cn.pedant.SweetAlert.SweetAlertDialog
+import cn.pedant.SweetAlert.SweetAlertDialog.OnSweetClickListener
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.helper.AppSharedPref
@@ -79,6 +79,17 @@ fun Context.getDefaultProgressDialog() : SweetAlertDialog {
     sweetAlertDialog.progressHelper.barColor = ColorHelper.getColor(this, R.attr.colorAccent)
     sweetAlertDialog.setCancelable(false)
     return sweetAlertDialog
+}
+
+fun Context.showDefaultWarningDialogWithDismissListener(
+    title: String?,
+    message: String?,
+    listener: OnSweetClickListener?
+) {
+    SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+        .setTitleText(title)
+        .setContentText(message)
+        .setConfirmClickListener(listener).show()
 }
 
 fun Context.onPrivacyPolicyClick():Resource<Intent> {

@@ -1,21 +1,28 @@
 package com.webkul.mobikul.odoo.features.auth.presentation
 
-import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.snackbar.Snackbar
 import com.webkul.mobikul.odoo.BuildConfig
 import com.webkul.mobikul.odoo.R
+import com.webkul.mobikul.odoo.activity.SignInSignUpActivity
+import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.core.extension.getDefaultProgressDialog
+import com.webkul.mobikul.odoo.core.extension.showDefaultWarningDialogWithDismissListener
 import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
 import com.webkul.mobikul.odoo.databinding.FragmentSignUpV1Binding
 import com.webkul.mobikul.odoo.features.auth.data.models.SignUpData
 import com.webkul.mobikul.odoo.features.auth.domain.enums.SignUpFieldsValidation
+import com.webkul.mobikul.odoo.helper.AppSharedPref
 import com.webkul.mobikul.odoo.helper.SnackbarHelper
+import com.webkul.mobikul.odoo.model.generic.CountryStateData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.*
@@ -44,7 +51,9 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
 
         setObservers()
         setOnClickListeners()
+        getCountryStateSpinnerData()
     }
+
 
     private fun setObservers() {
         lifecycleScope.launch {
@@ -74,9 +83,9 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
             is SignUpState.InvalidSignUpDetailsError -> {
                 progressDialog.dismiss()
                 when (state.invalidDetails.value) {
-                    SignUpFieldsValidation.EMPTY_PHONE_NO.value ->  setEmptyUsernameError()
+                    SignUpFieldsValidation.EMPTY_PHONE_NO.value -> setEmptyUsernameError()
                     SignUpFieldsValidation.EMPTY_NAME.value -> setEmptyNameError()
-                    SignUpFieldsValidation.EMPTY_PASSWORD.value ->  setEmptyPasswordError()
+                    SignUpFieldsValidation.EMPTY_PASSWORD.value -> setEmptyPasswordError()
                     SignUpFieldsValidation.INVALID_PASSWORD.value -> setInvalidPasswordError()
                     SignUpFieldsValidation.UNEQUAL_PASS_AND_CONFIRM_PASS.value -> setInvalidConfirmPasswordError()
                     SignUpFieldsValidation.EMPTY_TERMS_CONDITIONS.value -> setTermsAndConditionsError()
@@ -85,6 +94,9 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
 
                 }
             }
+
+            is SignUpState.CountryStateDataSuccess -> setCountrySpinnerAdapter(state.countryStateData)
+
 
             is SignUpState.Idle -> {}
 
@@ -107,22 +119,58 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
             triggerIntent(SignUpIntent.IsSeller(isChecked))
         }
 
-        /*binding.marketplaceTncCb.setOnCheckedChangeListener { view, isChecked ->
-            signUpData.isMarketPlaceTermAndCondition = isChecked
-        }*/
-
         binding.signUpBtn.setOnClickListener {
             onSignUpBtnClicked()
         }
 
     }
 
+    private fun setCountrySpinnerAdapter(countryStateData: CountryStateData) {
+        if (countryStateData.isAccessDenied) {
+
+            requireContext().showDefaultWarningDialogWithDismissListener(getString(R.string.error_login_failure), getString(R.string.access_denied_message)) { sweetAlertDialog: SweetAlertDialog ->
+
+                sweetAlertDialog.dismiss()
+                AppSharedPref.clearCustomerData(context)
+                val i = Intent(context, SignInSignUpActivity::class.java)
+                i.putExtra(
+                    BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY,
+                    requireActivity().javaClass.simpleName
+                )
+                startActivity(i)
+            }
+        } else {
+
+            binding.countrySpinner.adapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                countryStateData.getCountryNameList(requireContext())
+            )
+
+            binding.countrySpinner.onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(parent: AdapterView<*>?, view: View, countryPos: Int, id: Long) {
+                        signUpData.country = countryStateData.countries[countryPos].id
+                    }
+                    override fun onNothingSelected(parent: AdapterView<*>?) {}
+                }
+
+            binding.countrySpinner.setSelection(0)
+
+        }
+    }
+
+    private fun getCountryStateSpinnerData() {
+        triggerIntent(SignUpIntent.GetCountryStateData)
+    }
+
+
+
     private fun onSignUpBtnClicked() {
         signUpData.phoneNumber = binding.emailEt.text.toString()
         signUpData.name = binding.nameEt.text.toString()
         signUpData.password = binding.passwordEt.text.toString()
         signUpData.confirmPassword = binding.confirmPasswordEt.text.toString()
-        signUpData.country = binding.countrySpinner.selectedItem
         signUpData.profileURL = binding.profileUrlEt.text.toString()
         signUpData.isMarketPlaceTermAndCondition = binding.marketplaceTncCb.isChecked
         signUpData.isTermAndCondition = binding.termsAndConditionsCb.isChecked
@@ -182,36 +230,36 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
         )
     }
 
-    private fun setTermsAndConditionsError(){
+    private fun setTermsAndConditionsError() {
         SnackbarHelper.getSnackbar(
-            requireActivity() ,
+            requireActivity(),
             getString(R.string.plese_accept_tnc),
             Snackbar.LENGTH_LONG
         ).show()
     }
 
-    private  fun setInvalidSignUpDetailsError(){
+    private fun setInvalidSignUpDetailsError() {
         SnackbarHelper.getSnackbar(
-            requireActivity() ,
+            requireActivity(),
             getString(R.string.error_enter_valid_login_details),
             Snackbar.LENGTH_LONG
         ).show()
     }
 
-    private fun setEmptyCountryError(){
+    private fun setEmptyCountryError() {
         SnackbarHelper.getSnackbar(
-            requireActivity() ,
+            requireActivity(),
             getString(R.string.error_enter_valid_login_details),
             Snackbar.LENGTH_LONG
         ).show()
     }
 
-    private fun setErrorToNull(){
-        binding.emailLayout.error = null
-        binding.passwordLayout.error = null
-        binding.confirmPasswordLayout.error = null
-        binding.nameLayout.error = null
-        binding.profileUrlLayout.error = null
+    private fun setErrorToNull() {
+        binding.emailLayout.isErrorEnabled = false
+        binding.passwordLayout.isErrorEnabled = false
+        binding.confirmPasswordLayout.isErrorEnabled = false
+        binding.nameLayout.isErrorEnabled = false
+        binding.profileUrlLayout.isErrorEnabled = false
     }
 
 }
