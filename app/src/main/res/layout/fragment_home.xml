@@ -65,15 +65,18 @@
                         <RelativeLayout
                             android:id="@+id/banner_relative_layout"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/size_100"
+                            android:layout_height="wrap_content"
                             android:orientation="vertical">
 
-                            <androidx.viewpager.widget.ViewPager
+                            <com.webkul.mobikul.odoo.custom.DynamicHeightViewPager
                                 android:id="@+id/banner_view_pager"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:clipToPadding="true"
-                                android:scaleType="fitCenter" />
+                                android:nestedScrollingEnabled="false"
+                                android:scaleType="fitCenter"
+                                tools:ignore="UnusedAttribute" />
+
 
                             <com.google.android.material.tabs.TabLayout
                                 android:id="@+id/banner_dots_tab_layout"

@@ -196,7 +196,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         binding.bannerDotsTabLayout.setupWithViewPager(binding.bannerViewPager, true);
         binding.bannerViewPager.setAdapter(new HomeBannerAdapter(getContext(), homePageResponse.getBannerImages() , binding.bannerViewPager));
 
-         setBannerHeight();
+//         setBannerHeight();
 
         binding.bannerViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
