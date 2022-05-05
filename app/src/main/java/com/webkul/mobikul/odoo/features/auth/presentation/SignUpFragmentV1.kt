@@ -23,17 +23,13 @@ class SignUpFragmentV1 : BindingBaseFragment<FragmentSignUpV1Binding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setOnClickListeners()
-
     }
 
-    private fun setOnClickListeners(){
-        binding.isSellerCb.setOnCheckedChangeListener{ view ,isChecked ->
-            if (isChecked) Toast.makeText(requireContext(),"checked",Toast.LENGTH_SHORT).show()
-            else Toast.makeText(requireContext(),"not checked",Toast.LENGTH_SHORT).show()
+    private fun setOnClickListeners() {
+        binding.isSellerCb.setOnCheckedChangeListener { view, isChecked ->
+            if (isChecked) Toast.makeText(requireContext(), getString(R.string.label_checked), Toast.LENGTH_SHORT).show()
+            else Toast.makeText(requireContext(), getString(R.string.label_unchecked), Toast.LENGTH_SHORT).show()
         }
     }
-
-
 }

@@ -598,4 +598,7 @@
     <string name="product_details_pests_and_diseases">Pests and Diseases</string>
     <string name="product_details_duration_of_effect">Duration of Effect</string>
 
+    <string name="label_checked">checked</string>
+    <string name="label_unchecked">not checked</string>
+
 </resources>
