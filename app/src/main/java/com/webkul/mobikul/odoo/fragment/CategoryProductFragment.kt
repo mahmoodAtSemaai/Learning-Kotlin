@@ -95,17 +95,19 @@ class CategoryProductFragment : Fragment() {
         binding.productRecyclerView.adapter?.notifyItemRangeChanged(initialSize, finalSize - 1)
     }
 
-    private fun isFirstCall(catalogProductResponse : CatalogProductResponse) {
-        mIsFirstCall = false
-        binding?.data = catalogProductResponse
-        catalogProductResponse.setWishlistData()
-        catalogResponse = catalogProductResponse
-        val requestTypeIdentifier = CatalogProductRequestType.FEATURED_CATEGORY.toString()
-        SaveData(activity, catalogProductResponse, requestTypeIdentifier)
-        if (catalogResponse.products!!.isEmpty()) {
-            showEmptyFragment()
-        } else {
-            initProductCatalogRv()
+    private fun isFirstCall(catalogProductResponse: CatalogProductResponse) {
+        if (isAdded) {
+            mIsFirstCall = false
+            binding?.data = catalogProductResponse
+            catalogProductResponse.setWishlistData()
+            catalogResponse = catalogProductResponse
+            val requestTypeIdentifier = CatalogProductRequestType.FEATURED_CATEGORY.toString()
+            SaveData(activity, catalogProductResponse, requestTypeIdentifier)
+            if (catalogResponse.products!!.isEmpty()) {
+                showEmptyFragment()
+            } else {
+                initProductCatalogRv()
+            }
         }
     }
 

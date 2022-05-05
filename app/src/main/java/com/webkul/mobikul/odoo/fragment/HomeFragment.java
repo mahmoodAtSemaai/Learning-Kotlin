@@ -132,8 +132,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
             @Override
             public void onNext(@NonNull HomePageResponse homePageResponse) {
                 super.onNext(homePageResponse);
-                new SaveData(getActivity(), homePageResponse);
-
+                    new SaveData(getActivity(), homePageResponse);
                 Log.i("HIT DATA === ", homePageResponse.toString());
                 loadHomePage(homePageResponse, true);
             }
@@ -236,7 +235,6 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         int width = display.getWidth();
         final CollapsingToolbarLayout.LayoutParams layoutparams = (CollapsingToolbarLayout.LayoutParams) binding.bannerRelativeLayout.getLayoutParams();
         layoutparams.height=width/4;
-
     }
 
     public void fetchExistingAddresses() {

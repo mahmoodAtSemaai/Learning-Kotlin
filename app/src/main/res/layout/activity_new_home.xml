@@ -200,11 +200,12 @@
             android:id="@+id/home_nav_host"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             app:defaultNavHost="true"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/home_toolbar"
+            app:layout_constraintBottom_toTopOf="@id/home_bottom_nav"
             app:navGraph="@navigation/home_nav_graph" />
 
 
