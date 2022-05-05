@@ -85,12 +85,6 @@ public class OrderListFragment extends BaseFragment {
             }
 
             @Override
-            public void onError(@NonNull Throwable t) {
-                super.onError(t);
-
-            }
-
-            @Override
             public void onComplete() {
 
             }

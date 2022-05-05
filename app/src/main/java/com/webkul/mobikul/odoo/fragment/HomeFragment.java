@@ -3,30 +3,30 @@ package com.webkul.mobikul.odoo.fragment;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_URL;
 
-import android.app.Activity;
-import android.app.Application;
+
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AbsListView;
-
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
-
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.appbar.AppBarLayout;
-import com.webkul.mobikul.odoo.BuildConfig;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
 import com.webkul.mobikul.odoo.activity.NewHomeActivity;
@@ -38,42 +38,25 @@ import com.webkul.mobikul.odoo.adapter.home.HomeBannerAdapter;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.connection.CustomRetrofitCallback;
-import com.webkul.mobikul.odoo.constant.BundleConstant;
 import com.webkul.mobikul.odoo.custom.CustomToast;
-import com.webkul.mobikul.odoo.constant.ApplicationConstant;
 import com.webkul.mobikul.odoo.database.SaveData;
-import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.databinding.FragmentHomeBinding;
 import com.webkul.mobikul.odoo.handler.home.FragmentNotifier;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
-import com.webkul.mobikul.odoo.helper.ApiRequestHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
-import com.webkul.mobikul.odoo.helper.CatalogHelper;
 import com.webkul.mobikul.odoo.helper.Helper;
-import com.webkul.mobikul.odoo.helper.SnackbarHelper;
-import com.webkul.mobikul.odoo.helper.ViewHelper;
-import com.webkul.mobikul.odoo.helper.NetworkHelper;
 import com.webkul.mobikul.odoo.model.BaseResponse;
-import com.webkul.mobikul.odoo.model.ReferralResponse;
-import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse;
 import com.webkul.mobikul.odoo.model.customer.address.AddressData;
 import com.webkul.mobikul.odoo.model.customer.address.AddressFormResponse;
 import com.webkul.mobikul.odoo.model.customer.address.MyAddressesResponse;
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.StateListResponse;
-import com.webkul.mobikul.odoo.model.generic.BannerImageData;
 import com.webkul.mobikul.odoo.model.generic.FeaturedCategoryData;
 import com.webkul.mobikul.odoo.model.generic.StateData;
 import com.webkul.mobikul.odoo.model.home.HomePageResponse;
 import com.webkul.mobikul.odoo.model.request.BaseLazyRequest;
-
 import org.greenrobot.eventbus.EventBus;
-
-import java.sql.Ref;
-import java.util.ArrayList;
 import java.util.List;
-
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -108,8 +91,6 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Helper.hideKeyboard(getContext());
-
-
 
         binding.appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener(){
             @Override
@@ -216,34 +197,46 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         binding.bannerDotsTabLayout.setupWithViewPager(binding.bannerViewPager, true);
         binding.bannerViewPager.setAdapter(new HomeBannerAdapter(getContext(), homePageResponse.getBannerImages() , binding.bannerViewPager));
 
+         setBannerHeight();
 
         binding.bannerViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if(position==0){
-                    handler.postDelayed(runnable, 5000);
-                }
+                if(position==0)
+                    handler.postDelayed(runnable , 5000);
             }
 
             @Override
             public void onPageSelected(int position) {
                 handler.removeCallbacks(runnable);
-                handler.postDelayed(runnable, 5000);
+                handler.postDelayed(runnable , 5000);
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
+                binding.refreshLayout.setEnabled(state == ViewPager.SCROLL_STATE_IDLE);
             }
         });
 
         runnable  = () -> {
             int position = binding.bannerViewPager.getCurrentItem();
-            if(position < homePageResponse.getBannerImages().size() -1)
+            if(position < homePageResponse.getBannerImages().size()-1)
             binding.bannerViewPager.setCurrentItem(position + 1);
             else
             binding.bannerViewPager.setCurrentItem(0);
+
         };
+
+
+    }
+
+    private void setBannerHeight() {
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        int width = display.getWidth();
+        final CollapsingToolbarLayout.LayoutParams layoutparams = (CollapsingToolbarLayout.LayoutParams) binding.bannerRelativeLayout.getLayoutParams();
+        layoutparams.height=width/4;
+
     }
 
     public void fetchExistingAddresses() {

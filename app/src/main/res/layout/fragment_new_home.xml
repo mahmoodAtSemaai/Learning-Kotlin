@@ -53,7 +53,6 @@
                     android:nestedScrollingEnabled="false"
                     android:scaleType="fitCenter"
                     android:visibility="@{data.bannerImages.empty? View.GONE : View.VISIBLE}"
-                    tools:background="@color/badge_background_color"
                     tools:ignore="UnusedAttribute" />
 
 

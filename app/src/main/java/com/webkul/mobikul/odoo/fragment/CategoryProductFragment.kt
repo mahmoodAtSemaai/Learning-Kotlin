@@ -97,7 +97,7 @@ class CategoryProductFragment : Fragment() {
 
     private fun isFirstCall(catalogProductResponse : CatalogProductResponse) {
         mIsFirstCall = false
-        binding.data = catalogProductResponse
+        binding?.data = catalogProductResponse
         catalogProductResponse.setWishlistData()
         catalogResponse = catalogProductResponse
         val requestTypeIdentifier = CatalogProductRequestType.FEATURED_CATEGORY.toString()

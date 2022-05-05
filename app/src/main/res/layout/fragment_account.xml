@@ -231,13 +231,13 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="match_parent"
+                        android:id="@+id/all_orders_text"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
                         android:drawableLeft="@drawable/ic_vector_order_grey_24dp_wrapper"
                         android:drawablePadding="@dimen/spacing_generic"
                         android:drawableStart="@drawable/ic_vector_order_grey_24dp_wrapper"
                         android:gravity="center|start"
-                        android:onClick="@{()->handler.viewAllOrder()}"
                         android:padding="@dimen/spacing_generic"
                         android:text="@string/all_orders" />
 

@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
 import com.google.android.material.snackbar.Snackbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,6 +19,7 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.webkul.mobikul.odoo.R;
+import com.webkul.mobikul.odoo.activity.NewHomeActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
@@ -51,6 +55,7 @@ public class AccountFragment extends BaseFragment {
     private static final String TAG = "AccountFragment";
     public FragmentAccountBinding mBinding;
     public String referralCode;
+    NavController navController;
     public static AccountFragment newInstance() {
         return new AccountFragment();
     }
@@ -219,6 +224,16 @@ public class AccountFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         mBinding.setWishlistEnabled(AppSharedPref.isAllowedWishlist(getActivity()));
         Helper.hideKeyboard(getContext());
+        navController = Navigation.findNavController(view);
+
+        mBinding.allOrdersText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController.popBackStack();
+                navController.navigate(R.id.orderListFragment);
+            }
+        });
+
     }
 
     @Override
