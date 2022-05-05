@@ -9,6 +9,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import com.webkul.mobikul.odoo.BuildConfig
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.core.extension.getDefaultProgressDialog
+import com.webkul.mobikul.odoo.core.extension.showDefaultWarningDialog
 import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
 import com.webkul.mobikul.odoo.databinding.FragmentLoginV1Binding
@@ -82,6 +83,7 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
                     LoginFieldsValidation.EMPTY_EMAIL.value -> setEmptyUsernameError()
                     LoginFieldsValidation.EMPTY_PASSWORD.value -> setEmptyPasswordError()
                     LoginFieldsValidation.INVALID_PASSWORD.value -> setInvalidPasswordError()
+                    LoginFieldsValidation.INVALID_LOGIN_DETAILS.value -> showInvalidLoginDetailsDialog()
                 }
             }
             is LoginState.PrivacyPolicy -> {
@@ -92,6 +94,9 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
             is LoginState.Idle -> {}
         }
     }
+
+    private fun showInvalidLoginDetailsDialog() {
+        requireContext().showDefaultWarningDialog(getString(R.string.error_login_failure), "Invalid Login Details")    }
 
 
     override fun triggerIntent(intent: LoginIntent) {

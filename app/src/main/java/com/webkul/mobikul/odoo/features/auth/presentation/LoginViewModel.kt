@@ -83,6 +83,8 @@ class LoginViewModel @Inject constructor(
                             LoginFieldsValidation.EMPTY_EMAIL.value -> loginState =  LoginState.InvalidLoginDetailsError(LoginFieldsValidation.EMPTY_EMAIL)
                             LoginFieldsValidation.EMPTY_PASSWORD.value ->loginState =  LoginState.InvalidLoginDetailsError(LoginFieldsValidation.EMPTY_PASSWORD)
                             LoginFieldsValidation.INVALID_PASSWORD.value ->loginState =  LoginState.InvalidLoginDetailsError(LoginFieldsValidation.INVALID_PASSWORD)
+                            LoginFieldsValidation.INVALID_LOGIN_DETAILS.value ->loginState =  LoginState.InvalidLoginDetailsError(LoginFieldsValidation.INVALID_LOGIN_DETAILS)
+
                         }
                 }.collect {
                     when (it) {

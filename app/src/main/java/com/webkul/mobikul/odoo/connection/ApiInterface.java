@@ -76,7 +76,7 @@ public interface ApiInterface {
     /*Customer*/
     String MOBIKUL_CUSTOMER_SIGN_IN = "mobikul/customer/login";
     String MOBIKUL_CUSTOMER_FORGOT_PASSWORD = "mobikul/customer/resetPassword";
-    String MOBIKUL_CUSTOMER_SIGN_UP = "mobikul/customer/signUp";
+    String MOBIKUL_CUSTOMER_SIGN_UP = "res-user";
     String MOBIKUL_CUSTOMER_MY_ORDERS = "mobikul/my/orders";
     String MOBIKUL_CUSTOMER_MY_ADDRESSES = "mobikul/my/addresses";
     String MOBIKUL_CUSTOMER_ADD_NEW_ADDRESS = "mobikul/my/address/new";

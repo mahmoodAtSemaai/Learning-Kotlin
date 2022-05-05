@@ -22,7 +22,17 @@ class LogInUseCase @Inject constructor(
 
         if (isValidLogin(username, password)) {
             val result = loginRepository.logIn(username, password)
-            emit(result)
+
+            //emit(result)
+            when (result) {
+                is Resource.Success -> {
+                    if (result.value.isSuccess) emit(result)
+                    else throw LogInValidationException(LoginFieldsValidation.INVALID_LOGIN_DETAILS.value.toString())
+                    //emit(Resource.Failure( failureStatus = FailureStatus.API_FAIL , message = result.value.message))
+                }
+                else -> emit(result)
+            }
+
         } else {
 
             if (username.isEmpty()) throw LogInValidationException(LoginFieldsValidation.EMPTY_EMAIL.value.toString())

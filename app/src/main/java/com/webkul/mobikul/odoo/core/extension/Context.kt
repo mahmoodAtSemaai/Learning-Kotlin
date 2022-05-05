@@ -114,3 +114,11 @@ fun Context.onPrivacyPolicyClick():Resource<Intent> {
     intent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intents.toTypedArray<Parcelable>())
     return Resource.Success(intent)
 }
+
+
+fun Context.showDefaultWarningDialog( title: String?, message: String?) {
+    SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+        .setTitleText(title)
+        .setContentText(message)
+        .setConfirmClickListener { obj: SweetAlertDialog -> obj.dismiss() }.show()
+}
