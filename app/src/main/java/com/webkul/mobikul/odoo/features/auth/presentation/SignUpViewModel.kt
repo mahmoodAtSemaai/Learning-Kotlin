@@ -6,6 +6,7 @@ import com.webkul.mobikul.odoo.core.platform.BaseViewModel
 import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.features.auth.data.models.SignUpData
 import com.webkul.mobikul.odoo.features.auth.domain.enums.SignUpFieldsValidation
+import com.webkul.mobikul.odoo.features.auth.domain.usecase.BillingAddressUseCase
 import com.webkul.mobikul.odoo.features.auth.domain.usecase.CountryStateUseCase
 import com.webkul.mobikul.odoo.features.auth.domain.usecase.SignUpUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val signUpUseCase: SignUpUseCase,
-    private val countryStateUseCase: CountryStateUseCase
+    private val countryStateUseCase: CountryStateUseCase,
+    private val billingAddressUseCase: BillingAddressUseCase
 ) : BaseViewModel(), IModel<SignUpState, SignUpIntent> {
 
     override val intents: Channel<SignUpIntent> = Channel(Channel.UNLIMITED)
@@ -39,7 +41,8 @@ class SignUpViewModel @Inject constructor(
                 when (it) {
                     is SignUpIntent.SignUp -> signUpUser(it.signUpData)
                     is SignUpIntent.IsSeller -> showSellerView(it.isSeller)
-                   is  SignUpIntent.GetCountryStateData -> getCountryStateData()
+                    is SignUpIntent.GetCountryStateData -> getCountryStateData()
+                    is SignUpIntent.GetBillingAddress -> getBillingAddressData()
                 }
             }
         }
@@ -65,6 +68,31 @@ class SignUpViewModel @Inject constructor(
                         is Resource.Failure -> SignUpState.Idle
                         is Resource.Loading -> SignUpState.Idle
                         is Resource.Success -> SignUpState.CountryStateDataSuccess(it.value)
+                    }
+
+                }
+                signUpState
+            } catch (e: Exception) {
+                //SignUpState.Error(e.localizedMessage)
+                SignUpState.Idle
+            }
+        }
+    }
+
+
+    private fun getBillingAddressData() {
+        viewModelScope.launch {
+            _state.value = SignUpState.Loading
+            _state.value = try {
+                val signUp = billingAddressUseCase.invoke()
+                var signUpState: SignUpState = SignUpState.Loading
+
+                signUp.collect {
+                    signUpState = when (it) {
+                        is Resource.Default -> SignUpState.Loading
+                        is Resource.Failure -> SignUpState.Error(it.message)
+                        is Resource.Loading -> SignUpState.Loading
+                        is Resource.Success -> SignUpState.BillingAddressDataSuccess(it.value)
                     }
 
                 }

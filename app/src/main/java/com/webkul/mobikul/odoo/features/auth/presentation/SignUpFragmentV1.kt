@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -12,6 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.webkul.mobikul.odoo.BuildConfig
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity
+import com.webkul.mobikul.odoo.activity.UpdateAddressActivity
 import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.core.extension.getDefaultProgressDialog
 import com.webkul.mobikul.odoo.core.extension.showDefaultWarningDialogWithDismissListener
@@ -22,6 +24,8 @@ import com.webkul.mobikul.odoo.features.auth.data.models.SignUpData
 import com.webkul.mobikul.odoo.features.auth.domain.enums.SignUpFieldsValidation
 import com.webkul.mobikul.odoo.helper.AppSharedPref
 import com.webkul.mobikul.odoo.helper.SnackbarHelper
+import com.webkul.mobikul.odoo.model.customer.address.MyAddressesResponse
+import com.webkul.mobikul.odoo.model.customer.signup.SignUpResponse
 import com.webkul.mobikul.odoo.model.generic.CountryStateData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -36,6 +40,7 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
     private val viewModel: SignUpViewModel by viewModels()
     private lateinit var progressDialog: SweetAlertDialog
     private lateinit var signUpData: SignUpData
+    private lateinit var signUpResponse: SignUpResponse
 
     companion object {
         fun newInstance() = SignUpFragmentV1().also { signUpFragment ->
@@ -76,8 +81,13 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
             }
 
             is SignUpState.SignUp -> {
+                signUpResponse = state.data
+                getBillingAddress()
+            }
+
+            is SignUpState.BillingAddressDataSuccess -> {
                 progressDialog.dismiss()
-                // startActivity(Intent())
+                  navigateToHomeScreen(state.myAddressResponse)
             }
 
             is SignUpState.InvalidSignUpDetailsError -> {
@@ -97,10 +107,10 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
 
             is SignUpState.CountryStateDataSuccess -> setCountrySpinnerAdapter(state.countryStateData)
 
-
             is SignUpState.Idle -> {}
 
             is SignUpState.IsSeller -> showIsSeller(if (state.isSeller) View.VISIBLE else View.GONE)
+
         }
     }
 
@@ -125,10 +135,35 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
 
     }
 
+    private fun getBillingAddress() {
+        triggerIntent(SignUpIntent.GetBillingAddress)
+    }
+
+    private fun navigateToHomeScreen(myAddressesResponse: MyAddressesResponse) {
+
+        val billingAddressUrl = myAddressesResponse.addresses[0].url
+
+        Toast.makeText(requireContext(),billingAddressUrl,Toast.LENGTH_SHORT).show()
+
+
+        /*requireActivity().startActivity(
+            Intent(requireContext(), UpdateAddressActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                .putExtra(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE, signUpResponse.homePageResponse)
+                .putExtra(BundleConstant.BUNDLE_KEY_NAME, signUpData.name)
+                .putExtra(BundleConstant.BUNDLE_KEY_PHONE_NUMBER, signUpData.phoneNumber)
+                .putExtra(BundleConstant.BUNDLE_KEY_URL, billingAddressUrl)
+        )
+
+        requireActivity().finish()*/
+    }
+
     private fun setCountrySpinnerAdapter(countryStateData: CountryStateData) {
         if (countryStateData.isAccessDenied) {
 
-            requireContext().showDefaultWarningDialogWithDismissListener(getString(R.string.error_login_failure), getString(R.string.access_denied_message)) { sweetAlertDialog: SweetAlertDialog ->
+            requireContext().showDefaultWarningDialogWithDismissListener(
+                getString(R.string.error_login_failure),
+                getString(R.string.access_denied_message)
+            ) { sweetAlertDialog: SweetAlertDialog ->
 
                 sweetAlertDialog.dismiss()
                 AppSharedPref.clearCustomerData(context)
@@ -149,9 +184,15 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
 
             binding.countrySpinner.onItemSelectedListener =
                 object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(parent: AdapterView<*>?, view: View, countryPos: Int, id: Long) {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View,
+                        countryPos: Int,
+                        id: Long
+                    ) {
                         signUpData.country = countryStateData.countries[countryPos].id
                     }
+
                     override fun onNothingSelected(parent: AdapterView<*>?) {}
                 }
 
@@ -163,7 +204,6 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
     private fun getCountryStateSpinnerData() {
         triggerIntent(SignUpIntent.GetCountryStateData)
     }
-
 
 
     private fun onSignUpBtnClicked() {
