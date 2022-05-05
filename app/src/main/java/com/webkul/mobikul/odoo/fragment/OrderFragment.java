@@ -7,12 +7,18 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.navigation.NavArgs;
+import androidx.navigation.NavBackStackEntry;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.DividerItemDecoration;
 
 import android.view.LayoutInflater;
@@ -54,6 +60,7 @@ public class OrderFragment extends BaseFragment {
     private FragmentOrderBinding binding;
     private SweetAlertDialog dialog;
     private final int TIME_EXPIRED = 0;
+    NavController navController;
     private final int TIME_MILLIS = 1000;
     private final int SECONDS_IN_A_MINUTE = 60;
     private final int MINUTES_IN_AN_HOUR = 60;
@@ -80,6 +87,22 @@ public class OrderFragment extends BaseFragment {
         buildDialog();
         return binding.getRoot();
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        navController = Navigation.findNavController(view);
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navController.popBackStack();
+                navController.navigate(R.id.orderListFragment);
+            }
+        });
+
+    }
+
 
     private void buildDialog() {
         dialog = AlertDialogHelper.getAlertDialog(requireContext(), SweetAlertDialog.PROGRESS_TYPE,
@@ -150,6 +173,7 @@ public class OrderFragment extends BaseFragment {
         });
         dialog.show();
     }
+
 
 
     private void setViewGroupVisibility(OrderDataResponse orderDataResponse) {

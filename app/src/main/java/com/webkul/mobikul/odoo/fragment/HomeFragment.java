@@ -17,6 +17,8 @@ import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
@@ -96,6 +98,13 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 binding.refreshLayout.setEnabled(verticalOffset == 0);
+            }
+        });
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                getActivity().finishAffinity();
             }
         });
 

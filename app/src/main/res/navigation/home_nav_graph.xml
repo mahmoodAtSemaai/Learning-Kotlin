@@ -27,7 +27,11 @@
 
         <action
             android:id="@+id/action_orderListFragment_to_orderFragment"
-            app:destination="@id/orderFragment" />
+            app:destination="@id/orderFragment"
+            app:popUpTo="@id/orderListFragment"
+            app:popUpToInclusive="true"
+
+            />
     </fragment>
 
 

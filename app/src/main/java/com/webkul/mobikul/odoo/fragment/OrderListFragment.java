@@ -2,6 +2,7 @@ package com.webkul.mobikul.odoo.fragment;
 
 import android.content.Intent;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.databinding.DataBindingUtil;
 
 import android.os.Bundle;
@@ -61,6 +62,13 @@ public class OrderListFragment extends BaseFragment {
     public void onViewCreated(@androidx.annotation.NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navController.navigateUp();
+            }
+        });
 
     }
 
