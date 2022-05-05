@@ -28,12 +28,9 @@
                 tools:ignore="HardcodedText"
                 tools:targetApi="lollipop">
 
-
             </androidx.appcompat.widget.Toolbar>
 
-
         </com.google.android.material.appbar.AppBarLayout>
-
 
         <ScrollView
             android:id="@+id/container"
@@ -55,8 +52,8 @@
                     android:gravity="center">
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="@dimen/dimen_36dp"
+                        android:layout_height="@dimen/dimen_36dp"
                         android:padding="@dimen/spacing_generic"
                         app:srcCompat="@drawable/ic_vector_telephone_accent_24dp" />
 
@@ -73,11 +70,9 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_phone_number"
                             android:inputType="phone"
-                            android:maxLines="1"
-                            />
+                            android:maxLines="1" />
 
                     </com.google.android.material.textfield.TextInputLayout>
-
 
                 </LinearLayout>
 
@@ -86,13 +81,11 @@
                     android:layout_height="wrap_content"
                     android:gravity="center">
 
-
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="@dimen/dimen_36dp"
+                        android:layout_height="@dimen/dimen_36dp"
                         android:padding="@dimen/spacing_generic"
                         app:srcCompat="@drawable/ic_vector_password_key_accent_24dp" />
-
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
@@ -108,13 +101,11 @@
                             android:hint="@string/write_your_password_here"
                             android:inputType="textPassword"
                             android:maxLines="1"
-                            android:padding="@dimen/spacing_generic"
-                            />
+                            android:padding="@dimen/spacing_generic" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
-
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/login"
@@ -133,9 +124,7 @@
                     android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/spacing_normal"
                     android:text="@string/forget_password_heading"
-                    android:textColor="?colorAccent"
-                  />
-
+                    android:textColor="?colorAccent" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/sign_up_now"
@@ -145,7 +134,6 @@
                     android:gravity="center"
                     app:htmlText="@{@string/signup_text_on_sign_in_page}"
                     tools:text="@string/signup_text_on_sign_in_page" />
-
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/privacy_policy"
@@ -157,19 +145,16 @@
                     android:padding="@dimen/spacing_generic"
                     android:text="@string/privacy_policy"
                     android:textColor="@color/blue_a200"
-                    android:textStyle="italic"
-                   />
+                    android:textStyle="italic" />
 
                 <androidx.legacy.widget.Space
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
-
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </ScrollView>
-
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
