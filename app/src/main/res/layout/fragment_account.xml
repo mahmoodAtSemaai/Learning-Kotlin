@@ -292,7 +292,7 @@
                         android:gravity="center|start"
                         android:padding="@dimen/spacing_generic"
                         android:text="@string/semaai_points_balance"
-                        android:visibility="@{View.VISIBLE}" />
+                        android:visibility="@{View.GONE}" />
 
                     <View
                         style="@style/DividerHorizontal"
