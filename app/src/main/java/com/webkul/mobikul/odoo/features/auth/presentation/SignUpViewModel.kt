@@ -6,10 +6,7 @@ import com.webkul.mobikul.odoo.core.platform.BaseViewModel
 import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.features.auth.data.models.SignUpData
 import com.webkul.mobikul.odoo.features.auth.domain.enums.SignUpFieldsValidation
-import com.webkul.mobikul.odoo.features.auth.domain.usecase.BillingAddressUseCase
-import com.webkul.mobikul.odoo.features.auth.domain.usecase.CountryStateUseCase
-import com.webkul.mobikul.odoo.features.auth.domain.usecase.SignUpUseCase
-import com.webkul.mobikul.odoo.features.auth.domain.usecase.ViewMarketPlaceTnCUseCase
+import com.webkul.mobikul.odoo.features.auth.domain.usecase.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +21,8 @@ class SignUpViewModel @Inject constructor(
     private val signUpUseCase: SignUpUseCase,
     private val countryStateUseCase: CountryStateUseCase,
     private val billingAddressUseCase: BillingAddressUseCase,
-    private val viewMarketPlaceTnCUseCase: ViewMarketPlaceTnCUseCase
+    private val viewMarketPlaceTnCUseCase: ViewMarketPlaceTnCUseCase,
+    private val viewTnCUseCase: ViewTnCUseCase
 ) : BaseViewModel(), IModel<SignUpState, SignUpIntent> {
 
     override val intents: Channel<SignUpIntent> = Channel(Channel.UNLIMITED)
@@ -46,6 +44,8 @@ class SignUpViewModel @Inject constructor(
                     is SignUpIntent.GetCountryStateData -> getCountryStateData()
                     is SignUpIntent.GetBillingAddress -> getBillingAddressData()
                     is SignUpIntent.ViewMarketPlaceTnC -> getMarketPlaceTnC()
+                    is SignUpIntent.ViewSignUpTnC -> getSignUpTnC()
+
 
                 }
             }
@@ -53,7 +53,7 @@ class SignUpViewModel @Inject constructor(
 
     }
 
-    private fun getMarketPlaceTnC() {
+    private fun getSignUpTnC() {
         viewModelScope.launch {
             _state.value = SignUpState.Loading
             _state.value = try {
@@ -68,6 +68,29 @@ class SignUpViewModel @Inject constructor(
                         is Resource.Success -> SignUpState.MarketPlaceTnCSuccess(it.value)
                     }
 
+                }
+                signUpState
+            } catch (e: Exception) {
+                SignUpState.Error(e.localizedMessage)
+            }
+        }
+    }
+
+
+    private fun getMarketPlaceTnC() {
+        viewModelScope.launch {
+            _state.value = SignUpState.Loading
+            _state.value = try {
+                val signUp = viewTnCUseCase.invoke()
+                var signUpState: SignUpState = SignUpState.Idle
+
+                signUp.collect {
+                    signUpState = when (it) {
+                        is Resource.Default -> SignUpState.Idle
+                        is Resource.Failure -> SignUpState.Error(it.message)
+                        is Resource.Loading -> SignUpState.Loading
+                        is Resource.Success -> SignUpState.SignUpTnCSuccess(it.value)
+                    }
                 }
                 signUpState
             } catch (e: Exception) {

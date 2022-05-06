@@ -116,6 +116,11 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
                 showMarketPlaceTnC(state.termAndConditionResponse)
             }
 
+            is SignUpState.SignUpTnCSuccess -> {
+                progressDialog.dismiss()
+                showMarketPlaceTnC(state.termAndConditionResponse)
+            }
+
 
             is SignUpState.CountryStateDataSuccess -> setCountrySpinnerAdapter(state.countryStateData)
 
@@ -144,6 +149,9 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
 
         binding.viewMarketplaceTnc.setOnClickListener {
             triggerIntent(SignUpIntent.ViewMarketPlaceTnC)
+        }
+        binding.viewTermsAndConditions.setOnClickListener {
+            triggerIntent(SignUpIntent.ViewSignUpTnC)
         }
 
     }

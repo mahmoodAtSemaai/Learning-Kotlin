@@ -17,6 +17,6 @@ sealed class SignUpState : IState {
     data class CountryStateDataSuccess(val countryStateData: CountryStateData): SignUpState()
     data class BillingAddressDataSuccess(val myAddressResponse: MyAddressesResponse): SignUpState()
     data class MarketPlaceTnCSuccess(val termAndConditionResponse: TermAndConditionResponse ):SignUpState()
-
+    data class SignUpTnCSuccess(val termAndConditionResponse: TermAndConditionResponse ):SignUpState()
 }
 

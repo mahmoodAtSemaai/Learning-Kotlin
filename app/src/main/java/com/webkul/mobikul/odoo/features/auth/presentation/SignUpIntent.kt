@@ -11,4 +11,5 @@ sealed class SignUpIntent: IIntent {
     object GetCountryStateData : SignUpIntent()
     object GetBillingAddress : SignUpIntent()
     object ViewMarketPlaceTnC : SignUpIntent()
+    object ViewSignUpTnC : SignUpIntent()
 }
