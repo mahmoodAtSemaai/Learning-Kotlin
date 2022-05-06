@@ -9,6 +9,7 @@ import com.webkul.mobikul.odoo.features.auth.domain.enums.SignUpFieldsValidation
 import com.webkul.mobikul.odoo.features.auth.domain.usecase.BillingAddressUseCase
 import com.webkul.mobikul.odoo.features.auth.domain.usecase.CountryStateUseCase
 import com.webkul.mobikul.odoo.features.auth.domain.usecase.SignUpUseCase
+import com.webkul.mobikul.odoo.features.auth.domain.usecase.ViewMarketPlaceTnCUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +23,8 @@ import javax.inject.Inject
 class SignUpViewModel @Inject constructor(
     private val signUpUseCase: SignUpUseCase,
     private val countryStateUseCase: CountryStateUseCase,
-    private val billingAddressUseCase: BillingAddressUseCase
+    private val billingAddressUseCase: BillingAddressUseCase,
+    private val viewMarketPlaceTnCUseCase: ViewMarketPlaceTnCUseCase
 ) : BaseViewModel(), IModel<SignUpState, SignUpIntent> {
 
     override val intents: Channel<SignUpIntent> = Channel(Channel.UNLIMITED)
@@ -43,10 +45,35 @@ class SignUpViewModel @Inject constructor(
                     is SignUpIntent.IsSeller -> showSellerView(it.isSeller)
                     is SignUpIntent.GetCountryStateData -> getCountryStateData()
                     is SignUpIntent.GetBillingAddress -> getBillingAddressData()
+                    is SignUpIntent.ViewMarketPlaceTnC -> getMarketPlaceTnC()
+
                 }
             }
         }
 
+    }
+
+    private fun getMarketPlaceTnC() {
+        viewModelScope.launch {
+            _state.value = SignUpState.Loading
+            _state.value = try {
+                val signUp = viewMarketPlaceTnCUseCase.invoke()
+                var signUpState: SignUpState = SignUpState.Idle
+
+                signUp.collect {
+                    signUpState = when (it) {
+                        is Resource.Default -> SignUpState.Idle
+                        is Resource.Failure -> SignUpState.Error(it.message)
+                        is Resource.Loading -> SignUpState.Loading
+                        is Resource.Success -> SignUpState.MarketPlaceTnCSuccess(it.value)
+                    }
+
+                }
+                signUpState
+            } catch (e: Exception) {
+                SignUpState.Error(e.localizedMessage)
+            }
+        }
     }
 
     private fun showSellerView(isSeller: Boolean) {

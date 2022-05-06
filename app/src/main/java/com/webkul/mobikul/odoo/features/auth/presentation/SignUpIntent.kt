@@ -10,4 +10,5 @@ sealed class SignUpIntent: IIntent {
     data class IsSeller(val isSeller: Boolean): SignUpIntent()
     object GetCountryStateData : SignUpIntent()
     object GetBillingAddress : SignUpIntent()
+    object ViewMarketPlaceTnC : SignUpIntent()
 }

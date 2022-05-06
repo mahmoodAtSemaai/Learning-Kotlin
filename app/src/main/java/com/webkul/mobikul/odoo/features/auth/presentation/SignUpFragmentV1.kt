@@ -2,10 +2,15 @@ package com.webkul.mobikul.odoo.features.auth.presentation
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
+import android.util.Log
 import android.view.View
+import android.webkit.WebView
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -13,7 +18,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.webkul.mobikul.odoo.BuildConfig
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity
-import com.webkul.mobikul.odoo.activity.UpdateAddressActivity
 import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.core.extension.getDefaultProgressDialog
 import com.webkul.mobikul.odoo.core.extension.showDefaultWarningDialogWithDismissListener
@@ -23,9 +27,11 @@ import com.webkul.mobikul.odoo.databinding.FragmentSignUpV1Binding
 import com.webkul.mobikul.odoo.features.auth.data.models.SignUpData
 import com.webkul.mobikul.odoo.features.auth.domain.enums.SignUpFieldsValidation
 import com.webkul.mobikul.odoo.helper.AppSharedPref
+import com.webkul.mobikul.odoo.helper.Helper
 import com.webkul.mobikul.odoo.helper.SnackbarHelper
 import com.webkul.mobikul.odoo.model.customer.address.MyAddressesResponse
 import com.webkul.mobikul.odoo.model.customer.signup.SignUpResponse
+import com.webkul.mobikul.odoo.model.customer.signup.TermAndConditionResponse
 import com.webkul.mobikul.odoo.model.generic.CountryStateData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -77,7 +83,7 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
 
             is SignUpState.Error -> {
                 progressDialog.dismiss()
-                val error = state.error
+                showError(state.error.toString())
             }
 
             is SignUpState.SignUp -> {
@@ -87,7 +93,7 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
 
             is SignUpState.BillingAddressDataSuccess -> {
                 progressDialog.dismiss()
-                  navigateToHomeScreen(state.myAddressResponse)
+                navigateToHomeScreen(state.myAddressResponse)
             }
 
             is SignUpState.InvalidSignUpDetailsError -> {
@@ -105,22 +111,25 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
                 }
             }
 
+            is SignUpState.MarketPlaceTnCSuccess -> {
+                progressDialog.dismiss()
+                showMarketPlaceTnC(state.termAndConditionResponse)
+            }
+
+
             is SignUpState.CountryStateDataSuccess -> setCountrySpinnerAdapter(state.countryStateData)
 
             is SignUpState.Idle -> {}
 
             is SignUpState.IsSeller -> showIsSeller(if (state.isSeller) View.VISIBLE else View.GONE)
-
         }
     }
-
 
     override fun triggerIntent(intent: SignUpIntent) {
         lifecycleScope.launch {
             viewModel.intents.send(intent)
         }
     }
-
 
     private fun setOnClickListeners() {
 
@@ -133,6 +142,38 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
             onSignUpBtnClicked()
         }
 
+        binding.viewMarketplaceTnc.setOnClickListener {
+            triggerIntent(SignUpIntent.ViewMarketPlaceTnC)
+        }
+
+    }
+
+    private fun showMarketPlaceTnC(termAndConditionResponse: TermAndConditionResponse) {
+       if(termAndConditionResponse.isSuccess) {
+            val addedLayout = LinearLayout(requireContext())
+            addedLayout.orientation = LinearLayout.VERTICAL
+            val myWebView = WebView(requireContext())
+
+            Helper.enableDarkModeInWebView(requireContext(), myWebView)
+
+            val mime = "text/html"
+            val encoding = "utf-8"
+            myWebView.loadDataWithBaseURL(
+                "",
+                if (TextUtils.isEmpty(termAndConditionResponse.getTermsAndConditions())) requireActivity().getString(
+                    R.string.no_terms_and_conditions_to_display
+                ) else termAndConditionResponse.getTermsAndConditions(),
+                mime,
+                encoding,
+                ""
+            )
+            addedLayout.addView(myWebView)
+            val dialog = AlertDialog.Builder(requireContext())
+            dialog.setView(addedLayout)
+            dialog.show()
+        }else{
+            showError("Failed to get Terms and Conditions.")
+       }
     }
 
     private fun getBillingAddress() {
@@ -143,7 +184,7 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
 
         val billingAddressUrl = myAddressesResponse.addresses[0].url
 
-        Toast.makeText(requireContext(),billingAddressUrl,Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), billingAddressUrl, Toast.LENGTH_SHORT).show()
 
 
         /*requireActivity().startActivity(
@@ -293,6 +334,17 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
             Snackbar.LENGTH_LONG
         ).show()
     }
+
+    private fun showError(message: String?) {
+        message?.let {
+            SnackbarHelper.getSnackbar(
+                requireActivity(),
+                message,
+                Snackbar.LENGTH_LONG
+            ).show()
+        }
+    }
+
 
     private fun setErrorToNull() {
         binding.emailLayout.isErrorEnabled = false
