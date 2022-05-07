@@ -1,6 +1,7 @@
 package com.webkul.mobikul.odoo.features.auth.domain.usecase
 
 import com.webkul.mobikul.odoo.BuildConfig
+import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.features.auth.domain.enums.LogInValidationException
 import com.webkul.mobikul.odoo.features.auth.domain.enums.LoginFieldsValidation
@@ -27,8 +28,8 @@ class LogInUseCase @Inject constructor(
             when (result) {
                 is Resource.Success -> {
                     if (result.value.isSuccess) emit(result)
-                    else throw LogInValidationException(LoginFieldsValidation.INVALID_LOGIN_DETAILS.value.toString())
-                    //emit(Resource.Failure( failureStatus = FailureStatus.API_FAIL , message = result.value.message))
+                    else emit(Resource.Failure( failureStatus = FailureStatus.API_FAIL , message = result.value.message))
+                  //  else throw LogInValidationException(LoginFieldsValidation.INVALID_LOGIN_DETAILS.value.toString())
                 }
                 else -> emit(result)
             }

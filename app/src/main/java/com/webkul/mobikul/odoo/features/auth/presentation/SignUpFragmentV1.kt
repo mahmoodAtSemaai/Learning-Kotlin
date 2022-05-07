@@ -24,6 +24,7 @@ import com.webkul.mobikul.odoo.core.extension.getDefaultProgressDialog
 import com.webkul.mobikul.odoo.core.extension.showDefaultWarningDialogWithDismissListener
 import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
+import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.databinding.FragmentSignUpV1Binding
 import com.webkul.mobikul.odoo.features.auth.data.models.SignUpData
 import com.webkul.mobikul.odoo.features.auth.domain.enums.SignUpFieldsValidation
@@ -84,7 +85,13 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
 
             is SignUpState.Error -> {
                 progressDialog.dismiss()
-                showError(state.message.toString())
+
+                when (state.failureStatus) {
+                    FailureStatus.API_FAIL -> showErrorSnackbar(state.message)
+                    FailureStatus.EMPTY -> TODO()
+                    FailureStatus.NO_INTERNET -> showErrorSnackbar("Please connect to Internet")
+                    FailureStatus.OTHER -> showErrorSnackbar(state.message)
+                }
             }
 
             is SignUpState.SignUp -> {
@@ -99,6 +106,7 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
 
             is SignUpState.InvalidSignUpDetailsError -> {
                 progressDialog.dismiss()
+                setInvalidSignUpDetailsError()
                 when (state.invalidDetails.value) {
                     SignUpFieldsValidation.EMPTY_PHONE_NO.value -> setEmptyUsernameError()
                     SignUpFieldsValidation.EMPTY_NAME.value -> setEmptyNameError()
@@ -180,7 +188,7 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
             dialog.setView(addedLayout)
             dialog.show()
         }else{
-            showError("Failed to get Terms and Conditions.")
+           showErrorSnackbar("Failed to get Terms and Conditions.")
        }
     }
 
@@ -342,7 +350,7 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
         ).show()
     }
 
-    private fun showError(message: String?) {
+    private fun showErrorSnackbar(message: String?) {
         message?.let {
             SnackbarHelper.getSnackbar(
                 requireActivity(),

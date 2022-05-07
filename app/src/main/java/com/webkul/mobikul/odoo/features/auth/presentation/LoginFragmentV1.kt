@@ -1,20 +1,22 @@
 package com.webkul.mobikul.odoo.features.auth.presentation
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.google.android.material.snackbar.Snackbar
 import com.webkul.mobikul.odoo.BuildConfig
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.core.extension.getDefaultProgressDialog
 import com.webkul.mobikul.odoo.core.extension.showDefaultWarningDialog
 import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
+import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.databinding.FragmentLoginV1Binding
 import com.webkul.mobikul.odoo.features.auth.domain.enums.LoginFieldsValidation
 import com.webkul.mobikul.odoo.helper.ApiRequestHelper
+import com.webkul.mobikul.odoo.helper.SnackbarHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.*
@@ -75,7 +77,13 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
             is LoginState.Error -> {
                 progressDialog.dismiss()
 
-              //  val error = state.error
+                when (state.failureStatus) {
+                    FailureStatus.API_FAIL -> showInvalidLoginDetailsDialog(state.message)
+                    FailureStatus.EMPTY -> TODO()
+                    FailureStatus.NO_INTERNET -> showErrorSnackbar("Please connect to Internet")
+                    FailureStatus.OTHER -> showErrorSnackbar(state.message)
+                }
+
             }
             is LoginState.InvalidLoginDetailsError -> {
                 progressDialog.dismiss()
@@ -83,7 +91,7 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
                     LoginFieldsValidation.EMPTY_EMAIL.value -> setEmptyUsernameError()
                     LoginFieldsValidation.EMPTY_PASSWORD.value -> setEmptyPasswordError()
                     LoginFieldsValidation.INVALID_PASSWORD.value -> setInvalidPasswordError()
-                    LoginFieldsValidation.INVALID_LOGIN_DETAILS.value -> showInvalidLoginDetailsDialog()
+                    //LoginFieldsValidation.INVALID_LOGIN_DETAILS.value -> showInvalidLoginDetailsDialog()
                 }
             }
             is LoginState.PrivacyPolicy -> {
@@ -95,8 +103,12 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
         }
     }
 
-    private fun showInvalidLoginDetailsDialog() {
-        requireContext().showDefaultWarningDialog(getString(R.string.error_login_failure), "Invalid Login Details")    }
+    private fun showInvalidLoginDetailsDialog(message: String?) {
+        requireContext().showDefaultWarningDialog(
+            getString(R.string.error_login_failure),
+            message
+        )
+    }
 
 
     override fun triggerIntent(intent: LoginIntent) {
@@ -144,6 +156,16 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
             )
         )
 
+    }
+
+    private fun showErrorSnackbar(message: String?) {
+        message?.let {
+            SnackbarHelper.getSnackbar(
+                requireActivity(),
+                message,
+                Snackbar.LENGTH_LONG
+            ).show()
+        }
     }
 
 

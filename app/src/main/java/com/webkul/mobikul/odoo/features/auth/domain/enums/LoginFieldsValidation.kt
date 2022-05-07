@@ -5,7 +5,7 @@ enum class LoginFieldsValidation(val value: Int) {
    // INVALID_EMAIL(2),
     EMPTY_PASSWORD(3),
     INVALID_PASSWORD(4),
-    INVALID_LOGIN_DETAILS(5)
+   // INVALID_LOGIN_DETAILS(5)
 }
 
 class LogInValidationException(private val validationType: String) : Exception(validationType)
