@@ -21,6 +21,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.DividerItemDecoration;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -92,14 +93,20 @@ public class OrderFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        navController = Navigation.findNavController(view);
-        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                navController.popBackStack();
-                navController.navigate(R.id.orderListFragment);
-            }
-        });
+        try {
+            navController = Navigation.findNavController(view);
+            requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+                @Override
+                public void handleOnBackPressed() {
+                    navController.popBackStack();
+                    navController.navigate(R.id.orderListFragment);
+                }
+            });
+        }
+        catch (Exception e){
+
+        }
+
 
     }
 
@@ -117,8 +124,15 @@ public class OrderFragment extends BaseFragment {
     }
 
     private int getOrderIdFromArguments() {
-        assert getArguments() != null;
-        return getArguments().getInt("orderid");
+
+        if(getArguments().getString(BUNDLE_KEY_ORDER_ID)!=null){
+            return Integer.parseInt(getArguments().getString(BUNDLE_KEY_ORDER_ID));
+        }
+        else {
+            assert getArguments() != null;
+            return getArguments().getInt("orderid");
+        }
+
     }
 
 
@@ -142,6 +156,7 @@ public class OrderFragment extends BaseFragment {
             @Override
             public void onError(Throwable t) {
                 super.onError(t);
+
                 showErrorDialog();
                 binding.getRoot().setVisibility(View.INVISIBLE);
             }
@@ -156,7 +171,6 @@ public class OrderFragment extends BaseFragment {
             setupRecyclerView(orderDataResponse);
             setViewGroupVisibility(orderDataResponse);
         }catch (Exception e){
-            Toast.makeText(getContext() , R.string.error_something_went_wrong , Toast.LENGTH_SHORT).show();
         }
 
     }
