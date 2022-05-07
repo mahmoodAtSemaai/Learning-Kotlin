@@ -3,7 +3,6 @@ package com.webkul.mobikul.odoo.features.auth.presentation
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.webkit.WebView
 import android.widget.AdapterView
@@ -158,35 +157,60 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
         binding.viewMarketplaceTnc.setOnClickListener {
             triggerIntent(SignUpIntent.ViewMarketPlaceTnC)
         }
+
         binding.viewTermsAndConditions.setOnClickListener {
             triggerIntent(SignUpIntent.ViewSignUpTnC)
         }
 
+        binding.logInNow.setOnClickListener {
+            onLoginNowClicked()
+        }
+
+        binding.toolbar.setNavigationOnClickListener {
+            onToolbarBackPressed()
+        }
+    }
+
+    private fun onToolbarBackPressed() {
+        val fragment =
+            requireActivity().supportFragmentManager.findFragmentByTag(SignUpFragmentV1::class.java.simpleName)
+        requireActivity().supportFragmentManager.beginTransaction().remove(fragment!!).commit()
+    }
+
+    private fun onLoginNowClicked() {
+        requireActivity().supportFragmentManager.beginTransaction()
+            .add(
+                R.id.fragment_container_v1,
+                LoginFragmentV1.newInstance(),
+                LoginFragmentV1::class.java.simpleName
+            ).addToBackStack(LoginFragmentV1::class.java.simpleName).commit()
+
+        onToolbarBackPressed()
     }
 
     private fun showMarketPlaceTnC(termAndConditionResponse: TermAndConditionResponse) {
 
-            val addedLayout = LinearLayout(requireContext())
-            addedLayout.orientation = LinearLayout.VERTICAL
-            val myWebView = WebView(requireContext())
+        val addedLayout = LinearLayout(requireContext())
+        addedLayout.orientation = LinearLayout.VERTICAL
+        val myWebView = WebView(requireContext())
 
-            Helper.enableDarkModeInWebView(requireContext(), myWebView)
+        Helper.enableDarkModeInWebView(requireContext(), myWebView)
 
-            val mime = "text/html"
-            val encoding = "utf-8"
-            myWebView.loadDataWithBaseURL(
-                "",
-                if (TextUtils.isEmpty(termAndConditionResponse.termsAndConditions)) requireActivity().getString(
-                    R.string.no_terms_and_conditions_to_display
-                ) else termAndConditionResponse.termsAndConditions,
-                mime,
-                encoding,
-                ""
-            )
-            addedLayout.addView(myWebView)
-            val dialog = AlertDialog.Builder(requireContext())
-            dialog.setView(addedLayout)
-            dialog.show()
+        val mime = "text/html"
+        val encoding = "utf-8"
+        myWebView.loadDataWithBaseURL(
+            "",
+            if (TextUtils.isEmpty(termAndConditionResponse.termsAndConditions)) requireActivity().getString(
+                R.string.no_terms_and_conditions_to_display
+            ) else termAndConditionResponse.termsAndConditions,
+            mime,
+            encoding,
+            ""
+        )
+        addedLayout.addView(myWebView)
+        val dialog = AlertDialog.Builder(requireContext())
+        dialog.setView(addedLayout)
+        dialog.show()
     }
 
     private fun getBillingAddress() {
@@ -201,8 +225,14 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
 
 
         requireActivity().startActivity(
-            Intent(requireContext(), UpdateAddressActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                .putExtra(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE, signUpResponse.homePageResponse)
+            Intent(
+                requireContext(),
+                UpdateAddressActivity::class.java
+            ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                .putExtra(
+                    BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE,
+                    signUpResponse.homePageResponse
+                )
                 .putExtra(BundleConstant.BUNDLE_KEY_NAME, signUpData.name)
                 .putExtra(BundleConstant.BUNDLE_KEY_PHONE_NUMBER, signUpData.phoneNumber)
                 .putExtra(BundleConstant.BUNDLE_KEY_URL, billingAddressUrl)

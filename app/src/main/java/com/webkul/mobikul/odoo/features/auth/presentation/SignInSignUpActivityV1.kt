@@ -36,7 +36,7 @@ class SignInSignUpActivityV1 @Inject constructor(): BindingBaseActivity<Activity
                 R.id.fragment_container_v1,
                 LoginFragmentV1.newInstance(),
                 LoginFragmentV1::class.java.simpleName
-            ).commit()
+            ).addToBackStack(LoginFragmentV1::class.java.simpleName).commit()
     }
 
     private fun openSignUp() {
@@ -45,7 +45,7 @@ class SignInSignUpActivityV1 @Inject constructor(): BindingBaseActivity<Activity
                 R.id.fragment_container_v1,
                 SignUpFragmentV1.newInstance(),
                 SignUpFragmentV1::class.java.simpleName
-            ).commit()
+            ).addToBackStack(SignUpFragmentV1::class.java.simpleName).commit()
     }
 
 

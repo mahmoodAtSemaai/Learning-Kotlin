@@ -1,5 +1,6 @@
 package com.webkul.mobikul.odoo.features.auth.presentation
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -18,7 +19,10 @@ import com.webkul.mobikul.odoo.databinding.FragmentLoginV1Binding
 import com.webkul.mobikul.odoo.dialog_frag.ForgotPasswordDialogFragment
 import com.webkul.mobikul.odoo.features.auth.domain.enums.LoginFieldsValidation
 import com.webkul.mobikul.odoo.helper.ApiRequestHelper
+import com.webkul.mobikul.odoo.helper.FingerPrintLoginHelper
 import com.webkul.mobikul.odoo.helper.SnackbarHelper
+import com.webkul.mobikul.odoo.model.customer.signin.LoginRequestData
+import com.webkul.mobikul.odoo.model.customer.signin.LoginResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.*
@@ -31,6 +35,8 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
     override val layoutId = R.layout.fragment_login_v1
     private val viewModel: LoginViewModel by viewModels()
     private lateinit var progressDialog: SweetAlertDialog
+    private lateinit var username: String
+    private lateinit var password: String
 
 
     companion object {
@@ -69,18 +75,28 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
         binding.forgotPassword.setOnClickListener {
             triggerIntent(LoginIntent.ForgotPassword)
         }
+
+        binding.signUpNow.setOnClickListener {
+            onSignUpNowClicked()
+        }
+
+        binding.toolbar.setNavigationOnClickListener {
+            onToolbarBackPressed()
+        }
     }
 
+    private fun onToolbarBackPressed() {
+        val fragment =
+            requireActivity().supportFragmentManager.findFragmentByTag(LoginFragmentV1::class.java.simpleName)
+        requireActivity().supportFragmentManager.beginTransaction().remove(fragment!!).commit()
+    }
 
     override fun render(state: LoginState) {
         when (state) {
             is LoginState.Loading -> {
                 progressDialog.show()
             }
-            is LoginState.Login -> {
-                progressDialog.dismiss()
-                ApiRequestHelper.callHomePageApi(requireActivity())
-            }
+            is LoginState.Login -> onLoginSuccess(state.data)
             is LoginState.Error -> {
                 progressDialog.dismiss()
 
@@ -112,6 +128,39 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
         }
     }
 
+    private fun onLoginSuccess(loginResponse: LoginResponse) {
+        progressDialog.dismiss()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val loginData = LoginRequestData(requireActivity())
+            loginData.password = password
+            loginData.username = username
+
+            val fingerPrintHelper = FingerPrintLoginHelper()
+
+            fingerPrintHelper.askForFingerprintLogin(
+                requireActivity(), loginResponse, loginData,
+                null,
+                null,
+                null
+            )
+        }
+      //  ApiRequestHelper.callHomePageApi(requireActivity())
+    }
+
+
+    private fun onSignUpNowClicked() {
+        requireActivity().supportFragmentManager.beginTransaction()
+            .add(
+                R.id.fragment_container_v1,
+                SignUpFragmentV1.newInstance(),
+                SignUpFragmentV1::class.java.simpleName
+            ).addToBackStack(SignUpFragmentV1::class.java.simpleName).commit()
+
+        onToolbarBackPressed()
+    }
+
+
     private fun showForgotPasswordDialog() {
         val fragmentManager = (requireActivity() as AppCompatActivity).supportFragmentManager
         val forgotPasswordDialogFragment = ForgotPasswordDialogFragment.newInstance("")
@@ -137,8 +186,8 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
 
 
     private fun onLoginBtnClicked() {
-        val username = binding.usernameEt.text.toString()
-        val password = binding.passwordEt.text.toString()
+        username = binding.usernameEt.text.toString()
+        password = binding.passwordEt.text.toString()
         triggerIntent(LoginIntent.Login(username, password))
     }
 

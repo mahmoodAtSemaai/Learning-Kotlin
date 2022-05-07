@@ -39,7 +39,7 @@ public class ApiRequestHelper {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
                 super.onSubscribe(d);
-                AlertDialogHelper.showDefaultProgressDialog(context);
+              //  AlertDialogHelper.showDefaultProgressDialog(context);
             }
 
             @Override
