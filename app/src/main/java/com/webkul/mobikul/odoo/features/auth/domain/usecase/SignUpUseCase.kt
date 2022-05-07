@@ -5,6 +5,8 @@ import com.webkul.mobikul.odoo.BuildConfig
 import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.features.auth.data.models.SignUpData
+import com.webkul.mobikul.odoo.features.auth.domain.enums.LogInValidationException
+import com.webkul.mobikul.odoo.features.auth.domain.enums.LoginFieldsValidation
 import com.webkul.mobikul.odoo.features.auth.domain.enums.SignUpFieldsValidation
 import com.webkul.mobikul.odoo.features.auth.domain.enums.SignUpValidationException
 import com.webkul.mobikul.odoo.features.auth.domain.repo.SignUpRepository
@@ -26,16 +28,24 @@ class SignUpUseCase @Inject constructor(
 
         emit(Resource.Loading)
 
-        if (isValidLogin(signUpData)) {
+        if (isValidSignUpData(signUpData)) {
             val signUpRequest = SignUpRequest(context, signUpData)
             val result = signUpRepository.signUp(signUpRequest)
-            emit(result)
+
+            when (result) {
+                is Resource.Success -> {
+                    if (result.value.isSuccess) emit(result)
+                    else emit(Resource.Failure( failureStatus = FailureStatus.API_FAIL , message = result.value.message))
+                }
+                else -> emit(result)
+            }
+
         }
 
     }.flowOn(Dispatchers.IO)
 
 
-    private fun isValidLogin(signUpData: SignUpData): Boolean {
+    private fun isValidSignUpData(signUpData: SignUpData): Boolean {
 
         if (signUpData.phoneNumber.isEmpty()) throw SignUpValidationException(
             SignUpFieldsValidation.EMPTY_PHONE_NO.value.toString()
