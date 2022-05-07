@@ -39,11 +39,17 @@ class LoginViewModel @Inject constructor(
             intents.consumeAsFlow().collect {
                 when (it) {
                     is LoginIntent.Login -> loginUser(it.username, it.password)
-                    is LoginIntent.PrivacyPolicy -> {
-                        viewPrivacyPolicy()
-                    }
+                    is LoginIntent.PrivacyPolicy -> viewPrivacyPolicy()
+                    is LoginIntent.ForgotPassword -> showForgetPassword()
+
                 }
             }
+        }
+    }
+
+    private fun showForgetPassword() {
+        viewModelScope.launch {
+            _state.value = LoginState.ForgotPassword
         }
     }
 

@@ -12,5 +12,6 @@ sealed class LoginState : IState {
     class PrivacyPolicy(val intent: Intent) : LoginState()
     data class Login(val data: LoginResponse) : LoginState()
     data class InvalidLoginDetailsError(val uiError: LoginFieldsValidation) : LoginState()
-    data class Error(val message: String? , val failureStatus: FailureStatus) : LoginState()
+    data class Error(val message: String?, val failureStatus: FailureStatus) : LoginState()
+    object ForgotPassword : LoginState()
 }

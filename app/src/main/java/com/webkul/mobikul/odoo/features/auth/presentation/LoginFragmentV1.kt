@@ -2,6 +2,7 @@ package com.webkul.mobikul.odoo.features.auth.presentation
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -14,6 +15,7 @@ import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
 import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.databinding.FragmentLoginV1Binding
+import com.webkul.mobikul.odoo.dialog_frag.ForgotPasswordDialogFragment
 import com.webkul.mobikul.odoo.features.auth.domain.enums.LoginFieldsValidation
 import com.webkul.mobikul.odoo.helper.ApiRequestHelper
 import com.webkul.mobikul.odoo.helper.SnackbarHelper
@@ -29,6 +31,7 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
     override val layoutId = R.layout.fragment_login_v1
     private val viewModel: LoginViewModel by viewModels()
     private lateinit var progressDialog: SweetAlertDialog
+
 
     companion object {
         fun newInstance() = LoginFragmentV1().also { loginFragment ->
@@ -61,6 +64,10 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
         }
         binding.privacyPolicy.setOnClickListener {
             onPrivacyPolicyClicked()
+        }
+
+        binding.forgotPassword.setOnClickListener {
+            triggerIntent(LoginIntent.ForgotPassword)
         }
     }
 
@@ -100,7 +107,18 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
             }
 
             is LoginState.Idle -> {}
+
+            LoginState.ForgotPassword -> showForgotPasswordDialog()
         }
+    }
+
+    private fun showForgotPasswordDialog() {
+        val fragmentManager = (requireActivity() as AppCompatActivity).supportFragmentManager
+        val forgotPasswordDialogFragment = ForgotPasswordDialogFragment.newInstance("")
+        forgotPasswordDialogFragment.show(
+            fragmentManager,
+            ForgotPasswordDialogFragment::class.java.simpleName
+        )
     }
 
     private fun showInvalidLoginDetailsDialog(message: String?) {
