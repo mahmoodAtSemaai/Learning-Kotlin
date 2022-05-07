@@ -18,6 +18,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.webkul.mobikul.odoo.BuildConfig
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity
+import com.webkul.mobikul.odoo.activity.UpdateAddressActivity
 import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.core.extension.getDefaultProgressDialog
 import com.webkul.mobikul.odoo.core.extension.showDefaultWarningDialogWithDismissListener
@@ -83,7 +84,7 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
 
             is SignUpState.Error -> {
                 progressDialog.dismiss()
-                showError(state.error.toString())
+                showError(state.message.toString())
             }
 
             is SignUpState.SignUp -> {
@@ -120,7 +121,6 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
                 progressDialog.dismiss()
                 showMarketPlaceTnC(state.termAndConditionResponse)
             }
-
 
             is SignUpState.CountryStateDataSuccess -> setCountrySpinnerAdapter(state.countryStateData)
 
@@ -168,7 +168,7 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
             val encoding = "utf-8"
             myWebView.loadDataWithBaseURL(
                 "",
-                if (TextUtils.isEmpty(termAndConditionResponse.getTermsAndConditions())) requireActivity().getString(
+                if (TextUtils.isEmpty(termAndConditionResponse.termsAndConditions)) requireActivity().getString(
                     R.string.no_terms_and_conditions_to_display
                 ) else termAndConditionResponse.getTermsAndConditions(),
                 mime,
@@ -195,7 +195,7 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
         Toast.makeText(requireContext(), billingAddressUrl, Toast.LENGTH_SHORT).show()
 
 
-        /*requireActivity().startActivity(
+        requireActivity().startActivity(
             Intent(requireContext(), UpdateAddressActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 .putExtra(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE, signUpResponse.homePageResponse)
                 .putExtra(BundleConstant.BUNDLE_KEY_NAME, signUpData.name)
@@ -203,7 +203,7 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
                 .putExtra(BundleConstant.BUNDLE_KEY_URL, billingAddressUrl)
         )
 
-        requireActivity().finish()*/
+        requireActivity().finish()
     }
 
     private fun setCountrySpinnerAdapter(countryStateData: CountryStateData) {
@@ -253,7 +253,6 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
     private fun getCountryStateSpinnerData() {
         triggerIntent(SignUpIntent.GetCountryStateData)
     }
-
 
     private fun onSignUpBtnClicked() {
         signUpData.phoneNumber = binding.emailEt.text.toString()

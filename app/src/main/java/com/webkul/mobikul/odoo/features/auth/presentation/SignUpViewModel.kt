@@ -3,6 +3,7 @@ package com.webkul.mobikul.odoo.features.auth.presentation
 import androidx.lifecycle.viewModelScope
 import com.webkul.mobikul.odoo.core.mvicore.IModel
 import com.webkul.mobikul.odoo.core.platform.BaseViewModel
+import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.features.auth.data.models.SignUpData
 import com.webkul.mobikul.odoo.features.auth.domain.enums.SignUpFieldsValidation
@@ -63,7 +64,7 @@ class SignUpViewModel @Inject constructor(
                 signUp.collect {
                     signUpState = when (it) {
                         is Resource.Default -> SignUpState.Idle
-                        is Resource.Failure -> SignUpState.Error(it.message)
+                        is Resource.Failure -> SignUpState.Error(it.message,it.failureStatus)
                         is Resource.Loading -> SignUpState.Loading
                         is Resource.Success -> SignUpState.MarketPlaceTnCSuccess(it.value)
                     }
@@ -71,7 +72,7 @@ class SignUpViewModel @Inject constructor(
                 }
                 signUpState
             } catch (e: Exception) {
-                SignUpState.Error(e.localizedMessage)
+                SignUpState.Error(e.localizedMessage ,FailureStatus.OTHER)
             }
         }
     }
@@ -87,14 +88,14 @@ class SignUpViewModel @Inject constructor(
                 signUp.collect {
                     signUpState = when (it) {
                         is Resource.Default -> SignUpState.Idle
-                        is Resource.Failure -> SignUpState.Error(it.message)
+                        is Resource.Failure -> SignUpState.Error(it.message,it.failureStatus)
                         is Resource.Loading -> SignUpState.Loading
                         is Resource.Success -> SignUpState.SignUpTnCSuccess(it.value)
                     }
                 }
                 signUpState
             } catch (e: Exception) {
-                SignUpState.Error(e.localizedMessage)
+                SignUpState.Error(e.localizedMessage , FailureStatus.OTHER)
             }
         }
     }
@@ -123,8 +124,7 @@ class SignUpViewModel @Inject constructor(
                 }
                 signUpState
             } catch (e: Exception) {
-                //SignUpState.Error(e.localizedMessage)
-                SignUpState.Idle
+                SignUpState.Error(e.localizedMessage,FailureStatus.OTHER)
             }
         }
     }
@@ -140,7 +140,7 @@ class SignUpViewModel @Inject constructor(
                 signUp.collect {
                     signUpState = when (it) {
                         is Resource.Default -> SignUpState.Loading
-                        is Resource.Failure -> SignUpState.Error(it.message)
+                        is Resource.Failure -> SignUpState.Error(it.message,it.failureStatus)
                         is Resource.Loading -> SignUpState.Loading
                         is Resource.Success -> SignUpState.BillingAddressDataSuccess(it.value)
                     }
@@ -148,8 +148,7 @@ class SignUpViewModel @Inject constructor(
                 }
                 signUpState
             } catch (e: Exception) {
-                //SignUpState.Error(e.localizedMessage)
-                SignUpState.Idle
+                SignUpState.Error(e.localizedMessage,FailureStatus.OTHER)
             }
         }
     }
@@ -186,14 +185,14 @@ class SignUpViewModel @Inject constructor(
                 }.collect {
                     when (it) {
                         is Resource.Default -> signUpState = SignUpState.Idle
-                        is Resource.Failure -> signUpState = SignUpState.Error("Error Message")
+                        is Resource.Failure -> signUpState = SignUpState.Error(it.message,it.failureStatus)
                         is Resource.Loading -> signUpState = SignUpState.Loading
                         is Resource.Success -> signUpState = SignUpState.SignUp(it.value)
                     }
                 }
                 signUpState
             } catch (e: Exception) {
-                SignUpState.Error(e.localizedMessage)
+                SignUpState.Error(e.localizedMessage,FailureStatus.OTHER)
             }
         }
 

@@ -2,6 +2,7 @@ package com.webkul.mobikul.odoo.features.auth.domain.usecase
 
 import android.content.Context
 import com.webkul.mobikul.odoo.BuildConfig
+import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.features.auth.data.models.SignUpData
 import com.webkul.mobikul.odoo.features.auth.domain.enums.SignUpFieldsValidation
