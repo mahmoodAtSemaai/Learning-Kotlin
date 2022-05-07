@@ -24,12 +24,10 @@ class LogInUseCase @Inject constructor(
         if (isValidLogin(username, password)) {
             val result = loginRepository.logIn(username, password)
 
-            //emit(result)
             when (result) {
                 is Resource.Success -> {
                     if (result.value.isSuccess) emit(result)
                     else emit(Resource.Failure( failureStatus = FailureStatus.API_FAIL , message = result.value.message))
-                  //  else throw LogInValidationException(LoginFieldsValidation.INVALID_LOGIN_DETAILS.value.toString())
                 }
                 else -> emit(result)
             }

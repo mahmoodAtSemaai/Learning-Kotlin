@@ -17,7 +17,14 @@ class ViewMarketPlaceTnCUseCase @Inject constructor(private val signUpRepository
 
         emit(Resource.Loading)
         val result = signUpRepository.getSellerTerms()
-        emit(result)
+
+        when (result) {
+            is Resource.Success -> {
+                if (result.value.isSuccess) emit(result)
+                else emit(Resource.Failure( failureStatus = FailureStatus.API_FAIL , message = result.value.message))
+            }
+            else -> emit(result)
+        }
 
     }.flowOn(Dispatchers.IO)
 

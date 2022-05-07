@@ -165,7 +165,7 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
     }
 
     private fun showMarketPlaceTnC(termAndConditionResponse: TermAndConditionResponse) {
-       if(termAndConditionResponse.isSuccess) {
+
             val addedLayout = LinearLayout(requireContext())
             addedLayout.orientation = LinearLayout.VERTICAL
             val myWebView = WebView(requireContext())
@@ -178,7 +178,7 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
                 "",
                 if (TextUtils.isEmpty(termAndConditionResponse.termsAndConditions)) requireActivity().getString(
                     R.string.no_terms_and_conditions_to_display
-                ) else termAndConditionResponse.getTermsAndConditions(),
+                ) else termAndConditionResponse.termsAndConditions,
                 mime,
                 encoding,
                 ""
@@ -187,9 +187,6 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
             val dialog = AlertDialog.Builder(requireContext())
             dialog.setView(addedLayout)
             dialog.show()
-        }else{
-           showErrorSnackbar("Failed to get Terms and Conditions.")
-       }
     }
 
     private fun getBillingAddress() {

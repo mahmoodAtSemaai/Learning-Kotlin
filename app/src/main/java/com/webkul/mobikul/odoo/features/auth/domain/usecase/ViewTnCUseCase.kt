@@ -1,5 +1,6 @@
 package com.webkul.mobikul.odoo.features.auth.domain.usecase
 
+import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.features.auth.domain.repo.SignUpRepository
 import com.webkul.mobikul.odoo.model.customer.signup.TermAndConditionResponse
@@ -15,7 +16,14 @@ class ViewTnCUseCase  @Inject constructor(private val signUpRepository: SignUpRe
 
         emit(Resource.Loading)
         val result = signUpRepository.getTermAndCondition()
-        emit(result)
+
+        when (result) {
+            is Resource.Success -> {
+                if (result.value.isSuccess) emit(result)
+                else emit(Resource.Failure( failureStatus = FailureStatus.API_FAIL , message = result.value.message))
+            }
+            else -> emit(result)
+        }
 
     }.flowOn(Dispatchers.IO)
 

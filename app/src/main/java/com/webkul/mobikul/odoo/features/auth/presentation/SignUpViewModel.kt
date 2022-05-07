@@ -58,7 +58,7 @@ class SignUpViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = SignUpState.Loading
             _state.value = try {
-                val signUp = viewMarketPlaceTnCUseCase.invoke()
+                val signUp = viewTnCUseCase.invoke()
                 var signUpState: SignUpState = SignUpState.Idle
 
                 signUp.collect {
