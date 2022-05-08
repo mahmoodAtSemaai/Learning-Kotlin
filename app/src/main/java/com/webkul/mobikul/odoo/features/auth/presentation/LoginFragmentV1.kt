@@ -54,7 +54,6 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
     }
 
     private fun setObservers() {
-
         lifecycleScope.launchWhenCreated {
             viewModel.state.collect {
                 render(it)
