@@ -8,24 +8,19 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SignInSignUpActivityV1 @Inject constructor(): BindingBaseActivity<ActivitySignInSignUpV1Binding>() {
+class SignInSignUpActivityV1 @Inject constructor() : BindingBaseActivity<ActivitySignInSignUpV1Binding>() {
 
     override val contentViewId: Int
         get() = R.layout.activity_sign_in_sign_up_v1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setOnClickListeners()
-
     }
 
     private fun setOnClickListeners() {
-
         binding.loginButton.setOnClickListener { openLogin() }
-
         binding.signUpButton.setOnClickListener { openSignUp() }
-
         binding.fingerprintButton.setOnClickListener { }
     }
 
@@ -47,6 +42,5 @@ class SignInSignUpActivityV1 @Inject constructor(): BindingBaseActivity<Activity
                 SignUpFragmentV1::class.java.simpleName
             ).addToBackStack(SignUpFragmentV1::class.java.simpleName).commit()
     }
-
 
 }

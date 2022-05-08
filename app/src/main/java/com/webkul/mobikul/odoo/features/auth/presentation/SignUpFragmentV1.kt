@@ -35,6 +35,7 @@ import com.webkul.mobikul.odoo.model.customer.signup.SignUpResponse
 import com.webkul.mobikul.odoo.model.customer.signup.TermAndConditionResponse
 import com.webkul.mobikul.odoo.model.generic.CountryStateData
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
