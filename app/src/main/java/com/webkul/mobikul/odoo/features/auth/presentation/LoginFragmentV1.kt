@@ -184,7 +184,6 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
         }
     }
 
-
     private fun onLoginBtnClicked() {
         username = binding.usernameEt.text.toString()
         password = binding.passwordEt.text.toString()
