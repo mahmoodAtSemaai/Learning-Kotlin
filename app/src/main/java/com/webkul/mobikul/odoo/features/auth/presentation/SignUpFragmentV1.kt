@@ -20,6 +20,7 @@ import com.webkul.mobikul.odoo.activity.SignInSignUpActivity
 import com.webkul.mobikul.odoo.activity.UpdateAddressActivity
 import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.core.extension.getDefaultProgressDialog
+import com.webkul.mobikul.odoo.core.extension.showDefaultSuccessDialogWithDismissListener
 import com.webkul.mobikul.odoo.core.extension.showDefaultWarningDialogWithDismissListener
 import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
@@ -96,7 +97,7 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
 
             is SignUpState.SignUp -> {
                 signUpResponse = state.data
-                getBillingAddress()
+                showSignUpSuccessDialog()
             }
 
             is SignUpState.BillingAddressDataSuccess -> {
@@ -386,13 +387,24 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
         }
     }
 
-
     private fun setErrorToNull() {
         binding.emailLayout.isErrorEnabled = false
         binding.passwordLayout.isErrorEnabled = false
         binding.confirmPasswordLayout.isErrorEnabled = false
         binding.nameLayout.isErrorEnabled = false
         binding.profileUrlLayout.isErrorEnabled = false
+    }
+
+    private fun showSignUpSuccessDialog(){
+        requireContext().showDefaultSuccessDialogWithDismissListener(
+            getString(R.string.account_created_successfully),
+            signUpResponse.message,
+            getString(R.string.continue_shopping)
+        ) { sweetAlertDialog: SweetAlertDialog ->
+
+            sweetAlertDialog.dismiss()
+            getBillingAddress()
+        }
     }
 
 }

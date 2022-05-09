@@ -92,6 +92,20 @@ fun Context.showDefaultWarningDialogWithDismissListener(
         .setConfirmClickListener(listener).show()
 }
 
+
+fun Context.showDefaultSuccessDialogWithDismissListener(
+    title: String?,
+    message: String?,
+    buttonText:String?,
+    listener: OnSweetClickListener?
+) {
+    SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+        .setTitleText(title)
+        .setContentText(message)
+        .setConfirmText(buttonText)
+        .setConfirmClickListener(listener).show()
+}
+
 fun Context.onPrivacyPolicyClick():Resource<Intent> {
     val pm: PackageManager = packageManager
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(AppSharedPref.getPrivacyURL(this)))
