@@ -104,23 +104,16 @@ class CategoryProductFragment : Fragment() {
             val requestTypeIdentifier = CatalogProductRequestType.FEATURED_CATEGORY.toString()
             SaveData(activity, catalogProductResponse, requestTypeIdentifier)
             if (catalogResponse.products!!.isEmpty()) {
-                showEmptyFragment()
+                showNoProductsFoundLayout()
             } else {
                 initProductCatalogRv()
             }
         }
     }
 
-    private fun showEmptyFragment() {
-        val bundle = Bundle()
-        bundle.apply {
-            putInt(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_DRAWABLE_ID, R.drawable.ic_vector_empty_product_catalog)
-            putString(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_TITLE_ID, getString(R.string.empty_product_catalog))
-            putString(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_SUBTITLE_ID, getString(R.string.try_different_category_or_search_keyword_maybe))
-            putBoolean(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_HIDE_CONTINUE_SHOPPING_BTN, false)
-            putInt(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_TYPE, EmptyFragment.EmptyFragType.TYPE_CATALOG_PRODUCT.ordinal)
-        }
-        findNavController(requireView()).navigate(R.id.action_homeFragment_to_emptyFragment, bundle)
+    private fun showNoProductsFoundLayout(){
+        binding.productRecyclerView.visibility = View.GONE
+        binding.noProductsFountLl.visibility = View.VISIBLE
     }
 
     private fun redirectToSignUp() {
@@ -151,6 +144,8 @@ class CategoryProductFragment : Fragment() {
         binding.productRecyclerView.adapter =
             CategoryProductListAdapter(requireContext(), catalogResponse.products)
 
+        binding.noProductsFountLl.visibility = View.GONE
+        binding.productRecyclerView.visibility = View.VISIBLE
     }
 
     companion object {

@@ -420,6 +420,7 @@
     <string name="setting">Settings</string>
     <string name="in_stock">In Stock</string>
     <string name="in_stock_quantity_x">Stock: %1$d </string>
+    <string name="in_stock_quantity_0">Stock: 0 </string>
     <string name="quantity_exceeding">Your order quantity exceeds the stock</string>
     <string name="product_already_added">products already added in bag</string>
     <string name="added_successfully">Added Successfully</string>
@@ -627,5 +628,6 @@
     <string name="username">Username</string>
     <string name="main_menu">Main Menu</string>
     <string name="text_one">1</string>
+    <string name="no_products_found">No products found!</string>
 
 </resources>
