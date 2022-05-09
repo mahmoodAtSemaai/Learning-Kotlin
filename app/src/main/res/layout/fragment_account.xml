@@ -297,7 +297,7 @@
                     <View
                         style="@style/DividerHorizontal"
                         android:layout_margin="@dimen/spacing_tiny"
-                        android:visibility="@{View.VISIBLE}" />
+                        android:visibility="@{View.GONE}" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="match_parent"
