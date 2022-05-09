@@ -337,8 +337,7 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
     }
 
     private fun setEmptyNameError() {
-        binding.nameLayout.error =
-            getString(R.string.your_name) + " " + getString(R.string.error_is_required)
+        binding.nameLayout.error = "${getString(R.string.your_name)} ${getString(R.string.error_is_required)}"
     }
 
     private fun setInvalidConfirmPasswordError() {

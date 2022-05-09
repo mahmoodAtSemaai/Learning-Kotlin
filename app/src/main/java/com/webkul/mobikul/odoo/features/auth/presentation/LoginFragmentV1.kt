@@ -192,7 +192,7 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
     private fun setEmptyPasswordError() {
         binding.passwordLayout.error = String.format(
             Locale.getDefault(),
-            getString(R.string.password) + " " + getString(R.string.error_is_required)
+            "${getString(R.string.password)} ${getString(R.string.error_is_required)}"
         )
     }
 
