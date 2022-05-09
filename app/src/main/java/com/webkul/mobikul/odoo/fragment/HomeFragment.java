@@ -82,6 +82,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     Runnable runnable;
     public static final int VIEW_TYPE_GRID = 2;
     private FeaturedCategoryData mFeaturedCategoryData;
+    private int appBarOffset=0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -97,7 +98,8 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         binding.appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener(){
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                binding.refreshLayout.setEnabled(verticalOffset == 0);
+                appBarOffset=verticalOffset;
+                binding.refreshLayout.setEnabled(appBarOffset == 0);
             }
         });
 
@@ -222,8 +224,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                binding.refreshLayout.setEnabled(false);
-
+                binding.refreshLayout.setEnabled(appBarOffset == 0 && state == ViewPager.SCROLL_STATE_IDLE);
             }
         });
 
