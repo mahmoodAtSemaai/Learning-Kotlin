@@ -20,7 +20,7 @@
                 android:layout_height="?android:attr/actionBarSize"
                 android:background="@color/toolbar_bg"
                 android:elevation="@dimen/toolbar_elevation_generic"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                android:theme="@style/ThemeOverlay.AppCompat.Light"
                 app:navigationIcon="@drawable/ic_vector_chevron_left_black_24dp"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:title="@string/login"
