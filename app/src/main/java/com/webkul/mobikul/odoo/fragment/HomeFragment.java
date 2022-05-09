@@ -183,7 +183,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
                      if(newState==AbsListView.OnScrollListener.SCROLL_STATE_FLING)
                          binding.refreshLayout.setEnabled(false);
                      if(newState==AbsListView.OnScrollListener.SCROLL_STATE_IDLE)
-                         binding.refreshLayout.setEnabled(true);
+                         binding.refreshLayout.setEnabled(false);
             }
         });
 
@@ -222,7 +222,8 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                binding.refreshLayout.setEnabled(state == ViewPager.SCROLL_STATE_IDLE);
+                binding.refreshLayout.setEnabled(false);
+
             }
         });
 
