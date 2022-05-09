@@ -93,10 +93,10 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
 
     override fun render(state: LoginState) {
         when (state) {
-            is LoginState.Loading -> {
-                progressDialog.show()
-            }
+            is LoginState.Loading -> progressDialog.show()
+
             is LoginState.Login -> onLoginSuccess(state.data)
+
             is LoginState.Error -> {
                 progressDialog.dismiss()
 
@@ -130,22 +130,7 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
 
     private fun onLoginSuccess(loginResponse: LoginResponse) {
         progressDialog.dismiss()
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val loginData = LoginRequestData(requireActivity())
-            loginData.password = password
-            loginData.username = username
-
-            val fingerPrintHelper = FingerPrintLoginHelper()
-
-            fingerPrintHelper.askForFingerprintLogin(
-                requireActivity(), loginResponse, loginData,
-                null,
-                null,
-                null
-            )
-        }
-      //  ApiRequestHelper.callHomePageApi(requireActivity())
+        ApiRequestHelper.callHomePageApi(requireActivity())
     }
 
 
