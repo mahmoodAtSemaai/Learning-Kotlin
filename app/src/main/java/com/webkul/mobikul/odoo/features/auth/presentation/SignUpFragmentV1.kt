@@ -251,7 +251,7 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
 
                 sweetAlertDialog.dismiss()
                 AppSharedPref.clearCustomerData(context)
-                val i = Intent(context, SignInSignUpActivity::class.java)
+                val i = Intent(context, SignInSignUpActivityV1::class.java)
                 i.putExtra(
                     BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY,
                     requireActivity().javaClass.simpleName
