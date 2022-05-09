@@ -48,9 +48,7 @@
                     android:layout_marginRight="@dimen/spacing_generic"
                     android:layout_weight="1"
                     android:text="@string/login"
-                    android:textAllCaps="true"
-                    />
-
+                    android:textAllCaps="true" />
 
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -61,12 +59,7 @@
                     android:layout_marginLeft="@dimen/spacing_generic"
                     android:layout_weight="1"
                     android:text="@string/sign_up"
-                    android:textAllCaps="true"
-                  />
-<!--
-                app:visibility="@{AppSharedPref.isAllowedSignup(context)}"
--->
-
+                    android:textAllCaps="true" />
 
             </LinearLayout>
 
@@ -78,10 +71,7 @@
                 android:layout_marginBottom="@dimen/spacing_normal"
                 android:text="@string/fingerprint_login"
                 android:textAllCaps="true"
-                />
-<!--
-            app:visibility="@{AppSharedPref.getIsAllowedFingerprintLogin(context)}"
--->
+                android:visibility="gone"/>
 
         </LinearLayout>
 
@@ -91,7 +81,6 @@
             android:padding="@dimen/spacing_generic"
             app:srcCompat="@drawable/ic_action_navigation_close"
             tools:ignore="ContentDescription" />
-        <!--            app:visibility="@{AppSharedPref.isAllowedGuestCheckout(context)}"-->
 
     </FrameLayout>
 

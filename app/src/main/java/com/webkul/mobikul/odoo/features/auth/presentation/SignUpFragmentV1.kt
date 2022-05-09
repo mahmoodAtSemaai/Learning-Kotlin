@@ -132,7 +132,8 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
 
             is SignUpState.CountryStateDataSuccess -> setCountrySpinnerAdapter(state.countryStateData)
 
-            is SignUpState.Idle -> {}
+            is SignUpState.Idle -> {
+            }
 
             is SignUpState.IsSeller -> showIsSeller(if (state.isSeller) View.VISIBLE else View.GONE)
         }
@@ -221,9 +222,6 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
     private fun navigateToHomeScreen(myAddressesResponse: MyAddressesResponse) {
 
         val billingAddressUrl = myAddressesResponse.addresses[0].url
-
-        Toast.makeText(requireContext(), billingAddressUrl, Toast.LENGTH_SHORT).show()
-
 
         requireActivity().startActivity(
             Intent(
