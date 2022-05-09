@@ -29,7 +29,20 @@ class SignUpRepositoryImpl @Inject constructor(
                 signUpRequest.login, signUpRequest.password
             ).toString().toByteArray(), Base64.NO_WRAP
         )
-        return remoteDataSource.signUp(signUpRequest)
+        val result = remoteDataSource.signUp(signUpRequest)
+
+        when (result) {
+            is Resource.Failure -> {
+                appPreferences.customerLoginToken = null
+            }
+            else -> {
+                if(result is Resource.Success && !result.value.isSuccess){
+                    appPreferences.customerLoginToken = null
+                }
+            }
+        }
+
+        return result
     }
 
     override suspend fun getAddressBookData(baseLazyRequest: BaseLazyRequest): Resource<MyAddressesResponse> {

@@ -29,7 +29,11 @@ class LoginRepositoryImpl @Inject constructor(
             is Resource.Failure -> {
                 appPreferences.customerLoginToken = null
             }
-            else -> {}
+            else -> {
+                if(result is Resource.Success && !result.value.isSuccess){
+                    appPreferences.customerLoginToken = null
+                }
+            }
         }
 
         return result
