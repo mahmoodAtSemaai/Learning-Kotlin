@@ -1,6 +1,8 @@
 package com.webkul.mobikul.odoo.core.data.remote
 
 import com.webkul.mobikul.odoo.core.utils.FailureStatus
+import com.webkul.mobikul.odoo.core.utils.HTTP_ERROR_UNABLE_TO_PROCESS_REQUEST
+import com.webkul.mobikul.odoo.core.utils.HTTP_ERROR_UNAUTHORIZED_REQUEST
 import com.webkul.mobikul.odoo.core.utils.Resource
 import org.json.JSONObject
 import retrofit2.HttpException
@@ -20,7 +22,7 @@ open class BaseRemoteDataSource @Inject constructor() {
             when (throwable) {
                 is HttpException -> {
                     when {
-                        throwable.code() == 422 -> {
+                        throwable.code() == HTTP_ERROR_UNABLE_TO_PROCESS_REQUEST -> {
                             val jsonErrorObject =
                                 JSONObject(throwable.response()?.errorBody()?.string() ?: "")
                             val apiResponse = jsonErrorObject.toString()
@@ -31,7 +33,7 @@ open class BaseRemoteDataSource @Inject constructor() {
                                 apiResponse
                             )
                         }
-                        throwable.code() == 401 -> {
+                        throwable.code() == HTTP_ERROR_UNAUTHORIZED_REQUEST -> {
                             val jsonErrorObject =
                                 JSONObject(throwable.response()?.errorBody()?.string() ?: "")
                             val apiResponse = jsonErrorObject.toString()
