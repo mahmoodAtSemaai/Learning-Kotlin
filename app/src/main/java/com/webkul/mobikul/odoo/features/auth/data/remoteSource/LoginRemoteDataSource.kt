@@ -10,5 +10,6 @@ class LoginRemoteDataSource @Inject constructor(private val apiService: AuthServ
 
     suspend fun logIn() = safeApiCall {
         apiService.signIn(RegisterDeviceTokenRequest(context).toString())
+
     }
 }

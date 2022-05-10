@@ -1,19 +1,26 @@
 package com.webkul.mobikul.odoo.features.auth.presentation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.google.android.material.snackbar.Snackbar
 import com.webkul.mobikul.odoo.BuildConfig
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.core.extension.getDefaultProgressDialog
+import com.webkul.mobikul.odoo.core.extension.showDefaultWarningDialog
 import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
+import com.webkul.mobikul.odoo.core.utils.ERROR_INTERNET_CONNECTION
+import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.databinding.FragmentLoginV1Binding
-import com.webkul.mobikul.odoo.features.auth.domain.enums.AuthFieldsValidation
+import com.webkul.mobikul.odoo.dialog_frag.ForgotPasswordDialogFragment
+import com.webkul.mobikul.odoo.features.auth.domain.enums.LoginFieldsValidation
 import com.webkul.mobikul.odoo.helper.ApiRequestHelper
+import com.webkul.mobikul.odoo.helper.SnackbarHelper
+import com.webkul.mobikul.odoo.model.customer.signin.LoginResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -27,6 +34,9 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
     override val layoutId = R.layout.fragment_login_v1
     private val viewModel: LoginViewModel by viewModels()
     private lateinit var progressDialog: SweetAlertDialog
+    private lateinit var username: String
+    private lateinit var password: String
+
 
     companion object {
         fun newInstance() = LoginFragmentV1().also { loginFragment ->
@@ -59,29 +69,53 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
         binding.privacyPolicy.setOnClickListener {
             onPrivacyPolicyClicked()
         }
+
+        binding.forgotPassword.setOnClickListener {
+            triggerIntent(LoginIntent.ForgotPassword)
+        }
+
+        binding.signUpNow.setOnClickListener {
+            onSignUpNowClicked()
+        }
+
+        binding.toolbar.setNavigationOnClickListener {
+            onToolbarBackPressed()
+        }
     }
 
+    private fun onToolbarBackPressed() {
+        val fragment =
+            requireActivity().supportFragmentManager.findFragmentByTag(LoginFragmentV1::class.java.simpleName)
+        requireActivity().supportFragmentManager.beginTransaction().remove(fragment!!).commit()
+    }
 
     override fun render(state: LoginState) {
         when (state) {
             is LoginState.Loading -> {
+                setErrorToNull()
                 progressDialog.show()
             }
-            is LoginState.Login -> {
-                progressDialog.dismiss()
-                ApiRequestHelper.callHomePageApi(requireActivity())
-            }
+
+            is LoginState.Login -> onLoginSuccess(state.data)
+
             is LoginState.Error -> {
                 progressDialog.dismiss()
 
-                val error = state.error
+                when (state.failureStatus) {
+                    FailureStatus.API_FAIL -> showInvalidLoginDetailsDialog(state.message)
+                    FailureStatus.EMPTY -> showErrorSnackbar(getString(R.string.error_something_went_wrong))
+                    FailureStatus.NO_INTERNET -> showErrorSnackbar(ERROR_INTERNET_CONNECTION)
+                    FailureStatus.OTHER -> showErrorSnackbar(state.message)
+                }
+
             }
             is LoginState.InvalidLoginDetailsError -> {
                 progressDialog.dismiss()
                 when (state.uiError.value) {
-                    AuthFieldsValidation.EMPTY_EMAIL.value -> setEmptyUsernameError()
-                    AuthFieldsValidation.EMPTY_PASSWORD.value -> setEmptyPasswordError()
-                    AuthFieldsValidation.INVALID_PASSWORD.value -> setInvalidPasswordError()
+                    LoginFieldsValidation.EMPTY_EMAIL.value -> setEmptyUsernameError()
+                    LoginFieldsValidation.EMPTY_PASSWORD.value -> setEmptyPasswordError()
+                    LoginFieldsValidation.INVALID_PASSWORD.value -> setInvalidPasswordError()
+                    //LoginFieldsValidation.INVALID_LOGIN_DETAILS.value -> showInvalidLoginDetailsDialog()
                 }
             }
             is LoginState.PrivacyPolicy -> {
@@ -89,8 +123,45 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
                 requireContext().startActivity(state.intent)
             }
 
-            is LoginState.Idle -> {}
+            is LoginState.Idle -> {
+            }
+
+            LoginState.ForgotPassword -> showForgotPasswordDialog()
         }
+    }
+
+    private fun onLoginSuccess(loginResponse: LoginResponse) {
+        progressDialog.dismiss()
+        ApiRequestHelper.callHomePageApi(requireActivity())
+    }
+
+
+    private fun onSignUpNowClicked() {
+        requireActivity().supportFragmentManager.beginTransaction()
+            .add(
+                R.id.fragment_container_v1,
+                SignUpFragmentV1.newInstance(),
+                SignUpFragmentV1::class.java.simpleName
+            ).addToBackStack(SignUpFragmentV1::class.java.simpleName).commit()
+
+        onToolbarBackPressed()
+    }
+
+
+    private fun showForgotPasswordDialog() {
+        val fragmentManager = (requireActivity() as AppCompatActivity).supportFragmentManager
+        val forgotPasswordDialogFragment = ForgotPasswordDialogFragment.newInstance("")
+        forgotPasswordDialogFragment.show(
+            fragmentManager,
+            ForgotPasswordDialogFragment::class.java.simpleName
+        )
+    }
+
+    private fun showInvalidLoginDetailsDialog(message: String?) {
+        requireContext().showDefaultWarningDialog(
+            getString(R.string.error_login_failure),
+            message
+        )
     }
 
 
@@ -100,10 +171,9 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
         }
     }
 
-
     private fun onLoginBtnClicked() {
-        val username = binding.usernameEt.text.toString()
-        val password = binding.passwordEt.text.toString()
+        username = binding.usernameEt.text.toString()
+        password = binding.passwordEt.text.toString()
         triggerIntent(LoginIntent.Login(username, password))
     }
 
@@ -113,7 +183,7 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
 
 
     private fun setEmptyUsernameError() {
-        binding.usernameEt.error = String.format(
+        binding.usernameLayout.error = String.format(
             Locale.getDefault(),
             "%s %s",
             getString(R.string.phone_number_or_username),
@@ -122,14 +192,14 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
     }
 
     private fun setEmptyPasswordError() {
-        binding.passwordEt.error = String.format(
+        binding.passwordLayout.error = String.format(
             Locale.getDefault(),
-            getString(R.string.password) + " " + getString(R.string.error_is_required)
+            "${getString(R.string.password)} ${getString(R.string.error_is_required)}"
         )
     }
 
     private fun setInvalidPasswordError() {
-        binding.passwordEt.error = String.format(
+        binding.passwordLayout.error = String.format(
             "%s %s",
             getString(R.string.password),
             String.format(
@@ -141,5 +211,18 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
 
     }
 
+    private fun showErrorSnackbar(message: String?) {
+        message?.let {
+            SnackbarHelper.getSnackbar(
+                requireActivity(),
+                message,
+                Snackbar.LENGTH_LONG
+            ).show()
+        }
+    }
 
+    private fun setErrorToNull() {
+        binding.usernameLayout.isErrorEnabled = false
+        binding.passwordLayout.isErrorEnabled = false
+    }
 }

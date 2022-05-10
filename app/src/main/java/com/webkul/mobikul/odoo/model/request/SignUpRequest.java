@@ -4,6 +4,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.webkul.mobikul.odoo.BuildConfig;
+import com.webkul.mobikul.odoo.features.auth.data.models.SignUpData;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,6 +51,17 @@ public class SignUpRequest extends RegisterDeviceTokenRequest {
         this.isSeller = isSeller;
         this.profileURL = profileURL;
         this.idCountry = countryID;
+    }
+
+    public  SignUpRequest(Context context , SignUpData signUpData){
+        super(context);
+        mName = signUpData.getName();
+        mLogin = signUpData.getPhoneNumber();
+        mPassword = signUpData.getPassword();
+        mIsSocialLogin = false;
+        this.isSeller = signUpData.isSeller();
+        this.profileURL = signUpData.getProfileURL();
+        this.idCountry = signUpData.getCountry();
     }
 
     public SignUpRequest(Context context, String name, String login, @NonNull String password, boolean isSocialLogin, String authProvider, String authUserId) {

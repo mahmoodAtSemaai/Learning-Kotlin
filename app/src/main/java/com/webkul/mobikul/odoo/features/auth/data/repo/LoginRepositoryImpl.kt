@@ -16,11 +16,26 @@ class LoginRepositoryImpl @Inject constructor(
 
     override
     suspend fun logIn(username: String, password: String): Resource<LoginResponse> {
+
         appPreferences.customerLoginToken = Base64.encodeToString(
             AuthenticationRequest(
                 username, password
             ).toString().toByteArray(), Base64.NO_WRAP
         )
-        return remoteDataSource.logIn()
+
+        val result = remoteDataSource.logIn()
+
+        when (result) {
+            is Resource.Failure -> {
+                appPreferences.customerLoginToken = null
+            }
+            else -> {
+                if(result is Resource.Success && !result.value.isSuccess){
+                    appPreferences.customerLoginToken = null
+                }
+            }
+        }
+
+        return result
     }
 }

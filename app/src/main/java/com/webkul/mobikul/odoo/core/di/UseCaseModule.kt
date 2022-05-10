@@ -3,7 +3,9 @@ package com.webkul.mobikul.odoo.core.di
 
 import android.content.Context
 import com.webkul.mobikul.odoo.features.auth.domain.repo.LoginRepository
+import com.webkul.mobikul.odoo.features.auth.domain.repo.SignUpRepository
 import com.webkul.mobikul.odoo.features.auth.domain.usecase.LogInUseCase
+import com.webkul.mobikul.odoo.features.auth.domain.usecase.SignUpUseCase
 import com.webkul.mobikul.odoo.features.auth.domain.usecase.ViewPrivacyPolicyUseCase
 import dagger.Module
 import dagger.Provides
@@ -21,6 +23,14 @@ class UseCaseModule {
     fun provideLogInUseCase(
         loginRepository: LoginRepository
     ): LogInUseCase = LogInUseCase(loginRepository)
+
+    @Provides
+    @Singleton
+    fun provideSignUpUseCase(
+        signupRepository: SignUpRepository,
+        @ApplicationContext context: Context
+    ): SignUpUseCase = SignUpUseCase(signupRepository , context)
+
 
     @Provides
     @Singleton
