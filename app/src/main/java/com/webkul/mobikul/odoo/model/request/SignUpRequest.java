@@ -65,6 +65,8 @@ public class SignUpRequest extends RegisterDeviceTokenRequest {
         this.isSeller = signUpData.isSeller();
         this.profileURL = signUpData.getProfileURL();
         this.idCountry = signUpData.getCountry();
+        //Todo need to add referral code
+        this.referralCode = "";
     }
 
     public SignUpRequest(Context context, String name, String login, @NonNull String password, String referralCode, boolean isSocialLogin, String authProvider, String authUserId) {
