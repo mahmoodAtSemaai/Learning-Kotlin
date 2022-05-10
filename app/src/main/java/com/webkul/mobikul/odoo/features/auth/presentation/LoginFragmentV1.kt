@@ -91,7 +91,10 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
 
     override fun render(state: LoginState) {
         when (state) {
-            is LoginState.Loading -> progressDialog.show()
+            is LoginState.Loading -> {
+                setErrorToNull()
+                progressDialog.show()
+            }
 
             is LoginState.Login -> onLoginSuccess(state.data)
 
@@ -218,5 +221,8 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
         }
     }
 
-
+    private fun setErrorToNull() {
+        binding.usernameLayout.isErrorEnabled = false
+        binding.passwordLayout.isErrorEnabled = false
+    }
 }
