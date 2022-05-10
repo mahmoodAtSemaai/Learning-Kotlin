@@ -21,26 +21,45 @@ open class BaseRemoteDataSource @Inject constructor() {
                 is HttpException -> {
                     when {
                         throwable.code() == 422 -> {
-                            val jObjError = JSONObject(throwable.response()!!.errorBody()!!.string())
-                            val apiResponse = jObjError.toString()
+                            val jsonErrorObject =
+                                JSONObject(throwable.response()?.errorBody()?.string() ?: "")
+                            val apiResponse = jsonErrorObject.toString()
 
-                            return Resource.Failure(FailureStatus.API_FAIL, throwable.code(), apiResponse)
+                            return Resource.Failure(
+                                FailureStatus.API_FAIL,
+                                throwable.code(),
+                                apiResponse
+                            )
                         }
                         throwable.code() == 401 -> {
-                            val jObjError = JSONObject(throwable.response()!!.errorBody()!!.string())
-                            val apiResponse = jObjError.toString()
+                            val jsonErrorObject =
+                                JSONObject(throwable.response()?.errorBody()?.string() ?: "")
+                            val apiResponse = jsonErrorObject.toString()
 
-                            return Resource.Failure(FailureStatus.API_FAIL, throwable.code(), apiResponse)
+                            return Resource.Failure(
+                                FailureStatus.API_FAIL,
+                                throwable.code(),
+                                apiResponse
+                            )
                         }
                         else -> {
-                            return if (throwable.response()?.errorBody()!!.charStream().readText().isEmpty()) {
+                            return if (throwable.response()?.errorBody()!!.charStream().readText()
+                                    .isEmpty()
+                            ) {
                                 Resource.Failure(FailureStatus.API_FAIL, throwable.code())
                             } else {
                                 try {
-                                    val jObjError = JSONObject(throwable.response()!!.errorBody()!!.string())
-                                    val apiResponse = jObjError.toString()
+                                    val jsonErrorObject =
+                                        JSONObject(
+                                            throwable.response()?.errorBody()?.string() ?: ""
+                                        )
+                                    val apiResponse = jsonErrorObject.toString()
 
-                                    Resource.Failure(FailureStatus.API_FAIL, throwable.code(), apiResponse)
+                                    Resource.Failure(
+                                        FailureStatus.API_FAIL,
+                                        throwable.code(),
+                                        apiResponse
+                                    )
                                 } catch (ex: Throwable) {
                                     Resource.Failure(FailureStatus.API_FAIL, throwable.code())
                                 }

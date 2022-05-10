@@ -45,13 +45,13 @@ object RetrofitModule {
 
             if (appPreferences.isLoggedIn) {
                 if (appPreferences.isSocialLoggedIn) {
-                    builder.addHeader(SOCIAL_LOGIN, appPreferences.customerLoginToken!!)
+                    builder.addHeader(SOCIAL_LOGIN, appPreferences.customerLoginToken ?: "")
                 } else {
-                    builder.addHeader(LOGIN, appPreferences.customerLoginToken!!)
+                    builder.addHeader(LOGIN, appPreferences.customerLoginToken ?: "")
                 }
             }
             if (!appPreferences.languageCode.isNullOrEmpty()) {
-                builder.addHeader(LANGUAGE, appPreferences.languageCode!!)
+                builder.addHeader(LANGUAGE, appPreferences.languageCode ?: "")
             }
 
             chain.proceed(

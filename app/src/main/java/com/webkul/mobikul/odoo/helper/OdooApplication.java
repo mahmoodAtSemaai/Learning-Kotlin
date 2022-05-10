@@ -11,7 +11,6 @@ import androidx.multidex.MultiDexApplication;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import com.bumptech.glide.request.target.ViewTarget;
-//import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.Stetho;
 import com.google.firebase.FirebaseApp;
 import com.twitter.sdk.android.core.Twitter;
@@ -25,8 +24,6 @@ import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse;
 import com.webkul.mobikul.odoo.model.customer.signup.SignUpData;
 import com.webkul.mobikul.odoo.updates.AppUpdateHelper;
 
-//import io.fabric.sdk.android.Fabric;
-import dagger.hilt.android.HiltAndroidApp;
 import io.reactivex.Observable;
 
 /**

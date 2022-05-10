@@ -15,6 +15,7 @@ import com.webkul.mobikul.odoo.databinding.FragmentLoginV1Binding
 import com.webkul.mobikul.odoo.features.auth.domain.enums.AuthFieldsValidation
 import com.webkul.mobikul.odoo.helper.ApiRequestHelper
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -108,7 +109,6 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
 
     private fun onPrivacyPolicyClicked() {
         triggerIntent(LoginIntent.PrivacyPolicy)
-        Log.d("testing", "Intent trigered")
     }
 
 
