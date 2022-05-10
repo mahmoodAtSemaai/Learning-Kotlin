@@ -28,7 +28,7 @@
     <!---->
     <!--BASE/ GLOBAL/ GENERIC-->
     <string name="customer">Customer</string>
-    <string name="rate_us">Rate us</string>
+    <string name="rate_us">Give Us Review</string>
     <string name="share_app">Share App</string>
     <string name="more">More</string>
     <string name="enter_quantity">Enter Quantity</string>
@@ -420,6 +420,7 @@
     <string name="setting">Settings</string>
     <string name="in_stock">In Stock</string>
     <string name="in_stock_quantity_x">Stock: %1$d </string>
+    <string name="in_stock_quantity_0">Stock: 0 </string>
     <string name="quantity_exceeding">Your order quantity exceeds the stock</string>
     <string name="product_already_added">products already added in bag</string>
     <string name="added_successfully">Added Successfully</string>
@@ -598,8 +599,8 @@
     <string name="app_update_alert_positive_button_title">Update</string>
 
     <!-- Product Activity and product details -->
-    <string name="product_details_category" >Category</string>
-    <string name="product_details_organic" >Organic</string>
+    <string name="product_details_category">Category</string>
+    <string name="product_details_organic">Organic</string>
     <string name="product_details_crops">Crops</string>
     <string name="product_details_weight">Weight</string>
     <string name="product_details_additional_information">Additional Information</string>
@@ -612,5 +613,21 @@
     <string name="product_details_frequency_of_application">Frequency of Application</string>
     <string name="product_details_pests_and_diseases">Pests and Diseases</string>
     <string name="product_details_duration_of_effect">Duration of Effect</string>
+    <string name="favorite">Favorite</string>
+    <string name="transaction">Transaction</string>
+    <string name="profile">Profile</string>
+    <string name="english_lang">en_US</string>
+    <string name="ind_lang">id_ID</string>
+    <string name="label_home_fragment">HomeFragment</string>
+    <string name="label_wishlist_fragment">WishlistFragment</string>
+    <string name="label_orders_list_fragment">OrderListFragment</string>
+    <string name="label_notifications_fragment">NotificationFragment</string>
+    <string name="label_accounts_fragment">AccountFragment</string>
+    <string name="label_empty_fragment">EmptyFragment</string>
+    <string name="search_all_products_hint">Search All Product</string>
+    <string name="username">Username</string>
+    <string name="main_menu">Main Menu</string>
+    <string name="text_one">1</string>
+    <string name="no_products_found">No products found!</string>
 
 </resources>

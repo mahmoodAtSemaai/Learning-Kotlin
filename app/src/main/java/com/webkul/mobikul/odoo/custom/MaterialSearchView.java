@@ -108,14 +108,7 @@ public class MaterialSearchView extends FrameLayout {
     private void initializeView() {
         mBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext), R.layout.material_search_view, this, true);
         mBinding.setHandler(new MaterialSearchViewHandler(this));
-//        final Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                initSearchView();
-//            }
-//        }, 5000);
-////        initSearchView();
+
     }
 
     public Context getmContext() {
@@ -256,7 +249,6 @@ public class MaterialSearchView extends FrameLayout {
             intent.putExtra(BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE, SEARCH_QUERY);
             mContext.startActivity(intent);
             closeSearch();
-//            mBinding.etSearch.setText("");
         }
     }
 
@@ -324,10 +316,6 @@ public class MaterialSearchView extends FrameLayout {
             return;
         }
         mBinding.etSearch.setText("");
-//        mBinding.etSearch.requestFocus();
-
-//        ((SearchHistoryAdapter) mBinding.seachHistoryRv.getAdapter()).updateSearchHistory(getSearchHistoryList(""), "");
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mBinding.searchLayout.setVisibility(View.VISIBLE);
             AnimationHelper.circleRevealView(mBinding.searchBar);

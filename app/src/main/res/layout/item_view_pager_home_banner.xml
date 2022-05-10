@@ -20,20 +20,32 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/banner_size_generic"
-        app:cardCornerRadius="5dp"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/size_5"
         app:cardUseCompatPadding="true">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/banner_image"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/banner_size_generic"
-            android:onClick="@{() -> handler.onClickBanner()}"
-            android:scaleType="fitXY"
-            app:imageUrl="@{data.url}"
-            app:imageType="@{ImageType.BANNER_SIZE_GENERIC}"
-            tools:ignore="ContentDescription"
-            tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/banner_image"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:onClick="@{() -> handler.onClickBanner()}"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
+                app:imageType="@{ImageType.BANNER_SIZE_GENERIC}"
+                app:imageUrl="@{data.url}"
+                app:layout_constraintDimensionRatio="H,4:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!--app:placeholder="@{@drawable/ic_vector_odoo_placeholder_grey400_48dp}"-->
 

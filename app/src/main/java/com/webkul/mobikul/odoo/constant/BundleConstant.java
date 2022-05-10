@@ -22,7 +22,8 @@ import org.jetbrains.annotations.Nullable;
 
 public interface BundleConstant {
 
-    String BUNDLE_KEY_HOME_PAGE_RESPONSE = "HOME_PAGE_RESPONSE";
+ String BUNDLE_KEY_HOME_PAGE_RESPONSE = "home_response_data";
+
     String BUNDLE_KEY_LANGUAGE_LIST = "LANGUAGE_LIST";
 
 
@@ -169,5 +170,8 @@ public interface BundleConstant {
 
     String CAMERA_SEARCH_HELPER = "cameraSearchResult";
     String CAMERA_SELECTED_MODEL = "selectedModel";
+
+    String   POSITION_ARG = "position_arg";
+    String   CATEGORY_ARG = "category_id";
 
 }

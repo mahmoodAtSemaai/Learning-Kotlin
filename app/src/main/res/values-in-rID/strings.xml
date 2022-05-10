@@ -415,6 +415,7 @@
     <string name="setting">Pengaturan</string>
     <string name="in_stock">Stok Tersedia</string>
     <string name="in_stock_quantity_x">Stok: %1$d </string>
+    <string name="in_stock_quantity_0">Stok: 0 </string>
     <string name="quantity_exceeding">Jumlah pesanan Anda melebihi stok</string>
     <string name="product_already_added">produk sudah ditambahkan di tas</string>
     <string name="added_successfully">Berhasil ditambahkan</string>
@@ -609,5 +610,6 @@
     <string name="product_details_frequency_of_application">Dosis pakai</string>
     <string name="product_details_pests_and_diseases">hama dan penyakit</string>
     <string name="product_details_duration_of_effect">Durasi efek</string>
+    <string name="no_products_found">Tidak ada produk!!</string>
 
 </resources>

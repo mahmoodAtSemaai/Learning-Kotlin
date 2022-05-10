@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.webkul.mobikul.marketplace.odoo.databinding.ItemMarketplaceLandingPageSellerBinding;
 import com.webkul.mobikul.marketplace.odoo.handler.MarketplaceLandingActivityHandler;
 import com.webkul.mobikul.marketplace.odoo.model.SellerInfo;
-import com.webkul.mobikul.odoo.adapter.home.ProductDefaultStyleRvAdapter;
+import com.webkul.mobikul.odoo.adapter.home.ProductDefaultStyleAdapter;
 import com.webkul.mobikul.odoo.model.generic.ProductData;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class MarketplaceLandingPageBestSellerListRvAdapter extends RecyclerView.
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.binding.setData(sellerList.get(position));
         holder.binding.setHandler(new MarketplaceLandingActivityHandler(mContext));
-        holder.binding.sellerProductRv.setAdapter(new ProductDefaultStyleRvAdapter(mContext, (ArrayList<ProductData>) sellerList.get(position).getSellerProducts().getProducts(), SLIDER_MODE_DEFAULT));
+        holder.binding.sellerProductRv.setAdapter(new ProductDefaultStyleAdapter(mContext, (ArrayList<ProductData>) sellerList.get(position).getSellerProducts().getProducts(), SLIDER_MODE_DEFAULT));
     }
 
     @Override

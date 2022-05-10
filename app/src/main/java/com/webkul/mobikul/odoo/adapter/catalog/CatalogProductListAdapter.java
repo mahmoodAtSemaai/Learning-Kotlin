@@ -5,7 +5,6 @@ import android.content.Context;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,8 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
 import com.webkul.mobikul.odoo.databinding.ItemCatalogProductListBinding;
@@ -39,7 +36,7 @@ import static com.webkul.mobikul.odoo.activity.CatalogProductActivity.VIEW_TYPE_
  * @license https://store.webkul.com/license.html ASL Licence
  * @link https://store.webkul.com/license.html
  */
-public class CatalogProductListRvAdapter extends RecyclerView.Adapter<CatalogProductListRvAdapter.ViewHolder> {
+public class CatalogProductListAdapter extends RecyclerView.Adapter<CatalogProductListAdapter.ViewHolder> {
     @SuppressWarnings("unused")
     private static final String TAG = "CatalogProductListRvAda";
     private final Context mContext;
@@ -47,21 +44,17 @@ public class CatalogProductListRvAdapter extends RecyclerView.Adapter<CatalogPro
     public int VIEW_TYPE;
     public int VIEW_TYPE_BACK_TO_TOP = 3;
 
-    public CatalogProductListRvAdapter(Context context, @NonNull List<ProductData> productDatas, int viewTypeGrid) {
+    public CatalogProductListAdapter(Context context, @NonNull List<ProductData> productDatas, int viewTypeGrid) {
         mContext = context;
         mProductDatas = productDatas;
         VIEW_TYPE = viewTypeGrid;
-        Log.d(TAG, "onCreateViewHolderAdapter: " + viewTypeGrid);
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        Log.d(TAG, "onCreateViewHolderviewType: " + viewType);
         if (viewType == VIEW_TYPE_BACK_TO_TOP) {
-//            if(((CatalogProductActivity) mContext).mBinding.productCatalogRv.getLayoutManager() instanceof GridLayoutManager && mProductDatas.size()<=9){
-//                return null;
-//            }
+
             return new ViewHolder(inflater.inflate(R.layout.item_button_back_to_top, parent, false));
         }
         if (viewType == VIEW_TYPE) {
@@ -72,15 +65,12 @@ public class CatalogProductListRvAdapter extends RecyclerView.Adapter<CatalogPro
     }
 
     @Override
-    public void onBindViewHolder(CatalogProductListRvAdapter.ViewHolder holder, int position) {
-        Log.i(TAG, "onBindViewHolder: ");
+    public void onBindViewHolder(CatalogProductListAdapter.ViewHolder holder, int position) {
         if (position < mProductDatas.size()) {
             final ProductData productData = mProductDatas.get(position);
-//        productData.setContext(mContext);
             if (getItemViewType(position) == VIEW_TYPE) {
                 ((ItemCatalogProductListBinding) holder.mBinding).setData(productData);
                 ((ItemCatalogProductListBinding) holder.mBinding).setHandler(new ProductHandler(mContext, productData));
-                ((ItemCatalogProductListBinding) holder.mBinding).getHandler().setProductListBinding(((ItemCatalogProductListBinding) holder.mBinding));
                 ((ItemCatalogProductListBinding) holder.mBinding).setWishlistEnabled(AppSharedPref.isAllowedWishlist(mContext));
                 ((ItemCatalogProductListBinding) holder.mBinding).setIsLoggedIn(AppSharedPref.isLoggedIn(mContext));
             } else {
@@ -97,9 +87,7 @@ public class CatalogProductListRvAdapter extends RecyclerView.Adapter<CatalogPro
     @Override
     public int getItemViewType(int position) {
         boolean isLinearLayoutManager = ((CatalogProductActivity) mContext).mBinding.productCatalogRv.getLayoutManager() instanceof LinearLayoutManager;
-        Log.i(TAG, "getItemViewType: " + AppSharedPref.isGridview(mContext));
         if (position == mProductDatas.size()) {
-            Log.i(TAG, "getItemViewType: buttonToTop");
             return VIEW_TYPE_BACK_TO_TOP;
         }
         if (AppSharedPref.isGridview(mContext)) {
@@ -111,7 +99,6 @@ public class CatalogProductListRvAdapter extends RecyclerView.Adapter<CatalogPro
 
     @Override
     public int getItemCount() {
-        Log.i(TAG, "getItemCount: " + mProductDatas.size());
         if (mProductDatas.size() <= 9 && AppSharedPref.isGridview(mContext))
             return mProductDatas.size();
         if (mProductDatas.size() <= 5)

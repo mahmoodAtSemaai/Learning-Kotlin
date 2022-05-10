@@ -11,175 +11,110 @@
             name="data"
             type="com.webkul.mobikul.odoo.model.home.HomePageResponse" />
 
+        <variable
+            name="catalogProductData"
+            type="com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse" />
+
     </data>
 
-
-    <FrameLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
+        android:id="@+id/refresh_layout"
         android:layout_height="match_parent">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh_layout"
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
 
-            <androidx.appcompat.widget.LinearLayoutCompat
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/featured_categories_rv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:nestedScrollingEnabled="true"
+                android:orientation="horizontal"
+                android:visibility="@{data.featuredCategories.empty ? View.GONE : View.VISIBLE}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:listitem="@layout/item_featured_category_home"
+                tools:targetApi="lollipop" />
+
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clickable="true"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/featured_categories_rv">
 
-
-                <androidx.core.widget.NestedScrollView
+                <com.google.android.material.appbar.AppBarLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:id="@+id/app_bar_layout"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
+                    <com.google.android.material.appbar.CollapsingToolbarLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:gravity="center"
-                        android:orientation="vertical">
+                        app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
 
                         <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_generic"
-                            android:fitsSystemWindows="true"
-                            android:gravity="center_horizontal">
-
-                            <View
-                                style="@style/DividerHorizontal"
-                                android:layout_height="@dimen/points_divider_height"
-                                android:layout_marginTop="@dimen/points_divider_top_margin"/>
-
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="@dimen/points_box_spacing_external_large"
-                                android:layout_marginTop="@dimen/spacing_generic">
-
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:background="@drawable/points_background"
-                                    android:drawableLeft="@drawable/ic_vector_loyalty_points"
-                                    android:drawablePadding="@dimen/points_box_spacing"
-                                    android:drawableStart="@drawable/ic_vector_loyalty_points"
-                                    android:gravity="center|start"
-                                    android:padding="@dimen/points_box_top_margin"
-                                    android:text="@string/points" />
-
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:id="@+id/loyalty_points"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:textStyle="bold"
-                                    android:gravity="center|end"
-                                    android:padding="@dimen/points_box_top_margin"
-                                    android:text="" />
-
-                            </androidx.cardview.widget.CardView>
-
-                        </RelativeLayout>
-
-
-                        <!--BANNER SLIDERS-->
-
-                        <androidx.viewpager.widget.ViewPager
-                            android:id="@+id/banner_view_pager"
-                            android:layout_width="match_parent"
-                            android:layout_height="150dp"
-                            android:clipToPadding="true"
-                            android:nestedScrollingEnabled="false"
-                            android:scaleType="fitCenter"
-                            android:visibility="@{data.bannerImages.empty? View.GONE : View.VISIBLE}"
-                            tools:background="@color/badge_background_color"
-                            tools:ignore="UnusedAttribute" />
-
-
-                        <com.google.android.material.tabs.TabLayout
-                            android:id="@+id/banner_dots_tab_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/tab_dot_switcher_height"
-                            android:layout_marginBottom="@dimen/spacing_generic"
-                            android:visibility="@{data.bannerImages.empty? View.GONE : View.VISIBLE}"
-                            app:tabBackground="@drawable/selector_dots_tab_layout"
-                            app:tabGravity="center"
-                            app:tabIndicatorHeight="0dp"
-                            app:tabPaddingStart="@dimen/spacing_generic"
-                            tools:background="@color/bb_tabletRightBorderDark" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="3dp"
-                            android:background="@color/grey_300" />
-                        <!--Categories-->
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/featured_categories_rv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="start"
-                            android:nestedScrollingEnabled="false"
-                            android:orientation="horizontal"
-                            android:visibility="@{data.featuredCategories.empty ? View.GONE : View.VISIBLE}"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            tools:listitem="@layout/item_featured_category"
-                            tools:targetApi="lollipop" />
-
-                        <!--PRODUCT SLIDERS-->
-                        <androidx.appcompat.widget.LinearLayoutCompat
-                            android:id="@+id/product_slider_container"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="3dp"
-                            android:background="@color/grey_300" />
-
-                        <LinearLayout
-                            android:id="@+id/llRecentViewProducts"
+                            android:id="@+id/banner_relative_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
 
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingLeft="@dimen/spacing_normal"
-                                android:paddingTop="10dp"
-                                android:paddingBottom="@dimen/spacing_tiny"
-                                android:text="@string/recent_view_products"
-                                android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:textStyle="bold" />
-
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rvAlternativeProduct"
+                            <com.webkul.mobikul.odoo.custom.DynamicHeightViewPager
+                                android:id="@+id/banner_view_pager"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
-
-                        </LinearLayout>
-
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
-                </androidx.core.widget.NestedScrollView>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                                android:layout_height="wrap_content"
+                                android:clipToPadding="true"
+                                android:nestedScrollingEnabled="false"
+                                android:scaleType="fitCenter"
+                                tools:ignore="UnusedAttribute" />
 
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/custom_progress_drawable"
-            app:visibility="@{data == null}" />
+                            <com.google.android.material.tabs.TabLayout
+                                android:id="@+id/banner_dots_tab_layout"
+                                android:layout_width="match_parent"
+                                android:layout_alignParentBottom="true"
+                                android:paddingBottom="@dimen/size_10"
+                                android:layout_height="@dimen/tab_dot_switcher_height"
+                                android:visibility="@{data.bannerImages.empty? View.GONE : View.VISIBLE}"
+                                app:layout_constraintTop_toBottomOf="@id/banner_view_pager"
+                                app:tabBackground="@drawable/selector_dots_tab_layout"
+                                app:tabGravity="center"
+                                app:tabIndicatorHeight="0dp"
+                                app:tabPaddingStart="@dimen/spacing_generic"
+                                tools:background="@color/bb_tabletRightBorderDark" />
 
-    </FrameLayout>
+                        </RelativeLayout>
 
+                    </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+                </com.google.android.material.appbar.AppBarLayout>
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/view_pager2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/activityBackground"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    >
+
+                </androidx.viewpager2.widget.ViewPager2>
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </layout>

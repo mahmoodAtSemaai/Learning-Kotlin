@@ -58,6 +58,9 @@
     <dimen name="spacing_min">2dp</dimen>
     <dimen name="margin_top_grid">105dp</dimen>
 
+<!--    Material search view of home page-->
+    <dimen name="hamburger_icon_right_margin">21dp</dimen>
+
     <!--=============================================================================================================================================================
                                                     Background dimensions
     =============================================================================================================================================================-->
@@ -141,5 +144,43 @@
     <dimen name="size_160">160dp</dimen>
     <dimen name="size_200">200dp</dimen>
     <dimen name="size_240">240dp</dimen>
+
+    <!--    size of hambuger icon-->
+    <dimen name="hamburger_icon_dimens">30dp</dimen>
+    <dimen name="font_size_13sp">13sp</dimen>
+    <dimen name="text_size_12sp">12sp</dimen>
+    <dimen name="font_size_11sp">11sp</dimen>
+    <dimen name="action_bar_size">60dp</dimen>
+    <dimen name="search_item_view">37dp</dimen>
+    <dimen name="dimen_3dp">3dp</dimen>
+    <dimen name="layout_height_100">100dp</dimen>
+    <dimen name="banner_height">100dp</dimen>
+    <dimen name="padding_start">5dp</dimen>
+    <dimen name="padding_end">15dp</dimen>
+    <dimen name="font_weight_0">0dp</dimen>
+    <dimen name="badge_dimension">18dp</dimen>
+    <dimen name="top_margin_badge">7dp</dimen>
+    <dimen name="size_30">30dp</dimen>
+    <dimen name="size_46">46dp</dimen>
+    <dimen name="size_50">50dp</dimen>
+    <dimen name="size_70">70dp</dimen>
+    <dimen name="size_15">15dp</dimen>
+    <dimen name="size_100">100dp</dimen>
+    <dimen name="size_55">55dp</dimen>
+    <dimen name="font_size_15">15sp</dimen>
+    <dimen name="size_26">26dp</dimen>
+    <dimen name="size_90">90dp</dimen>
+    <dimen name="size_35">35dp</dimen>
+    <dimen name="size_25">25dp</dimen>
+    <dimen name="size_270">270dp</dimen>
+    <dimen name="size_65">65dp</dimen>
+    <dimen name="size_5">5dp</dimen>
+    <dimen name="size_60">60dp</dimen>
+    <dimen name="size_45">45dp</dimen>
+    <dimen name="size_150">150dp</dimen>
+    <dimen name="size_75">75dp</dimen>
+    <dimen name="size_29">29dp</dimen>
+    <dimen name="size_27">27dp</dimen>
+    <dimen name="font_size_9">9sp</dimen>
 
 </resources>

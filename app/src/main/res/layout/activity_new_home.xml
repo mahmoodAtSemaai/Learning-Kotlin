@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="java.util.HashMap" />
+
+        <import type="com.webkul.mobikul.odoo.helper.AppSharedPref" />
+
+        <variable
+            name="languageData"
+            type="java.util.HashMap" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.home.HomeActivityHandler" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/home_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_bar_size"
+            android:elevation="@dimen/size_5"
+            android:background="@drawable/background_app_layout"
+            android:minHeight="?actionBarSize"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/search_view"
+                    android:layout_width="@dimen/font_weight_0"
+                    android:layout_height="@dimen/search_item_view"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="4"
+                    android:background="@drawable/search_background"
+                    android:drawableStart="@drawable/search"
+                    android:drawableLeft="@drawable/search"
+                    android:gravity="center"
+                    android:hint="@string/search_all_products_hint"
+                    android:paddingStart="@dimen/padding_start"
+                    android:layout_marginEnd="@dimen/size_5"
+                    android:paddingLeft="@dimen/padding_start"
+                    android:paddingEnd="@dimen/padding_end"
+                    android:paddingRight="@dimen/padding_end"
+                    android:textSize="@dimen/font_size_12"
+                    android:layout_marginRight="5dp">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+                <RelativeLayout
+                    android:layout_width="@dimen/font_weight_0"
+                    android:layout_weight="2.5"
+                    android:layout_marginEnd="@dimen/size_6"
+                    android:backgroundTint="@color/background_appbar_color"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/search_background"
+                    android:gravity="center_horizontal"
+                    android:layout_marginRight="@dimen/size_8">
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/search_item_view"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/search_background"
+
+                        >
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="@dimen/size_29"
+                            android:layout_marginLeft="@dimen/size_27"
+                            android:layout_marginTop="@dimen/size_4"
+                            android:layout_marginEnd="@dimen/size_2"
+                            android:layout_marginRight="@dimen/size_1"
+                            android:layout_marginBottom="@dimen/size_6"
+                            android:orientation="vertical"
+                            android:weightSum="10">
+
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/font_weight_0"
+                                android:layout_weight="5"
+                                android:drawablePadding="@dimen/points_box_spacing"
+                                android:gravity="center|start"
+                                android:text="@string/points"
+                                android:textAlignment="textStart"
+                                android:textSize="@dimen/font_size_9" />
+
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/loyalty_points"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/font_weight_0"
+                                android:layout_weight="5"
+                                android:gravity="start"
+                                android:text=""
+                                android:textAlignment="textStart"
+                                android:textSize="@dimen/size_10"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="@dimen/size_25"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="@dimen/size_2"
+                            android:layout_marginLeft="@dimen/size_2"
+                            android:layout_marginTop="@dimen/size_10"
+                            android:layout_marginBottom="@dimen/size_10"
+                            android:src="@drawable/points"
+                             >
+
+
+                        </androidx.appcompat.widget.AppCompatImageView>
+
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/chat_icon"
+                    android:layout_width="@dimen/font_weight_0"
+                    android:layout_height="@dimen/hamburger_icon_dimens"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:visibility="invisible"
+                    android:foregroundGravity="center_vertical"
+                    android:src="@drawable/chat_icon" />
+
+                <RelativeLayout
+                    android:layout_width="@dimen/font_weight_0"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5">
+
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/cart_icon"
+                        android:layout_width="@dimen/hamburger_icon_dimens"
+                        android:layout_height="@dimen/hamburger_icon_dimens"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/cart" />
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/badge_info"
+                        android:layout_width="@dimen/badge_dimension"
+                        android:layout_height="@dimen/badge_dimension"
+                        android:layout_alignEnd="@+id/cart_icon"
+                        android:layout_marginTop="@dimen/top_margin_badge"
+                        android:layout_marginRight="-9dp"
+                        android:background="@drawable/badge_symbol"
+                        android:gravity="center"
+                        android:text="@string/text_one"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_12sp"
+                        android:textStyle="bold" />
+
+
+                </RelativeLayout>
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/drawer_icon"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/hamburger_icon_dimens"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_baseline_menu_24" />
+
+
+            </LinearLayout>
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+
+        <fragment
+            android:id="@+id/home_nav_host"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:defaultNavHost="true"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/home_toolbar"
+            app:layout_constraintBottom_toTopOf="@id/home_bottom_nav"
+            app:navGraph="@navigation/home_nav_graph" />
+
+
+        <com.webkul.mobikul.odoo.custom.MaterialSearchView
+            android:id="@+id/material_search_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="@dimen/size_6"
+            android:fitsSystemWindows="true"
+            android:visibility="gone" />
+
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/home_bottom_nav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="5sp"
+            android:background="@drawable/background_bottom_layout"
+            app:labelVisibilityMode="labeled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:menu="@menu/home_nav_menu" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

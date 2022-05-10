@@ -16,14 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.webkul.mobikul.odoo.BuildConfig;
 import com.webkul.mobikul.odoo.R;
-import com.webkul.mobikul.odoo.adapter.catalog.CatalogProductListRvAdapter;
+import com.webkul.mobikul.odoo.adapter.catalog.CatalogProductListAdapter;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
@@ -33,7 +32,6 @@ import com.webkul.mobikul.odoo.custom.MaterialSearchView;
 import com.webkul.mobikul.odoo.database.SaveData;
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.databinding.ActivityProductCatalogBinding;
-import com.webkul.mobikul.odoo.databinding.ItemButtonBackToTopBinding;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.fragment.EmptyFragment;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
@@ -46,12 +44,8 @@ import com.webkul.mobikul.odoo.helper.NetworkHelper;
 import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.helper.ViewHelper;
 import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse;
-import com.webkul.mobikul.odoo.model.request.CategoryRequest;
-import com.webkul.mobikul.odoo.model.request.ProductSliderRequest;
-import com.webkul.mobikul.odoo.model.request.SearchRequest;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.Observable;
@@ -332,9 +326,7 @@ public class CatalogProductActivity extends BaseActivity {
     }
 
     private void initProductCatalogRv() {
-        Log.d(TAG, "onClickView: " + AppSharedPref.isGridview(this));
-
-        mBinding.productCatalogRv.setAdapter(new CatalogProductListRvAdapter(this, mBinding.getData().getProducts(), VIEW_TYPE_LIST));
+        mBinding.productCatalogRv.setAdapter(new CatalogProductListAdapter(this, mBinding.getData().getProducts(), VIEW_TYPE_LIST));
 
         if (AppSharedPref.isGridview(this)) {
             int spanCount = ViewHelper.getSpanCount(this);
@@ -477,11 +469,9 @@ public class CatalogProductActivity extends BaseActivity {
 
 
     public void onClickViewSwitcher(View view) {
-        Log.d(TAG, "onClickViewSwitcher: " + AppSharedPref.isGridview(this));
-
         if (AppSharedPref.isGridview(this)) {
             mBinding.productCatalogRv.setLayoutManager(new LinearLayoutManager(this));
-            mBinding.productCatalogRv.setAdapter(new CatalogProductListRvAdapter(this, mBinding.getData().getProducts(), VIEW_TYPE_LIST));
+            mBinding.productCatalogRv.setAdapter(new CatalogProductListAdapter(this, mBinding.getData().getProducts(), VIEW_TYPE_LIST));
             AppSharedPref.setGridview(this, false);
             mBinding.footerTv.setVisibility(View.GONE);
             mBinding.floatingButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_vector_grid));
@@ -498,7 +488,7 @@ public class CatalogProductActivity extends BaseActivity {
                 }
             });
             mBinding.productCatalogRv.setLayoutManager(gridLayoutManager);
-            mBinding.productCatalogRv.setAdapter(new CatalogProductListRvAdapter(this, mBinding.getData().getProducts(), VIEW_TYPE_LIST));
+            mBinding.productCatalogRv.setAdapter(new CatalogProductListAdapter(this, mBinding.getData().getProducts(), VIEW_TYPE_LIST));
             AppSharedPref.setGridview(this, true);
             mBinding.footerTv.setVisibility(View.GONE);
             mBinding.floatingButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_vector_list));

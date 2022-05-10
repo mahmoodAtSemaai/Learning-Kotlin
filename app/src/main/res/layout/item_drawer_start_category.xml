@@ -12,47 +12,80 @@
     </data>
 
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="@dimen/spacing_normal">
-
-        <!--without icon application look much better...-->
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/category_iv"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_marginEnd="@dimen/spacing_normal"
-            android:layout_marginRight="@dimen/spacing_normal"
-            android:scaleType="centerInside"
-            app:imageUrl="@{data.icon}"
-            app:placeholder="@{@drawable/ic_vector_odoo_placeholder_grey400_48dp}"
-            tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
+        android:layout_marginBottom="@dimen/size_2"
+        android:layout_height="wrap_content">
 
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/category_name_tv"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_55"
+            android:gravity="center"
+            android:padding="@dimen/spacing_normal"
+            android:paddingBottom="@dimen/size_1">
+
+
+            <!--without icon application look much better...-->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/category_iv"
+                android:layout_width="@dimen/size_18"
+                android:layout_height="@dimen/size_18"
+                android:layout_marginEnd="@dimen/spacing_normal"
+                android:layout_marginRight="@dimen/spacing_normal"
+                android:scaleType="centerInside"
+                app:imageUrl="@{data.icon}"
+                app:placeholder="@{@drawable/ic_vector_odoo_placeholder_grey400_48dp}"
+                tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/category_name_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_tiny"
+                android:layout_marginLeft="@dimen/spacing_tiny"
+                android:drawableEnd="@{data.children.size() == 0 ? null : @drawable/ic_baseline_keyboard_arrow_down_24}"
+                android:drawableRight="@{data.children.size() == 0 ? null : @drawable/ic_baseline_keyboard_arrow_down_24}"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center_vertical|start"
+                android:lines="1"
+                android:maxLines="1"
+                android:textDirection="anyRtl"
+                android:textSize="@dimen/text_size_nav_bar"
+                app:htmlText="@{data.name}"
+                tools:drawableEnd="@drawable/ic_vector_arrow_right_grey600_18dp_wrapper"
+                tools:ignore="RtlSymmetry"
+                tools:targetApi="jelly_bean_mr1"
+                tools:text="Parent Category" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <View
+            android:id="@+id/divider_text"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_1"
+            android:layout_below="@+id/linear_layout"
+            android:background="@color/grey_400" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/child_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/spacing_tiny"
-            android:layout_marginStart="@dimen/spacing_tiny"
-            android:drawableEnd="@{data.children.size() == 0 ? null : @drawable/ic_vector_arrow_right_grey600_18dp_wrapper}"
-            android:drawableRight="@{data.children.size() == 0 ? null : @drawable/ic_vector_arrow_right_grey600_18dp_wrapper}"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="center_vertical|start"
-            android:lines="1"
-            android:maxLines="1"
-            android:textDirection="anyRtl"
-            android:textSize="@dimen/text_size_nav_bar"
-            app:htmlText="@{data.name}"
-            tools:drawableEnd="@drawable/ic_vector_arrow_right_grey600_18dp_wrapper"
-            tools:ignore="RtlSymmetry"
-            tools:targetApi="jelly_bean_mr1"
-            tools:text="Parent Category" />
+            android:paddingBottom="@dimen/size_2"
+            android:layout_marginBottom="@dimen/size_10"
+            android:visibility="gone"
+            android:layout_below="@+id/divider_text"
+            android:layout_marginStart="@dimen/size_65"
+            android:layout_marginTop="@dimen/size_5"
+            android:layout_marginEnd="@dimen/size_10"
+            android:layout_marginLeft="@dimen/size_60"
+            android:layout_marginRight="@dimen/size_10" />
 
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </RelativeLayout>
 
 
 </layout>

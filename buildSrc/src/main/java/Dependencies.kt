@@ -81,6 +81,9 @@ object DepVersions {
 
     //SweetAlertDialog Module
     const val materialishProgress = "1.0"
+    const val navigation = "2.4.1"
+    const val navigationfragment="1.4.0"
+    const val nav_version = "2.4.1"
 
 
     //appMarketPlace Modules
@@ -146,6 +149,7 @@ object Dependencies {
     const val googleServices = "com.google.gms:google-services:${DepVersions.googleServices}"
     const val firebaseCrashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:${DepVersions.firebaseCrashlyticsGradle}"
     const val hiltClassPath = "com.google.dagger:hilt-android-gradle-plugin:${DepVersions.hilt}"
+    const val safeargs =  "androidx.navigation:navigation-safe-args-gradle-plugin:${DepVersions.nav_version}"
 
     //App Dependencies
     const val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -168,6 +172,7 @@ object Dependencies {
     const val glideCompiler = "com.github.bumptech.glide:compiler:${DepVersions.glide}"
 
     const val circleImageView = "de.hdodenhof:circleimageview:${DepVersions.circleImageView}"
+
     const val jsoup = "org.jsoup:jsoup:${DepVersions.jsoup}"
 
     const val firebaseCrash = "com.google.firebase:firebase-crash:${DepVersions.firebaseCrash}"
@@ -248,6 +253,9 @@ object Dependencies {
         "com.google.android.material:material:${DepVersions.materialDesignSupport}"
     const val constraintLayoutModule = "androidx.constraintlayout:constraintlayout:${DepVersions.constraintLayoutModule}"
     const val jUnit = "junit:junit:${DepVersions.jUnit}"
+    const val navigation = "androidx.navigation:navigation-fragment-ktx:${DepVersions.navigation}"
+    const val navigationUI = "androidx.navigation:navigation-ui-ktx:${DepVersions.navigation}"
+    const val navigationfragment = "androidx.fragment:fragment-ktx:${DepVersions.navigationfragment}"
 
     const val activity = "androidx.activity:activity-ktx:${DepVersions.activty}"
     const val fragment = "androidx.fragment:fragment-ktx:${DepVersions.fragment}"

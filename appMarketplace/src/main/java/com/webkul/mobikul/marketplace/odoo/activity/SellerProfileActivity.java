@@ -1,6 +1,5 @@
 package com.webkul.mobikul.marketplace.odoo.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -15,7 +14,7 @@ import com.webkul.mobikul.marketplace.odoo.handler.SellerReviewHandler;
 import com.webkul.mobikul.marketplace.odoo.model.response.SellerProfilePageResponse;
 import com.webkul.mobikul.odoo.activity.BaseActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
-import com.webkul.mobikul.odoo.adapter.home.ProductDefaultStyleRvAdapter;
+import com.webkul.mobikul.odoo.adapter.home.ProductDefaultStyleAdapter;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
@@ -92,7 +91,7 @@ public class SellerProfileActivity extends BaseActivity {
                         mBinding.executePendingBindings();
                         mBinding.sellerRatingRecyclerView.setAdapter(new SellerReviewAdapter(SellerProfileActivity.this, response.getSellerInfo().getSellerReviews()));
                         mBinding.sellerRatingRecyclerView.setNestedScrollingEnabled(false);
-                        mBinding.sellerRecentCollectionRv.setAdapter(new ProductDefaultStyleRvAdapter(SellerProfileActivity.this, (ArrayList<ProductData>) response.getSellerInfo().getSellerProducts().getProducts(), SLIDER_MODE_DEFAULT));
+                        mBinding.sellerRecentCollectionRv.setAdapter(new ProductDefaultStyleAdapter(SellerProfileActivity.this, (ArrayList<ProductData>) response.getSellerInfo().getSellerProducts().getProducts(), SLIDER_MODE_DEFAULT));
                     }
                     /*Loading Banner Data*/
                 }

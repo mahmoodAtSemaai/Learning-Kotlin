@@ -231,13 +231,13 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="match_parent"
+                        android:id="@+id/all_orders_text"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
                         android:drawableLeft="@drawable/ic_vector_order_grey_24dp_wrapper"
                         android:drawablePadding="@dimen/spacing_generic"
                         android:drawableStart="@drawable/ic_vector_order_grey_24dp_wrapper"
                         android:gravity="center|start"
-                        android:onClick="@{()->handler.viewAllOrder()}"
                         android:padding="@dimen/spacing_generic"
                         android:text="@string/all_orders" />
 
@@ -292,12 +292,12 @@
                         android:gravity="center|start"
                         android:padding="@dimen/spacing_generic"
                         android:text="@string/semaai_points_balance"
-                        android:visibility="@{View.VISIBLE}" />
+                        android:visibility="@{View.GONE}" />
 
                     <View
                         style="@style/DividerHorizontal"
                         android:layout_margin="@dimen/spacing_tiny"
-                        android:visibility="@{View.VISIBLE}" />
+                        android:visibility="@{View.GONE}" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="match_parent"
