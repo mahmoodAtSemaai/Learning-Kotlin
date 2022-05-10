@@ -107,15 +107,15 @@
 
                 <Button
                     android:layout_width="0dp"
+                    android:id="@+id/add_product_to_bag_btn"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:onClick="@{()->handler.addProductToBag()}"
                     android:text="@string/move_to_bag" />
 
                 <ImageButton
                     android:layout_width="wrap_content"
+                    android:id="@+id/delete_icon"
                     android:layout_height="wrap_content"
-                    android:onClick="@{()->handler.deleteProduct()}"
                     app:srcCompat="@drawable/ic_vector_delete_forever_grey_64dp" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>

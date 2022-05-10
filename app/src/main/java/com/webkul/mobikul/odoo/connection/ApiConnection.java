@@ -7,6 +7,7 @@ import android.content.Context;
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.helper.NetworkHelper;
 import com.webkul.mobikul.odoo.model.BaseResponse;
+import com.webkul.mobikul.odoo.model.ReferralResponse;
 import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
 import com.webkul.mobikul.odoo.model.cart.BagResponse;
 import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse;
@@ -192,6 +193,18 @@ public class ApiConnection {
         return RetrofitClient.getClient(context).create(ApiInterface.class).getAddressBookData(baseLazyRequest.toString());
     }
 
+    public static Observable<ReferralResponse> getReferralCode(Context context, String userId) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getReferralCode(userId);
+    }
+
+    public static Observable<ReferralResponse> generateReferralCode(Context context, String userId) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).generateReferralCode(userId);
+    }
+
+    public static Observable<ReferralResponse> getLoyaltyPoints(Context context, String userId) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getLoyaltyPoints(userId);
+    }
+
 
 //    public static void getAddressFormData(String url, AuthenticationRequest authenticationRequest, RetrofitCallback<AddressFormResponse> callback) {
 //        RetrofitClient.getClient(context).create(ApiInterface.class).getAddressFormData(url, authenticationRequest.toString()).enqueue(callback);
@@ -253,17 +266,17 @@ public class ApiConnection {
         CHECKOUT API's
      ------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-    public static Observable<BagResponse> getCartData(Context context) {
-        return RetrofitClient.getClient(context).create(ApiInterface.class).getCartData();
+    public static Observable<BagResponse> getCartData(Context context, Boolean pointsRedeem) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getCartData(pointsRedeem);
     }
 
 
-    public static Observable<BaseResponse> updateCart(Context context, String lineId, int qty) {
-        return RetrofitClient.getClient(context).create(ApiInterface.class).updateCart(lineId, new UpdateBagReq(qty).toString());
+    public static Observable<BaseResponse> updateCart(Context context, int saleOrderId, String lineId, int qty) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).updateCart(saleOrderId, lineId, new UpdateBagReq(qty).toString());
     }
 
-    public static Observable<BaseResponse> deleteCartItem(Context context, String lineId) {
-        return RetrofitClient.getClient(context).create(ApiInterface.class).deleteCartItem(lineId);
+    public static Observable<BaseResponse> deleteCartItem(Context context, int saleOrderId, String lineId) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).deleteCartItem(saleOrderId, lineId);
     }
 
     public static Observable<AddToCartResponse> addToCart(Context context, AddToBagRequest addToBagRequest) {
@@ -438,8 +451,8 @@ public class ApiConnection {
         return RetrofitClient.getClient(context).create(ApiInterface.class).createPayment(paymentDetails);
     }
 
-    public static Observable<OrderDataResponse> getOrderData(Context context, int orderId){
-        return RetrofitClient.getClient(context).create(ApiInterface.class).getOrderData(orderId);
+    public static Observable<OrderDataResponse> getOrderData(Context context, int orderId, Boolean usePoints){
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getOrderData(orderId, usePoints);
     }
 
     public static Observable<MyOrderReponse> getSaleOrders(Context context, BaseLazyRequest baseLazyRequest){

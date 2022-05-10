@@ -33,7 +33,7 @@ import java.util.ArrayList;
 
  */
 
-public class ProductDefaultStyleRvAdapter extends RecyclerView.Adapter<ProductDefaultStyleRvAdapter.ViewHolder> {
+public class ProductDefaultStyleAdapter extends RecyclerView.Adapter<ProductDefaultStyleAdapter.ViewHolder> {
 
     @SuppressWarnings("unused")
     private static final String TAG = "ProductDefaultStyleRvAdapter";
@@ -41,7 +41,7 @@ public class ProductDefaultStyleRvAdapter extends RecyclerView.Adapter<ProductDe
     private ArrayList<ProductData> mProductDatas;
     private String mSliderMode;
 
-    public ProductDefaultStyleRvAdapter(Context context, ArrayList<ProductData> productDatas, String sliderMode) {
+    public ProductDefaultStyleAdapter(Context context, ArrayList<ProductData> productDatas, String sliderMode) {
         mContext = context;
         mProductDatas = productDatas;
         mSliderMode = sliderMode;

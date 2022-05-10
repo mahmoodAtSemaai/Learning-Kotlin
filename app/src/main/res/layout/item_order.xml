@@ -22,13 +22,20 @@
             type="com.webkul.mobikul.odoo.handler.customer.OrderItemHandler" />
     </data>
 
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/size_10"
+        android:layout_marginBottom="@dimen/size_2"
+        android:layout_height="wrap_content">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:id="@+id/order_layout"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/size_2"
         android:background="@color/white"
         android:foreground="?attr/selectableItemBackground"
-        android:onClick="@{()->handler.viewOrderDetail()}">
+        >
 
         <TableLayout
             android:layout_width="match_parent"
@@ -166,6 +173,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    </androidx.cardview.widget.CardView>
 
 </layout>
 

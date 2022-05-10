@@ -220,6 +220,37 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="@dimen/referral_icon_dimension"
+                        android:layout_height="@dimen/referral_icon_dimension"
+                        android:padding="@dimen/spacing_generic"
+                        app:srcCompat="@drawable/ic_vector_referral_code_accent_wrapper" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/referral_code_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/enter_referral_code"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:text="@={data.referralCode}" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+
                 <CheckBox
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -238,7 +269,7 @@
                     android:text="@string/view_term_and_cond"
                     android:textColor="@color/colorAccent"
                     android:visibility="@{AppSharedPref.isTermAndCondition(context)? View.VISIBLE : View.GONE}" />
-                />
+
 
                 <CheckBox
                     android:layout_width="match_parent"
@@ -338,7 +369,7 @@
                     android:textColor="@color/colorAccent"
                     tools:visibility="visible"
                     />
-                />
+
 
                 </LinearLayout>
 

@@ -17,15 +17,19 @@ public class OrderReviewRequest {
     private final String KEY_ACQUIRER_ID = "acquirerId";
     @SuppressWarnings("FieldCanBeLocal")
     private final String KEY_SHIPPING_ID = "shippingId";
+    @SuppressWarnings("FieldCanBeLocal")
+    private final String KEY_USE_POINTS = "use_points";
     private final String shippingAddressId;
     private final String paymentAcquirerId;
     private String shippingMethodId;
+    private Boolean usePoints;
 
 
-    public OrderReviewRequest(String shippingAddressId, String shippingMethodId, String acquirerId) {
+    public OrderReviewRequest(String shippingAddressId, String shippingMethodId, String acquirerId, Boolean usePoints) {
         this.shippingAddressId = shippingAddressId;
         this.shippingMethodId = shippingMethodId;
         this.paymentAcquirerId = acquirerId;
+        this.usePoints = usePoints;
     }
 
     @Override
@@ -37,6 +41,7 @@ public class OrderReviewRequest {
             if (!shippingMethodId.isEmpty()) {
                 jsonObject.put(KEY_SHIPPING_ID, shippingMethodId);
             }
+            jsonObject.put(KEY_USE_POINTS, usePoints);
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -7,7 +7,9 @@ import android.widget.Toast;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.BaseActivity;
 import com.webkul.mobikul.odoo.activity.CustomerBaseActivity;
+import com.webkul.mobikul.odoo.activity.NewHomeActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
+import com.webkul.mobikul.odoo.adapter.customer.WishlistProductInfoRvAdapter;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
@@ -32,6 +34,8 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_NAME;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID;
+
+import java.util.Objects;
 
 
 /**
@@ -104,6 +108,8 @@ public class WishlistProductInfoItemHandler {
                                 AnalyticsImpl.INSTANCE.trackMoveItemToBagSuccessful(mData.getId(), mData.getName(), mData.getPriceUnit(),
                                         Helper.getScreenName(mContext),
                                         "");
+
+                                //Generating Errors
                                 (((CustomerBaseActivity) mContext).getSupportFragmentManager().findFragmentByTag(WishlistFragment
                                         .class.getSimpleName())).onResume();
                                 AlertDialogHelper.showDefaultSuccessOneLinerDialog(mContext, wishlistToCartResponse.getMessage());
@@ -122,51 +128,5 @@ public class WishlistProductInfoItemHandler {
                 });
     }
 
-    public void deleteProduct() {
 
-        AlertDialogHelper.showDefaultWarningDialogWithDismissListener(mContext, mContext.getString(R.string.msg_are_you_sure), mContext.getString(R.string.ques_want_to_delete_this_product), new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                sweetAlertDialog.dismiss();
-                AlertDialogHelper.showDefaultProgressDialog(mContext);
-
-                ApiConnection.deleteWishlistItem(mContext, mData.getId()).subscribeOn(Schedulers.io()).observeOn
-                        (AndroidSchedulers.mainThread()).subscribe(new CustomObserver<BaseResponse>(mContext) {
-
-                    @Override
-                    public void onNext(@NonNull BaseResponse baseResponse) {
-                        super.onNext(baseResponse);
-                        AlertDialogHelper.dismiss(mContext);
-                        if (baseResponse.isAccessDenied()){
-                            AlertDialogHelper.showDefaultWarningDialogWithDismissListener(mContext, mContext.getString(R.string.error_login_failure), mContext.getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                    sweetAlertDialog.dismiss();
-                                    AppSharedPref.clearCustomerData(mContext);
-                                    Intent i = new Intent(mContext, SignInSignUpActivity.class);
-                                    i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ((BaseActivity)mContext).getClass().getSimpleName());
-                                    mContext.startActivity(i);
-                                }
-                            });
-                        }else {
-                            if (baseResponse.isSuccess()) {
-                                AnalyticsImpl.INSTANCE.trackItemRemovedFromWishlist(mData.getId(), mData.getName(), mData.getPriceUnit());
-                                (((CustomerBaseActivity) mContext).getSupportFragmentManager().findFragmentByTag(WishlistFragment
-                                        .class.getSimpleName())).onResume();
-                                CustomToast.makeText(mContext, baseResponse.getMessage(), Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
-                            } else {
-                                AnalyticsImpl.INSTANCE.trackItemRemoveFromWishlistFailed(baseResponse.getMessage(), baseResponse.getResponseCode(), "");
-                                AlertDialogHelper.showDefaultWarningDialog(mContext, mData.getName(), baseResponse.getMessage());
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-            }
-        });
-    }
 }

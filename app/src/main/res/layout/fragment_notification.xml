@@ -29,12 +29,18 @@
 
         <ProgressBar
             android:layout_width="wrap_content"
+            android:id="@+id/progress_bar"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/custom_progress_drawable"
-            app:visibility="@{data.allNotificationMessages.empty}" />
+            android:visibility="visible">
 
+        </ProgressBar>
 
+        <include
+            android:id="@+id/empty_layout"
+            layout="@layout/fragment_empty"
+            android:visibility="@{data.allNotificationMessages.empty ? View.VISIBLE : View.GONE}"/>
     </FrameLayout>
 
 

@@ -96,7 +96,7 @@
             app:layout_constraintEnd_toStartOf="@+id/tv_semaai_points"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_total_price" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_total_price_text" />
 
         <TextView
             android:id="@+id/tv_semaai_points"
@@ -127,7 +127,7 @@
             app:layout_constraintEnd_toStartOf="@+id/tv_shipping_method_cost"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_semaai_points" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_semaai_points_text" />
 
         <TextView
             android:id="@+id/tv_shipping_method_cost"

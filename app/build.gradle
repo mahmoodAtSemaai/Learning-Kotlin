@@ -3,6 +3,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
+
 apply plugin: 'dagger.hilt.android.plugin'
 
 apply from: rootProject.file('library-common-module.gradle')
@@ -107,7 +109,12 @@ dependencies {
             Dependencies.stetho,
             Dependencies.stethoOkHttp,
             Dependencies.coreKTX,
+            Dependencies.remoteConfig,
+            Dependencies.remoteConfigKTX,
             Dependencies.greenRobot,
+            Dependencies.navigation,
+            Dependencies.navigationUI,
+            Dependencies.navigationfragment,
             Dependencies.activity,
             Dependencies.fragment,
             Dependencies.remoteConfig,

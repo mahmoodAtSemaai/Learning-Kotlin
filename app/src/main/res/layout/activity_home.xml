@@ -152,7 +152,6 @@
                         android:drawablePadding="@dimen/spacing_normal"
                         android:drawableStart="@drawable/ic_vector_language_grey400_24dp_wrapper"
                         android:gravity="center_vertical"
-                        android:onClick="@{()->handler.onClickLanguageIcon(languageData)}"
                         android:padding="@dimen/spacing_normal"
                         android:text="@string/language"
                         android:visibility="@{languageData != null ? View.VISIBLE : View.GONE }" />

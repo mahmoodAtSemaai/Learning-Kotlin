@@ -23,6 +23,7 @@ import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.databinding.ItemCatalogProductListBinding;
+import com.webkul.mobikul.odoo.databinding.ItemCatalogProductListHomeBinding;
 import com.webkul.mobikul.odoo.databinding.ItemProductGridBinding;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
@@ -68,7 +69,7 @@ public class ProductHandler {
     private ProductData mData;
     private long mLastClickTime = 0;
     private ItemProductGridBinding mProductDefaultBinding;
-    private ItemCatalogProductListBinding mProductListtBinding;
+    private ItemCatalogProductListHomeBinding mProductListtBinding;
     private View imageView;
     private String TAG = "ProductHandler";
 
@@ -244,7 +245,7 @@ public class ProductHandler {
     public void setProductDefaultBinding(ItemProductGridBinding mBinding) {
         mProductDefaultBinding = mBinding;
     }
-    public void setProductListBinding(ItemCatalogProductListBinding mBinding) {
+    public void setProductListBinding(ItemCatalogProductListHomeBinding mBinding) {
         mProductListtBinding = mBinding;
     }
 }

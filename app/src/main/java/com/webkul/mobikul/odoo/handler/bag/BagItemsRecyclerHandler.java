@@ -55,47 +55,47 @@ public class BagItemsRecyclerHandler implements ChangeQtyDialogFragment.OnQtyCha
     @SuppressWarnings("unused")
     private static final String TAG = "BagItemsRecyclerHandler";
 
-    private final Context mContext;
-    private final BagItemData mData;
+    private final Context context;
+    private final BagItemData data;
 
     public BagItemsRecyclerHandler(Context context, BagItemData bagItemData) {
-        mContext = context;
-        mData = bagItemData;
+        this.context = context;
+        data = bagItemData;
     }
 
     public void deleteItem() {
-        AnalyticsImpl.INSTANCE.trackRemoveItemSelected(mData.getLineId(), mData.getName(), mData.getPriceUnit());
-        ((BaseActivity) mContext).mSweetAlertDialog = new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE)
-                .setTitleText(mContext.getString(R.string.msg_are_you_sure))
-                .setContentText(mContext.getString(R.string.ques_want_to_delete_this_product))
-                .setConfirmText(mContext.getString(R.string.message_yes_delete_it))
+        AnalyticsImpl.INSTANCE.trackRemoveItemSelected(data.getLineId(), data.getName(), data.getPriceUnit());
+        ((BaseActivity) context).mSweetAlertDialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(context.getString(R.string.msg_are_you_sure))
+                .setContentText(context.getString(R.string.ques_want_to_delete_this_product))
+                .setConfirmText(context.getString(R.string.message_yes_delete_it))
                 .setConfirmClickListener(sDialog -> {
                     // reuse previous dialog instance
                     sDialog.dismiss();
-                    ApiConnection.deleteCartItem(mContext, mData.getLineId()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<BaseResponse>(mContext) {
+                    ApiConnection.deleteCartItem(context, AppSharedPref.getOrderId(context), data.getLineId()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<BaseResponse>(context) {
 
                         @Override
                         public void onNext(@NonNull BaseResponse baseResponse) {
                             super.onNext(baseResponse);
                             if (baseResponse.isAccessDenied()){
-                                AlertDialogHelper.showDefaultWarningDialogWithDismissListener(mContext, mContext.getString(R.string.error_login_failure), mContext.getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
+                                AlertDialogHelper.showDefaultWarningDialogWithDismissListener(context, context.getString(R.string.error_login_failure), context.getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
                                     @Override
                                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                                         sweetAlertDialog.dismiss();
-                                        AppSharedPref.clearCustomerData(mContext);
-                                        Intent i = new Intent(mContext, SignInSignUpActivity.class);
-                                        i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ((BagActivity)mContext).getClass().getSimpleName());
-                                        mContext.startActivity(i);
+                                        AppSharedPref.clearCustomerData(context);
+                                        Intent i = new Intent(context, SignInSignUpActivity.class);
+                                        i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ((BagActivity)context).getClass().getSimpleName());
+                                        context.startActivity(i);
                                     }
                                 });
                             }else {
                                 if (baseResponse.isSuccess()) {
-                                    AnalyticsImpl.INSTANCE.trackRemoveItemSuccessful(mData.getLineId(), mData.getName(), mData.getPriceUnit());
-                                    ((BagActivity) mContext).getCartData();
-                                    CustomToast.makeText(mContext, baseResponse.getMessage(), Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
+                                    AnalyticsImpl.INSTANCE.trackRemoveItemSuccessful(data.getLineId(), data.getName(), data.getPriceUnit());
+                                    ((BagActivity) context).getCartData();
+                                    CustomToast.makeText(context, baseResponse.getMessage(), Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
                                 } else {
                                     AnalyticsImpl.INSTANCE.trackRemoveItemFailed(baseResponse.getMessage(), baseResponse.getResponseCode(), "");
-                                    AlertDialogHelper.showDefaultWarningDialog(mContext, mData.getName(), baseResponse.getMessage());
+                                    AlertDialogHelper.showDefaultWarningDialog(context, data.getName(), baseResponse.getMessage());
                                 }
                             }
                         }
@@ -106,47 +106,47 @@ public class BagItemsRecyclerHandler implements ChangeQtyDialogFragment.OnQtyCha
                         }
                     });
                 });
-        ((BaseActivity) mContext).mSweetAlertDialog.show();
-        ((BaseActivity) mContext).mSweetAlertDialog.showCancelButton(true);
+        ((BaseActivity) context).mSweetAlertDialog.show();
+        ((BaseActivity) context).mSweetAlertDialog.showCancelButton(true);
     }
 
     public void viewProduct() {
-        Intent intent = new Intent(mContext, ((OdooApplication) mContext.getApplicationContext()).getProductActivity());
-        intent.putExtra(BUNDLE_KEY_PRODUCT_ID, mData.getProductId());
-        intent.putExtra(BUNDLE_KEY_PRODUCT_TEMPLATE_ID, mData.getTemplateId());
-        intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, mData.getName());
-        mContext.startActivity(intent);
+        Intent intent = new Intent(context, ((OdooApplication) context.getApplicationContext()).getProductActivity());
+        intent.putExtra(BUNDLE_KEY_PRODUCT_ID, data.getProductId());
+        intent.putExtra(BUNDLE_KEY_PRODUCT_TEMPLATE_ID, data.getTemplateId());
+        intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, data.getName());
+        context.startActivity(intent);
     }
 
 
     public void changeQty() {
-        AnalyticsImpl.INSTANCE.trackItemQuantitySelected(mData.getLineId(), mData.getName(), mData.getQty());
-        ChangeQtyDialogFragment.newInstance(this, mData.getQty()).show(((BaseActivity) mContext).mSupportFragmentManager, ChangeQtyDialogFragment.class.getSimpleName());
+        AnalyticsImpl.INSTANCE.trackItemQuantitySelected(data.getLineId(), data.getName(), data.getQty());
+        ChangeQtyDialogFragment.newInstance(this, data.getQty()).show(((BaseActivity) context).mSupportFragmentManager, ChangeQtyDialogFragment.class.getSimpleName());
     }
 
     @Override
     public void onQtyChanged(int qty) {
-        Toast.makeText(mContext, R.string.updating_bag, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, R.string.updating_bag, Toast.LENGTH_SHORT).show();
         hitUpdateCartApi(qty);
     }
 
     private Boolean isQuantityExceeding(int qty) {
-        return qty > mData.getAvailableQuantity();
+        return qty > data.getAvailableQuantity();
     }
 
     private void showQuantityWarning(String message) {
-        new SweetAlertDialog(mContext, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+        new SweetAlertDialog(context, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
             .setCustomImage(R.drawable.ic_warning)
             .setTitleText("")
             .setContentText(message)
-            .setConfirmText(mContext.getString(R.string.continue_))
+            .setConfirmText(context.getString(R.string.continue_))
             .setConfirmClickListener(sweetAlertDialog -> {
                 sweetAlertDialog.dismiss();
             }).show();
     }
 
     public void hitUpdateCartApi(int qty) {
-        ApiConnection.updateCart(mContext, mData.getLineId(), qty).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<BaseResponse>(mContext) {
+        ApiConnection.updateCart(context, AppSharedPref.getOrderId(context), data.getLineId(), qty).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<BaseResponse>(context) {
 
             /*not adding this subscription to Composite Disposable list as ChangeQtyDialogFragment dismiss occur after when this request is subscribed and thus cancelled on its dismissal.*/
             @Override
@@ -157,20 +157,20 @@ public class BagItemsRecyclerHandler implements ChangeQtyDialogFragment.OnQtyCha
             public void onNext(@NonNull BaseResponse baseResponse) {
                 super.onNext(baseResponse);
                 if (baseResponse.isAccessDenied()){
-                    AlertDialogHelper.showDefaultWarningDialogWithDismissListener(mContext, mContext.getString(R.string.error_login_failure),mContext.getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
+                    AlertDialogHelper.showDefaultWarningDialogWithDismissListener(context, context.getString(R.string.error_login_failure),context.getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismiss();
-                            AppSharedPref.clearCustomerData(mContext);
-                            Intent i = new Intent(mContext, SignInSignUpActivity.class);
-                            i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ((BagActivity)mContext).getClass().getSimpleName());
-                            mContext.startActivity(i);
+                            AppSharedPref.clearCustomerData(context);
+                            Intent i = new Intent(context, SignInSignUpActivity.class);
+                            i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ((BagActivity)context).getClass().getSimpleName());
+                            context.startActivity(i);
                         }
                     });
                 }
                 if (baseResponse.isSuccess()) {
-                    AnalyticsImpl.INSTANCE.trackItemQuantityChangeSuccessful(mData.getLineId(), mData.getName(), qty);
-                    ((BagActivity) mContext).getCartData();
+                    AnalyticsImpl.INSTANCE.trackItemQuantityChangeSuccessful(data.getLineId(), data.getName(), qty);
+                    ((BagActivity) context).getCartData();
                 } else {
                     AnalyticsImpl.INSTANCE.trackItemQuantityChangeFailed(baseResponse.getMessage(), baseResponse.getResponseCode(), "");
                     showQuantityWarning(baseResponse.getMessage().replace(".0", ""));
@@ -185,39 +185,39 @@ public class BagItemsRecyclerHandler implements ChangeQtyDialogFragment.OnQtyCha
     }
 
     public void addToWishlist() {
-        AnalyticsImpl.INSTANCE.trackMoveToWishlistSelected(mData.getLineId(), mData.getName(), mData.getPriceUnit());
-        ApiConnection.cartToWishlist(mContext, new CartToWishlistRequest(mData.getLineId())).subscribeOn(Schedulers
+        AnalyticsImpl.INSTANCE.trackMoveToWishlistSelected(data.getLineId(), data.getName(), data.getPriceUnit());
+        ApiConnection.cartToWishlist(context, new CartToWishlistRequest(data.getLineId())).subscribeOn(Schedulers
                 .io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new CustomObserver<BaseResponse>(mContext) {
+                .subscribe(new CustomObserver<BaseResponse>(context) {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
                         super.onSubscribe(d);
-                        AlertDialogHelper.showDefaultProgressDialog(mContext);
+                        AlertDialogHelper.showDefaultProgressDialog(context);
                     }
 
                     @Override
                     public void onNext(@NonNull BaseResponse response) {
                         super.onNext(response);
                         if (response.isAccessDenied()){
-                            AlertDialogHelper.showDefaultWarningDialogWithDismissListener(mContext, mContext.getString(R.string.error_login_failure), mContext.getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
+                            AlertDialogHelper.showDefaultWarningDialogWithDismissListener(context, context.getString(R.string.error_login_failure), context.getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
                                 @Override
                                 public void onClick(SweetAlertDialog sweetAlertDialog) {
                                     sweetAlertDialog.dismiss();
-                                    AppSharedPref.clearCustomerData(mContext);
-                                    Intent i = new Intent(mContext, SignInSignUpActivity.class);
-                                    i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ((BagActivity)mContext).getClass().getSimpleName());
-                                    mContext.startActivity(i);
+                                    AppSharedPref.clearCustomerData(context);
+                                    Intent i = new Intent(context, SignInSignUpActivity.class);
+                                    i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ((BagActivity)context).getClass().getSimpleName());
+                                    context.startActivity(i);
                                 }
                             });
                         } else {
                             if (response.isSuccess()) {
-                                AnalyticsImpl.INSTANCE.trackMoveToWishlistSuccessful(mData.getLineId(), mData.getName(), mData.getPriceUnit());
-                                ((BagActivity) mContext).getCartData();
-                                CustomToast.makeText(mContext, response.getMessage(), Toast.LENGTH_LONG, R.style.GenericStyleableToast).show();
+                                AnalyticsImpl.INSTANCE.trackMoveToWishlistSuccessful(data.getLineId(), data.getName(), data.getPriceUnit());
+                                ((BagActivity) context).getCartData();
+                                CustomToast.makeText(context, response.getMessage(), Toast.LENGTH_LONG, R.style.GenericStyleableToast).show();
                             } else {
                                 AnalyticsImpl.INSTANCE.trackMoveToWishlistFailed(response.getMessage(), response.getResponseCode(), "");
-                                AlertDialogHelper.showDefaultErrorDialog(mContext, mContext.getString(
+                                AlertDialogHelper.showDefaultErrorDialog(context, context.getString(
                                         R.string.move_to_wishlist), response.getMessage());
                             }
                         }

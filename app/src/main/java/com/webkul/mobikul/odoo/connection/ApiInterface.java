@@ -1,6 +1,7 @@
 package com.webkul.mobikul.odoo.connection;
 
 import com.webkul.mobikul.odoo.model.BaseResponse;
+import com.webkul.mobikul.odoo.model.ReferralResponse;
 import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
 import com.webkul.mobikul.odoo.model.cart.BagResponse;
 import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse;
@@ -61,15 +62,15 @@ public interface ApiInterface {
     String MOBIKUL_REVIEW_LIKE_DISLIKE = "review/likeDislike";
 
     /*Checkout*/
-    String MY_CART = "cart";
-    String MOBIKUL_CHECKOUT_UPDATE_MY_CART = "mobikul/mycart/{line_id}";
-    String MOBIKUL_CHECKOUT_DELETE_CART_ITEM = "mobikul/mycart/{line_id}";
+    String LOYALTY_CHECKOUT_MY_CART = "sale-order";
+    String MOBIKUL_CHECKOUT_UPDATE_MY_CART = "sale-orders/{sale_order_id}/lines/{line_id}";
+    String MOBIKUL_CHECKOUT_DELETE_CART_ITEM = "sale-orders/{sale_order_id}/lines/{line_id}";
 
     String MOBIKUL_CHECKOUT_ADD_TO_CART = "mobikul/mycart/addToCart";
     String MOBIKUL_CHECKOUT_EMPTY_CART = "mobikul/mycart/setToEmpty";
     String MOBIKUL_CHECKOUT_PAYMENT_ACQUIRERS = "mobikul/paymentAcquirers";
-    String MOBIKUL_CHECKOUT_ORDER_REVIEW = "sale-orders/review";
-    String MOBIKUL_CHECKOUT_PLACE_ORDER = "sale-orders/place";
+    String LOYALTY_CHECKOUT_ORDER_REVIEW = "v1/sale-orders/review";
+    String LOYALTY_CHECKOUT_PLACE_ORDER = "v1/sale-orders/place";
     String MOBIKUL_CHECKOUT_SALE_ORDERS = "sale-orders";
     String MOBIKUL_CHECKOUT_SHIPPING_METHODS = "/mobikul/ShippingMethods";
 
@@ -90,6 +91,9 @@ public interface ApiInterface {
     String MOBIKUL_DELETE_PRODUCT_FROM_WISHLIST = "my/removeFromWishlist/{product_id}";
     String MOBIKUL_CART_TO_WHISHLIST = "my/cartToWishlist";
     String MOBIKUL_SEND_EMAIL_VERIFICATION_LINK = "send/verifyEmail";
+    String LOYALTY_MANAGEMENT_REFERRAL_CODE = "res-user/{user_id}/res-partner";
+    String LOYALTY_MANAGEMENT_POINTS = "redeem-history";
+
 
     /*Analytics*/
     String MOBIKUL_ANALYTICS = "/mobikul/analytics";
@@ -127,10 +131,11 @@ public interface ApiInterface {
     String MOBIKUL_CREATE_PAYMENTS_TRANSACTIONS = "/payment-transactions";
     String MOBIKUL_GET_PAYMENTS_TRANSACTIONS = "/payment-transactions";
     String MOBIKUL_GET_PAYMENTS_INSTRUCTIONS = "/payment/method-providers/{bank_id}/instructions";
-    String MOBIKUL_GET_ORDER_DATA = "/sale-orders/{order_id}";
+    String MOBIKUL_GET_ORDER_DATA = "/v1/sale-orders/{order_id}";
     String MOBIKUL_UPDATE_ORDER_DATA = "/sale-orders/{order_id}";
     String MOBIKUL_ORDER_ID = "order_id";
     String MOBIKUL_BANK_ID = "bank_id";
+    String POINTS_REDEEM = "points_redeem";
 
      /*-----------------------------------------------------------------------------------------------------------------------------------------------------------
         CATALOG API's
@@ -261,22 +266,34 @@ public interface ApiInterface {
             @Body String string
     );
 
+    @GET(LOYALTY_MANAGEMENT_REFERRAL_CODE)
+    Observable<ReferralResponse> getReferralCode(@Path("user_id") String user_id);
+
+    @PUT(LOYALTY_MANAGEMENT_REFERRAL_CODE)
+    Observable<ReferralResponse> generateReferralCode(@Path("user_id") String user_id);
+
+    @GET(LOYALTY_MANAGEMENT_POINTS)
+    Observable<ReferralResponse> getLoyaltyPoints(@Query("user_id") String user_id);
+
+
     /*-----------------------------------------------------------------------------------------------------------------------------------------------------------
         CHECKOUT API's
      ------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 
-    @GET(MY_CART)
-    Observable<BagResponse> getCartData();
+    @GET(LOYALTY_CHECKOUT_MY_CART)
+    Observable<BagResponse> getCartData(@Query(POINTS_REDEEM) Boolean pointsRedeem);
 
     @PUT(MOBIKUL_CHECKOUT_UPDATE_MY_CART)
     Observable<BaseResponse> updateCart(
+            @Path("sale_order_id") int saleOrderId,
             @Path("line_id") String lineId,
             @Body String updateCartReqStr
     );
 
     @DELETE(MOBIKUL_CHECKOUT_DELETE_CART_ITEM)
     Observable<BaseResponse> deleteCartItem(
+            @Path("sale_order_id") int saleOrderId,
             @Path("line_id") String lineId
     );
 
@@ -316,13 +333,13 @@ public interface ApiInterface {
     Observable<PaymentAcquirerResponse> getPaymentAcquirers();
 
 
-    @POST(MOBIKUL_CHECKOUT_ORDER_REVIEW)
+    @POST(LOYALTY_CHECKOUT_ORDER_REVIEW)
     Observable<OrderReviewResponse> getOrderReviewData(
-            @Body String orderReviewStrReq
+            @Body String orderReviewStrReqpointsRedeemed
     );
 
 
-    @POST(MOBIKUL_CHECKOUT_PLACE_ORDER)
+    @POST(LOYALTY_CHECKOUT_PLACE_ORDER)
     Observable<OrderPlaceResponse> placeOrder(
             @Body String placeOrderRequest
     );
@@ -427,7 +444,8 @@ public interface ApiInterface {
 
     @GET(MOBIKUL_GET_ORDER_DATA)
     Observable<OrderDataResponse> getOrderData(
-            @Path(MOBIKUL_ORDER_ID) int orderID
+            @Path(MOBIKUL_ORDER_ID) int orderID,
+            @Query(POINTS_REDEEM) Boolean pointsRedeem
     );
 
     @POST(MOBIKUL_CHECKOUT_SALE_ORDERS)

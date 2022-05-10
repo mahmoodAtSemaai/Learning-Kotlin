@@ -56,16 +56,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
 
-/**
- * Webkul Software.
- *
- * @author Webkul <support@webkul.com>
- * @package Mobikul App
- * @Category Mobikul
- * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
- * @license https://store.webkul.com/license.html ASL Licence
- * @link https://store.webkul.com/license.html
- */
 
 public class SplashScreenActivity extends BaseActivity {
     @SuppressWarnings("unused")
@@ -161,9 +151,9 @@ public class SplashScreenActivity extends BaseActivity {
                 SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(SplashScreenActivity.this);
                 HomePageResponse homePageResponse = sqlLiteDbHelper.getHomeScreenData();
                 if (homePageResponse != null) {
-                    Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
-                    intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
-                    startActivity(intent);
+
+                    directToNewHomeActivity(homePageResponse);
+
                 } else {
                     initSplashScreenAPI();
                 }
@@ -180,6 +170,12 @@ public class SplashScreenActivity extends BaseActivity {
             i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, SplashScreenActivity.class.getSimpleName());
             getSplashPageData(i);
         }
+    }
+
+    private void directToNewHomeActivity(HomePageResponse homePageResponse) {
+        Intent intent = new Intent(SplashScreenActivity.this, NewHomeActivity.class);
+        intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
+        startActivity(intent);
     }
 
     private void HitApiForHomePage() {
@@ -282,7 +278,7 @@ public class SplashScreenActivity extends BaseActivity {
                         }
                         if (homePageResponse.isSuccess()) {
                             new SaveData(SplashScreenActivity.this, homePageResponse);
-                            Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
+                            Intent intent = new Intent(SplashScreenActivity.this, NewHomeActivity.class);
                             intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
                             startActivity(intent);
                         } else {

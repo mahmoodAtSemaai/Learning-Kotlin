@@ -2,35 +2,32 @@ package com.webkul.mobikul.odoo.fragment;
 
 import android.content.Intent;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.databinding.DataBindingUtil;
 
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.webkul.mobikul.odoo.R;
-import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
-import com.webkul.mobikul.odoo.adapter.catalog.OrdersAdapter;
+import com.webkul.mobikul.odoo.adapter.catalog.OrderRvAdapter;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.databinding.FragmentOrderListBinding;
-import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
-import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.FragmentHelper;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.IntentHelper;
 import com.webkul.mobikul.odoo.model.customer.order.MyOrderReponse;
 import com.webkul.mobikul.odoo.model.request.BaseLazyRequest;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
@@ -45,6 +42,8 @@ public class OrderListFragment extends BaseFragment {
     private boolean mIsFirstCall = true;
     private int mOffset;
     private int pageSize = 10;
+    NavController navController;
+
 
 
     public static OrderListFragment newInstance() {
@@ -58,6 +57,21 @@ public class OrderListFragment extends BaseFragment {
         return binding.getRoot();
     }
 
+
+    @Override
+    public void onViewCreated(@androidx.annotation.NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navController.navigateUp();
+            }
+        });
+
+    }
+
     private void setOffsetData() {
         mIsFirstCall = true;
         mOffset = 0;
@@ -65,22 +79,17 @@ public class OrderListFragment extends BaseFragment {
     }
 
     private void callApi() {
-        ApiConnection.getSaleOrders(getContext(), new BaseLazyRequest(mOffset, pageSize)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<MyOrderReponse>(requireContext()) {
+        ApiConnection.getSaleOrders(getContext(), new BaseLazyRequest(mOffset ,10)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<MyOrderReponse>(requireContext()) {
 
             @Override
             public void onNext(@NonNull MyOrderReponse myOrderReponse) {
                 super.onNext(myOrderReponse);
+
                 if (myOrderReponse.isAccessDenied()) {
                     IntentHelper.redirectToSignUpActivity(requireContext());
                 } else {
                     handleOrdersResponse(myOrderReponse);
                 }
-            }
-
-            @Override
-            public void onError(@NonNull Throwable t) {
-                super.onError(t);
-
             }
 
             @Override
@@ -100,6 +109,7 @@ public class OrderListFragment extends BaseFragment {
                 FragmentHelper.replaceFragment(R.id.container, getContext(), EmptyFragment.newInstance(R.drawable.ic_vector_empty_order, getString(R.string.no_order_placed), "", true,
                         EmptyFragment.EmptyFragType.TYPE_ORDER.ordinal()), EmptyFragment.class.getSimpleName(), false, false);
             } else {
+
                 binding.orderRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
                     public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -112,7 +122,7 @@ public class OrderListFragment extends BaseFragment {
                         }
                     }
                 });
-                binding.orderRv.setAdapter(new OrdersAdapter(getContext(), binding.getData().getOrders(), TAG));
+                binding.orderRv.setAdapter(new OrderRvAdapter(getContext(), binding.getData().getOrders(), TAG));
             }
         } else {
             binding.getData().setLazyLoading(false);

@@ -66,7 +66,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
                     android:alpha="0.8"
-                    android:background="?attr/colorPrimary"
+                    android:background="@color/account_background"
                     android:scaleType="fitXY"
                     app:diskCacheStrategy="@{DiskCacheStrategy.NONE}"
                     app:imageType="@{ImageType.BANNER_SIZE_GENERIC}"
@@ -231,13 +231,13 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="match_parent"
+                        android:id="@+id/all_orders_text"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
                         android:drawableLeft="@drawable/ic_vector_order_grey_24dp_wrapper"
                         android:drawablePadding="@dimen/spacing_generic"
                         android:drawableStart="@drawable/ic_vector_order_grey_24dp_wrapper"
                         android:gravity="center|start"
-                        android:onClick="@{()->handler.viewAllOrder()}"
                         android:padding="@dimen/spacing_generic"
                         android:text="@string/all_orders" />
 
@@ -262,6 +262,42 @@
                         style="@style/DividerHorizontal"
                         android:layout_margin="@dimen/spacing_tiny"
                         android:visibility="@{wishlistEnabled ? View.VISIBLE: View.GONE}" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/referral_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:drawableLeft="@drawable/ic_vector_referral_code_grey_wrapper"
+                        android:drawablePadding="@dimen/spacing_generic"
+                        android:drawableStart="@drawable/ic_vector_referral_code_grey_wrapper"
+                        android:gravity="center|start"
+                        android:onClick="@{()->handler.viewReferralCode()}"
+                        android:padding="@dimen/spacing_generic"
+                        android:text="@string/copy_referral_code"
+                        android:visibility="@{View.VISIBLE}" />
+
+                    <View
+                        style="@style/DividerHorizontal"
+                        android:layout_margin="@dimen/spacing_tiny"
+                        android:visibility="@{View.VISIBLE}" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:drawableLeft="@drawable/ic_vector_semaai_points_balance"
+                        android:drawablePadding="@dimen/spacing_generic"
+                        android:drawableStart="@drawable/ic_vector_semaai_points_balance"
+                        android:gravity="center|start"
+                        android:padding="@dimen/spacing_generic"
+                        android:text="@string/semaai_points_balance"
+                        android:visibility="@{View.GONE}" />
+
+                    <View
+                        style="@style/DividerHorizontal"
+                        android:layout_margin="@dimen/spacing_tiny"
+                        android:visibility="@{View.GONE}" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="match_parent"

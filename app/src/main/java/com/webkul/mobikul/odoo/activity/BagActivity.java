@@ -1,5 +1,6 @@
 package com.webkul.mobikul.odoo.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 
 import androidx.core.content.res.ResourcesCompat;
@@ -12,19 +13,25 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CompoundButton;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.adapter.cart.BagItemsRecyclerAdapter;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
+import com.webkul.mobikul.odoo.constant.ApplicationConstant;
 import com.webkul.mobikul.odoo.databinding.ActivityBagBinding;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.fragment.EmptyFragment;
 import com.webkul.mobikul.odoo.handler.bag.BagActivityHandler;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
+import com.webkul.mobikul.odoo.helper.ApiRequestHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.CustomerHelper;
 import com.webkul.mobikul.odoo.helper.FragmentHelper;
+import com.webkul.mobikul.odoo.helper.SnackbarHelper;
+import com.webkul.mobikul.odoo.model.ReferralResponse;
 import com.webkul.mobikul.odoo.helper.IntentHelper;
 import com.webkul.mobikul.odoo.model.cart.BagResponse;
 
@@ -50,6 +57,9 @@ public class BagActivity extends BaseActivity implements FragmentManager.OnBackS
         setSupportActionBar(binding.toolbar);
         showBackButton(true);
         mSupportFragmentManager.addOnBackStackChangedListener(this);
+        AppSharedPref.setIsCustomerWantToRedeemPoints(this, false);
+        hitApiForLoyaltyPoints(AppSharedPref.getCustomerId(this));
+        onCheckedChangeRedeemPoints();
     }
 
     @Override
@@ -66,7 +76,8 @@ public class BagActivity extends BaseActivity implements FragmentManager.OnBackS
     }
 
     public void getCartData() {
-        ApiConnection.getCartData(this).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<BagResponse>(this) {
+        ApiConnection.getCartData(this, AppSharedPref.getIsCustomerWantToRedeemPoints(this)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<BagResponse>(this) {
+
             @Override
             public void onNext(@NonNull BagResponse bagResponse) {
                 super.onNext(bagResponse);
@@ -90,24 +101,25 @@ public class BagActivity extends BaseActivity implements FragmentManager.OnBackS
 
     private void handleResponseData(BagResponse bagResponse) {
         binding.setData(bagResponse);
-        binding.setHandler(new BagActivityHandler(BagActivity.this, bagResponse));
+        binding.setHandler(new BagActivityHandler(this, bagResponse));
         if (bagResponse.getItems().isEmpty()) {
             showEmptyFragment();
         } else {
-            binding.rvProducts.setAdapter(new BagItemsRecyclerAdapter(BagActivity.this, bagResponse.getItems()));
+            binding.rvProducts.setAdapter(new BagItemsRecyclerAdapter(this, bagResponse.getItems()));
             setButtonClickListeners(bagResponse);
         }
+        AppSharedPref.setOrderId(this, bagResponse.getOrderId());
     }
 
     private void setButtonClickListeners(BagResponse bagResponse) {
         binding.btnGoToCheckout.setOnClickListener(view -> {
-            FirebaseAnalyticsImpl.logBeginCheckoutEvent(BagActivity.this);
-            startActivity(new Intent(BagActivity.this, CheckoutActivity.class).putExtra(BUNDLE_KEY_ORDER_ID, bagResponse.getOrderId()));
+            FirebaseAnalyticsImpl.logBeginCheckoutEvent(this);
+            startActivity(new Intent(this, CheckoutActivity.class).putExtra(BUNDLE_KEY_ORDER_ID, bagResponse.getOrderId()));
         });
     }
 
     private void showEmptyFragment() {
-        FragmentHelper.replaceFragment(R.id.container, BagActivity.this, EmptyFragment.newInstance(R.drawable.ic_vector_empty_bag, getString(R.string.empty_bag)
+        FragmentHelper.replaceFragment(R.id.container, this, EmptyFragment.newInstance(R.drawable.ic_vector_empty_bag, getString(R.string.empty_bag)
                 , getString(R.string.add_item_to_your_bag_now), false, EmptyFragment.EmptyFragType.TYPE_CART.ordinal()), EmptyFragment.class.getSimpleName(), false, false);
     }
 
@@ -118,7 +130,7 @@ public class BagActivity extends BaseActivity implements FragmentManager.OnBackS
         MenuItem wishlistMenuItem = menu.findItem(R.id.menu_item_wishlist);
         wishlistMenuItem.setVisible(true);
         wishlistMenuItem.setOnMenuItemClickListener(item -> {
-            Intent intent = new Intent(BagActivity.this, CustomerBaseActivity.class);
+            Intent intent = new Intent(this, CustomerBaseActivity.class);
             intent.putExtra(BUNDLE_KEY_CUSTOMER_FRAG_TYPE, CustomerHelper.CustomerFragType.TYPE_WISHLIST);
             startActivity(intent);
             return true;
@@ -151,4 +163,40 @@ public class BagActivity extends BaseActivity implements FragmentManager.OnBackS
             setTitle(getString(R.string.bag));
         }
     }
+
+    public void onCheckedChangeRedeemPoints(){
+        binding.cbUsePoints.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                AppSharedPref.setIsCustomerWantToRedeemPoints(BagActivity.this, isChecked);
+                getCartData();
+            }
+        });
+    }
+
+
+    public void hitApiForLoyaltyPoints(String userId){
+        ApiConnection.getLoyaltyPoints(this, userId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<ReferralResponse>(this) {
+
+            @Override
+            public void onNext(@NonNull ReferralResponse response) {
+                super.onNext(response);
+                if (response.getStatus() == ApplicationConstant.SUCCESS) {
+                    showPoints(response.getRedeemHistory());
+                }
+                else {
+                    SnackbarHelper.getSnackbar((Activity) BagActivity.this, response.getMessage(), Snackbar.LENGTH_LONG, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
+                }
+            }
+        });
+    }
+
+    public void showPoints(Integer loyaltyPoints){
+        binding.tvSemaaiPoints.setText(loyaltyPoints.toString());
+        if (loyaltyPoints < 1) {
+            binding.cbUsePoints.setChecked(false);
+            binding.cbUsePoints.setEnabled(false);
+        }
+    }
+
 }
