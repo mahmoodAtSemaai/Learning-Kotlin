@@ -1,6 +1,5 @@
 package com.webkul.mobikul.odoo.features.auth.presentation
 
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -14,14 +13,13 @@ import com.webkul.mobikul.odoo.core.extension.getDefaultProgressDialog
 import com.webkul.mobikul.odoo.core.extension.showDefaultWarningDialog
 import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
+import com.webkul.mobikul.odoo.core.utils.ERROR_INTERNET_CONNECTION
 import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.databinding.FragmentLoginV1Binding
 import com.webkul.mobikul.odoo.dialog_frag.ForgotPasswordDialogFragment
 import com.webkul.mobikul.odoo.features.auth.domain.enums.LoginFieldsValidation
 import com.webkul.mobikul.odoo.helper.ApiRequestHelper
-import com.webkul.mobikul.odoo.helper.FingerPrintLoginHelper
 import com.webkul.mobikul.odoo.helper.SnackbarHelper
-import com.webkul.mobikul.odoo.model.customer.signin.LoginRequestData
 import com.webkul.mobikul.odoo.model.customer.signin.LoginResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -102,8 +100,8 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
 
                 when (state.failureStatus) {
                     FailureStatus.API_FAIL -> showInvalidLoginDetailsDialog(state.message)
-                    FailureStatus.EMPTY -> TODO()
-                    FailureStatus.NO_INTERNET -> showErrorSnackbar("Please connect to Internet")
+                    FailureStatus.EMPTY -> showErrorSnackbar(getString(R.string.error_something_went_wrong))
+                    FailureStatus.NO_INTERNET -> showErrorSnackbar(ERROR_INTERNET_CONNECTION)
                     FailureStatus.OTHER -> showErrorSnackbar(state.message)
                 }
 
@@ -122,7 +120,8 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
                 requireContext().startActivity(state.intent)
             }
 
-            is LoginState.Idle -> {}
+            is LoginState.Idle -> {
+            }
 
             LoginState.ForgotPassword -> showForgotPasswordDialog()
         }

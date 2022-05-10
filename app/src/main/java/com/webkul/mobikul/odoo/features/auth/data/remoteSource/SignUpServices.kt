@@ -23,7 +23,7 @@ interface SignUpServices {
     @GET(ApiInterface.MOBIKUL_TERM_AND_CONDITION)
     suspend fun getTermAndCondition() : TermAndConditionResponse
 
-    @GET("mobikul/marketplace/seller/terms")
+    @GET(ApiInterface.MOBIKUL_SELLER_TERM_AND_CONDITION)
     suspend fun getSellerTerms() : TermAndConditionResponse
 
 

@@ -141,8 +141,6 @@ public class SplashScreenActivity extends BaseActivity {
 
 
     private void callApi() {
-        Log.d("TAG", "SplashScreenActivity callApi: ----------------------------");
-
 
         /*PERFORM ACTION ON NOTIFICATION */
         if ((AppSharedPref.isLoggedIn(SplashScreenActivity.this) || AppSharedPref.isAllowedGuestCheckout(this)) && getIntent().getExtras() != null && getIntent().hasExtra(BUNDLE_KEY_NOTIFICATION_ID)) {
@@ -157,7 +155,6 @@ public class SplashScreenActivity extends BaseActivity {
 
 
         if (AppSharedPref.isLoggedIn(SplashScreenActivity.this) || AppSharedPref.isAllowedGuestCheckout(this)) {
-            Log.d("TAG", "SplashScreenActivity callApi isNetworkAvailable :-->" + NetworkHelper.isNetworkAvailable(SplashScreenActivity.this));
             if (NetworkHelper.isNetworkAvailable(this)) {
                 initSplashScreenAPI();
             } else {
@@ -174,7 +171,6 @@ public class SplashScreenActivity extends BaseActivity {
             /*adding subscribe on here instead of zip to create the observable on io thread. */
 
         } else {
-            Log.d("TAG", "SplashScreenActivity callApi :--> else waale part mein gaaya h ");
             Intent i;
             if (AppUpdateHelper.getAuthRevampEnabled()) {
                 i = new Intent(SplashScreenActivity.this, SignInSignUpActivityV1.class);

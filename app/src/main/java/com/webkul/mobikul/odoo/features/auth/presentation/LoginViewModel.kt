@@ -62,7 +62,7 @@ class LoginViewModel @Inject constructor(
 
                 intent.collect{
                     loginState = when(it){
-                        is  Resource.Default -> TODO()
+                        is  Resource.Default -> LoginState.Idle
                         is Resource.Failure -> LoginState.Error(it.message , it.failureStatus)
                         is  Resource.Loading -> LoginState.Loading
                         is Resource.Success -> LoginState.PrivacyPolicy(it.value)

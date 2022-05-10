@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import cn.pedant.SweetAlert.SweetAlertDialog
 import cn.pedant.SweetAlert.SweetAlertDialog.OnSweetClickListener
 import com.webkul.mobikul.odoo.R
+import com.webkul.mobikul.odoo.core.utils.INTENT_SPLASH_SCREEN
 import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.helper.AppSharedPref
 import com.webkul.mobikul.odoo.helper.ColorHelper
@@ -119,7 +120,7 @@ fun Context.onPrivacyPolicyClick():Resource<Intent> {
     }
     for (cur in intents) {
         if (cur.component!!.className.equals(
-                "com.webkul.mobikul.odoo.activity.SplashScreenActivity",
+                INTENT_SPLASH_SCREEN,
                 ignoreCase = true
             )
         ) intents.remove(cur)

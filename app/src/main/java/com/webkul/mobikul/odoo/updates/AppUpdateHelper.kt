@@ -11,7 +11,7 @@ import com.webkul.mobikul.odoo.helper.Helper
 
 object AppUpdateHelper {
     private const val KEY_APP_REMOTE_VERSION = "remoteAppVersion"
-    private const val KEY_AUTH_REVAMP_ENABLED = "feature_auth_revamp_enabled"
+    private const val KEY_AUTH_REVAMP_ENABLED = "feature_revamp_arch_auth_screen_enabled"
 
     private const val currentAppVersion =  BuildConfig.CURRENT_APP_VERSION
 

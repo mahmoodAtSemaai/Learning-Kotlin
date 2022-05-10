@@ -8,7 +8,6 @@ import android.webkit.WebView
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,7 +15,6 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.snackbar.Snackbar
 import com.webkul.mobikul.odoo.BuildConfig
 import com.webkul.mobikul.odoo.R
-import com.webkul.mobikul.odoo.activity.SignInSignUpActivity
 import com.webkul.mobikul.odoo.activity.UpdateAddressActivity
 import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.core.extension.getDefaultProgressDialog
@@ -24,6 +22,7 @@ import com.webkul.mobikul.odoo.core.extension.showDefaultSuccessDialogWithDismis
 import com.webkul.mobikul.odoo.core.extension.showDefaultWarningDialogWithDismissListener
 import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
+import com.webkul.mobikul.odoo.core.utils.ERROR_INTERNET_CONNECTION
 import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.databinding.FragmentSignUpV1Binding
 import com.webkul.mobikul.odoo.features.auth.data.models.SignUpData
@@ -89,8 +88,8 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
 
                 when (state.failureStatus) {
                     FailureStatus.API_FAIL -> showErrorSnackbar(state.message)
-                    FailureStatus.EMPTY -> TODO()
-                    FailureStatus.NO_INTERNET -> showErrorSnackbar("Please connect to Internet")
+                    FailureStatus.EMPTY -> showErrorSnackbar(getString(R.string.error_something_went_wrong))
+                    FailureStatus.NO_INTERNET -> showErrorSnackbar(ERROR_INTERNET_CONNECTION)
                     FailureStatus.OTHER -> showErrorSnackbar(state.message)
                 }
             }
