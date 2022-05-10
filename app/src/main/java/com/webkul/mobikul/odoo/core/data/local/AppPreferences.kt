@@ -15,7 +15,7 @@ class AppPreferences @Inject constructor(private val context: Context) {
 
         private const val KEY_CUSTOMER_LOGIN_BASE_64_STR = "CUSTOMER_LOGIN_BASE_64_STR"
         private const val KEY_CUSTOMER_IS_SOCIAL_LOGGED_IN = "CUSTOMER_IS_SOCIAL_LOGGED_IN"
-        private const val KEY_LANGUAGE_CODE = "language_code"
+        private const val KEY_LANGUAGE_CODE = "language_code" //Keeping Consistent with previous preference value
 
         private const val PRIVACY_POLICY_URL = "PRIVACY_POLICY_URL"
 

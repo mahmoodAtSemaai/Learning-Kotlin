@@ -3,7 +3,6 @@ package com.webkul.mobikul.odoo.core.extension
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Parcelable
@@ -108,10 +107,9 @@ fun Context.showDefaultSuccessDialogWithDismissListener(
 }
 
 fun Context.onPrivacyPolicyClick():Resource<Intent> {
-    val pm: PackageManager = packageManager
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(AppSharedPref.getPrivacyURL(this)))
     val intents: MutableList<Intent> = ArrayList()
-    val list = pm.queryIntentActivities(intent, 0)
+    val list = packageManager.queryIntentActivities(intent, 0)
     for (info in list) {
         val viewIntent = Intent(intent)
         viewIntent.component = ComponentName(info.activityInfo.packageName, info.activityInfo.name)
@@ -119,7 +117,7 @@ fun Context.onPrivacyPolicyClick():Resource<Intent> {
         intents.add(viewIntent)
     }
     for (cur in intents) {
-        if (cur.component!!.className.equals(
+        if (cur.component?.className.equals(
                 INTENT_SPLASH_SCREEN,
                 ignoreCase = true
             )
