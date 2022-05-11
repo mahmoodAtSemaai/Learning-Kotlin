@@ -156,7 +156,7 @@ public class OrderFragment extends BaseFragment {
             @Override
             public void onError(Throwable t) {
                 super.onError(t);
-
+                dialog.hide();
                 showErrorDialog();
                 binding.getRoot().setVisibility(View.INVISIBLE);
             }
@@ -182,8 +182,13 @@ public class OrderFragment extends BaseFragment {
                 , false, false);
         dialog.setConfirmText(getString(R.string.ok));
         dialog.setConfirmClickListener(sweetAlertDialog -> {
-            dialog.hide();
-            requireActivity().finish();
+            dialog.dismiss();
+            if(navController!=null) {
+                navController.popBackStack();
+                navController.navigate(R.id.orderListFragment);
+            }else{
+                requireActivity().finish();
+            }
         });
         dialog.show();
     }
