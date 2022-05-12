@@ -59,7 +59,8 @@ class PaymentAcquirerFragment : Fragment(), onVirtualAccountOptionSelected {
 
     private fun setUpViews() {
         (requireActivity() as FragmentContainerActivity).setToolbarText(getString(R.string.payment_method))
-        setVisibility(binding.layoutGroup, View.INVISIBLE)
+//        TODO temporary fix...need to check with @Mahmood
+//        setVisibility(binding.layoutGroup, View.INVISIBLE)
         setUpCODHeading()
         setUpBankTransferHeading()
         setUpDialog()
@@ -100,6 +101,11 @@ class PaymentAcquirerFragment : Fragment(), onVirtualAccountOptionSelected {
                         requireActivity(), getString(R.string.error),
                         Snackbar.LENGTH_LONG, SnackbarHelper.SnackbarType.TYPE_WARNING
                     ).show()
+                }
+
+                override fun onComplete() {
+                    super.onComplete()
+                    dialog.dismiss()
                 }
             })
     }
