@@ -57,7 +57,6 @@ public class BagActivity extends BaseActivity implements FragmentManager.OnBackS
         setSupportActionBar(binding.toolbar);
         showBackButton(true);
         mSupportFragmentManager.addOnBackStackChangedListener(this);
-        AppSharedPref.setIsCustomerWantToRedeemPoints(this, false);
         hitApiForLoyaltyPoints(AppSharedPref.getCustomerId(this));
         onCheckedChangeRedeemPoints();
     }
@@ -72,6 +71,7 @@ public class BagActivity extends BaseActivity implements FragmentManager.OnBackS
     protected void onResume() {
         super.onResume();
         binding.setData(null);
+        AppSharedPref.setIsCustomerWantToRedeemPoints(this, binding.cbUsePoints.isChecked());
         getCartData();
     }
 
