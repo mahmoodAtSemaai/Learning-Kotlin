@@ -33,6 +33,11 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_DRAWABLE_ID;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_HIDE_CONTINUE_SHOPPING_BTN;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_SUBTITLE_ID;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_TITLE_ID;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_TYPE;
 
 
 public class OrderListFragment extends BaseFragment {
@@ -106,8 +111,14 @@ public class OrderListFragment extends BaseFragment {
 
             /*BETTER REPLACE SOME CONTAINER INSTEAD OF WHOLE PAGE android.R.id.content */
             if (binding.getData().getOrders().isEmpty()) {
-                FragmentHelper.replaceFragment(R.id.container, getContext(), EmptyFragment.newInstance(R.drawable.ic_vector_empty_order, getString(R.string.no_order_placed), "", true,
-                        EmptyFragment.EmptyFragType.TYPE_ORDER.ordinal()), EmptyFragment.class.getSimpleName(), false, false);
+                Bundle bundle = new Bundle();
+                bundle.putInt(BUNDLE_KEY_EMPTY_FRAGMENT_DRAWABLE_ID, R.drawable.ic_vector_empty_order);
+                bundle.putString(BUNDLE_KEY_EMPTY_FRAGMENT_TITLE_ID, getString(R.string.no_order_placed));
+                bundle.putString(BUNDLE_KEY_EMPTY_FRAGMENT_SUBTITLE_ID, "");
+                bundle.putBoolean(BUNDLE_KEY_EMPTY_FRAGMENT_HIDE_CONTINUE_SHOPPING_BTN, true);
+                bundle.putInt(BUNDLE_KEY_EMPTY_FRAGMENT_TYPE, EmptyFragment.EmptyFragType.TYPE_ORDER.ordinal());
+                navController.popBackStack();
+                navController.navigate(R.id.emptyFragment,bundle);
             } else {
 
                 binding.orderRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
