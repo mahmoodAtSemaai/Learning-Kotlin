@@ -3,7 +3,7 @@
     <string name="app_name" translatable="false">Semaai</string>
     <string name="store_name" translatable="false">Semaai</string>
     <string name="deeplinking_host" translatable="false">demo.webkul.com</string>
-    <string name="home">Home</string>
+    <string name="home">Beranda</string>
     <string name="powered_by_mobikul">Powered by Semaai</string>
     <string name="facebook_app_id" translatable="false">dummy</string> <!--live fb app id -->
     <string name="fb_login_protocol_scheme" translatable="false">dummy</string>
@@ -20,12 +20,12 @@
     <string name="mobikul" translatable="false">Semaai</string>
     <!---->
     <!--Menu-->
-    <string name="search">Search</string>
-    <string name="search_hint">Search…</string>
+    <string name="search">Cari</string>
+    <string name="search_hint">Cari…</string>
     <!---->
     <!---->
     <!--BASE/ GLOBAL/ GENERIC-->
-    <string name="customer">Customer</string>
+    <string name="customer">Pelanggan</string>
     <string name="rate_us">Beri kami penilaian</string>
     <string name="share_app">Bagikan App</string>
     <string name="more">Selebihnya</string>
@@ -35,9 +35,9 @@
     <!---->
     <!---->
     <!--Home Page-->
-    <string name="notification">Notification</string>
+    <string name="notification">Notifikasi</string>
     <string name="bag">Keranjang</string>
-    <string name="account">Account</string>
+    <string name="account">Akun</string>
     <string name="login">Login</string>
     <string name="view_all">Lihat semua</string>
     <string name="please_wait">Mohon tunggu…</string>
@@ -153,7 +153,7 @@
     <!---->
     <!---->
     <!--ACCOUNT FRAGMENT-->
-    <string name="dashboard">Dashboard</string>
+    <string name="dashboard">Dasbor</string>
     <string name="account_info">Informasi akun</string>
     <string name="address_book">Buku alamat</string>
     <string name="sign_out">Keluar</string>
@@ -196,7 +196,7 @@
     <!---->
     <!--SEARCH -->
     <string name="hint_prompt">Speak an item name</string>
-    <string name="related_products">Related Products</string>
+    <string name="related_products">Produk Terkait</string>
     <!---->
     <!---->
     <!--MY ORDERS-->
@@ -328,7 +328,7 @@
     <!---->
     <!---->
     <!--BAG PAGE-->
-    <string name="items">items</string>
+    <string name="items">barang</string>
     <string name="total">Total</string>
     <string name="continue_shopping">Lanjut Belanja</string>
     <string name="empty_shopping_bag">Kosongkan Keranjang</string>
@@ -393,7 +393,7 @@
     <string name="sold_by">Dijual oleh</string>
     <string name="marketplace">Marketplace</string>
     <string name="do_you_want_to_become_a_seller">Apakah anda ingin menjadi penjual?</string>
-    <string name="seller_dashboard">Dashboard Penjual</string>
+    <string name="seller_dashboard">dasbor Penjual</string>
     <string name="register">Daftar</string>
     <string name="become_seller_activity_title">Menjadi Penjual</string>
 
@@ -441,8 +441,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="downloading">Downloading&#8230;</string>
     <string name="download_started">Download started</string>
-    <string name="no_items_yet">No items yet</string>
-    <string name="manage_your_wishlist_by_tapping_on_heart_icon">Manage your wishlist by tapping on the Heart icon.</string>
+    <string name="no_items_yet">Item belum tersedia</string>
+    <string name="manage_your_wishlist_by_tapping_on_heart_icon">Kelola daftar keinginanmu dengan menekan ikon hati.</string>
     <string name="fingerprint_login">FingerPrint Login</string>
     <string name="yes">Yes</string>
     <string name="no_terms_and_conditions_to_display">No Terms &amp; Conditions </string>
@@ -611,6 +611,21 @@
     <string name="product_details_frequency_of_application">Dosis pakai</string>
     <string name="product_details_pests_and_diseases">hama dan penyakit</string>
     <string name="product_details_duration_of_effect">Durasi efek</string>
+    <string name="favorite">Favorit</string>
+    <string name="transaction">Transaksi</string>
+    <string name="profile">Profil</string>
+    <string name="english_lang">en_US</string>
+    <string name="ind_lang">id_ID</string>
+    <string name="label_home_fragment">HomeFragment</string>
+    <string name="label_wishlist_fragment">WishlistFragment</string>
+    <string name="label_orders_list_fragment">OrderListFragment</string>
+    <string name="label_notifications_fragment">NotificationFragment</string>
+    <string name="label_accounts_fragment">AccountFragment</string>
+    <string name="label_empty_fragment">EmptyFragment</string>
+    <string name="search_all_products_hint">Cari semua produk</string>
+    <string name="username">Username</string>
+    <string name="main_menu">Menu Utama</string>
+    <string name="text_one">1</string>
     <string name="no_products_found">Tidak ada produk!!</string>
 
 </resources>

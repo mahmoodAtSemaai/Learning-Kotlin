@@ -196,7 +196,7 @@ public class OrderFragment extends BaseFragment {
 
 
     private void setViewGroupVisibility(OrderDataResponse orderDataResponse) {
-        if (orderDataResponse.getPaymentMode().equalsIgnoreCase(getString(R.string.cod_text_2))) {
+        if (orderDataResponse.getPaymentMode().equalsIgnoreCase(getString(R.string.cod_text))) {
             setVisibility(binding.dueDateDetail, View.GONE);
             setVisibility(binding.bankPaymentMethodDetail, View.GONE);
         } else {
