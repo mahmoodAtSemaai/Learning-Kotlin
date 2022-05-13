@@ -244,6 +244,7 @@
     <string name="share_referral_code">Share Referral Code</string>
     <string name="semaai_points_balance">Semaai Points Balance</string>
     <string name="points">Semaai Points</string>
+    <string name="point">Points</string>
     <string name="referral_code_is">Your Referral Code is</string>
     <string name="lets_use_this_code">Let’s use this referral code</string>
     <string name="referral_code_share_message">You can share it with friends by clicking on the button below.</string>
