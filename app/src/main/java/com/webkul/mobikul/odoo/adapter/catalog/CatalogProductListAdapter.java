@@ -73,6 +73,7 @@ public class CatalogProductListAdapter extends RecyclerView.Adapter<CatalogProdu
                 ((ItemCatalogProductListBinding) holder.mBinding).setHandler(new ProductHandler(mContext, productData));
                 ((ItemCatalogProductListBinding) holder.mBinding).setWishlistEnabled(AppSharedPref.isAllowedWishlist(mContext));
                 ((ItemCatalogProductListBinding) holder.mBinding).setIsLoggedIn(AppSharedPref.isLoggedIn(mContext));
+                ((ItemCatalogProductListBinding) holder.mBinding).getHandler().setProductListBinding(((ItemCatalogProductListBinding) holder.mBinding));
             } else {
                 ((ItemProductGridBinding) holder.mBinding).setData(productData);
                 ((ItemProductGridBinding) holder.mBinding).setIsLoggedIn(AppSharedPref.isLoggedIn(mContext));

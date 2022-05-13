@@ -69,7 +69,7 @@ public class ProductHandler {
     private ProductData mData;
     private long mLastClickTime = 0;
     private ItemProductGridBinding mProductDefaultBinding;
-    private ItemCatalogProductListHomeBinding mProductListtBinding;
+    private ItemCatalogProductListBinding mProductListtBinding;
     private View imageView;
     private String TAG = "ProductHandler";
 
@@ -245,7 +245,7 @@ public class ProductHandler {
     public void setProductDefaultBinding(ItemProductGridBinding mBinding) {
         mProductDefaultBinding = mBinding;
     }
-    public void setProductListBinding(ItemCatalogProductListHomeBinding mBinding) {
+    public void setProductListBinding(ItemCatalogProductListBinding mBinding) {
         mProductListtBinding = mBinding;
     }
 }
