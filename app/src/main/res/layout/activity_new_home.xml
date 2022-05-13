@@ -101,7 +101,7 @@
                                 android:layout_weight="5"
                                 android:drawablePadding="@dimen/points_box_spacing"
                                 android:gravity="center|start"
-                                android:text="@string/points"
+                                android:text="@string/point"
                                 android:textAlignment="textStart"
                                 android:textSize="@dimen/font_size_9" />
 
