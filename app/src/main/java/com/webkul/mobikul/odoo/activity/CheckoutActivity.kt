@@ -91,8 +91,8 @@ class CheckoutActivity : BaseActivity() {
         createDialog()
         setLayoutData()
         setButtonClickListener()
-        getArguments()
         getIsUserWantToRedeemPoints()
+        getArguments()
     }
 
     private fun createDialog() {
@@ -182,6 +182,7 @@ class CheckoutActivity : BaseActivity() {
         dialog.confirmText = getString(R.string.ok)
         dialog.setConfirmClickListener {
             dialog.hide()
+            setIsCustomerWantToRedeemPointsfalse()
             finish()
         }
         dialog.show()
@@ -426,6 +427,7 @@ class CheckoutActivity : BaseActivity() {
                 )
                 .putExtra(BUNDLE_KEY_ORDER_ID, orderDataResponse.orderId.toString())
         )
+        setIsCustomerWantToRedeemPointsfalse()
         finish()
     }
 
@@ -463,6 +465,7 @@ class CheckoutActivity : BaseActivity() {
                     PaymentStatusFragment.SHOW_PAYMENT_COD_MESSAGE
                 )
         )
+        setIsCustomerWantToRedeemPointsfalse()
         finish()
     }
 
@@ -497,6 +500,10 @@ class CheckoutActivity : BaseActivity() {
         isUserWantToRedeemPoints = AppSharedPref.getIsCustomerWantToRedeemPoints(this)
     }
 
+    private fun setIsCustomerWantToRedeemPointsfalse(){
+        AppSharedPref.setIsCustomerWantToRedeemPoints(this, false)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         return true
     }
@@ -507,12 +514,13 @@ class CheckoutActivity : BaseActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
+        setIsCustomerWantToRedeemPointsfalse()
         finish()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        AppSharedPref.setIsCustomerWantToRedeemPoints(this, false);
+        dialog.dismiss()
     }
 
 
