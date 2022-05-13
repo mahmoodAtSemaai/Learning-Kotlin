@@ -118,6 +118,7 @@ public interface ApiInterface {
 
     /*GDPR Term and Condition*/
     String MOBIKUL_TERM_AND_CONDITION = "/mobikul/signup/terms";
+    String MOBIKUL_SELLER_TERM_AND_CONDITION = "mobikul/marketplace/seller/terms";
     String MOBIKUL_GDPR_DEACTIVATE = "/mobikul/gdpr/deactivate";
     String MOBIKUL_GDPR_DOWNLOAD_REQUEST = "/mobikul/gdpr/downloadRequest";
     String MOBIKUL_GDPR_DOWNLOAD = "/mobikul/gdpr/download";

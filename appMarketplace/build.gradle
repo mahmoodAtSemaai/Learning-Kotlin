@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'dagger.hilt.android.plugin'
 
 apply from: rootProject.file('library-common-module.gradle')
 
@@ -79,12 +83,19 @@ dependencies {
             Dependencies.materialDesignSupport,
             Dependencies.multidex2,
             Dependencies.firebaseCrashlytics,
-            Dependencies.firebaseAnalytics
+            Dependencies.firebaseAnalytics,
+            Dependencies.hilt
     )
     androidTestImplementation(Dependencies.espressoCore, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testImplementation(Dependencies.jUnit)
+
+    kapt(
+            Dependencies.daggerAndroidProcessor,
+            Dependencies.daggerCompiler,
+            Dependencies.hiltCompiler
+    )
 
 }
 

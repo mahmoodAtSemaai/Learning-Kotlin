@@ -16,12 +16,13 @@ import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse;
 import com.webkul.mobikul.odoo.model.customer.signup.SignUpData;
 
+import dagger.hilt.android.HiltAndroidApp;
 import io.reactivex.Observable;
 
 /**
  * Created by aastha.gupta on 18/9/17.
  */
-
+@HiltAndroidApp
 public class OdooMarketplaceApplication extends OdooApplication {
 
     @Override
