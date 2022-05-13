@@ -117,7 +117,14 @@ dependencies {
             Dependencies.navigationfragment,
             Dependencies.activity,
             Dependencies.fragment,
-            Dependencies.remoteConfigKTX
+            Dependencies.remoteConfig,
+            Dependencies.remoteConfigKTX,
+            Dependencies.greenRobot,
+            Dependencies.lifecycle,
+            Dependencies.lifeData,
+            Dependencies.viewModelState,
+            Dependencies.viewModel,
+            Dependencies.fragmentKtx
     )
 
     androidTestImplementation(
@@ -166,6 +173,8 @@ dependencies {
             Dependencies.lifecycleExtension,
             Dependencies.mixPanel,
             Dependencies.hilt,
+            Dependencies.coroutinesCore,
+            Dependencies.coroutinesAndroid,
             project(Modules.sweetAlertDialog)
     )
 

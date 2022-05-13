@@ -1,16 +1,27 @@
 package com.webkul.mobikul.odoo.core.extension
 
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.net.Uri
+import android.os.Parcelable
 import android.util.DisplayMetrics
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
+import cn.pedant.SweetAlert.SweetAlertDialog
+import cn.pedant.SweetAlert.SweetAlertDialog.OnSweetClickListener
+import com.webkul.mobikul.odoo.R
+import com.webkul.mobikul.odoo.core.utils.INTENT_SPLASH_SCREEN
+import com.webkul.mobikul.odoo.core.utils.Resource
+import com.webkul.mobikul.odoo.helper.AppSharedPref
+import com.webkul.mobikul.odoo.helper.ColorHelper
 import java.io.IOException
 import java.nio.charset.Charset
 
 /**
- * Loads content of file from assets as String using UTF-8 charset
+     * Loads content of file from assets as String using UTF-8 charset
  */
 fun Context.loadFromAsset(jsonName: String): String? {
     var stream: String? = null
@@ -60,3 +71,67 @@ fun Context.getCompatColor(@ColorRes colorInt: Int): Int =
  */
 fun Context.getCompatDrawable(@DrawableRes drawableRes: Int): Drawable? =
     ContextCompat.getDrawable(this, drawableRes)
+
+
+fun Context.getDefaultProgressDialog() : SweetAlertDialog {
+    val sweetAlertDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+    sweetAlertDialog.titleText =getString(R.string.please_wait)
+    sweetAlertDialog.progressHelper.barColor = ColorHelper.getColor(this, R.attr.colorAccent)
+    sweetAlertDialog.setCancelable(false)
+    return sweetAlertDialog
+}
+
+fun Context.showDefaultWarningDialogWithDismissListener(
+    title: String?,
+    message: String?,
+    listener: OnSweetClickListener?
+) {
+    SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+        .setTitleText(title)
+        .setContentText(message)
+        .setConfirmClickListener(listener).show()
+}
+
+
+fun Context.showDefaultSuccessDialogWithDismissListener(
+    title: String?,
+    message: String?,
+    buttonText:String?,
+    listener: OnSweetClickListener?
+) {
+    SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+        .setTitleText(title)
+        .setContentText(message)
+        .setConfirmText(buttonText)
+        .setConfirmClickListener(listener).show()
+}
+
+fun Context.onPrivacyPolicyClick():Resource<Intent> {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(AppSharedPref.getPrivacyURL(this)))
+    val intents: MutableList<Intent> = ArrayList()
+    val list = packageManager.queryIntentActivities(intent, 0)
+    for (info in list) {
+        val viewIntent = Intent(intent)
+        viewIntent.component = ComponentName(info.activityInfo.packageName, info.activityInfo.name)
+        viewIntent.setPackage(info.activityInfo.packageName)
+        intents.add(viewIntent)
+    }
+    for (cur in intents) {
+        if (cur.component?.className.equals(
+                INTENT_SPLASH_SCREEN,
+                ignoreCase = true
+            )
+        ) intents.remove(cur)
+
+    }
+    intent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intents.toTypedArray<Parcelable>())
+    return Resource.Success(intent)
+}
+
+
+fun Context.showDefaultWarningDialog( title: String?, message: String?) {
+    SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+        .setTitleText(title)
+        .setContentText(message)
+        .setConfirmClickListener { obj: SweetAlertDialog -> obj.dismiss() }.show()
+}

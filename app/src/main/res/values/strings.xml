@@ -630,4 +630,7 @@
     <string name="text_one">1</string>
     <string name="no_products_found">No products found!</string>
 
+    <string name="label_checked">checked</string>
+    <string name="label_unchecked">not checked</string>
+
 </resources>
