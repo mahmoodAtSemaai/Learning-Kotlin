@@ -153,7 +153,7 @@
     <!---->
     <!---->
     <!--ACCOUNT FRAGMENT-->
-    <string name="dashboard">Dashboard</string>
+    <string name="dashboard">Dasbor</string>
     <string name="account_info">Informasi akun</string>
     <string name="address_book">Buku alamat</string>
     <string name="sign_out">Keluar</string>
@@ -196,7 +196,7 @@
     <!---->
     <!--SEARCH -->
     <string name="hint_prompt">Speak an item name</string>
-    <string name="related_products">Related Products</string>
+    <string name="related_products">Produk Terkait</string>
     <!---->
     <!---->
     <!--MY ORDERS-->
@@ -393,7 +393,7 @@
     <string name="sold_by">Dijual oleh</string>
     <string name="marketplace">Marketplace</string>
     <string name="do_you_want_to_become_a_seller">Apakah anda ingin menjadi penjual?</string>
-    <string name="seller_dashboard">Dashboard Penjual</string>
+    <string name="seller_dashboard">dasbor Penjual</string>
     <string name="register">Daftar</string>
     <string name="become_seller_activity_title">Menjadi Penjual</string>
 
@@ -441,8 +441,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="downloading">Downloading&#8230;</string>
     <string name="download_started">Download started</string>
-    <string name="no_items_yet">No items yet</string>
-    <string name="manage_your_wishlist_by_tapping_on_heart_icon">Manage your wishlist by tapping on the Heart icon.</string>
+    <string name="no_items_yet">Item belum tersedia</string>
+    <string name="manage_your_wishlist_by_tapping_on_heart_icon">Kelola daftar keinginanmu dengan menekan ikon hati.</string>
     <string name="fingerprint_login">FingerPrint Login</string>
     <string name="yes">Yes</string>
     <string name="no_terms_and_conditions_to_display">No Terms &amp; Conditions </string>
