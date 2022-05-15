@@ -1,13 +1,16 @@
 package com.webkul.mobikul.odoo.adapter.home;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.databinding.ItemViewPagerHomeBannerBinding;
 import com.webkul.mobikul.odoo.handler.home.HomeBannerHandler;
@@ -15,32 +18,22 @@ import com.webkul.mobikul.odoo.model.generic.BannerImageData;
 
 import java.util.List;
 
-/**
 
- * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
- * @author Webkul <support@webkul.com>
-
- * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
- * @license https://store.webkul.com/license.html ASL Licence
-
- * @link https://store.webkul.com/license.html
-
- */
 public class HomeBannerAdapter extends PagerAdapter {
 
     private final Context mContext;
     private List<BannerImageData> mBannerImageDatas;
+    ViewPager viewPager;
+    List<BannerImageData> list;
+    TabLayout dotstablayout;
 
-    public HomeBannerAdapter(Context context, List<BannerImageData> bannerImageDatas) {
+    public HomeBannerAdapter(Context context, List<BannerImageData> bannerImageDatas, ViewPager viewPager) {
         mContext = context;
         mBannerImageDatas = bannerImageDatas;
+        this.viewPager = viewPager;
+        list = mBannerImageDatas;
     }
+
 
     @Override
     public int getCount() {
@@ -55,6 +48,7 @@ public class HomeBannerAdapter extends PagerAdapter {
         itemViewPagerBannerBinding.setHandler(new HomeBannerHandler(mContext, mBannerImageDatas.get(position)));
         itemViewPagerBannerBinding.executePendingBindings();
         container.addView(itemViewPagerBannerBinding.getRoot());
+
         return (itemViewPagerBannerBinding.getRoot());
     }
 
@@ -67,4 +61,5 @@ public class HomeBannerAdapter extends PagerAdapter {
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
     }
+
 }

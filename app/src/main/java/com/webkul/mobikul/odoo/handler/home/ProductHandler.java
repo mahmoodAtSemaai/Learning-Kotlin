@@ -23,6 +23,7 @@ import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.databinding.ItemCatalogProductListBinding;
+import com.webkul.mobikul.odoo.databinding.ItemCatalogProductListHomeBinding;
 import com.webkul.mobikul.odoo.databinding.ItemProductGridBinding;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;

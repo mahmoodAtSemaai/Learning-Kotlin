@@ -4,6 +4,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.webkul.mobikul.odoo.BuildConfig;
+import com.webkul.mobikul.odoo.features.auth.data.models.SignUpData;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,6 +24,7 @@ public class SignUpRequest extends RegisterDeviceTokenRequest {
     private static final String KEY_LOGIN = "login";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_PASSWORD = "password";
+    private static final String KEY_REFERRAL_CODE = "referralCode";
     private static final String KEY_SOCIAL_LOGIN = "isSocialLogin";
     private static final String KEY_AUTH_PROVIDER = "authProvider";
     private static final String KEY_AUTH_USER_ID = "authUserId";
@@ -33,6 +35,7 @@ public class SignUpRequest extends RegisterDeviceTokenRequest {
     private final String mName;
     private final String mLogin;
     private final String mPassword;
+    private final String referralCode;
     private String mAuthAccessToken;
     private boolean mIsSocialLogin;
     private boolean isSeller = false;
@@ -41,25 +44,39 @@ public class SignUpRequest extends RegisterDeviceTokenRequest {
     private String mAuthProvider;
     private String mAuthUserId;
 
-    public SignUpRequest(Context context, String name, String login, @NonNull String password, boolean isSocialLogin, boolean isSeller, String profileURL, String countryID) {
+    public SignUpRequest(Context context, String name, String login, @NonNull String password, String referralCode, boolean isSocialLogin, boolean isSeller, String profileURL, String countryID) {
         super(context);
         mName = name;
         mLogin = login;
         mPassword = password;
+        this.referralCode = referralCode;
         mIsSocialLogin = isSocialLogin;
         this.isSeller = isSeller;
         this.profileURL = profileURL;
         this.idCountry = countryID;
     }
 
-    public SignUpRequest(Context context, String name, String login, @NonNull String password, boolean isSocialLogin, String authProvider, String authUserId) {
-        this(context, name, login, password, isSocialLogin, false, "", "");
+    public  SignUpRequest(Context context , SignUpData signUpData){
+        super(context);
+        mName = signUpData.getName();
+        mLogin = signUpData.getPhoneNumber();
+        mPassword = signUpData.getPassword();
+        mIsSocialLogin = false;
+        this.isSeller = signUpData.isSeller();
+        this.profileURL = signUpData.getProfileURL();
+        this.idCountry = signUpData.getCountry();
+        //Todo need to add referral code
+        this.referralCode = "";
+    }
+
+    public SignUpRequest(Context context, String name, String login, @NonNull String password, String referralCode, boolean isSocialLogin, String authProvider, String authUserId) {
+        this(context, name, login, password, referralCode, isSocialLogin, false, "", "");
         mAuthProvider = authProvider;
         mAuthUserId = authUserId;
     }
 
-    public SignUpRequest(Context context, String name, String login, @NonNull String password, boolean isSocialLogin, String authProvider, String authUserId, String authAccessToken) {
-        this(context, name, login, password, isSocialLogin, authProvider, authUserId);
+    public SignUpRequest(Context context, String name, String login, @NonNull String password, String referralCode, boolean isSocialLogin, String authProvider, String authUserId, String authAccessToken) {
+        this(context, name, login, password, referralCode, isSocialLogin, authProvider, authUserId);
         mAuthAccessToken = authAccessToken;
     }
 
@@ -88,6 +105,13 @@ public class SignUpRequest extends RegisterDeviceTokenRequest {
         }
 
         return mPassword;
+    }
+
+    public String getReferralCode() {
+        if (referralCode == null) {
+            return "";
+        }
+        return referralCode;
     }
 
     @SuppressWarnings("WeakerAccess")
@@ -132,6 +156,7 @@ public class SignUpRequest extends RegisterDeviceTokenRequest {
                 jsonObject.put(KEY_LOGIN, getLogin());
             }
             jsonObject.put(KEY_PASSWORD, getPassword());
+            jsonObject.put(KEY_REFERRAL_CODE, getReferralCode());
             jsonObject.put(KEY_SOCIAL_LOGIN, isSocialLogin());
             if (BuildConfig.isMarketplace && isSeller) {
                 jsonObject.put(KEY_IS_SELLER, isSeller);

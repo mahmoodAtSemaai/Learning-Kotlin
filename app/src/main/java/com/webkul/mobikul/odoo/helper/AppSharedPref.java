@@ -31,6 +31,10 @@ public class AppSharedPref {
     private static final String KEY_CUSTOMER_PROFILE_IMAGE = "CUSTOMER_PROFILE_IMAGE";
     private static final String KEY_CUSTOMER_BANNER_IMAGE = "CUSTOMER_BANNER_IMAGE";
     private static final String KEY_CUSTOMER_IS_SOCIAL_LOGGED_IN = "CUSTOMER_IS_SOCIAL_LOGGED_IN";
+    private static final String KEY_CUSTOMER_SEMAAI_POINTS = "CUSTOMER_SEMAAI_POINTS";
+    private static final String KEY_IS_CUSTOMER_REDEEM_POINTS = "IS_CUSTOMER_REDEEM_POINTS";
+    private static final String KEY_REFERRAL_CODE = "REFERRAL_CODE";
+    private static final String KEY_ORDER_ID = "ORDER_ID";
 
     private static final String KEY_CART_COUNT = "CART_COUNT";
     private static final String DARK_MODE = "DARK_MODE";
@@ -159,6 +163,33 @@ public class AppSharedPref {
 
     public static void setCustomerProfileImage(Context context, String customerProfileImage) {
         getSharedPreferenceEditor(context, CUSTOMER_PREF).putString(KEY_CUSTOMER_PROFILE_IMAGE, customerProfileImage).apply();
+    }
+
+    /*IS CUSTOMER REDEEM POINTS*/
+    public static Boolean getIsCustomerWantToRedeemPoints(Context context) {
+        return getSharedPreference(context, CUSTOMER_PREF).getBoolean(KEY_IS_CUSTOMER_REDEEM_POINTS, false);
+    }
+
+    public static void setIsCustomerWantToRedeemPoints(Context context, Boolean isCustomerRedeemPoints) {
+        getSharedPreferenceEditor(context, CUSTOMER_PREF).putBoolean(KEY_IS_CUSTOMER_REDEEM_POINTS, isCustomerRedeemPoints).apply();
+    }
+
+    /*Referral Code*/
+    public static String getReferralCode(Context context) {
+        return getSharedPreference(context, CUSTOMER_PREF).getString(KEY_REFERRAL_CODE, "");
+    }
+
+    public static void setReferralCode(Context context, String referralCode) {
+        getSharedPreferenceEditor(context, CUSTOMER_PREF).putString(KEY_REFERRAL_CODE, referralCode).apply();
+    }
+
+    /*Order Id*/
+    public static int getOrderId(Context context) {
+        return getSharedPreference(context, CUSTOMER_PREF).getInt(KEY_ORDER_ID, 0);
+    }
+
+    public static void setOrderId(Context context, int orderId) {
+        getSharedPreferenceEditor(context, CUSTOMER_PREF).putInt(KEY_ORDER_ID, orderId).apply();
     }
 
     /* Is Customer a Seller too */

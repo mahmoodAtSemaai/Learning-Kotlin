@@ -1,68 +1,69 @@
 package com.webkul.mobikul.odoo.fragment;
 
-import static com.webkul.mobikul.odoo.constant.ApplicationConstant.SLIDER_MODE_DEFAULT;
-import static com.webkul.mobikul.odoo.constant.ApplicationConstant.SLIDER_MODE_FIXED;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_URL;
 
+
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.AbsListView;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
+import androidx.viewpager.widget.ViewPager;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
-import com.webkul.mobikul.odoo.activity.HomeActivity;
-import com.webkul.mobikul.odoo.activity.UpdateAddressActivity;
+import com.webkul.mobikul.odoo.activity.NewHomeActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
-import com.webkul.mobikul.odoo.adapter.home.FeaturedCategoriesRvAdapter;
+import com.webkul.mobikul.odoo.activity.UpdateAddressActivity;
+import com.webkul.mobikul.odoo.adapter.home.CategoryProductAdapter;
+import com.webkul.mobikul.odoo.adapter.home.FeaturedCategoriesAdapter;
 import com.webkul.mobikul.odoo.adapter.home.HomeBannerAdapter;
-import com.webkul.mobikul.odoo.adapter.home.NavDrawerCategoryStartRvAdapter;
-import com.webkul.mobikul.odoo.adapter.home.ProductDefaultStyleRvAdapter;
-import com.webkul.mobikul.odoo.adapter.product.AlternativeProductsRvAdapter;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.connection.CustomRetrofitCallback;
+import com.webkul.mobikul.odoo.custom.CustomToast;
 import com.webkul.mobikul.odoo.database.SaveData;
-import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.databinding.FragmentHomeBinding;
-import com.webkul.mobikul.odoo.databinding.ItemProductSliderDefaultStyleBinding;
-import com.webkul.mobikul.odoo.databinding.ItemProductSliderFixedStyleBinding;
-import com.webkul.mobikul.odoo.handler.generic.ProductSliderHandler;
 import com.webkul.mobikul.odoo.handler.home.FragmentNotifier;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.Helper;
-import com.webkul.mobikul.odoo.helper.ViewHelper;
 import com.webkul.mobikul.odoo.model.BaseResponse;
 import com.webkul.mobikul.odoo.model.customer.address.AddressData;
 import com.webkul.mobikul.odoo.model.customer.address.AddressFormResponse;
 import com.webkul.mobikul.odoo.model.customer.address.MyAddressesResponse;
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.StateListResponse;
-import com.webkul.mobikul.odoo.model.generic.ProductData;
-import com.webkul.mobikul.odoo.model.generic.ProductSliderData;
+import com.webkul.mobikul.odoo.model.generic.FeaturedCategoryData;
 import com.webkul.mobikul.odoo.model.generic.StateData;
 import com.webkul.mobikul.odoo.model.home.HomePageResponse;
 import com.webkul.mobikul.odoo.model.request.BaseLazyRequest;
-
 import org.greenrobot.eventbus.EventBus;
-
-import java.util.ArrayList;
-
+import java.util.List;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
+
 
 public class HomeFragment extends BaseFragment implements CustomRetrofitCallback {
 
@@ -73,14 +74,15 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     private int CHECK_FOR_EXISTING_ADDRESS = 1;
     private int BILLING_ADDRESS_POSITION = 1;
     private int COMPANY_ID = 1;
-
-    public static HomeFragment newInstance(@Nullable HomePageResponse homePageResponse) {
-        Bundle args = new Bundle();
-        args.putParcelable(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
-        HomeFragment homeFragment = new HomeFragment();
-        homeFragment.setArguments(args);
-        return homeFragment;
-    }
+    private boolean mIsFirstCall = true;
+    private boolean isImageVisible = false;
+    private CustomToast mToast;
+    public static final int VIEW_TYPE_LIST = 1;
+    Handler handler = new Handler();
+    Runnable runnable;
+    public static final int VIEW_TYPE_GRID = 2;
+    private FeaturedCategoryData mFeaturedCategoryData;
+    private int appBarOffset=0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,18 +94,40 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Helper.hideKeyboard(getContext());
+
+        binding.appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener(){
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                appBarOffset=verticalOffset;
+                binding.refreshLayout.setEnabled(appBarOffset == 0);
+            }
+        });
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                getActivity().finishAffinity();
+            }
+        });
+
+        binding.refreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext() , R.color.background_orange));
+
+        binding.refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                binding.refreshLayout.setRefreshing(true);
+                hitApiForFetchingData();
+            }
+        });
+
+
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        getRecentProductList();
-    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        HomePageResponse homePageResponse = getArguments().getParcelable(BUNDLE_KEY_HOME_PAGE_RESPONSE);
+        HomePageResponse homePageResponse = ((NewHomeActivity) getActivity()).getHomePageResponse();
         fetchExistingAddresses();
         if (homePageResponse == null) {
             hitApiForFetchingData();
@@ -119,24 +143,24 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
             @Override
             public void onNext(@NonNull HomePageResponse homePageResponse) {
                 super.onNext(homePageResponse);
-                new SaveData(getActivity(), homePageResponse);
-
+                    new SaveData(getActivity(), homePageResponse);
                 Log.i("HIT DATA === ", homePageResponse.toString());
                 loadHomePage(homePageResponse, true);
             }
 
             @Override
             public void onComplete() {
-                binding.swipeRefreshLayout.setRefreshing(false);
+                if(binding.refreshLayout.isEnabled() && binding.refreshLayout.isRefreshing())
+                    binding.refreshLayout.setRefreshing(false);
             }
         });
+
 
     }
 
 
     @Override
     public void onSuccess(Object object) {
-//        loadHomePage((HomePageResponse) object);
     }
 
     @Override
@@ -144,82 +168,84 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
     }
 
-//    private void hitApiForFetchingData() {
-//        ApiConnection.getHomePageDataResponse(getContext(), this);
-//
-//    }
-
     private void loadHomePage(HomePageResponse homePageResponse, boolean isFromApi) {
         if (isFromApi) {
             homePageResponse.updateSharedPref(getContext(), "");
         }
         binding.setData(homePageResponse);
-        binding.swipeRefreshLayout.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        hitApiForFetchingData();
-                    }
-                }
-        );
-        /*LEFT CATEGORIES DRAWER*/
-        ((HomeActivity) getActivity()).mBinding.categoryRv.setAdapter(new NavDrawerCategoryStartRvAdapter(getContext(), homePageResponse.getCategories().get(0).getChildren(), ""));
-        if (homePageResponse.getLanguageMap().size() > 0) {
-            ((HomeActivity) getActivity()).mBinding.setLanguageData(homePageResponse.getLanguageMap());
-        } else {
-            SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(getContext());
-            if (sqlLiteDbHelper.getHomeScreenData() != null) {
-                if (sqlLiteDbHelper.getHomeScreenData().getLanguageMap() != null) {
-                    ((HomeActivity) getActivity()).mBinding.setLanguageData(sqlLiteDbHelper.getHomeScreenData().getLanguageMap());
-                }
+
+        binding.featuredCategoriesRv.setAdapter(new FeaturedCategoriesAdapter(getContext(), homePageResponse.getFeaturedCategories(), value));
+
+        binding.featuredCategoriesRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@androidx.annotation.NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                     if(newState== AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
+                         binding.refreshLayout.setEnabled(false);
+                     if(newState==AbsListView.OnScrollListener.SCROLL_STATE_FLING)
+                         binding.refreshLayout.setEnabled(false);
+                     if(newState==AbsListView.OnScrollListener.SCROLL_STATE_IDLE)
+                         binding.refreshLayout.setEnabled(false);
+            }
+        });
+
+        List<FeaturedCategoryData> fragment = homePageResponse.getFeaturedCategories();
+
+        CategoryProductAdapter adapter = new CategoryProductAdapter((NewHomeActivity) requireContext(), fragment);
+        binding.viewPager2.setUserInputEnabled(false);
+        binding.viewPager2.setAdapter(adapter);
+
+
+        for (int i = 0; i < homePageResponse.getBannerImages().size(); i++) {
+            if (!homePageResponse.getBannerImages().get(i).getUrl().equals("false")) {
+                isImageVisible=true;
+                break;
             }
         }
+        if(!isImageVisible) binding.appBarLayout.setVisibility(View.GONE);
 
-
-        /*FEATURED CATEGORIES*/
-        binding.featuredCategoriesRv.setAdapter(new FeaturedCategoriesRvAdapter(getContext(), homePageResponse.getFeaturedCategories()));
-
-        /*BANNER SLIDERS*/
-        binding.bannerViewPager.setAdapter(new HomeBannerAdapter(getContext(), homePageResponse.getBannerImages()));
         binding.bannerDotsTabLayout.setupWithViewPager(binding.bannerViewPager, true);
+        binding.bannerViewPager.setAdapter(new HomeBannerAdapter(getContext(), homePageResponse.getBannerImages() , binding.bannerViewPager));
 
-        /*PRODUCT SLIDES...*/
-        binding.productSliderContainer.removeAllViews();
-        for (ProductSliderData productSliderData : homePageResponse.getProductSliders()) {
-            switch (productSliderData.getSliderMode()) {
-                case SLIDER_MODE_DEFAULT:
-                    ItemProductSliderDefaultStyleBinding itemProductSliderDefaultStyleBinding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.item_product_slider_default_style, binding.productSliderContainer, true);
-                    itemProductSliderDefaultStyleBinding.setData(productSliderData);
-                    itemProductSliderDefaultStyleBinding.setHandler(new ProductSliderHandler(getContext()));
-                    itemProductSliderDefaultStyleBinding.productsRv.setAdapter(new ProductDefaultStyleRvAdapter(getContext(), (ArrayList<ProductData>) productSliderData.getProducts(), SLIDER_MODE_DEFAULT));
-                    break;
+//         setBannerHeight();
 
-                case SLIDER_MODE_FIXED:
-                    ItemProductSliderFixedStyleBinding itemProductSliderFixedStyleBinding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.item_product_slider_fixed_style, binding.productSliderContainer, true);
-                    itemProductSliderFixedStyleBinding.setData(productSliderData);
-                    itemProductSliderFixedStyleBinding.setHandler(new ProductSliderHandler(getContext()));
-                    itemProductSliderFixedStyleBinding.productsRv.setLayoutManager(new GridLayoutManager(getContext(), ViewHelper.getSpanCount(getContext())));
-                    itemProductSliderFixedStyleBinding.productsRv.setAdapter(new ProductDefaultStyleRvAdapter(getContext(), (ArrayList<ProductData>) productSliderData.getProducts(), SLIDER_MODE_FIXED));
-                    break;
+        binding.bannerViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if(position==0)
+                    handler.postDelayed(runnable , 5000);
             }
-        }
+
+            @Override
+            public void onPageSelected(int position) {
+                handler.removeCallbacks(runnable);
+                handler.postDelayed(runnable , 5000);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                binding.refreshLayout.setEnabled(appBarOffset == 0 && state == ViewPager.SCROLL_STATE_IDLE);
+            }
+        });
+
+        runnable  = () -> {
+            int position = binding.bannerViewPager.getCurrentItem();
+            if(position < homePageResponse.getBannerImages().size()-1)
+            binding.bannerViewPager.setCurrentItem(position + 1);
+            else
+            binding.bannerViewPager.setCurrentItem(0);
+
+        };
+
+
     }
 
-    private void getRecentProductList() {
-        if (AppSharedPref.isRecentViewEnable(getContext())) {
-            SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(getContext());
-            ArrayList<ProductData> productData = sqlLiteDbHelper.getRecentProductList();
-            if (productData.size() > 0) {
-                binding.llRecentViewProducts.setVisibility(View.VISIBLE);
-                binding.rvAlternativeProduct.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-                binding.rvAlternativeProduct.setAdapter(new AlternativeProductsRvAdapter(getActivity(), productData, true));
-            } else {
-                binding.llRecentViewProducts.setVisibility(View.GONE);
-            }
-
-        } else {
-            binding.llRecentViewProducts.setVisibility(View.GONE);
-        }
+    private void setBannerHeight() {
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        int width = display.getWidth();
+        final CollapsingToolbarLayout.LayoutParams layoutparams = (CollapsingToolbarLayout.LayoutParams) binding.bannerRelativeLayout.getLayoutParams();
+        layoutparams.height=width/4;
     }
 
     public void fetchExistingAddresses() {
@@ -349,6 +375,10 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         AppSharedPref.clearCustomerData(getContext());
     }
 
+
+
+
+
     @Override
     public void onStart() {
         super.onStart();
@@ -372,5 +402,14 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     public void setTitle(@androidx.annotation.NonNull String title) {
 
     }
+
+
+    FeaturedCategoriesAdapter.FeaturedCategoryDataValue value = new FeaturedCategoriesAdapter.FeaturedCategoryDataValue() {
+        @Override
+        public void data(FeaturedCategoryData featuredCategoryData, Integer pos) {
+            mFeaturedCategoryData = featuredCategoryData;
+            binding.viewPager2.setCurrentItem(pos);
+        }
+    };
 
 }

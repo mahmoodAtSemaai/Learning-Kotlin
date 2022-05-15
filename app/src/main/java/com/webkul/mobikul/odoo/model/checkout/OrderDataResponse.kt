@@ -12,6 +12,12 @@ data class OrderDataResponse(
     @SerializedName("amount_total")
     @Expose
     val amountTotal: String,
+    @SerializedName("points_redeemed")
+    @Expose
+    val pointsRedeemed: String,
+    @SerializedName("grand_total")
+    @Expose
+    val grandTotal: String,
     @SerializedName("amount_untaxed")
     @Expose
     val amountUntaxed: String,

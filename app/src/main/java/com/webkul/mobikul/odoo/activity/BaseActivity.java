@@ -20,9 +20,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
@@ -104,14 +101,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected void setActionbarTitle(@Nullable String title) {
-        if (title == null) {
-            return;
-        }
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(title);
-        }
-    }
+    protected void setActionbarTitle(@Nullable String title) {}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

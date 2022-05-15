@@ -2,6 +2,7 @@ package com.webkul.mobikul.odoo.handler.customer;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,6 +28,7 @@ import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.fragment.AccountFragment;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
+import com.webkul.mobikul.odoo.helper.ApiRequestHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.CustomerHelper;
 import com.webkul.mobikul.odoo.helper.ErrorConstants;
@@ -34,6 +36,9 @@ import com.webkul.mobikul.odoo.helper.ImageHelper;
 import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.helper.SnackbarHelper;
 import com.webkul.mobikul.odoo.model.BaseResponse;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -43,6 +48,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.webkul.mobikul.odoo.BuildConfig.APP_PLAYSTORE_URL;
 import static com.webkul.mobikul.odoo.activity.HomeActivity.RC_CAMERA;
 import static com.webkul.mobikul.odoo.activity.HomeActivity.RC_PICK_IMAGE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
@@ -64,12 +70,13 @@ public class AccountFragmentHandler {
     @SuppressWarnings("unused")
     private static final String TAG = "AccountFragmentHandler";
 
-    private final Context mContext;
+    private final Context context;
     private final AccountFragment mAccountFragment;
     private boolean isRequestForProfileImage;
+    private String referralMessage;
 
     public AccountFragmentHandler(Context context, AccountFragment accountFragment) {
-        mContext = context;
+        this.context = context;
         mAccountFragment = accountFragment;
     }
 
@@ -83,68 +90,105 @@ public class AccountFragmentHandler {
 
     public void showDashboard() {
         AnalyticsImpl.INSTANCE.trackDashboardSelected();
-        Intent intent = new Intent(mContext, CustomerBaseActivity.class);
+        Intent intent = new Intent(context, CustomerBaseActivity.class);
         intent.putExtra(BUNDLE_KEY_CUSTOMER_FRAG_TYPE, CustomerHelper.CustomerFragType.TYPE_DASHBOARD);
-        mContext.startActivity(intent);
+        context.startActivity(intent);
     }
 
     public void showSellerDashboard() {
-        Intent intent = new Intent(mContext, ((OdooApplication) mContext.getApplicationContext()).getSellerDashBoardPage());
-        mContext.startActivity(intent);
+        Intent intent = new Intent(context, ((OdooApplication) context.getApplicationContext()).getSellerDashBoardPage());
+        context.startActivity(intent);
     }
 
     public void askToAdmin() {
-        Intent intent = new Intent(mContext, ((OdooApplication) mContext.getApplicationContext()).getAskToAdminActivity());
-        mContext.startActivity(intent);
+        Intent intent = new Intent(context, ((OdooApplication) context.getApplicationContext()).getAskToAdminActivity());
+        context.startActivity(intent);
     }
 
     public void showSellerProfile() {
-        Intent intent = new Intent(mContext, ((OdooApplication) mContext.getApplicationContext()).getSellerProfileActivity());
-        intent.putExtra(BUNDLE_KEY_SELLER_ID, AppSharedPref.getCustomerId(mContext));
-        mContext.startActivity(intent);
+        Intent intent = new Intent(context, ((OdooApplication) context.getApplicationContext()).getSellerProfileActivity());
+        intent.putExtra(BUNDLE_KEY_SELLER_ID, AppSharedPref.getCustomerId(context));
+        context.startActivity(intent);
     }
 
     public void getSellerOrders() {
-        Intent intent = new Intent(mContext, ((OdooApplication) mContext.getApplicationContext()).getSellerOrdersActivity());
-        mContext.startActivity(intent);
+        Intent intent = new Intent(context, ((OdooApplication) context.getApplicationContext()).getSellerOrdersActivity());
+        context.startActivity(intent);
     }
 
     public void showAccountInfo() {
         AnalyticsImpl.INSTANCE.trackAccountInfoSelected();
-        Intent intent = new Intent(mContext, CustomerBaseActivity.class);
+        Intent intent = new Intent(context, CustomerBaseActivity.class);
         intent.putExtra(BUNDLE_KEY_CUSTOMER_FRAG_TYPE, CustomerHelper.CustomerFragType.TYPE_ACCOUNT_INFO);
-        mContext.startActivity(intent);
+        context.startActivity(intent);
     }
 
     public void viewAddressBook() {
         AnalyticsImpl.INSTANCE.trackAddressBookSelected();
-        Intent intent = new Intent(mContext, CustomerBaseActivity.class);
+        Intent intent = new Intent(context, CustomerBaseActivity.class);
         intent.putExtra(BUNDLE_KEY_CUSTOMER_FRAG_TYPE, CustomerHelper.CustomerFragType.TYPE_ADDRESS_BOOK);
-        mContext.startActivity(intent);
+        context.startActivity(intent);
     }
 
     public void viewAllOrder() {
         AnalyticsImpl.INSTANCE.trackAllOrdersSelected();
-        Intent intent = new Intent(mContext, CustomerBaseActivity.class);
+        Intent intent = new Intent(context, CustomerBaseActivity.class);
         intent.putExtra(BUNDLE_KEY_CUSTOMER_FRAG_TYPE, CustomerHelper.CustomerFragType.TYPE_ORDER_LIST);
-        mContext.startActivity(intent);
+        context.startActivity(intent);
     }
 
     public void viewWishlist() {
-        String sourceScreen = mContext.getString(R.string.accountScreen);
+        String sourceScreen = context.getString(R.string.accountScreen);
         AnalyticsImpl.INSTANCE.trackWishlistSelected(sourceScreen);
-        Intent intent = new Intent(mContext, CustomerBaseActivity.class);
+        Intent intent = new Intent(context, CustomerBaseActivity.class);
         intent.putExtra(BUNDLE_KEY_CUSTOMER_FRAG_TYPE, CustomerHelper.CustomerFragType.TYPE_WISHLIST);
-        mContext.startActivity(intent);
+        context.startActivity(intent);
+    }
+
+    public void viewReferralCode() {
+        showDialogForReferralCode(context, AppSharedPref.getReferralCode(context));
+    }
+
+    private void showDialogForReferralCode(Context context, String referralCode) {
+        new SweetAlertDialog(context, SweetAlertDialog.NORMAL_TYPE)
+            .setTitleText(context.getString(R.string.referral_code))
+            .setContentText(context.getString(R.string.referral_code_is) + ": " + referralCode + "\n\n" + context.getString(R.string.referral_code_share_message))
+            .setConfirmText(context.getString(R.string.share_referral_code))
+            .setCancelText(context.getString(R.string.cancel_small))
+            .setConfirmClickListener(sweetAlertDialog -> {
+                sweetAlertDialog.dismiss();
+                referralMessage = createMessageToShare(referralCode);
+                shareReferralCode(referralMessage);
+            })
+            .setCancelClickListener(Dialog::dismiss).show();
+    }
+
+    public String createMessageToShare(String referralCode){
+        String message = context.getString(R.string.lets_use_this_code) + ": " + referralCode + " ";
+        message += context.getString(R.string.for_purchasing) + "\n";
+        message += APP_PLAYSTORE_URL + " .";
+        return message;
+    }
+
+    public void shareReferralCode(String message){
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, message);
+        sendIntent.setType("text/plain");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            context.startActivity(Intent.createChooser(sendIntent, context.getString(R.string.choose_an_action), null));
+        } else {
+            context.startActivity(sendIntent);
+        }
     }
 
     public void signOut() {
         AnalyticsImpl.INSTANCE.close();
-        ApiConnection.signOut(mContext).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<BaseResponse>(mContext) {
+        ApiConnection.signOut(context).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<BaseResponse>(context) {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
                 super.onSubscribe(d);
-                AlertDialogHelper.showDefaultProgressDialog(mContext);
+                AlertDialogHelper.showDefaultProgressDialog(context);
             }
 
             @Override
@@ -152,15 +196,15 @@ public class AccountFragmentHandler {
                 super.onNext(baseResponse);
                 if (baseResponse.isSuccess()) {
                     AnalyticsImpl.INSTANCE.trackSignoutSuccess();
-                    StyleableToast.makeText(mContext, baseResponse.getMessage(), Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
-                    AppSharedPref.clearCustomerData(mContext);
-                    AppSharedPref.clearUserAnalytics(mContext);
-                    Intent intent = new Intent(mContext, SplashScreenActivity.class);
+                    StyleableToast.makeText(context, baseResponse.getMessage(), Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
+                    AppSharedPref.clearCustomerData(context);
+                    AppSharedPref.clearUserAnalytics(context);
+                    Intent intent = new Intent(context, SplashScreenActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    mContext.startActivity(intent);
+                    context.startActivity(intent);
                 } else {
                     AnalyticsImpl.INSTANCE.trackSignoutFailed(baseResponse.getResponseCode(), baseResponse.getMessage());
-                    SnackbarHelper.getSnackbar((Activity) mContext, baseResponse.getMessage(), Snackbar.LENGTH_LONG, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
+                    SnackbarHelper.getSnackbar((Activity) context, baseResponse.getMessage(), Snackbar.LENGTH_LONG, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
                 }
             }
 
@@ -178,64 +222,64 @@ public class AccountFragmentHandler {
     }
 
     public void changeProfileImage(boolean isRequestForProfileImage) {
-        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             DialogInterface.OnClickListener listener = (dialog, which) -> {
                 String[] permissions = {"android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE"};
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    ((Activity) mContext).requestPermissions(permissions, RC_CAMERA);
+                    ((Activity) context).requestPermissions(permissions, RC_CAMERA);
                 }
                 dialog.dismiss();
             };
-            AlertDialogHelper.showPermissionDialog(mContext, mContext.getResources().getString(R.string.permission_confirmation), mContext.getResources().getString(R.string.camra_permission), listener);
+            AlertDialogHelper.showPermissionDialog(context, context.getResources().getString(R.string.permission_confirmation), context.getResources().getString(R.string.camra_permission), listener);
             return;
         }
 
 
         this.isRequestForProfileImage = isRequestForProfileImage;
-        List<String> uploadImageOptions = ImageHelper.getUploadImageOptions(mContext);
+        List<String> uploadImageOptions = ImageHelper.getUploadImageOptions(context);
         final CharSequence[] items = uploadImageOptions.toArray(new CharSequence[uploadImageOptions.size()]);
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AlertDialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
         if (isRequestForProfileImage) {
-            builder.setTitle(mContext.getString(R.string.upload_profile_image));
+            builder.setTitle(context.getString(R.string.upload_profile_image));
         } else {
-            builder.setTitle(mContext.getString(R.string.upload_banner_image));
+            builder.setTitle(context.getString(R.string.upload_banner_image));
         }
 
         builder.setItems(items, (dialog, item) -> {
-            if (items[item].equals(mContext.getString(R.string.choose_from_library))) {
-                if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            if (items[item].equals(context.getString(R.string.choose_from_library))) {
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     pickImageFromFileSystemIntent();
                 } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         String[] permissions = {"android.permission.WRITE_EXTERNAL_STORAGE"};
-                        ((Activity) mContext).requestPermissions(permissions, RC_PICK_IMAGE);
+                        ((Activity) context).requestPermissions(permissions, RC_PICK_IMAGE);
                     }
                 }
-            } else if (items[item].equals(mContext.getString(R.string.camera_pick))) {
-                if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
-                        && ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            } else if (items[item].equals(context.getString(R.string.camera_pick))) {
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+                        && ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     pickCameraIntent();
                 } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         String[] permissions = {"android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE"};
-                        ((Activity) mContext).requestPermissions(permissions, RC_CAMERA);
+                        ((Activity) context).requestPermissions(permissions, RC_CAMERA);
                     }
                 }
 
-            } else if (items[item].equals(mContext.getString(R.string.add_image))) {
-                if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
-                        && ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            } else if (items[item].equals(context.getString(R.string.add_image))) {
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+                        && ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     startPickImage();
                 } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         String[] permissions = {"android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE"};
-                        ((Activity) mContext).requestPermissions(permissions, RC_CAMERA);
+                        ((Activity) context).requestPermissions(permissions, RC_CAMERA);
                     }
                 }
 
-            } else if (items[item].equals(mContext.getString(R.string.cancel))) {
+            } else if (items[item].equals(context.getString(R.string.cancel))) {
                 dialog.dismiss();
-            } else if (items[item].equals(mContext.getString(R.string.delete_my_image))) {
+            } else if (items[item].equals(context.getString(R.string.delete_my_image))) {
                 dialog.dismiss();
                 if (isRequestForProfileImage) {
                     startDeleteProfileImageRequest();
@@ -252,8 +296,8 @@ public class AccountFragmentHandler {
     }
 
     public void startPickImage() {
-//        if (mContext instanceof HomeActivity) {
-//            CropImage.startPickImageActivity((HomeActivity) mContext);
+//        if (context instanceof HomeActivity) {
+//            CropImage.startPickImageActivity((HomeActivity) context);
 //        }
 
         /**
@@ -267,48 +311,48 @@ public class AccountFragmentHandler {
         Intent pickIntent = new Intent(Intent.ACTION_PICK);
         pickIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
 
-        Intent chooserIntent = Intent.createChooser(getIntent, mContext.getString(R.string.select_file));
+        Intent chooserIntent = Intent.createChooser(getIntent, context.getString(R.string.select_file));
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent, cameraIntent});
 
-        ((HomeActivity) mContext).startActivityForResult(chooserIntent, RC_PICK_IMAGE);
+        ((HomeActivity) context).startActivityForResult(chooserIntent, RC_PICK_IMAGE);
     }
 
     public void pickImageFromFileSystemIntent() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         // intent.setType("image/*");
-        ((Activity) mContext).startActivityForResult(Intent.createChooser(intent, mContext.getString(R.string.select_file)), RC_PICK_IMAGE);
+        ((Activity) context).startActivityForResult(Intent.createChooser(intent, context.getString(R.string.select_file)), RC_PICK_IMAGE);
     }
 
     public void pickCameraIntent() {
         Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        ((Activity) mContext).startActivityForResult(intent, RC_CAMERA);
+        ((Activity) context).startActivityForResult(intent, RC_CAMERA);
     }
 
     public void startDeleteProfileImageRequest() {
-        AlertDialogHelper.showDefaultProgressDialog(mContext);
-        ApiConnection.deleteProfileImage(mContext).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<BaseResponse>(mContext) {
+        AlertDialogHelper.showDefaultProgressDialog(context);
+        ApiConnection.deleteProfileImage(context).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<BaseResponse>(context) {
             @Override
             public void onNext(BaseResponse baseResponse) {
                 super.onNext(baseResponse);
                 if (baseResponse.isAccessDenied()) {
-                    AlertDialogHelper.showDefaultWarningDialogWithDismissListener(mContext, mContext.getString(R.string.error_login_failure), mContext.getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
+                    AlertDialogHelper.showDefaultWarningDialogWithDismissListener(context, context.getString(R.string.error_login_failure), context.getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismiss();
-                            AppSharedPref.clearCustomerData(mContext);
-                            Intent i = new Intent(mContext, SignInSignUpActivity.class);
-                            i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ((Activity) mContext).getClass().getSimpleName());
-                            mContext.startActivity(i);
+                            AppSharedPref.clearCustomerData(context);
+                            Intent i = new Intent(context, SignInSignUpActivity.class);
+                            i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ((Activity) context).getClass().getSimpleName());
+                            context.startActivity(i);
                         }
                     });
                 } else {
 
                     if (baseResponse.isSuccess()) {
-                        AppSharedPref.setCustomerProfileImage(mContext, "");
-                        StyleableToast.makeText(mContext, baseResponse.getMessage(), Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
+                        AppSharedPref.setCustomerProfileImage(context, "");
+                        StyleableToast.makeText(context, baseResponse.getMessage(), Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
                         mAccountFragment.updateProfileImageAfterDelete();
                     } else {
-                        AlertDialogHelper.showDefaultWarningDialog(mContext, mContext.getString(R.string.error_something_went_wrong), baseResponse.getMessage());
+                        AlertDialogHelper.showDefaultWarningDialog(context, context.getString(R.string.error_something_went_wrong), baseResponse.getMessage());
                     }
                 }
             }
@@ -322,31 +366,31 @@ public class AccountFragmentHandler {
     }
 
     public void startDeleteBannerImageRequest() {
-        AlertDialogHelper.showDefaultProgressDialog(mContext);
-        ApiConnection.deleteBannerImage(mContext).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<BaseResponse>(mContext) {
+        AlertDialogHelper.showDefaultProgressDialog(context);
+        ApiConnection.deleteBannerImage(context).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<BaseResponse>(context) {
             @Override
             public void onNext(BaseResponse baseResponse) {
                 super.onNext(baseResponse);
                 if (baseResponse.isAccessDenied()) {
-                    AlertDialogHelper.showDefaultWarningDialogWithDismissListener(mContext, mContext.getString(R.string.error_login_failure), mContext.getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
+                    AlertDialogHelper.showDefaultWarningDialogWithDismissListener(context, context.getString(R.string.error_login_failure), context.getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismiss();
-                            AppSharedPref.clearCustomerData(mContext);
-                            Intent i = new Intent(mContext, SignInSignUpActivity.class);
-                            i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ((Activity) mContext).getClass().getSimpleName());
-                            mContext.startActivity(i);
+                            AppSharedPref.clearCustomerData(context);
+                            Intent i = new Intent(context, SignInSignUpActivity.class);
+                            i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ((Activity) context).getClass().getSimpleName());
+                            context.startActivity(i);
                         }
                     });
                 } else {
 
                     if (baseResponse.isSuccess()) {
-                        AppSharedPref.setCustomerBannerImage(mContext, "");
+                        AppSharedPref.setCustomerBannerImage(context, "");
 
-                        StyleableToast.makeText(mContext, baseResponse.getMessage(), Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
+                        StyleableToast.makeText(context, baseResponse.getMessage(), Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
                         mAccountFragment.updateProfileImageAfterDelete();
                     } else {
-                        AlertDialogHelper.showDefaultWarningDialog(mContext, mContext.getString(R.string.error_something_went_wrong), baseResponse.getMessage());
+                        AlertDialogHelper.showDefaultWarningDialog(context, context.getString(R.string.error_something_went_wrong), baseResponse.getMessage());
                     }
                 }
             }

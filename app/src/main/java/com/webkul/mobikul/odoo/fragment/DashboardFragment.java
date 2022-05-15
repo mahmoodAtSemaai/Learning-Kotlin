@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
-import com.webkul.mobikul.odoo.adapter.catalog.OrdersAdapter;
+import com.webkul.mobikul.odoo.adapter.catalog.OrdersAdapter;;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.databinding.FragmentDashboardBinding;

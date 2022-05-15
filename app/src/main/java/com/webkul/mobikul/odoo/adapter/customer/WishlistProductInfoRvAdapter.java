@@ -3,6 +3,8 @@ package com.webkul.mobikul.odoo.adapter.customer;
 import android.content.Context;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.text.method.CharacterPickerDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,10 +37,12 @@ public class WishlistProductInfoRvAdapter extends RecyclerView.Adapter<WishlistP
 
     private Context mContext;
     private List<WishListData> mWishLists;
+    public  WishListInterface wishListInterface;
 
-    public WishlistProductInfoRvAdapter(Context context, List<WishListData> wishLists) {
+    public WishlistProductInfoRvAdapter(Context context, List<WishListData> wishLists , WishListInterface wishListInterface) {
         mContext = context;
         mWishLists = wishLists;
+        this.wishListInterface=wishListInterface;
     }
 
     @Override
@@ -51,7 +55,30 @@ public class WishlistProductInfoRvAdapter extends RecyclerView.Adapter<WishlistP
     @Override
     public void onBindViewHolder(Holder holder, int position) {
         holder.mBinding.setData(mWishLists.get(position));
-        holder.mBinding.setHandler(new WishlistProductInfoItemHandler(mContext, mWishLists.get(position)));
+        WishlistProductInfoItemHandler handler = new  WishlistProductInfoItemHandler(mContext, mWishLists.get(position));
+        holder.mBinding.setHandler(handler);
+
+        holder.mBinding.deleteIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                wishListInterface.onDeleteProduct(holder.getAdapterPosition());
+            }
+        });
+
+        holder.mBinding.addProductToBagBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                wishListInterface.addProductToBag(holder.getAdapterPosition());
+            }
+        });
+
+
+        holder.mBinding.addProductToBagBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                wishListInterface.addProductToBag(holder.getAdapterPosition());
+            }
+        });
         holder.mBinding.executePendingBindings();
     }
 
@@ -68,5 +95,11 @@ public class WishlistProductInfoRvAdapter extends RecyclerView.Adapter<WishlistP
             super(v);
             mBinding = DataBindingUtil.bind(itemView);
         }
+    }
+
+   public interface WishListInterface {
+       void onDeleteProduct(Integer pos);
+
+       void addProductToBag(Integer pos);
     }
 }

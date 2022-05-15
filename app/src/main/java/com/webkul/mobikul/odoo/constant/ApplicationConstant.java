@@ -51,6 +51,7 @@ public interface ApplicationConstant {
     /*SEARCH */
     String MAX_SEARCH_HISTORY_RESULT = "5";
     long DEBOUNCE_REQUEST_TIMEOUT = 500;
+    long REQUEST_TIMEOUT =2;
 
     String NOTIFICATION_CHANNEL_ABANDONED_CART = "abandonedCart";
     long DEFAULT_TIME_FOR_ABANDONED_CART_NOTIFICATION = 2*3600000;
@@ -65,5 +66,10 @@ public interface ApplicationConstant {
 //        final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
 //        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
 //    }
+
+    /* Status Codes*/
+    int SUCCESS = 200;
+    int CREATED = 201;
+    int NOT_FOUND = 404;
 
 }

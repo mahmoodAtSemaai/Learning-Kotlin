@@ -81,6 +81,9 @@ object DepVersions {
 
     //SweetAlertDialog Module
     const val materialishProgress = "1.0"
+    const val navigation = "2.4.1"
+    const val navigationfragment="1.4.0"
+    const val nav_version = "2.4.1"
 
 
     //appMarketPlace Modules
@@ -92,13 +95,15 @@ object DepVersions {
     const val fragment = "1.4.0"
 
     //hilt
-    const val hilt = "2.35.1"
+    const val hilt = "2.40.5"
 
     // Arch Components
     const val lifecycle = "2.4.1"
 
     // Kotlin Coroutines
-    const val kotlinCoroutines = "1.4.1"
+    const val kotlinCoroutines = "1.6.1"
+
+    const val fragmentKTX = "1.4.1"
 
 }
 
@@ -114,8 +119,8 @@ object Flavours {
 }
 
 object Version {
-    const val code = 24
-    const val name = "1.4.2"
+    const val code = 25
+    const val name = "1.5.0"
 }
 
 object Url {
@@ -144,6 +149,7 @@ object Dependencies {
     const val googleServices = "com.google.gms:google-services:${DepVersions.googleServices}"
     const val firebaseCrashlyticsGradle = "com.google.firebase:firebase-crashlytics-gradle:${DepVersions.firebaseCrashlyticsGradle}"
     const val hiltClassPath = "com.google.dagger:hilt-android-gradle-plugin:${DepVersions.hilt}"
+    const val safeargs =  "androidx.navigation:navigation-safe-args-gradle-plugin:${DepVersions.nav_version}"
 
     //App Dependencies
     const val testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -166,6 +172,7 @@ object Dependencies {
     const val glideCompiler = "com.github.bumptech.glide:compiler:${DepVersions.glide}"
 
     const val circleImageView = "de.hdodenhof:circleimageview:${DepVersions.circleImageView}"
+
     const val jsoup = "org.jsoup:jsoup:${DepVersions.jsoup}"
 
     const val firebaseCrash = "com.google.firebase:firebase-crash:${DepVersions.firebaseCrash}"
@@ -240,12 +247,18 @@ object Dependencies {
     const val coroutinesAndroid =
             "org.jetbrains.kotlinx:kotlinx-coroutines-android:${DepVersions.kotlinCoroutines}"
 
+    //Fragment Ktx
+    const val fragmentKtx = "androidx.fragment:fragment-ktx:${DepVersions.fragmentKTX}"
+
 
     //appMarketPlace Module
     const val materialDesignSupport =
         "com.google.android.material:material:${DepVersions.materialDesignSupport}"
     const val constraintLayoutModule = "androidx.constraintlayout:constraintlayout:${DepVersions.constraintLayoutModule}"
     const val jUnit = "junit:junit:${DepVersions.jUnit}"
+    const val navigation = "androidx.navigation:navigation-fragment-ktx:${DepVersions.navigation}"
+    const val navigationUI = "androidx.navigation:navigation-ui-ktx:${DepVersions.navigation}"
+    const val navigationfragment = "androidx.fragment:fragment-ktx:${DepVersions.navigationfragment}"
 
     const val activity = "androidx.activity:activity-ktx:${DepVersions.activty}"
     const val fragment = "androidx.fragment:fragment-ktx:${DepVersions.fragment}"

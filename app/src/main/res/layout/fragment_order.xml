@@ -24,23 +24,19 @@
             type="com.webkul.mobikul.odoo.handler.order.OrderFragmentHandler" />
     </data>
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white">
-
         <androidx.core.widget.NestedScrollView
             android:id="@+id/order_details_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="@{data==null ? View.GONE : View.VISIBLE}">
+            android:layout_height="wrap_content"
+            android:visibility="@{data==null ? View.GONE : View.VISIBLE}"
+            >
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingVertical="@dimen/size_12">
+                android:paddingVertical="@dimen/size_10"
+                >
 
                 <TextView
                     android:id="@+id/tv_order_name"
@@ -303,7 +299,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/iv_bank_icon"
                     tools:text="BRI Virtual Account" />
 
-
                 <include
                     android:id="@+id/divider_5"
                     layout="@layout/divider_horizontal"
@@ -424,23 +419,25 @@
                     android:layout_height="wrap_content"
                     app:constraint_referenced_ids="tv_purchase_date,tv_purchase_date_text" />
 
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/custom_progress_drawable"
+                    android:indeterminate="true"
+                    android:visibility="@{data==null ? View.VISIBLE :View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </androidx.core.widget.NestedScrollView>
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/custom_progress_drawable"
-            android:indeterminate="true"
-            android:visibility="@{data==null ? View.VISIBLE :View.GONE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </layout>

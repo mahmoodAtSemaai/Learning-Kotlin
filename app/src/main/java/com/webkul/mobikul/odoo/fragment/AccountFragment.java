@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
 import com.google.android.material.snackbar.Snackbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,9 +19,11 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.webkul.mobikul.odoo.R;
+import com.webkul.mobikul.odoo.activity.NewHomeActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
+import com.webkul.mobikul.odoo.constant.ApplicationConstant;
 import com.webkul.mobikul.odoo.databinding.FragmentAccountBinding;
 import com.webkul.mobikul.odoo.dialog_frag.ProfilePictureDialogFragment;
 import com.webkul.mobikul.odoo.handler.customer.AccountFragmentHandler;
@@ -28,6 +33,7 @@ import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.ImageHelper;
 import com.webkul.mobikul.odoo.helper.SnackbarHelper;
+import com.webkul.mobikul.odoo.model.ReferralResponse;
 import com.webkul.mobikul.odoo.model.customer.account.SaveCustomerDetailResponse;
 import com.webkul.mobikul.odoo.model.request.SaveCustomerDetailRequest;
 
@@ -42,30 +48,14 @@ import static com.webkul.mobikul.odoo.helper.ImageHelper.encodeImage;
 import org.greenrobot.eventbus.EventBus;
 
 
-/**
-
- * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
- * @author Webkul <support@webkul.com>
-
- * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
- * @license https://store.webkul.com/license.html ASL Licence
-
- * @link https://store.webkul.com/license.html
-
- */
 
 public class AccountFragment extends BaseFragment {
 
     @SuppressWarnings("unused")
     private static final String TAG = "AccountFragment";
     public FragmentAccountBinding mBinding;
-
+    public String referralCode;
+    NavController navController;
     public static AccountFragment newInstance() {
         return new AccountFragment();
     }
@@ -234,12 +224,23 @@ public class AccountFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         mBinding.setWishlistEnabled(AppSharedPref.isAllowedWishlist(getActivity()));
         Helper.hideKeyboard(getContext());
+        navController = Navigation.findNavController(view);
+
+        mBinding.allOrdersText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController.popBackStack();
+                navController.navigate(R.id.orderListFragment);
+            }
+        });
+
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mBinding.setHandler(new AccountFragmentHandler(getContext(), this));
+        hitApiForReferralCode();
     }
 
     @Override
@@ -339,6 +340,7 @@ public class AccountFragment extends BaseFragment {
         }
     }
 
+
     @Override
     public void onStart() {
         super.onStart();
@@ -362,4 +364,44 @@ public class AccountFragment extends BaseFragment {
     public void setTitle(@NonNull String title) {
 
     }
+
+    public void hitApiForReferralCode(){
+
+        ApiConnection.getReferralCode(getContext(), AppSharedPref.getCustomerId(getContext())).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<ReferralResponse>(getContext()) {
+            @Override
+            public void onNext(@io.reactivex.annotations.NonNull ReferralResponse response) {
+                super.onNext(response);
+                handleReferralResponse(response);
+            }
+        });
+    }
+
+    public void handleReferralResponse(ReferralResponse response){
+        if (response.getStatus() == ApplicationConstant.SUCCESS || response.getStatus() == ApplicationConstant.CREATED) {
+            showReferralCode(response.getReferralCode());
+        }
+        else if(response.getStatus() == ApplicationConstant.NOT_FOUND){
+            hitApiToGenerateReferralCode(AppSharedPref.getCustomerId(getContext()));
+        }
+        else {
+            SnackbarHelper.getSnackbar((Activity) getContext(), response.getMessage(), Snackbar.LENGTH_LONG, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
+        }
+    }
+
+    public void hitApiToGenerateReferralCode(String userId){
+        ApiConnection.generateReferralCode(getContext(), userId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<ReferralResponse>(getContext()) {
+            @Override
+            public void onNext(@io.reactivex.annotations.NonNull ReferralResponse response) {
+                super.onNext(response);
+                handleReferralResponse(response);
+            }
+        });
+    }
+
+    public void showReferralCode(String code){
+        AppSharedPref.setReferralCode(getContext(), code);
+        String message = getContext().getString(R.string.copy_referral_code) + ": " + code;
+        mBinding.referralCode.setText(message);
+    }
+
 }

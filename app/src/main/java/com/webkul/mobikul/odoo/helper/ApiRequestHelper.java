@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.google.gson.Gson;
 import com.webkul.mobikul.odoo.activity.HomeActivity;
+import com.webkul.mobikul.odoo.activity.NewHomeActivity;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.model.home.HomePageResponse;
@@ -39,7 +40,7 @@ public class ApiRequestHelper {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
                 super.onSubscribe(d);
-                AlertDialogHelper.showDefaultProgressDialog(context);
+              //  AlertDialogHelper.showDefaultProgressDialog(context);
             }
 
             @Override
@@ -64,7 +65,7 @@ public class ApiRequestHelper {
                     return;
                 }
 
-                Intent intent = new Intent(context, HomeActivity.class);
+                Intent intent = new Intent(context, NewHomeActivity.class);
                 intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
                 context.startActivity(intent);
                 ((Activity) context).finish();
@@ -149,7 +150,7 @@ public class ApiRequestHelper {
                     }
                     return;
                 }
-                Intent intent = new Intent(context, HomeActivity.class);
+                Intent intent = new Intent(context, NewHomeActivity.class);
                 intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
                 context.startActivity(intent);
                 ((Activity) context).finish();

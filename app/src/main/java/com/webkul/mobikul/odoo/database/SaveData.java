@@ -2,7 +2,11 @@ package com.webkul.mobikul.odoo.database;
 
 import android.app.Activity;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
+
+import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.constant.DataBaseConstant;
 import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse;
 import com.webkul.mobikul.odoo.model.extra.SplashScreenResponse;
@@ -78,13 +82,13 @@ public class SaveData {
     }
 
     public SaveData(Activity context, CatalogProductResponse catalogProductResponse, String requestType) {
-        context.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(context);
-                sqlLiteDbHelper.insertCatalogPageData(catalogProductResponse, requestType);
-            }
-        });
+            context.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(context);
+                    sqlLiteDbHelper.insertCatalogPageData(catalogProductResponse, requestType);
+                }
+            });
     }
 
 

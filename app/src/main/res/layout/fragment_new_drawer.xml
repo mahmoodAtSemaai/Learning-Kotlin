@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="java.util.HashMap" />
+
+        <import type="com.webkul.mobikul.odoo.helper.AppSharedPref" />
+
+        <variable
+            name="languageData"
+            type="java.util.HashMap" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.handler.home.HomeActivityHandler" />
+
+        <import type="com.webkul.mobikul.odoo.helper.ImageHelper.ImageType" />
+
+        <import type="com.bumptech.glide.load.engine.DiskCacheStrategy" />
+
+        <variable
+            name="customerName"
+            type="String" />
+
+
+    </data>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nav_start_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/size_10"
+            android:layout_marginLeft="@dimen/size_10"
+            android:layout_marginTop="@dimen/size_20">
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/drawer_close_btn"
+                android:layout_width="@dimen/size_24"
+                android:layout_height="@dimen/size_24"
+                android:layout_marginStart="@dimen/size_10"
+                android:layout_marginLeft="@dimen/size_10"
+                android:src="@drawable/ic_action_navigation_close">
+
+            </androidx.appcompat.widget.AppCompatImageView>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_30"
+                android:layout_marginStart="@dimen/size_46"
+                android:gravity="top"
+                android:text="@string/main_menu"
+                android:textSize="@dimen/font_size_16"
+                android:textStyle="bold"
+                app:fontFamily="@font/roboto_medium">
+
+            </androidx.appcompat.widget.AppCompatTextView>
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="@dimen/size_40"
+                android:layout_height="@dimen/size_40"
+                android:layout_below="@+id/drawer_close_btn"
+                android:layout_marginStart="@dimen/size_12"
+                android:layout_marginTop="@dimen/size_18"
+                android:src="@color/grey_400"
+                app:diskCacheStrategy="@{DiskCacheStrategy.NONE}"
+                app:imageType="@{ImageType.PROFILE_PIC_GENERIC}"
+                app:imageUrl="@{AppSharedPref.getCustomerProfileImage(context)}"
+                app:placeholder="@{@drawable/ic_men_avatar}"
+                app:skipMemoryCache="@{true}">
+
+            </de.hdodenhof.circleimageview.CircleImageView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/drawer_close_btn"
+                android:layout_marginStart="@dimen/size_70"
+                android:layout_marginTop="@dimen/size_15"
+                android:orientation="vertical"
+                android:weightSum="10">
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/username"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/font_weight_0"
+                    android:layout_weight="5"
+                    android:layout_marginStart="@dimen/size_2"
+                    android:layout_gravity="top"
+                    android:drawablePadding="@dimen/points_box_spacing"
+                    android:gravity="center|start"
+                    android:text="@{customerName}"
+                    android:textAlignment="textStart"
+                    android:textSize="@dimen/font_size_16"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/roboto_medium"
+                    />
+
+
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity="bottom"
+                    android:layout_marginTop="@dimen/size_8"
+                    android:orientation="horizontal"
+                    android:layout_weight="5">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="@dimen/size_20"
+                        android:layout_gravity="start"
+                        android:layout_height="@dimen/size_20"
+                        android:src="@drawable/ic_semaai_points"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/size_20"
+                        android:paddingStart="@dimen/size_8"
+                        android:gravity="center|start"
+                        android:text="@string/points"
+                        android:textAlignment="textStart"
+                        android:textSize="@dimen/font_size_12" />
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/drawer_loyality_points"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/size_20"
+                        android:paddingStart="@dimen/size_5"
+                        android:gravity="center|start"
+                        android:text=""
+                        android:textAlignment="textStart"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/font_size_12" />
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
+            </LinearLayout>
+
+<!--            <androidx.appcompat.widget.AppCompatTextView-->
+<!--                android:id="@+id/username"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="@dimen/size_50"-->
+<!--                android:layout_below="@+id/drawer_close_btn"-->
+<!--                android:layout_marginStart="@dimen/size_70"-->
+<!--                android:layout_marginTop="@dimen/size_15"-->
+<!--                android:gravity="center"-->
+<!--                android:visibility="invisible"-->
+<!--                android:text="@{customerName}"-->
+<!--                android:textSize="@dimen/font_size_16"-->
+<!--                android:textStyle="bold"-->
+<!--                android:fontFamily="@font/roboto_medium"-->
+<!--                >-->
+
+<!--            </androidx.appcompat.widget.AppCompatTextView>-->
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/size_100"
+                android:layout_marginEnd="-1dp"
+                android:layout_marginRight="-1dp"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/spacing_generic">
+
+                <View
+                    android:id="@+id/divider_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_1"
+                    android:layout_below="@+id/linear_layout"
+                    android:layout_marginStart="@dimen/size_10"
+                    android:layout_marginEnd="@dimen/size_10"
+                    android:background="@color/grey_400" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/category_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/size_10"
+                    android:layout_marginEnd="@dimen/size_10"
+                    android:elevation="@dimen/size_1"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:targetApi="lollipop" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_55"
+                    android:layout_marginStart="@dimen/size_10"
+                    android:drawableStart="@drawable/ic_vector_store_grey400_24dp_wrapper"
+                    android:drawableLeft="@drawable/ic_vector_store_grey400_24dp_wrapper"
+                    android:drawablePadding="@dimen/spacing_normal"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center_vertical"
+                    android:onClick="@{()->handler.onClickMarketplaceIcon()}"
+                    android:padding="@dimen/spacing_normal"
+                    android:text="@string/marketplace"
+                    android:textSize="@dimen/font_size_15"
+                    android:visibility="@{AppSharedPref.isMarketplaceAllowed(context) ? View.VISIBLE : View.GONE }" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_55"
+                    android:layout_marginStart="@dimen/size_10"
+                    android:drawableStart="@drawable/ic_setting"
+                    android:drawableLeft="@drawable/ic_setting"
+                    android:drawablePadding="@dimen/spacing_normal"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center_vertical"
+                    android:onClick="@{()->handler.onClickSettings()}"
+                    android:padding="@dimen/spacing_normal"
+                    android:text="@string/setting"
+                    android:textSize="@dimen/font_size_15" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_55"
+                    android:layout_marginStart="@dimen/size_26"
+                    android:drawablePadding="@dimen/spacing_normal"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center_vertical"
+                    android:onClick="@{()->handler.shareApp()}"
+                    android:text="@string/share_app"
+                    android:textSize="@dimen/font_size_16"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_55"
+                    android:layout_marginStart="@dimen/size_26"
+                    android:drawablePadding="@dimen/spacing_normal"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="center_vertical"
+                    android:onClick="@{()->handler.rateUs()}"
+                    android:text="@string/rate_us"
+                    android:textSize="@dimen/font_size_16"
+                    android:textStyle="bold" />
+
+
+                <LinearLayout
+                    android:layout_width="@dimen/size_90"
+                    android:layout_height="@dimen/size_35"
+                    android:layout_marginStart="@dimen/size_25"
+                    android:layout_marginTop="@dimen/size_20"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:id="@+id/english_option"
+                        android:layout_width="@dimen/font_weight_0"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5"
+                        android:background="@color/background_orange"
+                        android:fontFamily="@font/roboto_medium"
+                        android:gravity="center"
+                        android:text="Eng"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/font_size_16">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/ind_option"
+                        android:layout_width="@dimen/font_weight_0"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5"
+                        android:background="@color/gray"
+                        android:fontFamily="@font/roboto_medium"
+                        android:gravity="center"
+                        android:text="Ind"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/font_size_16">
+
+                    </TextView>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:drawablePadding="@dimen/spacing_normal"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:padding="@dimen/spacing_normal"
+                    android:text="&#169; Semaai PTE Ltd. | &#169; PT Agri Pintar Asia"
+                    android:textSize="10sp" />
+
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/font_weight_0"
+                    android:layout_weight="1" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</layout>
+
+

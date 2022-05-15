@@ -47,29 +47,29 @@ public class SingUpMarketplaceHandler extends SignUpHandler {
     public void viewMarketplaceTermNCond() {
         super.viewMarketplaceTermNCond();
         Log.d("TAG", "SingUpMarketplaceHandler viewMarketplaceTermNCond : ");
-        MarketplaceApiConnection.getSellerTerms(mContext).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<TermAndConditionResponse>(mContext) {
+        MarketplaceApiConnection.getSellerTerms(context).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<TermAndConditionResponse>(context) {
 
             @Override
             public void onSubscribe(@NonNull Disposable d) {
                 super.onSubscribe(d);
-                AlertDialogHelper.showDefaultProgressDialog(mContext);
+                AlertDialogHelper.showDefaultProgressDialog(context);
             }
 
             @Override
             public void onNext(@NonNull TermAndConditionResponse termAndConditionResponse) {
                 super.onNext(termAndConditionResponse);
                 if (termAndConditionResponse.isSuccess()) {
-                    LinearLayout addedLayout = new LinearLayout(mContext);
+                    LinearLayout addedLayout = new LinearLayout(context);
                     addedLayout.setOrientation(LinearLayout.VERTICAL);
-                    WebView myWebView = new WebView(mContext);
+                    WebView myWebView = new WebView(context);
 
-                    Helper.enableDarkModeInWebView(mContext, myWebView);
+                    Helper.enableDarkModeInWebView(context, myWebView);
 
                     String mime = "text/html";
                     String encoding = "utf-8";
-                    myWebView.loadDataWithBaseURL("", TextUtils.isEmpty(termAndConditionResponse.getTermsAndConditions()) ? mContext.getString(R.string.no_terms_and_conditions_to_display) :termAndConditionResponse.getTermsAndConditions() , mime, encoding, "");
+                    myWebView.loadDataWithBaseURL("", TextUtils.isEmpty(termAndConditionResponse.getTermsAndConditions()) ? context.getString(R.string.no_terms_and_conditions_to_display) :termAndConditionResponse.getTermsAndConditions() , mime, encoding, "");
                     addedLayout.addView(myWebView);
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(context);
                     dialog.setView(addedLayout);
                     dialog.show();
                 }

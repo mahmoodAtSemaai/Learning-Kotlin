@@ -30,6 +30,8 @@ import com.webkul.mobikul.odoo.model.request.PlaceOrderRequest
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import com.webkul.mobikul.odoo.helper.AppSharedPref
+
 
 class CheckoutActivity : BaseActivity() {
 
@@ -39,6 +41,7 @@ class CheckoutActivity : BaseActivity() {
     private var selectedPaymentMethod: SelectedPaymentMethod? = null
     private val TOP_Y = 0
     private val START_X = 0
+    private var isUserWantToRedeemPoints: Boolean = false
 
     private val startActivityForShippingAddressResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
@@ -88,6 +91,7 @@ class CheckoutActivity : BaseActivity() {
         createDialog()
         setLayoutData()
         setButtonClickListener()
+        getIsUserWantToRedeemPoints()
         getArguments()
     }
 
@@ -143,7 +147,7 @@ class CheckoutActivity : BaseActivity() {
         refreshRecyclerView: Boolean,
         refreshPaymentDetails: Boolean
     ) {
-        ApiConnection.getOrderData(this, orderId).subscribeOn(Schedulers.io())
+        ApiConnection.getOrderData(this, orderId, isUserWantToRedeemPoints).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : CustomObserver<OrderDataResponse?>(this@CheckoutActivity) {
                 override fun onSubscribe(d: Disposable) {
@@ -178,6 +182,7 @@ class CheckoutActivity : BaseActivity() {
         dialog.confirmText = getString(R.string.ok)
         dialog.setConfirmClickListener {
             dialog.hide()
+            setIsCustomerWantToRedeemPointsfalse()
             finish()
         }
         dialog.show()
@@ -208,10 +213,10 @@ class CheckoutActivity : BaseActivity() {
                 getString(R.string.cod_text),
                 orderDataResponse.amountTotal,
                 "(${orderDataResponse.cartCount} ${getString(R.string.product)})",
+                orderDataResponse.pointsRedeemed,
                 "",
                 "",
-                "",
-                orderDataResponse.amountTotal
+                orderDataResponse.grandTotal
             )
         else {
             val paymentMethodText = binding.layoutPaymentMethod.tvMethodDescription.text.toString()
@@ -224,20 +229,20 @@ class CheckoutActivity : BaseActivity() {
                     paymentMethodText,
                     orderDataResponse.amountTotal,
                     "(${orderDataResponse.cartCount} ${getString(R.string.product)})",
-                    "",
+                    orderDataResponse.pointsRedeemed,
                     orderDataResponse.delivery.total,
                     "",
-                    orderDataResponse.amountTotal
+                    orderDataResponse.grandTotal
                 )
             } else
                 orderPaymentData = OrderPaymentData(
                     getString(R.string.cod_text),
                     orderDataResponse.amountTotal,
                     "(${orderDataResponse.cartCount} ${getString(R.string.product)})",
-                    "",
+                    orderDataResponse.pointsRedeemed,
                     orderDataResponse.delivery.total,
                     "",
-                    orderDataResponse.amountTotal
+                    orderDataResponse.grandTotal
                 )
         }
         binding.paymentDetailContainer.data = orderPaymentData
@@ -341,7 +346,8 @@ class CheckoutActivity : BaseActivity() {
             OrderReviewRequest(
                 orderDataResponse.shippingAddressId.id.toString(),
                 orderDataResponse.delivery?.shippingId.toString(),
-                selectedPaymentMethod?.paymentAcquirerId
+                selectedPaymentMethod?.paymentAcquirerId,
+                isUserWantToRedeemPoints
             )
         )
             .subscribeOn(Schedulers.io())
@@ -384,7 +390,7 @@ class CheckoutActivity : BaseActivity() {
     }
 
     private fun placeVirtualAccountOrder(transactionId: Int) {
-        ApiConnection.placeOrder(this, PlaceOrderRequest(transactionId))
+        ApiConnection.placeOrder(this, PlaceOrderRequest(transactionId, isUserWantToRedeemPoints))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : CustomObserver<OrderPlaceResponse?>(this) {
@@ -421,12 +427,13 @@ class CheckoutActivity : BaseActivity() {
                 )
                 .putExtra(BUNDLE_KEY_ORDER_ID, orderDataResponse.orderId.toString())
         )
+        setIsCustomerWantToRedeemPointsfalse()
         finish()
     }
 
 
     private fun placeCODOrder(transactionId: Int) {
-        ApiConnection.placeOrder(this, PlaceOrderRequest(transactionId))
+        ApiConnection.placeOrder(this, PlaceOrderRequest(transactionId, isUserWantToRedeemPoints))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : CustomObserver<OrderPlaceResponse?>(this) {
@@ -458,6 +465,7 @@ class CheckoutActivity : BaseActivity() {
                     PaymentStatusFragment.SHOW_PAYMENT_COD_MESSAGE
                 )
         )
+        setIsCustomerWantToRedeemPointsfalse()
         finish()
     }
 
@@ -488,6 +496,14 @@ class CheckoutActivity : BaseActivity() {
         }
     }
 
+    private fun getIsUserWantToRedeemPoints() {
+        isUserWantToRedeemPoints = AppSharedPref.getIsCustomerWantToRedeemPoints(this)
+    }
+
+    private fun setIsCustomerWantToRedeemPointsfalse(){
+        AppSharedPref.setIsCustomerWantToRedeemPoints(this, false)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         return true
     }
@@ -498,7 +514,14 @@ class CheckoutActivity : BaseActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
+        setIsCustomerWantToRedeemPointsfalse()
         finish()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        dialog.dismiss()
+    }
+
 
 }
