@@ -123,3 +123,5 @@
 ##---------------Begin: proguard configuration for rxjava  ----------
 
 -keepclassmembers enum * { *; }
+
+-keepnames class com.webkul.mobikul.odoo.model.home.HomePageResponse
