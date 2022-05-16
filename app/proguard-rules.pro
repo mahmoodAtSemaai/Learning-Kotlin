@@ -131,6 +131,4 @@
 -keep class com.crashlytics.** { *; }
 -dontwarn com.crashlytics.**
 
--keep class * extends androidx.fragment.app.Fragment{}
--keepnames class * extends android.os.Parcelable
--keepnames class * extends java.io.Serializable
+-keepnames class com.webkul.mobikul.odoo.model.home.HomePageResponse
