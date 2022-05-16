@@ -130,3 +130,5 @@
 -keep public class * extends java.lang.Exception
 -keep class com.crashlytics.** { *; }
 -dontwarn com.crashlytics.**
+
+-keepnames class com.webkul.mobikul.odoo.model.home.HomePageResponse
