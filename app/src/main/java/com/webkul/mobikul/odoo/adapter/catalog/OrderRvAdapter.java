@@ -55,16 +55,36 @@ public class OrderRvAdapter extends RecyclerView.Adapter<OrderRvAdapter.ViewHold
         holder.mBinding.orderLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                NavController navController = null;
+                try {
+                     navController = Navigation.findNavController(view);
+                }catch (IllegalStateException e){
+                    e.printStackTrace();
+                }
 
-                NavController navController = Navigation.findNavController(view);
-
-                Fragment fragment = new Fragment();
-                Bundle bundle = new Bundle();
-                bundle.putInt("orderid" , Integer.parseInt(mOrderDatas.get(holder.getAdapterPosition()).getId()));
-                fragment.setArguments(bundle);
-                navController.navigate(R.id.action_orderListFragment_to_orderFragment , bundle);
+                if(isNavController(navController)){
+                    navigateNavController(navController,holder);
+                }else{
+                    viewOrderDetails(holder);
+                }
             }
         });
+    }
+
+    private boolean isNavController(NavController navController) {
+        return navController != null;
+    }
+
+    private void navigateNavController(NavController navController,ViewHolder holder) {
+        Fragment fragment = new Fragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("orderid", Integer.parseInt(mOrderDatas.get(holder.getAdapterPosition()).getId()));
+        fragment.setArguments(bundle);
+        navController.navigate(R.id.action_orderListFragment_to_orderFragment, bundle);
+    }
+
+    private void viewOrderDetails(ViewHolder holder) {
+        holder.mBinding.getHandler().viewOrderDetail();
     }
 
     @Override

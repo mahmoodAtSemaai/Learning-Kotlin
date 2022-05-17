@@ -229,7 +229,6 @@ public class AccountFragment extends BaseFragment {
         mBinding.allOrdersText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navController.popBackStack();
                 navController.navigate(R.id.orderListFragment);
             }
         });
