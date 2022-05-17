@@ -47,7 +47,7 @@ public class OrderListFragment extends BaseFragment {
     private boolean mIsFirstCall = true;
     private int mOffset;
     private int pageSize = 10;
-    NavController navController;
+    NavController navController = null;
 
 
 
@@ -66,14 +66,18 @@ public class OrderListFragment extends BaseFragment {
     @Override
     public void onViewCreated(@androidx.annotation.NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        navController = Navigation.findNavController(view);
+        try {
+            navController = Navigation.findNavController(view);
 
-        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                navController.navigateUp();
-            }
-        });
+            requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+                @Override
+                public void handleOnBackPressed() {
+                    navController.navigateUp();
+                }
+            });
+        }catch (IllegalStateException e){
+            e.printStackTrace();
+        }
 
     }
 
@@ -111,6 +115,7 @@ public class OrderListFragment extends BaseFragment {
 
             /*BETTER REPLACE SOME CONTAINER INSTEAD OF WHOLE PAGE android.R.id.content */
             if (binding.getData().getOrders().isEmpty()) {
+                if(navController!=null){
                 Bundle bundle = new Bundle();
                 bundle.putInt(BUNDLE_KEY_EMPTY_FRAGMENT_DRAWABLE_ID, R.drawable.ic_vector_empty_order);
                 bundle.putString(BUNDLE_KEY_EMPTY_FRAGMENT_TITLE_ID, getString(R.string.no_order_placed));
@@ -118,7 +123,11 @@ public class OrderListFragment extends BaseFragment {
                 bundle.putBoolean(BUNDLE_KEY_EMPTY_FRAGMENT_HIDE_CONTINUE_SHOPPING_BTN, true);
                 bundle.putInt(BUNDLE_KEY_EMPTY_FRAGMENT_TYPE, EmptyFragment.EmptyFragType.TYPE_ORDER.ordinal());
                 navController.popBackStack();
-                navController.navigate(R.id.emptyFragment,bundle);
+                navController.navigate(R.id.emptyFragment, bundle);
+                }else{
+                    FragmentHelper.replaceFragment(R.id.container, getContext(), EmptyFragment.newInstance(R.drawable.ic_vector_empty_order, getString(R.string.no_order_placed), "", true,
+                            EmptyFragment.EmptyFragType.TYPE_ORDER.ordinal()), EmptyFragment.class.getSimpleName(), false, false);
+                }
             } else {
 
                 binding.orderRv.addOnScrollListener(new RecyclerView.OnScrollListener() {

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -54,8 +55,14 @@ class NewDrawerFragment : BaseFragment() {
 
 
         mBinding.drawerCloseBtn.setOnClickListener {
-            (requireActivity()).onBackPressed()
+            requireActivity().finish()
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                activity!!.finish()
+            }
+        })
 
         return mBinding.root
     }
@@ -157,7 +164,6 @@ class NewDrawerFragment : BaseFragment() {
     fun showPoints(loyaltyPoints: Int) {
         mBinding.drawerLoyalityPoints.text=loyaltyPoints.toString()
     }
-
 
 
     private fun setUpDrawer(homePageResponse: HomePageResponse?) {
