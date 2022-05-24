@@ -46,4 +46,9 @@
             android:name="orderid"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/emptyFragment"
+        android:name="com.webkul.mobikul.odoo.fragment.EmptyFragment"
+        android:label="@string/label_empty_fragment"
+        tools:layout="@layout/fragment_empty"/>
 </navigation>

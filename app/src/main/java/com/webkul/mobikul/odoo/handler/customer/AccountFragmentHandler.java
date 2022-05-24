@@ -1,5 +1,12 @@
 package com.webkul.mobikul.odoo.handler.customer;
 
+import static com.webkul.mobikul.odoo.BuildConfig.APP_PLAYSTORE_URL;
+import static com.webkul.mobikul.odoo.activity.HomeActivity.RC_CAMERA;
+import static com.webkul.mobikul.odoo.activity.HomeActivity.RC_PICK_IMAGE;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CUSTOMER_FRAG_TYPE;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_SELLER_ID;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
@@ -16,19 +23,17 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.muddzdev.styleabletoastlibrary.StyleableToast;
-import com.theartofdev.edmodo.cropper.CropImage;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.CustomerBaseActivity;
-import com.webkul.mobikul.odoo.activity.HomeActivity;
+import com.webkul.mobikul.odoo.activity.NewDrawerActivity;
+import com.webkul.mobikul.odoo.activity.NewHomeActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.activity.SplashScreenActivity;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
-import com.webkul.mobikul.odoo.analytics.BaseAnalytics;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.fragment.AccountFragment;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
-import com.webkul.mobikul.odoo.helper.ApiRequestHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.CustomerHelper;
 import com.webkul.mobikul.odoo.helper.ErrorConstants;
@@ -37,9 +42,6 @@ import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.helper.SnackbarHelper;
 import com.webkul.mobikul.odoo.model.BaseResponse;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -47,13 +49,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.webkul.mobikul.odoo.BuildConfig.APP_PLAYSTORE_URL;
-import static com.webkul.mobikul.odoo.activity.HomeActivity.RC_CAMERA;
-import static com.webkul.mobikul.odoo.activity.HomeActivity.RC_PICK_IMAGE;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CUSTOMER_FRAG_TYPE;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_SELLER_ID;
 
 
 /**
@@ -314,7 +309,11 @@ public class AccountFragmentHandler {
         Intent chooserIntent = Intent.createChooser(getIntent, context.getString(R.string.select_file));
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent, cameraIntent});
 
-        ((HomeActivity) context).startActivityForResult(chooserIntent, RC_PICK_IMAGE);
+        if (context instanceof NewHomeActivity) {
+            ((NewHomeActivity) context).startActivityForResult(chooserIntent, RC_PICK_IMAGE);
+        }else if (context instanceof NewDrawerActivity) {
+            ((NewDrawerActivity) context).startActivityForResult(chooserIntent, RC_PICK_IMAGE);
+        }
     }
 
     public void pickImageFromFileSystemIntent() {

@@ -1,28 +1,26 @@
 package com.webkul.mobikul.odoo.fragment;
 
-import android.content.Intent;
-
-import androidx.activity.OnBackPressedCallback;
-import androidx.databinding.DataBindingUtil;
-
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.adapter.catalog.OrderRvAdapter;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.databinding.FragmentOrderListBinding;
-import com.webkul.mobikul.odoo.helper.FragmentHelper;
+import com.webkul.mobikul.odoo.handler.generic.EmptyFragmentHandler;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.IntentHelper;
 import com.webkul.mobikul.odoo.model.customer.order.MyOrderReponse;
@@ -31,13 +29,6 @@ import com.webkul.mobikul.odoo.model.request.BaseLazyRequest;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_DRAWABLE_ID;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_HIDE_CONTINUE_SHOPPING_BTN;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_SUBTITLE_ID;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_TITLE_ID;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_TYPE;
 
 
 public class OrderListFragment extends BaseFragment {
@@ -115,19 +106,11 @@ public class OrderListFragment extends BaseFragment {
 
             /*BETTER REPLACE SOME CONTAINER INSTEAD OF WHOLE PAGE android.R.id.content */
             if (binding.getData().getOrders().isEmpty()) {
-                if(navController!=null){
-                Bundle bundle = new Bundle();
-                bundle.putInt(BUNDLE_KEY_EMPTY_FRAGMENT_DRAWABLE_ID, R.drawable.ic_vector_empty_order);
-                bundle.putString(BUNDLE_KEY_EMPTY_FRAGMENT_TITLE_ID, getString(R.string.no_order_placed));
-                bundle.putString(BUNDLE_KEY_EMPTY_FRAGMENT_SUBTITLE_ID, "");
-                bundle.putBoolean(BUNDLE_KEY_EMPTY_FRAGMENT_HIDE_CONTINUE_SHOPPING_BTN, true);
-                bundle.putInt(BUNDLE_KEY_EMPTY_FRAGMENT_TYPE, EmptyFragment.EmptyFragType.TYPE_ORDER.ordinal());
-                navController.popBackStack();
-                navController.navigate(R.id.emptyFragment, bundle);
-                }else{
-                    FragmentHelper.replaceFragment(R.id.container, getContext(), EmptyFragment.newInstance(R.drawable.ic_vector_empty_order, getString(R.string.no_order_placed), "", true,
-                            EmptyFragment.EmptyFragType.TYPE_ORDER.ordinal()), EmptyFragment.class.getSimpleName(), false, false);
-                }
+                binding.emptyLayout.setTitle(getString(R.string.no_order_placed));
+                binding.emptyLayout.setSubtitle("");
+                binding.emptyLayout.setEmptyImage(R.drawable.ic_vector_empty_order);
+                binding.emptyLayout.setHideContinueShoppingBtn(true);
+                binding.emptyLayout.setHandler(new EmptyFragmentHandler(getContext()));
             } else {
 
                 binding.orderRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
