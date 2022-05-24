@@ -209,7 +209,12 @@ public class SplashScreenActivity extends BaseActivity {
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
                                 sweetAlertDialog.dismiss();
                                 AppSharedPref.clearCustomerData(SplashScreenActivity.this);
-                                Intent i = new Intent(SplashScreenActivity.this, SignInSignUpActivityV1.class);
+                                Intent i;
+                                if (AppUpdateHelper.getAuthRevampEnabled()) {
+                                    i = new Intent(SplashScreenActivity.this, SignInSignUpActivityV1.class);
+                                } else {
+                                    i = new Intent(SplashScreenActivity.this, SignInSignUpActivity.class);
+                                }
                                 i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, SplashScreenActivity.class.getSimpleName());
                                 getSplashPageData(i);
                             }
@@ -289,7 +294,12 @@ public class SplashScreenActivity extends BaseActivity {
                                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                                         sweetAlertDialog.dismiss();
                                         AppSharedPref.clearCustomerData(SplashScreenActivity.this);
-                                        Intent i = new Intent(SplashScreenActivity.this, SignInSignUpActivityV1.class);
+                                        Intent i;
+                                        if (AppUpdateHelper.getAuthRevampEnabled()) {
+                                            i = new Intent(SplashScreenActivity.this, SignInSignUpActivityV1.class);
+                                        } else {
+                                            i = new Intent(SplashScreenActivity.this, SignInSignUpActivity.class);
+                                        }
                                         i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, SplashScreenActivity.class.getSimpleName());
                                         getSplashPageData(i);
                                     }

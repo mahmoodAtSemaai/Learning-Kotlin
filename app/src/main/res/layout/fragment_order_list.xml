@@ -21,7 +21,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="@{data.orders.empty ? View.GONE : View.VISIBLE}">
 
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -69,6 +70,10 @@
 
         </RelativeLayout>
 
+        <include
+            android:id="@+id/empty_layout"
+            layout="@layout/fragment_empty"
+            android:visibility="@{data.orders.empty ? View.VISIBLE : View.GONE}"/>
 
     </FrameLayout>
 
