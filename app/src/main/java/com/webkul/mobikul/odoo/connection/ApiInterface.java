@@ -6,6 +6,11 @@ import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
 import com.webkul.mobikul.odoo.model.cart.BagResponse;
 import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse;
 import com.webkul.mobikul.odoo.model.checkout.OrderDataResponse;
+import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse;
+import com.webkul.mobikul.odoo.model.chat.ChatConfigResponse;
+import com.webkul.mobikul.odoo.model.chat.ChatCreateChannelResponse;
+import com.webkul.mobikul.odoo.model.chat.ChatHistoryResponse;
+import com.webkul.mobikul.odoo.model.chat.ChatUnreadMessageCount;
 import com.webkul.mobikul.odoo.model.checkout.OrderPlaceResponse;
 import com.webkul.mobikul.odoo.model.checkout.OrderReviewResponse;
 import com.webkul.mobikul.odoo.model.checkout.PaymentAcquirerResponse;
@@ -13,10 +18,10 @@ import com.webkul.mobikul.odoo.model.checkout.ShippingMethodResponse;
 import com.webkul.mobikul.odoo.model.customer.ResetPasswordResponse;
 import com.webkul.mobikul.odoo.model.customer.account.SaveCustomerDetailResponse;
 import com.webkul.mobikul.odoo.model.customer.address.AddressFormResponse;
+import com.webkul.mobikul.odoo.model.customer.address.MyAddressesResponse;
 import com.webkul.mobikul.odoo.model.customer.address.addressBodyParams.AddressAPIConstants;
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.DistrictListResponse;
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.StateListResponse;
-import com.webkul.mobikul.odoo.model.customer.address.MyAddressesResponse;
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.SubDistrictListResponse;
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.VillageListResponse;
 import com.webkul.mobikul.odoo.model.customer.order.MyOrderReponse;
@@ -39,7 +44,8 @@ import com.webkul.mobikul.odoo.model.payments.PaymentsAPIConstants;
 import com.webkul.mobikul.odoo.model.payments.TransferInstructionResponse;
 import com.webkul.mobikul.odoo.model.product.AddToCartResponse;
 import com.webkul.mobikul.odoo.model.product.ProductReviewResponse;
-import com.webkul.mobikul.odoo.model.request.BaseLazyRequest;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
@@ -136,6 +142,12 @@ public interface ApiInterface {
     String MOBIKUL_ORDER_ID = "order_id";
     String MOBIKUL_BANK_ID = "bank_id";
     String POINTS_REDEEM = "points_redeem";
+
+    /*Chat*/
+    String CHAT_CREATE_CHANNEL = "/im_livechat/seller_add";
+    String CHAT_UNREAD_COUNT = "/mail-channels/unread-messages";
+    String CHAT_SESSION = "/im_livechat/chat_session";
+    String CHAT_HISTORY = "/mail-channels/chats";
 
      /*-----------------------------------------------------------------------------------------------------------------------------------------------------------
         CATALOG API's
@@ -406,6 +418,28 @@ public interface ApiInterface {
 
 
     /*-----------------------------------------------------------------------------------------------------------------------------------------------------------
+       Chat API's
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+    @GET(CHAT_UNREAD_COUNT)
+    Observable<ChatBaseResponse> getUnreadChatCount();
+
+    @POST(CHAT_CREATE_CHANNEL)
+    Observable<ChatBaseResponse<ChatCreateChannelResponse>> createChannel();
+
+    @GET(CHAT_SESSION)
+    Observable<ChatBaseResponse<ChatConfigResponse>> getChatUrl(
+            @Query("channel_uuid") String channelUuid,
+            @Query("seller_id") String sellerId,
+            @Query("user_id") String userId
+    );
+
+    @GET(CHAT_HISTORY)
+    Observable<ChatBaseResponse<List<ChatHistoryResponse>>> getChatHistory();
+
+
+
+     /*-----------------------------------------------------------------------------------------------------------------------------------------------------------
        OTHER API's
     ------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     @POST(MOBIKUL_EXTRAS_REGISTER_FCM_TOKEN)

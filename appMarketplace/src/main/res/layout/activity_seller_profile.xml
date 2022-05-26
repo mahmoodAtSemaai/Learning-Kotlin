@@ -120,11 +120,9 @@
                             <!--</LinearLayout>-->
 
 
-                            <LinearLayout
+                            <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:orientation="vertical"
                                 android:padding="@dimen/spacing_generic"
                                 app:layout_scrollFlags="scroll|enterAlways">
 
@@ -142,7 +140,12 @@
                                     app:placeholder="@{@drawable/ic_men_avatar}"
                                     app:skipMemoryCache="@{true}"
                                     android:background="?colorPrimary"
-                                    tools:src="@drawable/ic_men_avatar" />
+                                    tools:src="@drawable/ic_men_avatar"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintVertical_bias="0"/>
 
 
                                 <!--<de.hdodenhof.circleimageview.CircleImageView-->
@@ -157,6 +160,7 @@
                                 <!--tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />-->
 
                                 <TextView
+                                    android:id="@+id/seller_name_tv"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@{data.name}"
@@ -164,19 +168,47 @@
                                     android:background="@color/black_50"
                                     android:textColor="@{data.sellerProfileImage.empty ? @color/text_color_primary : @android:color/white}"
                                     android:textStyle="bold"
-                                    tools:text="The footwear store" />
+                                    tools:text="The footwear store"
+                                    app:layout_constraintTop_toBottomOf="@id/seller_profile_iv"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintVertical_bias="0"/>
 
 
                                 <TextView
+                                    android:id="@+id/seller_country_tv"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
                                     android:background="@color/black_50"
                                     android:text="@{data.countryId}"
                                     android:textColor="@{data.sellerProfileImage.empty ? @color/text_color_primary : @android:color/white}"
-                                    tools:text="Noida, India" />
+                                    tools:text="Noida, India"
+                                    app:layout_constraintTop_toBottomOf="@id/seller_name_tv"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintVertical_bias="0"/>
 
-                            </LinearLayout>
+                                <androidx.appcompat.widget.AppCompatImageButton
+                                    android:id="@+id/seller_chat_btn"
+                                    android:layout_margin="8dp"
+                                    android:padding="8dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/chat_title"
+                                    android:src="@drawable/ic_vector_chat"
+                                    android:background="?attr/colorPrimary"
+                                    android:visibility="gone"
+                                    android:onClick="@{()->handler.onClickChatButton(data.sellerId, data.name)}"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="@id/seller_name_tv"
+                                    app:layout_constraintBottom_toBottomOf="@id/seller_country_tv"
+                                    app:layout_constraintStart_toEndOf="@id/seller_name_tv"
+                                    app:layout_constraintHorizontal_bias="1"/>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                         </FrameLayout>

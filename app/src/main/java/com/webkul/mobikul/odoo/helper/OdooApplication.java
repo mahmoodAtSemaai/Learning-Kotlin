@@ -22,7 +22,7 @@ import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.databinding.FragmentSignUpBinding;
 import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse;
 import com.webkul.mobikul.odoo.model.customer.signup.SignUpData;
-import com.webkul.mobikul.odoo.updates.AppUpdateHelper;
+import com.webkul.mobikul.odoo.updates.FirebaseRemoteConfigHelper;
 
 import io.reactivex.Observable;
 
@@ -41,7 +41,7 @@ public class OdooApplication extends MultiDexApplication implements LifecycleObs
         AnalyticsImpl.INSTANCE.initialize(this);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         Stetho.initializeWithDefaults(this);
-        AppUpdateHelper.init();
+        FirebaseRemoteConfigHelper.init();
         ViewTarget.setTagId(R.id.glide_tag);
     }
 

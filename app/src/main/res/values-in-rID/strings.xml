@@ -628,4 +628,8 @@
     <string name="text_one">1</string>
     <string name="no_products_found">Tidak ada produk!!</string>
 
+    <!-- Chat -->
+    <string name="chat_title">Chat</string>
+    <string name="text_nine_plus">9+</string>
+
 </resources>

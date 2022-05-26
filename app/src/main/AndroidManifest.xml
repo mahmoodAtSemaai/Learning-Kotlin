@@ -44,6 +44,7 @@
             android:name=".features.auth.presentation.SignInSignUpActivityV1"
             android:exported="false"
             android:screenOrientation="portrait"/>
+
         <activity
             android:name=".activity.UserApprovalActivity"
             android:exported="true"
@@ -161,6 +162,30 @@
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Base.Theme.AppCompat" />
+
+        <activity
+            android:name="com.webkul.mobikul.odoo.activity.ChatActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "app://com.seemaai.toko/chat” -->
+                <data
+                    android:scheme="app"
+                    android:host="com.seemaai.toko"
+                    android:pathPrefix="/chat"/>
+            </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name=".activity.ChatHistoryActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
 
         <service
             android:name=".firebase.FCMMessageReceiverService"

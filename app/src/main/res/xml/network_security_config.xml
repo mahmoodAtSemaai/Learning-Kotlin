@@ -16,5 +16,7 @@
         <domain includeSubdomains="true">demo.webkul.com</domain>
         <domain includeSubdomains="true">18.141.163.230</domain>
         <domain includeSubdomains="true">play.google.com</domain>
+        <domain includeSubdomains="true">test-toko.semaai.com</domain>
+        <domain includeSubdomains="true">192.168.29.162</domain>
     </domain-config>
 </network-security-config>

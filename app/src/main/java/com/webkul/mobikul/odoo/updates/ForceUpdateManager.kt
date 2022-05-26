@@ -17,7 +17,7 @@ object ForceUpdateManager {
 
     @JvmStatic
     fun init(context: Context) {
-        if (AppUpdateHelper.isUpdateAvailable) {
+        if (FirebaseRemoteConfigHelper.isUpdateAvailable) {
             setStringValues(context)
             showAlertDialog(context)
         }

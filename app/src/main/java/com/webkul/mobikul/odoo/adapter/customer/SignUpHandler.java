@@ -27,7 +27,10 @@ import com.webkul.mobikul.odoo.helper.FingerPrintLoginHelper;
 import com.webkul.mobikul.odoo.helper.FragmentHelper;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.SnackbarHelper;
+import com.webkul.mobikul.odoo.model.BaseResponse;
 import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
+import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse;
+import com.webkul.mobikul.odoo.model.chat.ChatCreateChannelResponse;
 import com.webkul.mobikul.odoo.model.customer.address.MyAddressesResponse;
 import com.webkul.mobikul.odoo.model.customer.signup.SignUpData;
 import com.webkul.mobikul.odoo.model.customer.signup.SignUpResponse;
@@ -36,6 +39,7 @@ import com.webkul.mobikul.odoo.model.request.AuthenticationRequest;
 import com.webkul.mobikul.odoo.model.request.BaseLazyRequest;
 import com.webkul.mobikul.odoo.model.request.SignUpRequest;
 import com.webkul.mobikul.odoo.model.user.UserModel;
+import com.webkul.mobikul.odoo.updates.FirebaseRemoteConfigHelper;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.Observer;
@@ -127,6 +131,13 @@ public class SignUpHandler {
                             Helper.getStringDateAndTime(),
                             isSeller,
                             countryId);
+
+                    if(isSeller && FirebaseRemoteConfigHelper.isChatFeatureEnabled()) {
+                        ApiConnection.createChannel(context).subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread()).
+                                subscribe(new CustomObserver<ChatBaseResponse<ChatCreateChannelResponse>>(context) {
+                                });
+                    }
 
                     fetchBillingAddress(context, signUpResponse);
                 } else {

@@ -3,6 +3,8 @@
     <entry>
         <key>remoteAppVersion</key>
         <value>1.0.0</value>
+        <key>feature_sellerChat_enabled</key>
+        <value>false</value>
     </entry>
     <entry>
         <key>feature_revamp_arch_auth_screen_enabled</key>

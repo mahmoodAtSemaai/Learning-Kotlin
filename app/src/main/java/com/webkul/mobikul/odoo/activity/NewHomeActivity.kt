@@ -34,7 +34,9 @@ import com.webkul.mobikul.odoo.handler.home.FragmentNotifier.HomeActivityFragmen
 import com.webkul.mobikul.odoo.helper.AppSharedPref
 import com.webkul.mobikul.odoo.helper.SnackbarHelper
 import com.webkul.mobikul.odoo.model.ReferralResponse
+import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse
 import com.webkul.mobikul.odoo.model.home.HomePageResponse
+import com.webkul.mobikul.odoo.updates.FirebaseRemoteConfigHelper.isChatFeatureEnabled
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.greenrobot.eventbus.Subscribe
@@ -53,6 +55,7 @@ class NewHomeActivity : BaseActivity() {
     lateinit var navController: NavController
     private val mBackPressedTime: Long = 0
     private var currentFragmentDisplayed = ""
+    private var unreadChatCount = 0
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +77,6 @@ class NewHomeActivity : BaseActivity() {
         getBagItemsCount()
         getLoyaltyPoints()
 
-
         binding.searchView.setOnClickListener {
             binding.materialSearchView.visibility = View.VISIBLE
             binding.materialSearchView.openSearch()
@@ -83,6 +85,8 @@ class NewHomeActivity : BaseActivity() {
         binding.cartIcon.setOnClickListener {
             startActivity(Intent(this@NewHomeActivity, BagActivity::class.java))
         }
+
+        binding.ivChatIcon.setOnClickListener { showChatHistory() }
     }
 
     override fun onBackPressed() {
@@ -132,7 +136,6 @@ class NewHomeActivity : BaseActivity() {
         }
     }
 
-
     fun showPoints(loyaltyPoints: Int) {
         binding.loyaltyPoints.text = loyaltyPoints.toString()
     }
@@ -161,7 +164,17 @@ class NewHomeActivity : BaseActivity() {
     override fun onResume() {
         getBagItemsCount()
         getLoyaltyPoints()
+        checkChat()
         super.onResume()
+    }
+
+    private fun checkChat() {
+        if (isChatFeatureEnabled) {
+            setChatButton(true)
+            fetchUnreadChatCount()
+        } else {
+            setChatButton(false)
+        }
     }
 
     private fun getBagItemsCount() {
@@ -242,5 +255,48 @@ class NewHomeActivity : BaseActivity() {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val path = MediaStore.Images.Media.insertImage(contentResolver, bitmap, "Title", null)
         return Uri.parse(path)
+    }
+
+    private fun fetchUnreadChatCount() {
+        ApiConnection.getUnreadChatCount(this).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : CustomObserver<ChatBaseResponse<*>?>(this) {
+                    override fun onNext(chatUnreadMessageCountChatBaseResponse: ChatBaseResponse<*>) {
+                        super.onNext(chatUnreadMessageCountChatBaseResponse)
+                        setUnreadChatCount(chatUnreadMessageCountChatBaseResponse)
+                    }
+
+                    override fun onError(t: Throwable) {
+                        super.onError(t)
+                    }
+                })
+    }
+
+    private fun setUnreadChatCount(chatUnreadMessageCountChatBaseResponse: ChatBaseResponse<*>) {
+        val chatUnreadMessageCount =
+                chatUnreadMessageCountChatBaseResponse.unreadMessagesCount
+        if (chatUnreadMessageCount > 0) {
+            binding.ivUnreadChatCount.text =
+                    if (chatUnreadMessageCount > 9) getString(R.string.text_nine_plus)
+                    else chatUnreadMessageCount.toString()
+            binding.ivUnreadChatCount.visibility = View.VISIBLE
+        } else {
+            binding.ivUnreadChatCount.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun showChatHistory() {
+        Intent(this, ChatHistoryActivity::class.java).apply {
+            startActivity(this)
+        }
+    }
+
+    private fun setChatButton(isChatEnable: Boolean) {
+        if (isChatEnable) {
+            binding.ivChatIcon.visibility = View.VISIBLE
+        } else {
+            binding.ivChatIcon.visibility = View.INVISIBLE
+            binding.ivUnreadChatCount.visibility = View.INVISIBLE
+        }
     }
 }

@@ -634,4 +634,8 @@
     <string name="label_checked">checked</string>
     <string name="label_unchecked">not checked</string>
 
+    <!-- Chat -->
+    <string name="chat_title">Chat</string>
+    <string name="text_nine_plus">9+</string>
+
 </resources>

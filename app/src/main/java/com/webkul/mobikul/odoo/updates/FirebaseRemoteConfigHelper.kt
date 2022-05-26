@@ -9,8 +9,9 @@ import com.webkul.mobikul.odoo.BuildConfig
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.helper.Helper
 
-object AppUpdateHelper {
+object FirebaseRemoteConfigHelper {
     private const val KEY_APP_REMOTE_VERSION = "remoteAppVersion"
+    private const val KEY_APP_REMOTE_CHAT = "feature_sellerChat_enabled"
     private const val KEY_AUTH_REVAMP_ENABLED = "feature_revamp_arch_auth_screen_enabled"
 
     private const val currentAppVersion =  BuildConfig.CURRENT_APP_VERSION
@@ -33,9 +34,12 @@ object AppUpdateHelper {
     @JvmStatic fun init() = Unit
 
     private val remoteAppVersion = Firebase.remoteConfig[KEY_APP_REMOTE_VERSION].asString()
+    private val remoteChatFeature = Firebase.remoteConfig[KEY_APP_REMOTE_CHAT].asBoolean()
 
     @JvmStatic val authRevampEnabled=Firebase.remoteConfig[KEY_AUTH_REVAMP_ENABLED].asBoolean()
 
 
     @JvmStatic val isUpdateAvailable = Helper.isRemoteVersionHigher(remoteAppVersion, currentAppVersion)
+
+    @JvmStatic val isChatFeatureEnabled = remoteChatFeature
 }

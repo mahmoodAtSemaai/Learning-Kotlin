@@ -255,7 +255,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start"
-                    android:onCheckedChanged="@{(cb, isChecked) -> (isChecked) ? handler.setTermAndCondition(true) : handler.setTermAndCondition(false)}"
+                    android:onCheckedChanged="@{(cb, isChecked) -> isChecked? handler.setTermAndCondition(true) : handler.setTermAndCondition(false)}"
                     android:padding="@dimen/spacing_generic"
                     android:text="@string/i_agree_with_term_and_condition"
                     android:visibility="@{AppSharedPref.isTermAndCondition(context)? View.VISIBLE : View.GONE}" />
@@ -272,10 +272,11 @@
 
 
                 <CheckBox
+                    android:id="@+id/cb_is_seller"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start"
-                    android:onCheckedChanged="@{(cb, isChecked) -> (isChecked) ? handler.setSeller(true) : handler.setSeller(false)}"
+                    android:onCheckedChanged="@{(cb, isChecked) -> isChecked ? handler.setSeller(true) : handler.setSeller(false)}"
                     android:padding="@dimen/spacing_generic"
                     android:text="@string/do_you_want_to_become_a_seller"
                     android:visibility="@{BuildConfig.isMarketplace? View.VISIBLE : View.GONE}" />
@@ -354,7 +355,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start"
-                    android:onCheckedChanged="@{(cb, isChecked) -> (isChecked) ? handler.setMarketplaceTermAndCondition(true) : handler.setMarketplaceTermAndCondition(false)}"
+                    android:onCheckedChanged="@{(cb, isChecked) -> isChecked? handler.setMarketplaceTermAndCondition(true) : handler.setMarketplaceTermAndCondition(false)}"
                     android:padding="@dimen/spacing_generic"
                     android:text="@string/i_agree_with_term_and_condition"
                     tools:visibility="visible"/>

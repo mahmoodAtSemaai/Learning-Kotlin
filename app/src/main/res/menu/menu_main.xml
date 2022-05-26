@@ -11,6 +11,13 @@
         app:showAsAction="always|collapseActionView" />
 
     <item
+        android:id="@+id/menu_item_chat"
+        android:icon="@drawable/layer_list_menu_chat"
+        android:title="@string/chat_title"
+        android:visible="false"
+        app:showAsAction="always|collapseActionView" />
+
+    <item
         android:id="@+id/menu_item_wishlist"
         android:icon="@drawable/ic_vector_wishlist_white_24dp"
         android:title="@string/wishlist"
