@@ -105,6 +105,7 @@ object DepVersions {
 
     const val fragmentKTX = "1.4.1"
 
+    const val timberLogging="5.0.1"
 }
 
 object Modules {
@@ -262,5 +263,7 @@ object Dependencies {
 
     const val activity = "androidx.activity:activity-ktx:${DepVersions.activty}"
     const val fragment = "androidx.fragment:fragment-ktx:${DepVersions.fragment}"
+
+    const val timberLogging="com.jakewharton.timber:timber:${DepVersions.timberLogging}"
 
 }
