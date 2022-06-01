@@ -208,6 +208,10 @@ public class ApiConnection {
         return RetrofitClient.getClient(context).create(ApiInterface.class).generateReferralCode(userId);
     }
 
+    public static Observable<ReferralResponse> validateReferralCode(Context context, String referralCode) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).validateReferralCode(referralCode);
+    }
+
     public static Observable<ReferralResponse> getLoyaltyPoints(Context context, String userId) {
         return RetrofitClient.getClient(context).create(ApiInterface.class).getLoyaltyPoints(userId);
     }

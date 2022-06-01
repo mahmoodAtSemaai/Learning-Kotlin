@@ -235,6 +235,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        app:error="@{data.referralCodeError}"
+                        app:errorEnabled="@{data.displayError}"
                         app:hintEnabled="false">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -243,6 +245,7 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_referral_code"
                             android:inputType="text"
+                            android:maxLength="6"
                             android:maxLines="1"
                             android:text="@={data.referralCode}" />
 

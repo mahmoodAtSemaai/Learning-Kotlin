@@ -58,6 +58,8 @@
     <string name="error_is_required">is required !</string>
     <string name="error_enter_valid_email">Please Enter a Valid Email!</string>
     <string name="error_password_length_x">must have at least %d characters.</string>
+    <string name="error_referral_code_length_x">must have %d characters.</string>
+    <string name="invalid_referral_code">Invalid Referral Code</string>
     <string name="error_enter_valid_login_details">Please enter valid login details</string>
     <string name="plese_accept_tnc">Please accept the Terms and Condition.</string>
     <string name="error_login_failure">Login Failure</string>

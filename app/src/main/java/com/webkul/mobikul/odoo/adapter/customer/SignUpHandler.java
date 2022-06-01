@@ -18,6 +18,7 @@ import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.analytics.AnalyticsSourceConstants;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
+import com.webkul.mobikul.odoo.constant.ApplicationConstant;
 import com.webkul.mobikul.odoo.databinding.FragmentSignUpBinding;
 import com.webkul.mobikul.odoo.fragment.LoginFragment;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
@@ -27,8 +28,7 @@ import com.webkul.mobikul.odoo.helper.FingerPrintLoginHelper;
 import com.webkul.mobikul.odoo.helper.FragmentHelper;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.SnackbarHelper;
-import com.webkul.mobikul.odoo.model.BaseResponse;
-import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
+import com.webkul.mobikul.odoo.model.ReferralResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatCreateChannelResponse;
 import com.webkul.mobikul.odoo.model.customer.address.MyAddressesResponse;
@@ -40,6 +40,8 @@ import com.webkul.mobikul.odoo.model.request.BaseLazyRequest;
 import com.webkul.mobikul.odoo.model.request.SignUpRequest;
 import com.webkul.mobikul.odoo.model.user.UserModel;
 import com.webkul.mobikul.odoo.updates.FirebaseRemoteConfigHelper;
+
+import java.sql.Ref;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.Observer;
@@ -86,21 +88,47 @@ public class SignUpHandler {
 
                     if (BuildConfig.isMarketplace && isSeller) {
                         if (isMarketplaceTermAndCondition) {
-                            handleSignUp(data);
+                            validateReferralCode();
                         } else {
                             SnackbarHelper.getSnackbar((Activity) context, context.getString(R.string.plese_accept_tnc), Snackbar.LENGTH_LONG).show();
                         }
                     } else {
-                        handleSignUp(data);
+                        validateReferralCode();
                     }
                 } else {
                     SnackbarHelper.getSnackbar((Activity) context, context.getString(R.string.plese_accept_tnc), Snackbar.LENGTH_LONG).show();
                 }
             } else {
-                handleSignUp(data);
+                validateReferralCode();
             }
         } else {
             SnackbarHelper.getSnackbar((Activity) context, context.getString(R.string.error_enter_valid_login_details), Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    public void validateReferralCode(){
+        if (!data.getReferralCode().isEmpty() && data.getReferralCodeError().isEmpty()){
+            callReferralValidationApi(data.getReferralCode());
+        } else {
+            handleSignUp(data);
+        }
+    }
+
+    public void callReferralValidationApi(String referralCode){
+        ApiConnection.validateReferralCode(context, referralCode).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<ReferralResponse>(context) {
+            @Override
+            public void onNext(@io.reactivex.annotations.NonNull ReferralResponse response) {
+                super.onNext(response);
+                handleReferralValidationResponse(response);
+            }
+        });
+    }
+
+    public void handleReferralValidationResponse(ReferralResponse response){
+        if (response.getStatus() == ApplicationConstant.SUCCESS) {
+            handleSignUp(data);
+        } else {
+            SnackbarHelper.getSnackbar((Activity) context, context.getString(R.string.invalid_referral_code), Snackbar.LENGTH_LONG, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
         }
     }
 

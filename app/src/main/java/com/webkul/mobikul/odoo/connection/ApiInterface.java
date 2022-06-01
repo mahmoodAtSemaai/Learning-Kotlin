@@ -99,6 +99,7 @@ public interface ApiInterface {
     String MOBIKUL_SEND_EMAIL_VERIFICATION_LINK = "send/verifyEmail";
     String LOYALTY_MANAGEMENT_REFERRAL_CODE = "res-user/{user_id}/res-partner";
     String LOYALTY_MANAGEMENT_POINTS = "redeem-history";
+    String LOYALTY_VALIDATE_REFERRAL_CODE = "res-partner/{referral_code}";
 
 
     /*Analytics*/
@@ -283,6 +284,9 @@ public interface ApiInterface {
 
     @PUT(LOYALTY_MANAGEMENT_REFERRAL_CODE)
     Observable<ReferralResponse> generateReferralCode(@Path("user_id") String user_id);
+
+    @GET(LOYALTY_VALIDATE_REFERRAL_CODE)
+    Observable<ReferralResponse> validateReferralCode(@Path("referral_code") String referralCode);
 
     @GET(LOYALTY_MANAGEMENT_POINTS)
     Observable<ReferralResponse> getLoyaltyPoints(@Query("user_id") String user_id);

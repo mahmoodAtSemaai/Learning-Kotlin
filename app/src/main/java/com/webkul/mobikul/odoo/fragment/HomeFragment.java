@@ -128,6 +128,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
             public void onRefresh() {
                 binding.refreshLayout.setRefreshing(true);
                 hitApiForFetchingData();
+                ((NewHomeActivity)getActivity()).hitApiForLoyaltyPoints(AppSharedPref.getCustomerId(getContext()));
             }
         });
     }
