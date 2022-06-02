@@ -1,6 +1,7 @@
 package com.webkul.mobikul.odoo.firebase;
 
 import static com.webkul.mobikul.odoo.constant.ApplicationConstant.TYPE_CATEGORY;
+import static com.webkul.mobikul.odoo.constant.ApplicationConstant.TYPE_CHAT;
 import static com.webkul.mobikul.odoo.constant.ApplicationConstant.TYPE_CUSTOM;
 import static com.webkul.mobikul.odoo.constant.ApplicationConstant.TYPE_NONE;
 import static com.webkul.mobikul.odoo.constant.ApplicationConstant.TYPE_PRODUCT;
@@ -37,8 +38,11 @@ import com.google.gson.GsonBuilder;
 import com.webkul.mobikul.odoo.BuildConfig;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
+import com.webkul.mobikul.odoo.activity.ChatActivity;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.constant.ApplicationConstant;
+import com.webkul.mobikul.odoo.constant.BundleConstant;
+import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.CatalogHelper;
 import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.model.notification.FcmAdvanceData;
@@ -112,6 +116,13 @@ public class FCMMessageReceiverService extends FirebaseMessagingService {
                         intent.putExtra(BUNDLE_KEY_CATEGORY_ID, fcmAdvanceData.getId());
                         intent.putExtra(BUNDLE_KEY_CATEGORY_NAME, fcmAdvanceData.getName());
                         break;
+                    case TYPE_CHAT:
+                        intent = new Intent(this, ChatActivity.class);
+                        intent.putExtra(BundleConstant.BUNDLE_KEY_CHAT_URL, fcmAdvanceData.getChatUrl());
+                        intent.putExtra(BundleConstant.BUNDLE_KEY_CHAT_UUID, fcmAdvanceData.getUuid());
+                        intent.putExtra(BundleConstant.BUNDLE_KEY_CHAT_TITLE, fcmAdvanceData.getTitle());
+                        notificationId = fcmAdvanceData.getUuid();
+                        break;
                     case TYPE_NONE:
 
                         break;
@@ -143,7 +154,10 @@ public class FCMMessageReceiverService extends FirebaseMessagingService {
                 NotificationChannel channel = new NotificationChannel(BuildConfig.LIBRARY_PACKAGE_NAME + "id", BuildConfig.LIBRARY_PACKAGE_NAME + "channel", NotificationManager.IMPORTANCE_HIGH);
                 notificationManager.createNotificationChannel(channel);
             }
-            notificationManager.notify(notificationId, notificationBuilder.build());
+
+            if(AppSharedPref.isLoggedIn(this)) {
+                notificationManager.notify(notificationId, notificationBuilder.build());
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

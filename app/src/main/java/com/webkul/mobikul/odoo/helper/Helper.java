@@ -27,6 +27,7 @@ import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.custom.BadgeDrawable;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -85,6 +86,20 @@ public class Helper {
             badge = (BadgeDrawable) reuse;
         } else {
             badge = new BadgeDrawable(context);
+        }
+        badge.setCount(String.valueOf(cartCount));
+        icon.mutate();
+        icon.setDrawableByLayerId(R.id.ic_menu_badge, badge);
+    }
+
+    public static void setBadgeCount(Context context, LayerDrawable icon, int cartCount, int badgeColor) {
+        BadgeDrawable badge;
+        // Reuse drawable if possible
+        Drawable reuse = icon.findDrawableByLayerId(R.id.ic_menu_badge);
+        if (reuse != null && reuse instanceof BadgeDrawable) {
+            badge = (BadgeDrawable) reuse;
+        } else {
+            badge = new BadgeDrawable(context,badgeColor);
         }
         badge.setCount(String.valueOf(cartCount));
         icon.mutate();

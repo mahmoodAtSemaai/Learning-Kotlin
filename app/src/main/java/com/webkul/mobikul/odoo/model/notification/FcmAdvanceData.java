@@ -39,6 +39,20 @@ public class FcmAdvanceData {
     @Expose
     private String domain;
 
+    /*chat notification data*/
+    @SerializedName("title")
+    @Expose
+    private String title;
+    @SerializedName("body")
+    @Expose
+    private String body;
+    @SerializedName("chat_url")
+    @Expose
+    private String chatUrl;
+    @SerializedName("uuid")
+    @Expose
+    private int uuid;
+
 
     public String getType() {
         if (type == null) {
@@ -89,5 +103,21 @@ public class FcmAdvanceData {
         }
 
         return domain;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public String getChatUrl() {
+        return chatUrl;
+    }
+
+    public int getUuid() {
+        return uuid;
     }
 }

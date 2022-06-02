@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.snackbar.Snackbar;
 import com.muddzdev.styleabletoastlibrary.StyleableToast;
 import com.webkul.mobikul.odoo.R;
+import com.webkul.mobikul.odoo.activity.ChatHistoryActivity;
 import com.webkul.mobikul.odoo.activity.CustomerBaseActivity;
 import com.webkul.mobikul.odoo.activity.NewDrawerActivity;
 import com.webkul.mobikul.odoo.activity.NewHomeActivity;
@@ -175,6 +176,12 @@ public class AccountFragmentHandler {
         } else {
             context.startActivity(sendIntent);
         }
+    }
+
+    public void showChatHistory() {
+        Intent intent = new Intent(context, ChatHistoryActivity.class);
+        context.startActivity(intent);
+
     }
 
     public void signOut() {

@@ -66,6 +66,28 @@ public class BadgeDrawable extends Drawable {
         mTextPaint.setTextAlign(Paint.Align.CENTER);
     }
 
+    @SuppressWarnings("WeakerAccess")
+    public BadgeDrawable(Context context,int badgeColor) {
+        float mTextSize = context.getResources().getDimension(R.dimen.badge_text_size);
+
+        mOuterBackgroundColor = new Paint();
+        mOuterBackgroundColor.setColor(ContextCompat.getColor(context.getApplicationContext(), badgeColor));
+        mOuterBackgroundColor.setAntiAlias(true);
+        mOuterBackgroundColor.setStyle(Paint.Style.FILL);
+
+        mInnerBackgroundColor = new Paint();
+        mInnerBackgroundColor.setColor(ContextCompat.getColor(context.getApplicationContext(), badgeColor));
+        mInnerBackgroundColor.setAntiAlias(true);
+        mInnerBackgroundColor.setStyle(Paint.Style.FILL);
+
+        mTextPaint = new Paint();
+        mTextPaint.setColor(Color.WHITE);
+        mTextPaint.setTypeface(Typeface.DEFAULT);
+        mTextPaint.setTextSize(mTextSize);
+        mTextPaint.setAntiAlias(true);
+        mTextPaint.setTextAlign(Paint.Align.CENTER);
+    }
+
     @Override
     public void draw(@NonNull Canvas canvas) {
 

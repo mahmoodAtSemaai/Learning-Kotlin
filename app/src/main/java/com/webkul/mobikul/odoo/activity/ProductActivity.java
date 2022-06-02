@@ -57,6 +57,7 @@ import com.webkul.mobikul.odoo.model.generic.AttributeOptionData;
 import com.webkul.mobikul.odoo.model.generic.ProductCombination;
 import com.webkul.mobikul.odoo.model.generic.ProductData;
 import com.webkul.mobikul.odoo.model.generic.ProductVariant;
+import com.webkul.mobikul.odoo.updates.FirebaseRemoteConfigHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -249,6 +250,7 @@ public class ProductActivity extends BaseActivity {
         setSupportActionBar(mBinding.toolbar);
         showBackButton(true);
         onNewIntent(getIntent());
+        setChatButton();
     }
 
     public void loadProductAttributes(ProductData productData) {
@@ -609,6 +611,12 @@ public class ProductActivity extends BaseActivity {
     private void setAlternativeProductData() {
         mBinding.rvAlternativeProduct.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         mBinding.rvAlternativeProduct.setAdapter(new AlternativeProductsRvAdapter(this, mBinding.getData().getAlternativeProducts(), false));
+    }
+
+    private void setChatButton() {
+        if(FirebaseRemoteConfigHelper.isChatFeatureEnabled() && !AppSharedPref.isSeller(this)){
+            mBinding.btnSellerChat.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

@@ -1,9 +1,12 @@
 package com.webkul.mobikul.marketplace.odoo.activity;
 
 import android.content.Intent;
+
 import androidx.databinding.DataBindingUtil;
+
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.webkul.mobikul.marketplace.odoo.R;
 import com.webkul.mobikul.marketplace.odoo.adapter.SellerReviewAdapter;
@@ -19,6 +22,7 @@ import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.model.generic.ProductData;
+import com.webkul.mobikul.odoo.updates.FirebaseRemoteConfigHelper;
 
 import java.util.ArrayList;
 
@@ -62,6 +66,7 @@ public class SellerProfileActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_seller_profile);
         setSupportActionBar(mBinding.toolbar);
+        setChatButton();
         MarketplaceApiConnection.getSellerProfileData(this, getIntent().getExtras()
                 .getString(BUNDLE_KEY_SELLER_ID)).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<SellerProfilePageResponse>(this) {
@@ -69,7 +74,7 @@ public class SellerProfileActivity extends BaseActivity {
             @Override
             public void onNext(@NonNull SellerProfilePageResponse response) {
                 super.onNext(response);
-                if (response.isAccessDenied()){
+                if (response.isAccessDenied()) {
                     AlertDialogHelper.showDefaultWarningDialogWithDismissListener(SellerProfileActivity.this, getString(R.string.error_login_failure), getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
@@ -80,7 +85,7 @@ public class SellerProfileActivity extends BaseActivity {
                             startActivity(i);
                         }
                     });
-                }else {
+                } else {
 
 
                     if (response.isSuccess()) {
@@ -109,8 +114,15 @@ public class SellerProfileActivity extends BaseActivity {
         });
     }
 
+    private void setChatButton() {
+        if(FirebaseRemoteConfigHelper.isChatFeatureEnabled() && !AppSharedPref.isSeller(this)){
+            mBinding.sellerChatBtn.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_LOGIN) {
             if (resultCode == RESULT_OK) {
                 recreate();

@@ -39,6 +39,7 @@ public interface ApplicationConstant {
     String TYPE_CUSTOM = "custom";
     String TYPE_PRODUCT = "product";
     String TYPE_CATEGORY = "category";
+    String TYPE_CHAT = "chat";
     String TYPE_NONE = "none";
 
 

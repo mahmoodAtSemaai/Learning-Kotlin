@@ -50,7 +50,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="@dimen/size_5"
                     android:layout_marginRight="5dp"
-                    android:layout_weight="4"
+                    android:layout_weight="3.5"
                     android:background="@drawable/search_background"
                     android:drawableStart="@drawable/search"
                     android:drawableLeft="@drawable/search"
@@ -137,15 +137,37 @@
 
                 </RelativeLayout>
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/chat_icon"
+                <RelativeLayout
                     android:layout_width="@dimen/font_weight_0"
-                    android:layout_height="@dimen/hamburger_icon_dimens"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:foregroundGravity="center_vertical"
-                    android:src="@drawable/chat_icon"
-                    android:visibility="invisible" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5">
+
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_chat_icon"
+                        android:layout_width="@dimen/hamburger_icon_dimens"
+                        android:layout_height="@dimen/hamburger_icon_dimens"
+                        android:layout_centerInParent="true"
+                        android:visibility="invisible"
+                        android:src="@drawable/ic_chat" />
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/iv_unread_chat_count"
+                        android:layout_width="@dimen/badge_dimension"
+                        android:layout_height="@dimen/badge_dimension"
+                        android:layout_alignEnd="@+id/iv_chat_icon"
+                        android:layout_marginTop="@dimen/top_margin_badge"
+                        android:layout_marginRight="-9dp"
+                        android:background="@drawable/badge_symbol_accent"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_12sp"
+                        android:textStyle="bold"
+                        android:visibility="invisible" />
+
+                </RelativeLayout>
+
 
                 <RelativeLayout
                     android:layout_width="@dimen/font_weight_0"

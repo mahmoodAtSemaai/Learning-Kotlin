@@ -13,6 +13,7 @@ import com.webkul.mobikul.marketplace.odoo.databinding.ActivitySellerProfileBind
 import com.webkul.mobikul.marketplace.odoo.fragment.SellerReviewFragment;
 import com.webkul.mobikul.marketplace.odoo.fragment.StorePolicyFragment;
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
+import com.webkul.mobikul.odoo.activity.ChatActivity;
 import com.webkul.mobikul.odoo.activity.HomeActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.helper.CatalogHelper;
@@ -23,6 +24,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.webkul.mobikul.marketplace.odoo.constant.MarketplaceBundleConstant.BUNDLE_KEY_SELLER_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CHAT_TITLE;
 
 /**
  * Created by aastha.gupta on 19/9/17.
@@ -86,5 +88,16 @@ public class SellerProfileActivityHandler {
             binding.readMoreTv.setText(R.string.read_less);
         }
 
+    }
+
+    public void onClickChatButton(int sellerId, String sellerName) {
+        launchChatActivity(sellerId, sellerName);
+    }
+
+    private void launchChatActivity(int sellerId, String sellerName){
+        Intent i = new Intent(mContext, ChatActivity.class);
+        i.putExtra(BUNDLE_KEY_SELLER_ID, String.valueOf(sellerId));
+        i.putExtra(BUNDLE_KEY_CHAT_TITLE, sellerName);
+        mContext.startActivity(i);
     }
 }

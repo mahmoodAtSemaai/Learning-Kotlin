@@ -166,6 +166,8 @@ public class HomeActivity extends BaseActivity implements OnTabSelectListener,/*
             intent.putExtra(BUNDLE_KEY_CUSTOMER_FRAG_TYPE, CustomerHelper.CustomerFragType.TYPE_WISHLIST);
             startActivity(intent);
 
+        } else if(item.getItemId() == R.id.menu_item_chat){
+            showChatHistory();
         }
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
@@ -498,5 +500,11 @@ public class HomeActivity extends BaseActivity implements OnTabSelectListener,/*
         }
     }
 
+
+    public void showChatHistory() {
+        Intent intent = new Intent(this, ChatHistoryActivity.class);
+        this.startActivity(intent);
+
+    }
 
 }

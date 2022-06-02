@@ -2,12 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.webkul.mobikul.marketplace.odoo">
-
     <!-- Allows unlocking your device and activating its screen so UI tests can succeed -->
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
-    <!-- Allows for storing and retrieving screenshots -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- Allows for storing and retrieving screenshots -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -19,8 +16,10 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/BaseTheme.AppTheme.NoActionBar"
+        android:usesCleartextTraffic="true"
         android:vmSafeMode="true"
         tools:replace="name,icon,label,allowBackup">
+
         <activity android:name=".activity.SellerProfileActivity" />
         <activity android:name=".activity.MarketplaceLandingActivity" />
         <activity android:name=".activity.SellerDashBoardActivity" />

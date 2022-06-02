@@ -56,6 +56,8 @@
     <string name="error_is_required">diperlukan !</string>
     <string name="error_enter_valid_email">Masukkan alamat e-mail yang benar!</string>
     <string name="error_password_length_x">harus mengandung setidaknya %d karakter.</string>
+    <string name="error_referral_code_length_x">Kode referral harus mengandung %d karakter</string>
+    <string name="invalid_referral_code">Kode referral tidak valid</string>
     <string name="error_enter_valid_login_details">Masukkan detail login yang benar</string>
     <string name="plese_accept_tnc">Mohon menyetujui syarat dan ketentuan.</string>
     <string name="error_login_failure">Gagal Login</string>
@@ -627,5 +629,9 @@
     <string name="main_menu">Menu Utama</string>
     <string name="text_one">1</string>
     <string name="no_products_found">Tidak ada produk!!</string>
+
+    <!-- Chat -->
+    <string name="chat_title">Chat</string>
+    <string name="text_nine_plus">9+</string>
 
 </resources>

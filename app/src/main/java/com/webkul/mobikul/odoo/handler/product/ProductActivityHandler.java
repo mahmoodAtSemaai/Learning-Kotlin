@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.BaseActivity;
+import com.webkul.mobikul.odoo.activity.ChatActivity;
 import com.webkul.mobikul.odoo.activity.ProductActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
@@ -56,6 +57,7 @@ import io.reactivex.schedulers.Schedulers;
 import static com.webkul.mobikul.odoo.activity.ProductActivity.RC_ADD_TO_CART;
 import static com.webkul.mobikul.odoo.activity.ProductActivity.RC_BUY_NOW;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CHAT_TITLE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_REQ_CODE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_SELLER_ID;
 import static com.webkul.mobikul.odoo.helper.ProductHelper.ATTR_TYPE_COLOR;
@@ -380,5 +382,16 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
         Intent intent = new Intent(mContext, ((OdooApplication) mContext.getApplicationContext()).getSellerProfileActivity());
         intent.putExtra(BUNDLE_KEY_SELLER_ID, sellerID);
         mContext.startActivity(intent);
+    }
+
+    public void onClickChatButton(String sellerId, String sellerName) {
+        launchChatActivity(Integer.parseInt(sellerId), sellerName);
+    }
+
+    private void launchChatActivity(int sellerId, String sellerName){
+        Intent i = new Intent(mContext, ChatActivity.class);
+        i.putExtra(BUNDLE_KEY_SELLER_ID, String.valueOf(sellerId));
+        i.putExtra(BUNDLE_KEY_CHAT_TITLE, sellerName);
+        mContext.startActivity(i);
     }
 }

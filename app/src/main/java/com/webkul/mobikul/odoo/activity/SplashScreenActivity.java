@@ -42,11 +42,13 @@ import com.webkul.mobikul.odoo.helper.IntentHelper;
 import com.webkul.mobikul.odoo.helper.NetworkHelper;
 import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
+import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse;
+import com.webkul.mobikul.odoo.model.chat.ChatCreateChannelResponse;
 import com.webkul.mobikul.odoo.model.extra.SplashScreenActivityData;
 import com.webkul.mobikul.odoo.model.extra.SplashScreenResponse;
 import com.webkul.mobikul.odoo.model.home.HomePageResponse;
 import com.webkul.mobikul.odoo.model.user.UserModel;
-import com.webkul.mobikul.odoo.updates.AppUpdateHelper;
+import com.webkul.mobikul.odoo.updates.FirebaseRemoteConfigHelper;
 
 import java.util.Map;
 
@@ -88,6 +90,9 @@ public class SplashScreenActivity extends BaseActivity {
                             userAnalyticsResponse.isSeller()
                     ));
                     AppSharedPref.setUserAnalyticsId(getBaseContext(), userAnalyticsResponse.getAnalyticsId());
+                   if(userAnalyticsResponse.isSeller() && FirebaseRemoteConfigHelper.isChatFeatureEnabled()){
+                       createChatChannel();
+                   }
                     callApi();
                     super.onNext(userAnalyticsResponse);
                 }
@@ -118,6 +123,13 @@ public class SplashScreenActivity extends BaseActivity {
         }
 
 
+    }
+
+    private void createChatChannel() {
+        ApiConnection.createChannel(this).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread()).
+                    subscribe(new CustomObserver<ChatBaseResponse<ChatCreateChannelResponse>>(this) {
+                    });
     }
 
 
@@ -162,7 +174,7 @@ public class SplashScreenActivity extends BaseActivity {
 
         } else {
             Intent i;
-            if (AppUpdateHelper.getAuthRevampEnabled()) {
+            if (FirebaseRemoteConfigHelper.getAuthRevampEnabled()) {
                 i = new Intent(SplashScreenActivity.this, SignInSignUpActivityV1.class);
             } else {
                 i = new Intent(SplashScreenActivity.this, SignInSignUpActivity.class);
@@ -210,7 +222,7 @@ public class SplashScreenActivity extends BaseActivity {
                                 sweetAlertDialog.dismiss();
                                 AppSharedPref.clearCustomerData(SplashScreenActivity.this);
                                 Intent i;
-                                if (AppUpdateHelper.getAuthRevampEnabled()) {
+                                if (FirebaseRemoteConfigHelper.getAuthRevampEnabled()) {
                                     i = new Intent(SplashScreenActivity.this, SignInSignUpActivityV1.class);
                                 } else {
                                     i = new Intent(SplashScreenActivity.this, SignInSignUpActivity.class);
@@ -295,7 +307,7 @@ public class SplashScreenActivity extends BaseActivity {
                                         sweetAlertDialog.dismiss();
                                         AppSharedPref.clearCustomerData(SplashScreenActivity.this);
                                         Intent i;
-                                        if (AppUpdateHelper.getAuthRevampEnabled()) {
+                                        if (FirebaseRemoteConfigHelper.getAuthRevampEnabled()) {
                                             i = new Intent(SplashScreenActivity.this, SignInSignUpActivityV1.class);
                                         } else {
                                             i = new Intent(SplashScreenActivity.this, SignInSignUpActivity.class);

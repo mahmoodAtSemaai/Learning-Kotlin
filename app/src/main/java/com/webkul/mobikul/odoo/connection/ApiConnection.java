@@ -12,6 +12,11 @@ import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
 import com.webkul.mobikul.odoo.model.cart.BagResponse;
 import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse;
 import com.webkul.mobikul.odoo.model.checkout.OrderDataResponse;
+import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse;
+import com.webkul.mobikul.odoo.model.chat.ChatConfigResponse;
+import com.webkul.mobikul.odoo.model.chat.ChatCreateChannelResponse;
+import com.webkul.mobikul.odoo.model.chat.ChatHistoryResponse;
+import com.webkul.mobikul.odoo.model.chat.ChatUnreadMessageCount;
 import com.webkul.mobikul.odoo.model.checkout.OrderPlaceResponse;
 import com.webkul.mobikul.odoo.model.checkout.OrderReviewResponse;
 import com.webkul.mobikul.odoo.model.checkout.PaymentAcquirerResponse;
@@ -20,9 +25,9 @@ import com.webkul.mobikul.odoo.model.checkout.UpdateOrderRequest;
 import com.webkul.mobikul.odoo.model.customer.ResetPasswordResponse;
 import com.webkul.mobikul.odoo.model.customer.account.SaveCustomerDetailResponse;
 import com.webkul.mobikul.odoo.model.customer.address.AddressFormResponse;
+import com.webkul.mobikul.odoo.model.customer.address.MyAddressesResponse;
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.DistrictListResponse;
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.StateListResponse;
-import com.webkul.mobikul.odoo.model.customer.address.MyAddressesResponse;
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.SubDistrictListResponse;
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.VillageListResponse;
 import com.webkul.mobikul.odoo.model.customer.order.MyOrderReponse;
@@ -66,6 +71,8 @@ import com.webkul.mobikul.odoo.model.request.WishListToCartRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -199,6 +206,10 @@ public class ApiConnection {
 
     public static Observable<ReferralResponse> generateReferralCode(Context context, String userId) {
         return RetrofitClient.getClient(context).create(ApiInterface.class).generateReferralCode(userId);
+    }
+
+    public static Observable<ReferralResponse> validateReferralCode(Context context, String referralCode) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).validateReferralCode(referralCode);
     }
 
     public static Observable<ReferralResponse> getLoyaltyPoints(Context context, String userId) {
@@ -406,7 +417,25 @@ public class ApiConnection {
         return RetrofitClient.getClient(context).create(ApiInterface.class).registerDeviceToken(new RegisterDeviceTokenRequest(context).toString());
     }
 
+    /*-----------------------------------------------------------------------------------------------------------------------------------------------------------
+            Chat API's
+         ------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+    public static Observable<ChatBaseResponse> getUnreadChatCount(Context context){
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getUnreadChatCount();
+    }
 
+
+    public static Observable<ChatBaseResponse<ChatCreateChannelResponse>> createChannel(Context context) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).createChannel();
+    }
+
+    public static Observable<ChatBaseResponse<ChatConfigResponse>> getChatUrl(Context context, String channelUuid,String sellerId ,String userId) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getChatUrl(channelUuid, sellerId, userId);
+    }
+
+    public static Observable<ChatBaseResponse<List<ChatHistoryResponse>>> getChatHistory(Context context) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getChatHistory();
+    }
 
 
 

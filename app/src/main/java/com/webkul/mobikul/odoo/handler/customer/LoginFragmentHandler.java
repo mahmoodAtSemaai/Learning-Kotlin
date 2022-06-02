@@ -36,12 +36,15 @@ import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.IntentHelper;
 import com.webkul.mobikul.odoo.helper.SnackbarHelper;
 import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
+import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse;
+import com.webkul.mobikul.odoo.model.chat.ChatCreateChannelResponse;
 import com.webkul.mobikul.odoo.model.customer.signin.LoginRequestData;
 import com.webkul.mobikul.odoo.model.customer.signin.LoginResponse;
 import com.webkul.mobikul.odoo.model.customer.signup.SignUpData;
 import com.webkul.mobikul.odoo.model.customer.signup.SignUpResponse;
 import com.webkul.mobikul.odoo.model.request.AuthenticationRequest;
 import com.webkul.mobikul.odoo.model.user.UserModel;
+import com.webkul.mobikul.odoo.updates.FirebaseRemoteConfigHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -161,6 +164,13 @@ public class LoginFragmentHandler {
                                 });
                             }
 
+                        }
+
+                        if(loginResponse.isSeller() && FirebaseRemoteConfigHelper.isChatFeatureEnabled()){
+                                ApiConnection.createChannel(mContext).subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread()).
+                                        subscribe(new CustomObserver<ChatBaseResponse<ChatCreateChannelResponse>>(mContext) {
+                                        });
                         }
 
                     } else {

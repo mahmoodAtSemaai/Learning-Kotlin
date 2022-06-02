@@ -6,11 +6,14 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_URL;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -48,6 +51,9 @@ import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.model.BaseResponse;
+import com.webkul.mobikul.odoo.model.ReferralResponse;
+import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse;
+import com.webkul.mobikul.odoo.model.chat.ChatUnreadMessageCount;
 import com.webkul.mobikul.odoo.model.customer.address.AddressData;
 import com.webkul.mobikul.odoo.model.customer.address.AddressFormResponse;
 import com.webkul.mobikul.odoo.model.customer.address.MyAddressesResponse;
@@ -56,6 +62,8 @@ import com.webkul.mobikul.odoo.model.generic.FeaturedCategoryData;
 import com.webkul.mobikul.odoo.model.generic.StateData;
 import com.webkul.mobikul.odoo.model.home.HomePageResponse;
 import com.webkul.mobikul.odoo.model.request.BaseLazyRequest;
+import com.webkul.mobikul.odoo.updates.FirebaseRemoteConfigHelper;
+
 import org.greenrobot.eventbus.EventBus;
 import java.util.List;
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -84,6 +92,8 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     private FeaturedCategoryData mFeaturedCategoryData;
     private int appBarOffset=0;
 
+    private int unreadChatCount = 0;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
@@ -93,12 +103,13 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
         Helper.hideKeyboard(getContext());
 
-        binding.appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener(){
+        binding.appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                appBarOffset=verticalOffset;
+                appBarOffset = verticalOffset;
                 binding.refreshLayout.setEnabled(appBarOffset == 0);
             }
         });
@@ -110,17 +121,22 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
             }
         });
 
-        binding.refreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext() , R.color.background_orange));
+        binding.refreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.background_orange));
 
         binding.refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 binding.refreshLayout.setRefreshing(true);
                 hitApiForFetchingData();
+                ((NewHomeActivity)getActivity()).hitApiForLoyaltyPoints(AppSharedPref.getCustomerId(getContext()));
             }
         });
+    }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
 
@@ -356,6 +372,26 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
                 .putExtra(BUNDLE_KEY_URL, addressData.getUrl()));
     }
 
+    private void fetchUnreadChatCount(){
+        ApiConnection.getUnreadChatCount(getActivity()).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CustomObserver<ChatBaseResponse>(getActivity()) {
+                    @Override
+                    public void onNext(ChatBaseResponse chatUnreadMessageCountChatBaseResponse) {
+                        super.onNext(chatUnreadMessageCountChatBaseResponse);
+                        int chatUnreadMessageCount = chatUnreadMessageCountChatBaseResponse.getUnreadMessagesCount();
+                        if(chatUnreadMessageCount>0){
+                            unreadChatCount = chatUnreadMessageCount;
+                            getActivity().invalidateOptionsMenu();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                    }
+                });
+    }
 
     private void showAlertDialog(String title, String message) {
         AlertDialogHelper.showDefaultWarningDialogWithDismissListener(getContext(), title, message, sweetAlertDialog -> {
@@ -390,6 +426,19 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(getContext());
+    }
+
+    private void setChatMenu(Menu menu) {
+        if(FirebaseRemoteConfigHelper.isChatFeatureEnabled()) {
+            MenuItem wishlistMenuItem = menu.findItem(R.id.menu_item_wishlist);
+            if (wishlistMenuItem.isVisible()) {
+                wishlistMenuItem.setVisible(false);
+            }
+            MenuItem mItemChat = menu.findItem(R.id.menu_item_chat);
+            LayerDrawable icon = (LayerDrawable) mItemChat.getIcon();
+            Helper.setBadgeCount(getActivity(), icon, unreadChatCount, R.color.colorAccent);
+            mItemChat.setVisible(true);
+        }
     }
 
     @androidx.annotation.NonNull

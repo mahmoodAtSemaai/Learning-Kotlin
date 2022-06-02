@@ -174,4 +174,11 @@ public interface BundleConstant {
     String   POSITION_ARG = "position_arg";
     String   CATEGORY_ARG = "category_id";
 
+    //For Chat
+    String BUNDLE_KEY_CHAT_URL = "chatUrl";
+    String BUNDLE_KEY_CHAT_UUID = "chatUuid";
+    String BUNDLE_KEY_CHAT_TITLE = "chatTitleName";
+    String QUERY_KEY_CHAT_URL = "chat_url";
+    String QUERY_KEY_CHAT_UUID = "uuid";
+    String QUERY_KEY_CHAT_TITLE = "title";
 }

@@ -71,6 +71,7 @@ android {
 
 
         buildConfigField("int", "MIN_PASSWORD_LENGTH", "1")
+        buildConfigField("int", "REFERRAL_CODE_LENGTH", "6")
 
         buildConfigField("int", "DEFAULT_BACK_PRESSED_TIME_TO_CLOSE", "2000")
         buildConfigField("int", "DEFAULT_REDIRECTION_TIME_ON_SPLASH", "2000")
@@ -175,6 +176,7 @@ dependencies {
             Dependencies.hilt,
             Dependencies.coroutinesCore,
             Dependencies.coroutinesAndroid,
+            Dependencies.timberLogging,
             project(Modules.sweetAlertDialog)
     )
 

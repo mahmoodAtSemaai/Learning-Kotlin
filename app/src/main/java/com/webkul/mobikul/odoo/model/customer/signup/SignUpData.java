@@ -204,6 +204,17 @@ public class SignUpData extends BaseObservable {
         notifyPropertyChanged(BR.referralCode);
     }
 
+    @Bindable({"displayError", "referralCode"})
+    public String getReferralCodeError() {
+        if (!isDisplayError()) {
+            return "";
+        }
+        if (!getReferralCode().isEmpty() && getReferralCode().length() != BuildConfig.REFERRAL_CODE_LENGTH) {
+            return String.format("%s %s", mContext.getString(R.string.referral_code), String.format(Locale.getDefault(), mContext.getString(R.string.error_referral_code_length_x), BuildConfig.REFERRAL_CODE_LENGTH));
+        }
+        return "";
+    }
+
 
     @Bindable
     public boolean isDisplayError() {
@@ -235,6 +246,11 @@ public class SignUpData extends BaseObservable {
 
             if (!getConfirmPasswordError().isEmpty()) {
                 signUpFragment.mBinding.confirmPasswordEt.requestFocus();
+                return false;
+            }
+
+            if (!getReferralCodeError().isEmpty()) {
+                signUpFragment.mBinding.referralCodeEt.requestFocus();
                 return false;
             }
 
