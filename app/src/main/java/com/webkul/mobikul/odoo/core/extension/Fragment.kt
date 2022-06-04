@@ -8,6 +8,6 @@ import androidx.fragment.app.FragmentTransaction
 inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) =
         beginTransaction().func().commit()
 
-fun Fragment.close() = childFragmentManager.popBackStack()
+fun Fragment.close() = requireActivity().supportFragmentManager.popBackStack()
 
 val Fragment.appContext: Context get() = activity?.applicationContext!!

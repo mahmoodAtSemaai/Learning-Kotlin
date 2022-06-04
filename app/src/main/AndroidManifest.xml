@@ -41,7 +41,7 @@
         tools:replace="icon,allowBackup">
 
         <activity
-            android:name=".features.auth.presentation.SignInSignUpActivityV1"
+            android:name=".ui.auth.SignInSignUpActivityV1"
             android:exported="false"
             android:screenOrientation="portrait"/>
 

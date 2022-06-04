@@ -4,7 +4,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.webkul.mobikul.odoo.BuildConfig;
-import com.webkul.mobikul.odoo.features.auth.data.models.SignUpData;
+import com.webkul.mobikul.odoo.data.entity.SignUpData;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,12 +1,15 @@
 package com.webkul.mobikul.odoo.core.di
 
 import com.webkul.mobikul.odoo.core.data.local.AppPreferences
-import com.webkul.mobikul.odoo.features.auth.data.remoteSource.LoginRemoteDataSource
-import com.webkul.mobikul.odoo.features.auth.data.remoteSource.SignUpRemoteDataSource
-import com.webkul.mobikul.odoo.features.auth.data.repo.LoginRepositoryImpl
-import com.webkul.mobikul.odoo.features.auth.data.repo.SignUpRepositoryImpl
-import com.webkul.mobikul.odoo.features.auth.domain.repo.LoginRepository
-import com.webkul.mobikul.odoo.features.auth.domain.repo.SignUpRepository
+import com.webkul.mobikul.odoo.data.remoteSource.remoteDataSource.AddressRemoteDataSource
+import com.webkul.mobikul.odoo.data.remoteSource.remoteDataSource.AuthRemoteDataSource
+import com.webkul.mobikul.odoo.data.remoteSource.remoteDataSource.TermsConditionRemoteDataSource
+import com.webkul.mobikul.odoo.data.repository.AddressRepositoryImpl
+import com.webkul.mobikul.odoo.data.repository.AuthRepositoryImpl
+import com.webkul.mobikul.odoo.data.repository.TermsConditionRepositoryImpl
+import com.webkul.mobikul.odoo.domain.repository.AddressRepository
+import com.webkul.mobikul.odoo.domain.repository.AuthRepository
+import com.webkul.mobikul.odoo.domain.repository.TermsConditionRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,15 +23,20 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideLoginRepository(
-        remoteDataSource: LoginRemoteDataSource,
-        appPreferences: AppPreferences
-    ): LoginRepository = LoginRepositoryImpl(remoteDataSource, appPreferences)
+    fun providesAuthRepository(
+            remoteDataSource: AuthRemoteDataSource,
+            appPreferences: AppPreferences
+    ): AuthRepository = AuthRepositoryImpl(remoteDataSource, appPreferences)
 
     @Provides
     @Singleton
-    fun provideSignUpRepository(
-        remoteDataSource: SignUpRemoteDataSource,
-        appPreferences: AppPreferences
-    ): SignUpRepository = SignUpRepositoryImpl(remoteDataSource,appPreferences)
+    fun providesAddressRepository(
+            remoteDataSource: AddressRemoteDataSource
+    ): AddressRepository = AddressRepositoryImpl(remoteDataSource)
+
+    @Provides
+    @Singleton
+    fun providesTermsConditionRepository(
+            remoteDataSource: TermsConditionRemoteDataSource
+    ): TermsConditionRepository = TermsConditionRepositoryImpl(remoteDataSource)
 }

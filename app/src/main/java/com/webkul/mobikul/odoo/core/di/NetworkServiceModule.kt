@@ -1,7 +1,8 @@
 package com.webkul.mobikul.odoo.core.di
 
-import com.webkul.mobikul.odoo.features.auth.data.remoteSource.AuthServices
-import com.webkul.mobikul.odoo.features.auth.data.remoteSource.SignUpServices
+import com.webkul.mobikul.odoo.data.remoteSource.remoteServices.AddressServices
+import com.webkul.mobikul.odoo.data.remoteSource.remoteServices.AuthServices
+import com.webkul.mobikul.odoo.data.remoteSource.remoteServices.TermsConditionServices
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,9 +18,15 @@ object NetworkServiceModule {
     @Singleton
     fun provideAuthServices(retrofit: Retrofit): AuthServices =
             retrofit.create(AuthServices::class.java)
+
     @Provides
     @Singleton
-    fun provideSignUpServices(retrofit: Retrofit): SignUpServices =
-        retrofit.create(SignUpServices::class.java)
+    fun provideAddressServices(retrofit: Retrofit): AddressServices =
+            retrofit.create(AddressServices::class.java)
+
+    @Provides
+    @Singleton
+    fun provideTermsConditionServices(retrofit: Retrofit): TermsConditionServices =
+            retrofit.create(TermsConditionServices::class.java)
 
 }
