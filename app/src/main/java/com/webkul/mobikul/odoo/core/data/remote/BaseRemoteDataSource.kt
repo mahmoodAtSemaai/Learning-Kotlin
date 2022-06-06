@@ -21,7 +21,9 @@ open class BaseRemoteDataSource @Inject constructor() {
             return if(apiResponse is BaseResponse ) {
                 if (apiResponse.isSuccess) {
                     Resource.Success(apiResponse)
-                } else {
+                } else if (apiResponse.isAccessDenied){
+                    Resource.Failure(failureStatus = FailureStatus.ACCESS_DENIED, message = apiResponse.message)
+                }else {
                     Resource.Failure(failureStatus = FailureStatus.API_FAIL, message = apiResponse.message)
                 }
             }else{

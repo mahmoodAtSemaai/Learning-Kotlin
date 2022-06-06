@@ -27,13 +27,9 @@ class AddressRemoteDataSource @Inject constructor(
 
     suspend fun getCountryStateData() = safeApiCall {
         val response = apiService.getCountryStateData()
-        if(response.isAccessDenied) {
-            Resource.Failure(failureStatus = FailureStatus.ACCESS_DENIED, message = response.message)
-        }else{
-            NetworkModelParser(
-                    CountryEntity::class.java,
-                    CountryStateData::class.java
-            ).toObject(response)
-        }
+        NetworkModelParser(
+                CountryEntity::class.java,
+                CountryStateData::class.java
+        ).toObject(response)
     }
 }
