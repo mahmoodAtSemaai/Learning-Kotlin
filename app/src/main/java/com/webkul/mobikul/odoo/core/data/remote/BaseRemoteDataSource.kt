@@ -4,8 +4,10 @@ import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.core.utils.HTTP_ERROR_UNABLE_TO_PROCESS_REQUEST
 import com.webkul.mobikul.odoo.core.utils.HTTP_ERROR_UNAUTHORIZED_REQUEST
 import com.webkul.mobikul.odoo.core.utils.Resource
+import com.webkul.mobikul.odoo.model.BaseResponse
 import org.json.JSONObject
 import retrofit2.HttpException
+import java.io.IOException
 import java.net.ConnectException
 import java.net.UnknownHostException
 import javax.inject.Inject
@@ -16,7 +18,17 @@ open class BaseRemoteDataSource @Inject constructor() {
         try {
             val apiResponse = apiCall.invoke()
 
-            return Resource.Success(apiResponse)
+            return if(apiResponse is BaseResponse ) {
+                if (apiResponse.isSuccess) {
+                    Resource.Success(apiResponse)
+                } else if (apiResponse.isAccessDenied){
+                    Resource.Failure(failureStatus = FailureStatus.ACCESS_DENIED, message = apiResponse.message)
+                }else {
+                    Resource.Failure(failureStatus = FailureStatus.API_FAIL, message = apiResponse.message)
+                }
+            }else{
+                Resource.Success(apiResponse)
+            }
 
         } catch (throwable: Throwable) {
             when (throwable) {
@@ -76,6 +88,14 @@ open class BaseRemoteDataSource @Inject constructor() {
 
                 is ConnectException -> {
                     return Resource.Failure(FailureStatus.NO_INTERNET)
+                }
+
+                is IOException -> {
+                    return Resource.Failure(
+                        FailureStatus.API_FAIL,
+                        HTTP_ERROR_UNABLE_TO_PROCESS_REQUEST,
+                        throwable.message
+                    )
                 }
 
                 else -> {

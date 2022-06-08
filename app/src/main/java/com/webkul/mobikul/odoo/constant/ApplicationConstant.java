@@ -73,4 +73,10 @@ public interface ApplicationConstant {
     int CREATED = 201;
     int NOT_FOUND = 404;
 
+    //Time Unit
+    int SECONDS_IN_A_MINUTE = 60;
+    int MINUTES_IN_AN_HOUR = 60;
+    int HOURS_IN_A_DAY = 24;
+    int MILLIS = 1000;
+
 }

@@ -21,80 +21,129 @@
         android:background="@color/white"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/login_bg" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:orientation="vertical"
-            android:padding="@dimen/spacing_normal">
+            android:layout_height="match_parent">
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_horizontal_12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_generic"
-                android:text="@string/use_email_address"
-                android:textAllCaps="true"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.12" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_vertical_10"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_normal">
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.10" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_vertical_90"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.90" />
+
+            <TextView
+                android:id="@+id/tv_header"
+                style="@style/large_bold_title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/welcome"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/gl_horizontal_12" />
 
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/login_button"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/button_height_small"
-                    android:layout_marginEnd="@dimen/spacing_generic"
-                    android:layout_marginRight="@dimen/spacing_generic"
-                    android:layout_weight="1"
-                    android:onClick="@{()->handler.login()}"
-                    android:text="@string/login"
-                    android:textAllCaps="true" />
+            <ImageView
+                android:id="@+id/iv_sign_in_sign_up"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/size_280"
+                android:layout_marginTop="@dimen/size_48"
+                android:background="@drawable/ic_login_bg"
+                app:layout_constraintEnd_toStartOf="@+id/gl_vertical_90"
+                app:layout_constraintStart_toStartOf="@+id/gl_vertical_10"
+                app:layout_constraintTop_toBottomOf="@+id/tv_header" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/button_height_small"
-                    android:layout_marginStart="@dimen/spacing_generic"
-                    android:layout_marginLeft="@dimen/spacing_generic"
-                    android:layout_weight="1"
-                    android:onClick="@{()->handler.signUp()}"
-                    android:text="@string/sign_up"
-                    android:textAllCaps="true"
-                    app:visibility="@{AppSharedPref.isAllowedSignup(context)}" />
-
-
-            </LinearLayout>
+            <TextView
+                android:id="@+id/tv_existing_account"
+                style="@style/medium_bold_text_no_caps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_48"
+                android:text="@string/already_have_an_account"
+                android:textSize="@dimen/font_size_18"
+                app:layout_constraintEnd_toStartOf="@+id/gl_vertical_90"
+                app:layout_constraintStart_toStartOf="@+id/gl_vertical_10"
+                app:layout_constraintTop_toBottomOf="@+id/iv_sign_in_sign_up" />
 
             <Button
+                android:id="@+id/btn_login"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/size_32"
+                android:layout_marginTop="@dimen/size_12"
+                android:background="@drawable/btn_white_bg_primary_border_2dp"
+                android:clickable="true"
+                android:elevation="@dimen/size_8"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:onClick="@{()->handler.login()}"
+                android:paddingVertical="@dimen/size_10"
+                android:text="@string/login"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/font_size_16"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/iv_sign_in_sign_up"
+                app:layout_constraintStart_toStartOf="@+id/iv_sign_in_sign_up"
+                app:layout_constraintTop_toBottomOf="@+id/tv_existing_account"
+                tools:ignore="UnusedAttribute"
+                tools:targetApi="lollipop" />
+
+            <Button
+                android:id="@+id/btn_sign_up"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_16"
+                android:background="@drawable/btn_light_primary_bg_borderless"
+                android:elevation="@dimen/size_8"
+                android:foreground="?attr/selectableItemBackground"
+                android:onClick="@{()->handler.signUp()}"
+                android:paddingVertical="@dimen/size_10"
+                android:text="@string/sign_up"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/font_size_16"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/btn_login"
+                app:layout_constraintStart_toStartOf="@+id/btn_login"
+                app:layout_constraintTop_toBottomOf="@+id/btn_login"
+                tools:ignore="UnusedAttribute"
+                tools:targetApi="lollipop" />
+
+            <TextView
+                android:id="@+id/tv_contact_whatsapp_admin"
+                style="@style/medium_bold_text_no_caps"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/button_height_small"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="@dimen/spacing_normal"
-                android:onClick="@{()->handler.fingerprintLogin()}"
-                android:text="@string/fingerprint_login"
-                android:textAllCaps="true"
-                app:visibility="@{AppSharedPref.getIsAllowedFingerprintLogin(context)}" />
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_logo_whatsapp"
+                android:drawableLeft="@drawable/ic_logo_whatsapp"
+                android:drawablePadding="@dimen/size_10"
+                android:paddingTop="@dimen/size_4"
+                android:text="@string/contact_us"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_sign_up"
+                tools:ignore="UseCompatTextViewDrawableXml" />
 
-
-        </LinearLayout>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:onClick="@{()->handler.closeActivity()}"
-            android:padding="@dimen/spacing_generic"
-            app:srcCompat="@drawable/ic_action_navigation_close"
-            app:visibility="@{AppSharedPref.isAllowedGuestCheckout(context)}"
-            tools:ignore="ContentDescription" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </FrameLayout>
 

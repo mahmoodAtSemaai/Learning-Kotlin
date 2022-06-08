@@ -56,7 +56,7 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CHECKOU
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_ORDER_ID;
 
 
-public class OrderFragment extends BaseFragment {
+public class    OrderFragment extends BaseFragment {
 
     private FragmentOrderBinding binding;
     private SweetAlertDialog dialog;

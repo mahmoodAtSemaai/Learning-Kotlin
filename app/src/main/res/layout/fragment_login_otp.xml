@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="@dimen/size_16">
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_enter_OTP_heading"
+            style="@style/medium_bold_text_no_caps"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_16"
+            android:text="@string/enter_otp_code"
+            android:textSize="@dimen/font_size_18"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_otp_description_text"
+            style="@style/medium_normal_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_20"
+            android:text="@string/check_for_otp_text"
+            app:layout_constraintEnd_toEndOf="@+id/tv_enter_OTP_heading"
+            app:layout_constraintStart_toStartOf="@+id/tv_enter_OTP_heading"
+            app:layout_constraintTop_toBottomOf="@+id/tv_enter_OTP_heading" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_otp_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_32"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/size_12"
+            app:layout_constraintEnd_toEndOf="@+id/tv_otp_description_text"
+            app:layout_constraintStart_toStartOf="@+id/tv_otp_description_text"
+            app:layout_constraintTop_toBottomOf="@+id/tv_otp_description_text">
+
+            <EditText
+                android:id="@+id/et_otp_1"
+                style="@style/otp_edit_text"
+                android:layout_marginEnd="@dimen/size_16"
+                android:layout_marginRight="@dimen/size_16"
+                app:layout_constraintEnd_toStartOf="@id/et_otp_2"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/et_otp_2"
+                style="@style/otp_edit_text"
+                android:layout_marginEnd="@dimen/size_16"
+                android:layout_marginRight="@dimen/size_16"
+                app:layout_constraintEnd_toStartOf="@+id/et_otp_3"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toEndOf="@+id/et_otp_1"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/et_otp_3"
+                style="@style/otp_edit_text"
+                android:layout_marginEnd="@dimen/size_16"
+                android:layout_marginRight="@dimen/size_16"
+                app:layout_constraintEnd_toStartOf="@+id/et_otp_4"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/et_otp_2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/et_otp_4"
+                style="@style/otp_edit_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/et_otp_3"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_timer"
+            style="@style/medium_bold_text_accent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_12"
+            android:text=""
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintStart_toStartOf="@+id/tv_otp_description_text"
+            app:layout_constraintTop_toBottomOf="@+id/cl_otp_container"
+            tools:text="@string/send_again" />
+
+        <TextView
+            android:id="@+id/tv_otp_not_received"
+            style="@style/medium_normal_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_16"
+            android:text="@string/otp_not_received"
+            app:layout_constraintStart_toStartOf="@+id/tv_timer"
+            app:layout_constraintTop_toBottomOf="@+id/tv_timer" />
+
+        <TextView
+            android:id="@+id/tv_resend"
+            style="@style/medium_bold_text_accent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/size_4"
+            android:layout_marginLeft="@dimen/size_4"
+            android:text="@string/resend"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_otp_not_received"
+            app:layout_constraintStart_toEndOf="@+id/tv_otp_not_received" />
+
+
+        <TextView
+            android:id="@+id/tv_invalid_otp"
+            style="@style/medium_bold_text_accent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_12"
+            android:text="@string/error_wrong_otp"
+            android:textColor="@color/red_alert"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_resend" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

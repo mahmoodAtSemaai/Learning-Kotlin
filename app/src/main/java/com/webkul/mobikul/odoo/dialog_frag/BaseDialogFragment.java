@@ -32,6 +32,8 @@ public class BaseDialogFragment extends DialogFragment {
     public void onStop() {
         super.onStop();
         Log.i(TAG, "onStop: ");
-        ((BaseActivity) getContext()).mCompositeDisposable.clear();
+        if(getContext() instanceof BaseActivity) {
+            ((BaseActivity) getContext()).mCompositeDisposable.clear();
+        }
     }
 }

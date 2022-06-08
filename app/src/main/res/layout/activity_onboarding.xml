@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".features.onboarding.presentation.OnboardingActivity">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vp_onboarding"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/gl_1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/banner_dots_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tab_dot_switcher_height"
+            android:layout_marginTop="@dimen/size_12"
+            app:layout_constraintTop_toBottomOf="@+id/gl_1"
+            app:tabBackground="@drawable/selector_dots_tab_layout_onboarding_screen"
+            app:tabGravity="center"
+            app:tabIndicatorHeight="0dp"
+            app:tabPaddingStart="@dimen/spacing_generic" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_skip_slides"
+            style="@style/medium_normal_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="@dimen/size_10"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/banner_dots_tab_layout"
+            app:underline="@{true}"
+            tools:text="@string/skip" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_next_slide"
+            android:layout_width="@dimen/size_32"
+            android:layout_height="@dimen/size_32"
+            android:layout_marginEnd="@dimen/size_24"
+            android:layout_marginRight="@dimen/size_24"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_arrow_right_color_primary"
+            app:layout_constraintBottom_toBottomOf="@+id/banner_dots_tab_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/banner_dots_tab_layout" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.82" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

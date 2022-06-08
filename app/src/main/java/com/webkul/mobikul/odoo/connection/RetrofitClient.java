@@ -22,22 +22,16 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
+
 /**
-
  * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
+ *
  * @author Webkul <support@webkul.com>
-
+ * @package Mobikul App
+ * @Category Mobikul
  * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
  * @license https://store.webkul.com/license.html ASL Licence
-
  * @link https://store.webkul.com/license.html
-
  */
 
 public class RetrofitClient {
@@ -83,13 +77,19 @@ public class RetrofitClient {
             Request.Builder builder = chain.request().newBuilder();
             builder.addHeader("Authorization", BuildConfig.BASIC_AUTH_KEY)
                     .addHeader("Content-Type", "text/html");
-            if (AppSharedPref.isLoggedIn(sContext)) {
-                if (AppSharedPref.isSocialLoggedIn(sContext)) {
-                    builder.addHeader("SocialLogin", AppSharedPref.getCustomerLoginBase64Str(sContext));
-                } else {
-                    builder.addHeader("Login", AppSharedPref.getCustomerLoginBase64Str(sContext));
+
+            if (AppSharedPref.getAuthToken(sContext).isEmpty()) {
+                if (AppSharedPref.isLoggedIn(sContext)) {
+                    if (AppSharedPref.isSocialLoggedIn(sContext)) {
+                        builder.addHeader("SocialLogin", AppSharedPref.getCustomerLoginBase64Str(sContext));
+                    } else {
+                        builder.addHeader("Login", AppSharedPref.getCustomerLoginBase64Str(sContext));
+                    }
                 }
+            } else {
+                builder.addHeader("auth", AppSharedPref.getAuthToken(sContext));
             }
+
             if (!AppSharedPref.getLanguageCode(sContext).isEmpty()) {
                 builder.addHeader("lang", AppSharedPref.getLanguageCode(sContext));
             }
@@ -101,6 +101,7 @@ public class RetrofitClient {
             oktHttpClientBuilder.addInterceptor(getHttpLoggingInterceptor());
         }
         oktHttpClientBuilder.addNetworkInterceptor(new StethoInterceptor());
+
         return oktHttpClientBuilder;
     }
 

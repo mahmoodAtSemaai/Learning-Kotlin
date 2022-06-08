@@ -22,19 +22,23 @@ public class AlertDialogHelper {
     private static final String TAG = "AlertDialogHelper";
 
     public static void showDefaultProgressDialog(Context context) {
-        ((BaseActivity) context).mSweetAlertDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
-        ((BaseActivity) context).mSweetAlertDialog.setTitleText(context.getString(R.string.please_wait));
-        ((BaseActivity) context).mSweetAlertDialog.getProgressHelper().setBarColor(ColorHelper.getColor(context, R.attr.colorAccent));
-        ((BaseActivity) context).mSweetAlertDialog.setCancelable(false);
-        ((BaseActivity) context).mSweetAlertDialog.show();
+        if (context instanceof BaseActivity) {
+            ((BaseActivity) context).mSweetAlertDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
+            ((BaseActivity) context).mSweetAlertDialog.setTitleText(context.getString(R.string.please_wait));
+            ((BaseActivity) context).mSweetAlertDialog.getProgressHelper().setBarColor(ColorHelper.getColor(context, R.attr.colorAccent));
+            ((BaseActivity) context).mSweetAlertDialog.setCancelable(false);
+            ((BaseActivity) context).mSweetAlertDialog.show();
+        }
     }
 
     public static void showProgressDialogWithText(Context context, String titleText) {
-        ((BaseActivity) context).mSweetAlertDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
-        ((BaseActivity) context).mSweetAlertDialog.setTitleText(titleText);
-        ((BaseActivity) context).mSweetAlertDialog.getProgressHelper().setBarColor(ColorHelper.getColor(context, R.attr.colorAccent));
-        ((BaseActivity) context).mSweetAlertDialog.setCancelable(false);
-        ((BaseActivity) context).mSweetAlertDialog.show();
+        if (context instanceof BaseActivity) {
+            ((BaseActivity) context).mSweetAlertDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
+            ((BaseActivity) context).mSweetAlertDialog.setTitleText(titleText);
+            ((BaseActivity) context).mSweetAlertDialog.getProgressHelper().setBarColor(ColorHelper.getColor(context, R.attr.colorAccent));
+            ((BaseActivity) context).mSweetAlertDialog.setCancelable(false);
+            ((BaseActivity) context).mSweetAlertDialog.show();
+        }
     }
 
     @SuppressWarnings("unused")

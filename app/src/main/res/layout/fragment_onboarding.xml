@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.features.onboarding.data.models.OnboardingData" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".features.onboarding.presentation.OnboardingFragment">
+
+        <TextView
+            android:id="@+id/tv_heading"
+            style="@style/large_bold_title_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/size_24"
+            android:fontFamily="@font/roboto"
+            android:text="@{data.titleText}"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/gl_horizontal_15"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Fullstack Solution for \nIndonesian Agriculture" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            style="@style/medium_normal_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/size_24"
+            android:layout_marginTop="@dimen/size_12"
+            android:text="@{data.descriptionText}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/gl_horizontal_15"
+            tools:text="Fulfill the needs of farmer shops starting from seeds,
+medicine, to fertilizer in just one application." />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_onboarding"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_320"
+            android:layout_marginTop="@dimen/size_12"
+            android:adjustViewBounds="true"
+            android:src="@{data.drawable}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_description" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_horizontal_15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.15" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
