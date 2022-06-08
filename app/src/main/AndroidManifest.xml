@@ -46,6 +46,17 @@
             android:screenOrientation="portrait"/>
 
         <activity
+            android:name=".features.authentication.presentation.AuthenticationActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible"/>
+        <activity
+            android:name=".features.onboarding.presentation.OnboardingActivity"
+            android:exported="true"
+            android:theme="@style/BaseTheme.AppTheme.NoActionBar.FullScreenTheme"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".activity.UserApprovalActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
@@ -65,6 +76,7 @@
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme.AppTheme.NoActionBar.FullScreenTheme">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -80,6 +92,7 @@
                     android:host="18.141.163.230"
                     android:scheme="http" />
             </intent-filter>
+
 
             <!-- DEEP LINKING FILTER's -->
             <!-- <intent-filter android:label="@string/app_name"> -->
@@ -149,8 +162,7 @@
         <activity
             android:name=".activity.CheckoutActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.FragmentContainerActivity"
             android:launchMode="standard"

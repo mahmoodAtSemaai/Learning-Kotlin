@@ -11,12 +11,11 @@ import com.webkul.mobikul.odoo.model.ReferralResponse;
 import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
 import com.webkul.mobikul.odoo.model.cart.BagResponse;
 import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse;
-import com.webkul.mobikul.odoo.model.checkout.OrderDataResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatConfigResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatCreateChannelResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatHistoryResponse;
-import com.webkul.mobikul.odoo.model.chat.ChatUnreadMessageCount;
+import com.webkul.mobikul.odoo.model.checkout.OrderDataResponse;
 import com.webkul.mobikul.odoo.model.checkout.OrderPlaceResponse;
 import com.webkul.mobikul.odoo.model.checkout.OrderReviewResponse;
 import com.webkul.mobikul.odoo.model.checkout.PaymentAcquirerResponse;
@@ -55,16 +54,13 @@ import com.webkul.mobikul.odoo.model.request.AddToWishlistRequest;
 import com.webkul.mobikul.odoo.model.request.AuthenticationRequest;
 import com.webkul.mobikul.odoo.model.request.BaseLazyRequest;
 import com.webkul.mobikul.odoo.model.request.CartToWishlistRequest;
-import com.webkul.mobikul.odoo.model.request.CategoryRequest;
 import com.webkul.mobikul.odoo.model.request.DeactivateRequest;
 import com.webkul.mobikul.odoo.model.request.OrderReviewRequest;
 import com.webkul.mobikul.odoo.model.request.PlaceOrderRequest;
 import com.webkul.mobikul.odoo.model.request.ProductReviewRequest;
-import com.webkul.mobikul.odoo.model.request.ProductSliderRequest;
 import com.webkul.mobikul.odoo.model.request.RegisterDeviceTokenRequest;
 import com.webkul.mobikul.odoo.model.request.ReviewLikeDislikeRequest;
 import com.webkul.mobikul.odoo.model.request.SaveCustomerDetailRequest;
-import com.webkul.mobikul.odoo.model.request.SearchRequest;
 import com.webkul.mobikul.odoo.model.request.SignUpRequest;
 import com.webkul.mobikul.odoo.model.request.UpdateBagReq;
 import com.webkul.mobikul.odoo.model.request.WishListToCartRequest;
@@ -420,7 +416,7 @@ public class ApiConnection {
     /*-----------------------------------------------------------------------------------------------------------------------------------------------------------
             Chat API's
          ------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-    public static Observable<ChatBaseResponse> getUnreadChatCount(Context context){
+    public static Observable<ChatBaseResponse> getUnreadChatCount(Context context) {
         return RetrofitClient.getClient(context).create(ApiInterface.class).getUnreadChatCount();
     }
 
@@ -429,7 +425,7 @@ public class ApiConnection {
         return RetrofitClient.getClient(context).create(ApiInterface.class).createChannel();
     }
 
-    public static Observable<ChatBaseResponse<ChatConfigResponse>> getChatUrl(Context context, String channelUuid,String sellerId ,String userId) {
+    public static Observable<ChatBaseResponse<ChatConfigResponse>> getChatUrl(Context context, String channelUuid, String sellerId, String userId) {
         return RetrofitClient.getClient(context).create(ApiInterface.class).getChatUrl(channelUuid, sellerId, userId);
     }
 
@@ -472,33 +468,34 @@ public class ApiConnection {
     }
 
 
-    public static Observable<PaymentAcquirerMethodProviderResponse> getPaymentAcquirerMethodProviders(Context context, int paymentMethodId, int paymentVendorId){
+    public static Observable<PaymentAcquirerMethodProviderResponse> getPaymentAcquirerMethodProviders(Context context, int paymentMethodId, int paymentVendorId) {
         return RetrofitClient.getClient(context).create(ApiInterface.class).getPaymentAcquirerMethodProviders(paymentVendorId, paymentMethodId);
     }
 
-    public static Observable<PaymentTransactionResponse> createPayments(Context context, String paymentDetails){
+    public static Observable<PaymentTransactionResponse> createPayments(Context context, String paymentDetails) {
         return RetrofitClient.getClient(context).create(ApiInterface.class).createPayment(paymentDetails);
     }
 
-    public static Observable<OrderDataResponse> getOrderData(Context context, int orderId, Boolean usePoints){
+    public static Observable<OrderDataResponse> getOrderData(Context context, int orderId, Boolean usePoints) {
         return RetrofitClient.getClient(context).create(ApiInterface.class).getOrderData(orderId, usePoints);
     }
 
-    public static Observable<MyOrderReponse> getSaleOrders(Context context, BaseLazyRequest baseLazyRequest){
+    public static Observable<MyOrderReponse> getSaleOrders(Context context, BaseLazyRequest baseLazyRequest) {
         return RetrofitClient.getClient(context).create(ApiInterface.class).getSaleOrders(baseLazyRequest.toString());
     }
 
-    public static Observable<BaseResponse> updateOrderData(Context context, int orderId, UpdateOrderRequest updateOrderRequest){
+    public static Observable<BaseResponse> updateOrderData(Context context, int orderId, UpdateOrderRequest updateOrderRequest) {
         return RetrofitClient.getClient(context).create(ApiInterface.class).updateOrderData(orderId, updateOrderRequest.toString());
     }
 
-    public static Observable<PaymentStatusResponse> getPaymentTransactionStatus(Context context, int orderId){
+    public static Observable<PaymentStatusResponse> getPaymentTransactionStatus(Context context, int orderId) {
         return RetrofitClient.getClient(context).create(ApiInterface.class).getPaymentTransactionStatus(orderId);
     }
 
 
-    public static Observable<TransferInstructionResponse> getTransferInstruction(Context context, int bankId){
+    public static Observable<TransferInstructionResponse> getTransferInstruction(Context context, int bankId) {
         return RetrofitClient.getClient(context).create(ApiInterface.class).getTransferInstruction(bankId);
     }
+
 
 }

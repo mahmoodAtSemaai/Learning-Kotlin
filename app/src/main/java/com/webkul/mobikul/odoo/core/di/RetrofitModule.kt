@@ -42,6 +42,7 @@ object RetrofitModule {
     private const val SOCIAL_LOGIN = "SocialLogin"
     private const val LOGIN = "Login"
     private const val LANGUAGE = "lang"
+    private const val AUTH_TOKEN = "auth"
 
     @Provides
     @Singleton
@@ -51,12 +52,15 @@ object RetrofitModule {
             builder.addHeader(AUTHORIZATION, BuildConfig.BASIC_AUTH_KEY)
                 .addHeader(CONTENT_TYPE, TEXT_HTML)
 
-            if (appPreferences.isLoggedIn) {
-                if (appPreferences.isSocialLoggedIn) {
-                    builder.addHeader(SOCIAL_LOGIN, appPreferences.customerLoginToken ?: "")
-                } else {
-                    builder.addHeader(LOGIN, appPreferences.customerLoginToken ?: "")
+            if (appPreferences.authToken?.isEmpty() == true) {
+                if (appPreferences.isLoggedIn) {
+                    if (appPreferences.isSocialLoggedIn)
+                        builder.addHeader(SOCIAL_LOGIN, appPreferences.customerLoginToken ?: "")
+                    else
+                        builder.addHeader(LOGIN, appPreferences.customerLoginToken ?: "")
                 }
+            } else {
+                builder.addHeader(AUTH_TOKEN, appPreferences.authToken ?: "")
             }
             if (!appPreferences.languageCode.isNullOrEmpty()) {
                 builder.addHeader(LANGUAGE, appPreferences.languageCode ?: "")

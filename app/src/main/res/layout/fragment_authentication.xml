@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:clickable="true"
+        android:focusable="true"
+        tools:context=".features.authentication.presentation.fragment.AuthenticationFragment">
+
+
+        <ImageView
+            android:id="@+id/iv_header"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:alpha="0.6"
+            android:background="@drawable/ic_color_primary_light_bg"
+            app:layout_constraintBottom_toTopOf="@id/guideline13"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/tv_welcome"
+            style="@style/large_bold_title_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/size_12"
+            android:paddingRight="@dimen/size_12"
+            android:text="@string/welcome_back"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/font_size_24"
+            app:layout_constraintBottom_toTopOf="@+id/cv_phone_number_container"
+            app:layout_constraintEnd_toStartOf="@+id/iv_phone"
+            app:layout_constraintStart_toStartOf="@+id/guideline15"
+            app:layout_constraintTop_toTopOf="@+id/iv_phone"
+            tools:ignore="RtlSymmetry" />
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_phone_number_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/size_16"
+            app:cardElevation="@dimen/size_8"
+            app:layout_constraintBottom_toTopOf="@+id/guideline17"
+            app:layout_constraintEnd_toStartOf="@+id/guideline16"
+            app:layout_constraintStart_toStartOf="@+id/guideline15"
+            app:layout_constraintTop_toTopOf="@+id/guideline14">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="@dimen/size_20"
+                android:paddingTop="@dimen/size_20"
+                android:paddingBottom="@dimen/size_32">
+
+                <TextView
+                    android:id="@+id/tv_enter_phone_number"
+                    style="@style/medium_normal_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_24"
+                    android:text="@string/enter_phone_number_text"
+                    android:textColor="@color/colorDarkGrey"
+                    android:textSize="@dimen/font_size_14"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_12"
+                    android:inputType="numberDecimal"
+                    android:maxLength="13"
+                    android:textSize="@dimen/font_size_16"
+                    app:hintEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_enter_phone_number">
+
+                    <EditText
+                        android:id="@+id/et_phone_number"
+                        style="@style/medium_bold_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_24"
+                        android:background="@drawable/shape_rectangular_white_bg_dark_gray_border_1dp_corner_4dp"
+                        android:hint="@string/number_hint"
+                        android:inputType="numberDecimal"
+                        android:maxLength="13"
+                        android:paddingHorizontal="@dimen/size_16"
+                        android:paddingVertical="@dimen/size_12"
+                        android:textColorHint="@color/grey_bg"
+                        android:textSize="@dimen/font_size_16"
+                        tools:ignore="TextFields"
+                        tools:layout_editor_absoluteX="20dp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <Button
+                    android:id="@+id/btn_confirm_number"
+                    style="@style/custom_button_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/size_32"
+                    android:layout_marginTop="@dimen/size_24"
+                    android:enabled="false"
+                    android:text="@string/continue_"
+                    android:textAllCaps="false"
+                    app:layout_constraintEnd_toEndOf="@+id/til_phone_number"
+                    app:layout_constraintStart_toStartOf="@+id/til_phone_number"
+                    app:layout_constraintTop_toBottomOf="@+id/til_phone_number" />
+
+                <TextView
+                    android:id="@+id/tv_error"
+                    style="@style/medium_bold_text_no_caps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_24"
+                    android:gravity="center_horizontal"
+                    android:text=""
+                    android:textAlignment="center"
+                    android:textColor="@color/red_alert"
+                    android:textSize="@dimen/font_size_14"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_confirm_number"
+                    tools:text="@string/incorrect_mobile_number_format" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_account_does_not_exists"
+            style="@style/medium_normal_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/size_12"
+            android:text="@string/account_does_not_exists"
+            android:textSize="@dimen/font_size_14"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_sign_up"
+            app:layout_constraintEnd_toStartOf="@+id/tv_sign_up"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="@+id/guideline15"
+            app:layout_constraintTop_toTopOf="@+id/tv_sign_up" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_sign_up"
+            style="@style/medium_bold_text_accent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/size_4"
+            android:layout_marginLeft="@dimen/size_4"
+            android:layout_marginTop="@dimen/size_20"
+            android:paddingVertical="@dimen/size_12"
+            android:text="@string/sign_up_now"
+            android:textSize="@dimen/font_size_14"
+            app:layout_constraintEnd_toStartOf="@+id/guideline16"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_account_does_not_exists"
+            app:layout_constraintTop_toBottomOf="@+id/cv_phone_number_container" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_privacy_policy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/size_8"
+            android:gravity="center"
+            android:padding="@dimen/spacing_generic"
+            android:text="@string/privacy_policy"
+            android:textColor="@color/green_2A4332"
+            android:visibility="visible"
+            app:layout_constraintEnd_toStartOf="@+id/guideline16"
+            app:layout_constraintStart_toStartOf="@+id/guideline15"
+            app:layout_constraintTop_toBottomOf="@+id/tv_account_does_not_exists" />
+
+
+        <ImageView
+            android:id="@+id/iv_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="-30"
+            android:src="@drawable/ic_phone"
+            app:layout_constraintBottom_toTopOf="@+id/guideline13"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.224" />
+
+        <ImageView
+            android:id="@+id/iv_footer"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_80"
+            android:layout_marginStart="@dimen/size__32"
+            android:layout_marginEnd="@dimen/size__32"
+            android:layout_marginBottom="@dimen/size__4"
+            android:background="@drawable/ic_background_bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.23" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.4" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

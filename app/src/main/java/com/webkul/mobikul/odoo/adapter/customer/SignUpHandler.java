@@ -2,6 +2,7 @@ package com.webkul.mobikul.odoo.adapter.customer;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.util.Base64;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.constant.ApplicationConstant;
 import com.webkul.mobikul.odoo.databinding.FragmentSignUpBinding;
+import com.webkul.mobikul.odoo.features.authentication.presentation.AuthenticationActivity;
 import com.webkul.mobikul.odoo.fragment.LoginFragment;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
@@ -152,6 +154,7 @@ public class SignUpHandler {
             @Override
             public void onNext(@NonNull SignUpResponse signUpResponse) {
                 super.onNext(signUpResponse);
+                setIsFirstTime();
                 if (signUpResponse.isSuccess()) {
                     AnalyticsImpl.INSTANCE.trackSignupSuccessfull(AnalyticsSourceConstants.EVENT_SOURCE_SIGNUP,
                             AnalyticsSourceConstants.EVENT_SOURCE_PROPERTY_MOBILE,
@@ -194,6 +197,12 @@ public class SignUpHandler {
         };
     }
 
+
+    private void setIsFirstTime() {
+        AppSharedPref.setIsAppRunFirstTime(context, false);
+    }
+
+
     private void fetchBillingAddress(Context context, SignUpResponse signUpResponse) {
         ApiConnection.getAddressBookData(context, new BaseLazyRequest(0, 1)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(getAddressResponseObserver(context, signUpResponse));
     }
@@ -217,12 +226,8 @@ public class SignUpHandler {
                 .setConfirmClickListener(sweetAlertDialog -> {
                     sweetAlertDialog.dismiss();
                     FingerPrintLoginHelper fingerPrintLoginHelper = new FingerPrintLoginHelper();
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        fingerPrintLoginHelper.askForFingerprintLogin(context, null, null, signUpResponse, SignUpHandler.this.data, billingAddressUrl);
-                    } else {
-                        AppSharedPref.setIsAllowedFingerprintLogin(context, false);
-                        fingerPrintLoginHelper.navigateToHomeAfterAnalyticsSetup(context, null, null, signUpResponse, SignUpHandler.this.data, billingAddressUrl);
-                    }
+                    AppSharedPref.setIsAllowedFingerprintLogin(context, false);
+                    fingerPrintLoginHelper.navigateToHomeAfterAnalyticsSetup(context, null, null, signUpResponse, SignUpHandler.this.data, billingAddressUrl);
                 }).show();
     }
 
@@ -270,7 +275,7 @@ public class SignUpHandler {
 
     public void signIn() {
         Helper.hideKeyboard((AppCompatActivity) context);
-        FragmentHelper.replaceFragment(android.R.id.content, context, LoginFragment.newInstance(), LoginFragment.class.getSimpleName(), false, false);
+        context.startActivity(new Intent(context, AuthenticationActivity.class));
     }
 
     public boolean isSeller() {

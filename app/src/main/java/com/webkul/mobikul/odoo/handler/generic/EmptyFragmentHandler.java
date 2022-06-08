@@ -21,7 +21,7 @@ public class EmptyFragmentHandler {
 
     public void continueShopping() {
         Intent intent = new Intent(mContext, NewHomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         mContext.startActivity(intent);
     }
 }

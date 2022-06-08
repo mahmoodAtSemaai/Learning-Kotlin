@@ -20,8 +20,8 @@ class SignInSignUpActivityV1 @Inject constructor() :
     }
 
     private fun setOnClickListeners() {
-        binding.loginButton.setOnClickListener { openLogin() }
-        binding.signUpButton.setOnClickListener { openSignUp() }
+        binding.btnLogin.setOnClickListener { openLogin() }
+        binding.btnSignUp.setOnClickListener { openSignUp() }
         binding.fingerprintButton.setOnClickListener { }
     }
 

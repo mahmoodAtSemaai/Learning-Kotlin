@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.webkul.mobikul.odoo.BuildConfig;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.databinding.FragmentLoginBinding;
@@ -64,7 +63,7 @@ public class LoginFragment extends BaseFragment {
         LoginRequestData loginRequestData = new LoginRequestData(getContext());
         mBinding.setData(loginRequestData);
         mBinding.setHandler(new LoginFragmentHandler(requireActivity(), mBinding.getData()));
-        mBinding.setActivityHandler(((SignInSignUpActivity) getActivity()).mBinding.getHandler());
+        mBinding.setActivityHandler(((SignInSignUpActivity) getActivity()).binding.getHandler());
     }
 
     @Override

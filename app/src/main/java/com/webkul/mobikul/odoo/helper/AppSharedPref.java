@@ -33,6 +33,7 @@ public class AppSharedPref {
     private static final String KEY_CUSTOMER_IS_SOCIAL_LOGGED_IN = "CUSTOMER_IS_SOCIAL_LOGGED_IN";
     private static final String KEY_CUSTOMER_SEMAAI_POINTS = "CUSTOMER_SEMAAI_POINTS";
     private static final String KEY_IS_CUSTOMER_REDEEM_POINTS = "IS_CUSTOMER_REDEEM_POINTS";
+    private static final String KEY_CUSTOMER_JWT_AUTH_TOKEN = "CUSTOMER_JWT_AUTH_TOKEN";
     private static final String KEY_REFERRAL_CODE = "REFERRAL_CODE";
     private static final String KEY_ORDER_ID = "ORDER_ID";
 
@@ -99,7 +100,7 @@ public class AppSharedPref {
 
     /*IS LOGGED IN*/
     public static boolean isLoggedIn(Context context) {
-        return !getCustomerLoginBase64Str(context).isEmpty();
+        return !getCustomerLoginBase64Str(context).isEmpty() || !getAuthToken(context).isEmpty();
     }
 
     /*IS SOCIAL LOGIN*/
@@ -487,5 +488,9 @@ public class AppSharedPref {
 
     public static String getUserAnalyticsId(Context context) {
        return getSharedPreference(context, SPLASH_PREF).getString(ANALYTICS_ID, null);
+    }
+
+    public static String getAuthToken(Context context){
+        return getSharedPreference(context, CUSTOMER_PREF).getString(KEY_CUSTOMER_JWT_AUTH_TOKEN,"");
     }
 }

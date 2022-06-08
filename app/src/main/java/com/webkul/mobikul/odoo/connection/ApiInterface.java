@@ -5,12 +5,11 @@ import com.webkul.mobikul.odoo.model.ReferralResponse;
 import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
 import com.webkul.mobikul.odoo.model.cart.BagResponse;
 import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse;
-import com.webkul.mobikul.odoo.model.checkout.OrderDataResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatConfigResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatCreateChannelResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatHistoryResponse;
-import com.webkul.mobikul.odoo.model.chat.ChatUnreadMessageCount;
+import com.webkul.mobikul.odoo.model.checkout.OrderDataResponse;
 import com.webkul.mobikul.odoo.model.checkout.OrderPlaceResponse;
 import com.webkul.mobikul.odoo.model.checkout.OrderReviewResponse;
 import com.webkul.mobikul.odoo.model.checkout.PaymentAcquirerResponse;
@@ -149,6 +148,14 @@ public interface ApiInterface {
     String CHAT_UNREAD_COUNT = "/mail-channels/unread-messages";
     String CHAT_SESSION = "/im_livechat/chat_session";
     String CHAT_HISTORY = "/mail-channels/chats";
+
+
+    /*OTP Based Login*/
+    String PHONE_NUMBER = "phone_number";
+    String VALIDATE_PHONE_NUMBER = "v1/user/{" + PHONE_NUMBER + "}";
+    String GENERATE_OTP = "v1/user/{" + PHONE_NUMBER + "}/authenticate";
+    String LOGIN_WITH_OTP_JWT_TOKEN = "v1/user/{" + PHONE_NUMBER + "}/authenticate/otp";
+    String LOGIN_WITH_JWT_TOKEN = "v1/user/{" + PHONE_NUMBER + "}/login";
 
      /*-----------------------------------------------------------------------------------------------------------------------------------------------------------
         CATALOG API's
@@ -442,10 +449,9 @@ public interface ApiInterface {
     Observable<ChatBaseResponse<List<ChatHistoryResponse>>> getChatHistory();
 
 
-
-     /*-----------------------------------------------------------------------------------------------------------------------------------------------------------
-       OTHER API's
-    ------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+    /*-----------------------------------------------------------------------------------------------------------------------------------------------------------
+      OTHER API's
+   ------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     @POST(MOBIKUL_EXTRAS_REGISTER_FCM_TOKEN)
     Observable<BaseResponse> registerDeviceToken(
             @Body String registerDeviceTokenRequestStr
@@ -499,5 +505,6 @@ public interface ApiInterface {
 
     @GET(MOBIKUL_GET_PAYMENTS_INSTRUCTIONS)
     Observable<TransferInstructionResponse> getTransferInstruction(@Path(MOBIKUL_BANK_ID) int bankId);
+
 
 }

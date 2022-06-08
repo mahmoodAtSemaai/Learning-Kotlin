@@ -3,8 +3,10 @@
     <solid android:color="@color/activityBackground" />
     <stroke
         android:width="@dimen/size_2"
-        android:color="@android:color/darker_gray" />
+        android:color="@color/colorDarkGrey" />
     <size
-        android:width="@dimen/size_32"
-        android:height="@dimen/size_32" />
+        android:width="@dimen/size_40"
+        android:height="@dimen/size_48" />
+
+    <corners android:radius="@dimen/size_4" />
 </shape>

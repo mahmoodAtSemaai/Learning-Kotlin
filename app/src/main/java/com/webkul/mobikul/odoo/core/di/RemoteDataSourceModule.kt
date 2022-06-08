@@ -7,6 +7,7 @@ import com.webkul.mobikul.odoo.data.remoteSource.remoteDataSource.TermsCondition
 import com.webkul.mobikul.odoo.data.remoteSource.remoteServices.AddressServices
 import com.webkul.mobikul.odoo.data.remoteSource.remoteServices.AuthServices
 import com.webkul.mobikul.odoo.data.remoteSource.remoteServices.TermsConditionServices
+import com.webkul.mobikul.odoo.features.authentication.data.remoteSource.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,20 +22,38 @@ object RemoteDataSourceModule {
     @Provides
     @Singleton
     fun authRemoteDataSource(
-            authServices: AuthServices,
-            @ApplicationContext context: Context
+        authServices: AuthServices,
+        @ApplicationContext context: Context
     ): AuthRemoteDataSource = AuthRemoteDataSource(authServices, context)
 
     @Provides
     @Singleton
     fun addressRemoteDataSource(
-            addressServices: AddressServices
+        addressServices: AddressServices
     ): AddressRemoteDataSource = AddressRemoteDataSource(addressServices)
 
     @Provides
     @Singleton
     fun termsConditionRemoteDataSource(
-            termsConditionServices: TermsConditionServices
+        termsConditionServices: TermsConditionServices
     ): TermsConditionRemoteDataSource = TermsConditionRemoteDataSource(termsConditionServices)
+
+    @Provides
+    @Singleton
+    fun authenticationRemoteDataSource(
+        authenticationServices: AuthenticationServices
+    ): AuthenticationRemoteDataSource = AuthenticationRemoteDataSource(authenticationServices)
+
+    @Provides
+    @Singleton
+    fun splashRemoteDataSource(
+        splashServices: SplashServices
+    ): SplashRemoteDataSource = SplashRemoteDataSource(splashServices)
+
+    @Provides
+    @Singleton
+    fun homeRemoteDataSource(
+        homePageServices: HomePageServices
+    ): HomePageRemoteDataSource = HomePageRemoteDataSource(homePageServices)
 
 }

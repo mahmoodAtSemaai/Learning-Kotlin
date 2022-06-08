@@ -147,26 +147,26 @@ public class AccountFragmentHandler {
 
     private void showDialogForReferralCode(Context context, String referralCode) {
         new SweetAlertDialog(context, SweetAlertDialog.NORMAL_TYPE)
-            .setTitleText(context.getString(R.string.referral_code))
-            .setContentText(context.getString(R.string.referral_code_is) + ": " + referralCode + "\n\n" + context.getString(R.string.referral_code_share_message))
-            .setConfirmText(context.getString(R.string.share_referral_code))
-            .setCancelText(context.getString(R.string.cancel_small))
-            .setConfirmClickListener(sweetAlertDialog -> {
-                sweetAlertDialog.dismiss();
-                referralMessage = createMessageToShare(referralCode);
-                shareReferralCode(referralMessage);
-            })
-            .setCancelClickListener(Dialog::dismiss).show();
+                .setTitleText(context.getString(R.string.referral_code))
+                .setContentText(context.getString(R.string.referral_code_is) + ": " + referralCode + "\n\n" + context.getString(R.string.referral_code_share_message))
+                .setConfirmText(context.getString(R.string.share_referral_code))
+                .setCancelText(context.getString(R.string.cancel_small))
+                .setConfirmClickListener(sweetAlertDialog -> {
+                    sweetAlertDialog.dismiss();
+                    referralMessage = createMessageToShare(referralCode);
+                    shareReferralCode(referralMessage);
+                })
+                .setCancelClickListener(Dialog::dismiss).show();
     }
 
-    public String createMessageToShare(String referralCode){
+    public String createMessageToShare(String referralCode) {
         String message = context.getString(R.string.lets_use_this_code) + ": " + referralCode + " ";
         message += context.getString(R.string.for_purchasing) + "\n";
         message += APP_PLAYSTORE_URL + " .";
         return message;
     }
 
-    public void shareReferralCode(String message){
+    public void shareReferralCode(String message) {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, message);
@@ -198,12 +198,14 @@ public class AccountFragmentHandler {
                 super.onNext(baseResponse);
                 if (baseResponse.isSuccess()) {
                     AnalyticsImpl.INSTANCE.trackSignoutSuccess();
-                    StyleableToast.makeText(context, baseResponse.getMessage(), Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
+                    StyleableToast.makeText(context, context.getString(R.string.have_a_good_day), Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
                     AppSharedPref.clearCustomerData(context);
                     AppSharedPref.clearUserAnalytics(context);
-                    Intent intent = new Intent(context, SplashScreenActivity.class);
+                    AppSharedPref.setIsAppRunFirstTime(context, false);
+                    Intent intent = new Intent(context, SignInSignUpActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     context.startActivity(intent);
+                    ((Activity) context).finishAffinity();
                 } else {
                     AnalyticsImpl.INSTANCE.trackSignoutFailed(baseResponse.getResponseCode(), baseResponse.getMessage());
                     SnackbarHelper.getSnackbar((Activity) context, baseResponse.getMessage(), Snackbar.LENGTH_LONG, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
@@ -222,6 +224,8 @@ public class AccountFragmentHandler {
             }
         });
     }
+
+
 
     public void changeProfileImage(boolean isRequestForProfileImage) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -318,7 +322,7 @@ public class AccountFragmentHandler {
 
         if (context instanceof NewHomeActivity) {
             ((NewHomeActivity) context).startActivityForResult(chooserIntent, RC_PICK_IMAGE);
-        }else if (context instanceof NewDrawerActivity) {
+        } else if (context instanceof NewDrawerActivity) {
             ((NewDrawerActivity) context).startActivityForResult(chooserIntent, RC_PICK_IMAGE);
         }
     }

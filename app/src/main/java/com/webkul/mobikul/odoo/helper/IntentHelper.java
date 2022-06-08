@@ -34,7 +34,7 @@ public class IntentHelper {
 
     public static void continueShopping(Context context) {
         Intent intent = new Intent(context, NewHomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
     }
 

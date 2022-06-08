@@ -117,7 +117,7 @@
     <!---->
     <!--SIGN IN AND SIGN UP-->
     <string name="sign_in">Sign In</string>
-    <string name="sign_up">Sign Up</string>
+    <string name="sign_up">Signup</string>
     <string name="email">Email</string>
     <string name="phone_number">Phone Number</string>
     <string name="phone_number_or_username">Phone Number/Username</string>
@@ -147,7 +147,8 @@
     <string name="enter_street_address">Enter Street address</string>
     <string name="enter_your_city">Enter your city</string>
     <string name="enter_your_postal_code">Enter Zip/PostalCode</string>
-    <string name="enter_your_password">Enter password</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="enter_your_password">Enter your password</string>
     <string name="enter_confirm_password">Enter confirm password</string>
     <string name="error_fb_sign_in">Could not perform sign in via Facebook. Please try again.</string>
     <string name="view_term_and_cond">View Terms and Conditions</string>
@@ -525,8 +526,8 @@
     <string name="read_more">Read More</string>
     <string name="phone_number_verification">Phone Number Verification</string>
     <string name="enter_your_phone_number">Enter Your Phone Number</string>
-    <string name="enter_otp_code_here">Enter OTP Code Here</string>
-    <string name="otp_not_received">OTP code will be send to your message. \nDidn`t receive it?</string>
+    <string name="enter_otp_code">Enter OTP Code</string>
+    <string name="check_for_otp_text">Check your SMS inbox, and enter the code from Semaai into the field below. This OTP code is confidential, do not share this code with anyone.</string>
     <string name="send_again">Send again</string>
     <string name="select_your_coupon">Select Your Coupon >></string>
     <string name="bank_transfer_va">Bank Transfer Virtual Account</string>
@@ -636,7 +637,51 @@
     <string name="label_checked">checked</string>
     <string name="label_unchecked">not checked</string>
 
-    <!-- Chat -->
+    <!-- SplashScreen  -->
+    <string name="welcome">Welcome</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="contact_us">Contact Us</string>
+
+    <!-- Onboarding Screen  -->
+    <string name="onboarding_title_1">Fullstack Solution for Indonesian Agriculture</string>
+    <string name="onboarding_title_2">The Best Price And Up To Date Stock</string>
+    <string name="onboarding_title_3">Simple, Convenient, Quick</string>
+    <string name="onboarding_title_4">Original Product</string>
+    <string name="onboarding_title_5">Buy Now Pay Later</string>
+    <string name="onboarding_description_1">Fulfill the needs of farmer shops starting from seeds, medicine, to fertilizer in just one application.</string>
+    <string name="onboarding_description_2">Competitive prices that maximize advantage with always updated stock.</string>
+    <string name="onboarding_description_3">In just one click, the product is delivered right away to your shop!</string>
+    <string name="onboarding_description_4">Quality guaranteed</string>
+    <string name="onboarding_description_5">You can buy it at any time with a payment due.</string>
+
+    <string name="enter_phone_number_text">Please enter your mobile number and wait for the OTP code to be sent to your number</string>
+    <string name="account_does_not_exists">Don\'t have a Semaai account yet?</string>
+    <string name="sign_up_now"><font color='#FF6A13'>Sign up now</font></string>
+    <string name="number_hint">08123456789</string>
+    <string name="incorrect_mobile_number_format">*Sorry, your mobile number format is incorrect. Please use “08”</string>
+    <string name="incorrect_mobile_number">*Sorry, your mobile number is incorrect.</string>
+    <string name="welcome_back">Welcome back!</string>
+    <string name="verification_method_text">Verification Method</string>
+    <string name="verification_method_selection_text">Please select verification method</string>
+    <string name="send_otp_confirmation_text">For your security, we will confirm by sending a code to your mobile number. Please select one.</string>
+    <string name="change_phone_number"><b><u><font color='#FF6A13'>Change mobile number</font></u></b></string>
+    <string name="wrong_phone_number">Wrong phone number?</string>
+    <string name="otp_not_received">OTP code is not received?</string>
+    <string name="resend"><u>Resend</u></string>
+    <string name="error_wrong_otp">*Sorry, the OTP code you entered is wrong</string>
+    <string name="error_incorrect_password">Wrong password.</string>
+    <string name="error_incorrect_phone_number">*Sorry, your mobile number is incorrect</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="click_here"><u><font color='#FF6A13'>Click here</font></u></string>
+    <string name="sms_otp_text">Send OTP code to SMS %s</string>
+    <string name="otp_already_sent">OTP is already sent to your mobile.</string>
+    <string name="are_you_sure_to_go_back">Are you sure you want to go back?</string>
+    <string name="no">No</string>
+    <string name="error_user_does_not_exists">*User doesn’t exist. New users need to sign up</string>
+    <string name="otp_code">OTP Code</string>
+    <string name="have_a_good_day">Have a good day!!!</string>
+
+  <!-- Chat -->
     <string name="chat_title">Chat</string>
     <string name="text_nine_plus">9+</string>
 

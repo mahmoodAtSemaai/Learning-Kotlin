@@ -5,6 +5,7 @@
     <color name="colorPrimary">#ff6a13</color>
     <color name="colorPrimaryDark">#e65f11</color>
     <color name="colorPrimaryLight">#ff9c48</color>
+    <color name="colorPrimaryLight2">#FFD8B8</color>
     <color name="colorAccent">#6fa088</color>
     <color name="colorAccent_alpha_90">#8F6FA088</color>
     <color name="colorAccentLight">#9ed1b8</color>
@@ -46,6 +47,7 @@
     <color name="red_600">#E53935</color><!--CANCELLED ORDER-->
     <color name="red_500">#F44336</color>
     <color name="red_000">#FF0000</color>
+    <color name="red_alert">#BD0000</color>
     <color name="blue_a200">#448AFF</color><!--new order-->
 
     <!--BACK GROUND COLORS-->
@@ -78,8 +80,11 @@
 
     <color name="grey_bg">#D9D9D9</color>
     <color name="grey_bg_light">#E7E7E7</color>
+    <color name="grey_bg_light_2">#C4C4C4</color>
     <color name="background_orange">#E16E03</color>
     <color name="black">#000</color>
     <color name="background_appbar_color">#FFD8B8</color>
+    
+    <color name="green_2A4332">#2A4332</color>
 
 </resources>

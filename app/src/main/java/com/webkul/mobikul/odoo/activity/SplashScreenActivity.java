@@ -1,5 +1,6 @@
 package com.webkul.mobikul.odoo.activity;
 
+import static com.webkul.mobikul.odoo.constant.ApplicationConstant.MILLIS;
 import static com.webkul.mobikul.odoo.constant.ApplicationConstant.TYPE_CATEGORY;
 import static com.webkul.mobikul.odoo.constant.ApplicationConstant.TYPE_CUSTOM;
 import static com.webkul.mobikul.odoo.constant.ApplicationConstant.TYPE_NONE;
@@ -18,7 +19,9 @@ import static com.webkul.mobikul.odoo.helper.CatalogHelper.CatalogProductRequest
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 
@@ -33,23 +36,22 @@ import com.webkul.mobikul.odoo.database.SaveData;
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.databinding.ActivitySplashScreenBinding;
 import com.webkul.mobikul.odoo.ui.auth.SignInSignUpActivityV1;
+import com.webkul.mobikul.odoo.features.onboarding.presentation.OnboardingActivity;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.CatalogHelper;
-import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.IntentHelper;
 import com.webkul.mobikul.odoo.helper.NetworkHelper;
 import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
-import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse;
-import com.webkul.mobikul.odoo.model.chat.ChatCreateChannelResponse;
 import com.webkul.mobikul.odoo.model.extra.SplashScreenActivityData;
 import com.webkul.mobikul.odoo.model.extra.SplashScreenResponse;
 import com.webkul.mobikul.odoo.model.home.HomePageResponse;
 import com.webkul.mobikul.odoo.model.user.UserModel;
 import com.webkul.mobikul.odoo.updates.FirebaseRemoteConfigHelper;
 
+import java.util.Locale;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -64,72 +66,113 @@ public class SplashScreenActivity extends BaseActivity {
     private static final String TAG = "SplashActivity";
     private static final int RC_UPDATE_APP_FROM_PLAYSTORE = 1;
     CustomObserver<SplashScreenResponse> splashSubscriber;
-    private ActivitySplashScreenBinding mBinding;
+    private ActivitySplashScreenBinding binding;
+    private static final String directory = "com.webkul.mobikul.odoo.activity.SplashScreenActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Map<String, ?> allEntries = AppSharedPref.getSharedPreference(this, CUSTOMER_PREF).getAll();
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
         }
 
-        if (!AppSharedPref.getLanguageCode(this).isEmpty()) {
-            BaseActivity.setLocale(this, false);
-        }
-        if (AppSharedPref.getUserAnalyticsId(this) == null && AppSharedPref.isLoggedIn(SplashScreenActivity.this)) {
+        setLanguageCode();
 
-            ApiConnection.getUserAnalytics(this).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<UserAnalyticsResponse>(this) {
-                @Override
-                public void onNext(@androidx.annotation.NonNull UserAnalyticsResponse userAnalyticsResponse) {
-
-                    AnalyticsImpl.INSTANCE.initUserTracking(new UserModel(
-                            userAnalyticsResponse.getEmail(),
-                            userAnalyticsResponse.getAnalyticsId(),
-                            userAnalyticsResponse.getName(),
-                            userAnalyticsResponse.isSeller()
-                    ));
-                    AppSharedPref.setUserAnalyticsId(getBaseContext(), userAnalyticsResponse.getAnalyticsId());
-                   if(userAnalyticsResponse.isSeller() && FirebaseRemoteConfigHelper.isChatFeatureEnabled()){
-                       createChatChannel();
-                   }
-                    callApi();
-                    super.onNext(userAnalyticsResponse);
-                }
-
-                @Override
-                public void onError(@androidx.annotation.NonNull Throwable t) {
-                    super.onError(t);
-                    AnalyticsImpl.INSTANCE.trackAnalyticsFailure();
-                    callApi();
-                }
-            });
+        if (!AppSharedPref.getAuthToken(this).isEmpty()) {
+            setView();
+            initSplashScreenAPI();
         } else {
-            int darkModeFlag = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-            boolean isDark = AppSharedPref.isDarkMode(this);
-            if (isDark || darkModeFlag == Configuration.UI_MODE_NIGHT_YES) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                AppSharedPref.setDarkMode(this, true);
+            if (AppSharedPref.isLoggedIn(this)) {
+                if (AppSharedPref.getUserAnalyticsId(this) == null) {
+                    ApiConnection.getUserAnalytics(this).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<UserAnalyticsResponse>(this) {
+                        @Override
+                        public void onNext(@androidx.annotation.NonNull UserAnalyticsResponse userAnalyticsResponse) {
+
+                            AnalyticsImpl.INSTANCE.initUserTracking(new UserModel(
+                                    userAnalyticsResponse.getEmail(),
+                                    userAnalyticsResponse.getAnalyticsId(),
+                                    userAnalyticsResponse.getName(),
+                                    userAnalyticsResponse.isSeller()
+                            ));
+                            AppSharedPref.setUserAnalyticsId(getBaseContext(), userAnalyticsResponse.getAnalyticsId());
+                            callApi();
+                            super.onNext(userAnalyticsResponse);
+                        }
+
+                        @Override
+                        public void onError(@androidx.annotation.NonNull Throwable t) {
+                            super.onError(t);
+                            AnalyticsImpl.INSTANCE.trackAnalyticsFailure();
+                            callApi();
+                        }
+                    });
+                } else {
+                    setView();
+                    callApi();
+                }
             } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                setView();
+                launchUsingDelay();
+
             }
-
-            Helper.logIntentBundleData(getIntent());
-            mBinding = DataBindingUtil.setContentView(this, R.layout.activity_splash_screen);
-            mBinding.setData(new SplashScreenActivityData());    // starting progressBar
-            FirebaseAnalyticsImpl.logAppOpenEvent(this);
-
-            callApi();
         }
-
-
     }
 
-    private void createChatChannel() {
-        ApiConnection.createChannel(this).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread()).
-                    subscribe(new CustomObserver<ChatBaseResponse<ChatCreateChannelResponse>>(this) {
-                    });
+    private void launchUsingDelay() {
+        new CountDownTimer(2 * MILLIS, 2 * MILLIS) {
+            public void onFinish() {
+                launchOnCondition();
+            }
+
+            public void onTick(long millisUntilFinished) {
+            }
+        }.start();
+    }
+
+    private void launchOnCondition() {
+        if (AppSharedPref.isAppRunFirstTime(this)) {
+            startActivity(new Intent(this, OnboardingActivity.class));
+        } else {
+            startActivity(new Intent(this, SignInSignUpActivity.class));
+        }
+        finish();
+    }
+
+    private void setView() {
+        int darkModeFlag = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        boolean isDark = AppSharedPref.isDarkMode(this);
+        if (isDark || darkModeFlag == Configuration.UI_MODE_NIGHT_YES) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            AppSharedPref.setDarkMode(this, true);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_splash_screen);
+        binding.setData(new SplashScreenActivityData());
+        FirebaseAnalyticsImpl.logAppOpenEvent(this);
+    }
+
+    private void setLanguageCode() {
+        String languageCode = AppSharedPref.getLanguageCode(this);
+        if (languageCode.isEmpty()) {
+            AppSharedPref.setLanguageCode(this, getString(R.string.ind_lang));
+        }
+        setLocale(this, false);
+        setLocaleConfig();
+    }
+
+    private void setLocaleConfig() {
+        String languageCode = AppSharedPref.getLanguageCode(this);;
+        Locale locale = new Locale(languageCode.substring(0, 2), languageCode.substring(3, 5));
+        Configuration config = new Configuration();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            config.setLocale(locale);
+        } else {
+            config.locale = locale;
+        }
+        getApplicationContext().getResources().updateConfiguration(config, getApplicationContext().getResources().getDisplayMetrics());
     }
 
 
@@ -243,7 +286,7 @@ public class SplashScreenActivity extends BaseActivity {
             @Override
             public void onError(@NonNull Throwable e) {
                 super.onError(e);
-                mBinding.mainProgressBar.setVisibility(View.GONE);
+                binding.mainProgressBar.setVisibility(View.GONE);
             }
 
             @Override
@@ -328,7 +371,7 @@ public class SplashScreenActivity extends BaseActivity {
                     @Override
                     public void onError(@androidx.annotation.NonNull Throwable t) {
                         super.onError(t);
-                        mBinding.mainProgressBar.setVisibility(View.GONE);
+                        binding.mainProgressBar.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -364,7 +407,7 @@ public class SplashScreenActivity extends BaseActivity {
                 } else {
                     super.onError(e);
                 }
-                mBinding.mainProgressBar.setVisibility(View.GONE);
+                binding.mainProgressBar.setVisibility(View.GONE);
             }
 
             @Override

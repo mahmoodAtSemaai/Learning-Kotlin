@@ -21,7 +21,7 @@ import java.io.IOException
 import java.nio.charset.Charset
 
 /**
-     * Loads content of file from assets as String using UTF-8 charset
+ * Loads content of file from assets as String using UTF-8 charset
  */
 fun Context.loadFromAsset(jsonName: String): String? {
     var stream: String? = null
@@ -73,11 +73,20 @@ fun Context.getCompatDrawable(@DrawableRes drawableRes: Int): Drawable? =
     ContextCompat.getDrawable(this, drawableRes)
 
 
-fun Context.getDefaultProgressDialog() : SweetAlertDialog {
+fun Context.getDefaultProgressDialog(): SweetAlertDialog {
     val sweetAlertDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-    sweetAlertDialog.titleText =getString(R.string.please_wait)
+    sweetAlertDialog.titleText = getString(R.string.please_wait)
     sweetAlertDialog.progressHelper.barColor = ColorHelper.getColor(this, R.attr.colorAccent)
     sweetAlertDialog.setCancelable(false)
+    return sweetAlertDialog
+}
+
+fun Context.getProgressDialogWithText(title: String, description: String): SweetAlertDialog {
+    val sweetAlertDialog = getDefaultProgressDialog()
+    if(title.isNotEmpty())
+        sweetAlertDialog.titleText = title
+    if(description.isNotEmpty())
+        sweetAlertDialog.contentText = description
     return sweetAlertDialog
 }
 
@@ -96,7 +105,7 @@ fun Context.showDefaultWarningDialogWithDismissListener(
 fun Context.showDefaultSuccessDialogWithDismissListener(
     title: String?,
     message: String?,
-    buttonText:String?,
+    buttonText: String?,
     listener: OnSweetClickListener?
 ) {
     SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
@@ -106,7 +115,7 @@ fun Context.showDefaultSuccessDialogWithDismissListener(
         .setConfirmClickListener(listener).show()
 }
 
-fun Context.onPrivacyPolicyClick():Resource<Intent> {
+fun Context.onPrivacyPolicyClick(): Resource<Intent> {
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(AppSharedPref.getPrivacyURL(this)))
     val intents: MutableList<Intent> = ArrayList()
     val list = packageManager.queryIntentActivities(intent, 0)
@@ -129,7 +138,7 @@ fun Context.onPrivacyPolicyClick():Resource<Intent> {
 }
 
 
-fun Context.showDefaultWarningDialog( title: String?, message: String?) {
+fun Context.showDefaultWarningDialog(title: String?, message: String?) {
     SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
         .setTitleText(title)
         .setContentText(message)

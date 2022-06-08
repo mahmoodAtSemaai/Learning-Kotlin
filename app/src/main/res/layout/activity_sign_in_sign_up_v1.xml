@@ -41,7 +41,7 @@
 
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/login_button"
+                    android:id="@+id/btn_login"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/button_height_small"
                     android:layout_marginEnd="@dimen/spacing_generic"
@@ -52,7 +52,7 @@
 
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/sign_up_button"
+                    android:id="@+id/btn_sign_up"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/button_height_small"
                     android:layout_marginStart="@dimen/spacing_generic"

@@ -116,12 +116,14 @@
 
     <dimen name="font_size_10">10sp</dimen>
     <dimen name="font_size_12">12sp</dimen>
+    <dimen name="font_size_13">13sp</dimen>
     <dimen name="font_size_14">14sp</dimen>
     <dimen name="font_size_16">16sp</dimen>
     <dimen name="font_size_18">18sp</dimen>
     <dimen name="font_size_20">20sp</dimen>
     <dimen name="font_size_22">22sp</dimen>
     <dimen name="font_size_24">24sp</dimen>
+    <dimen name="font_size_28">28sp</dimen>
     <dimen name="font_size_32">32sp</dimen>
 
     <dimen name="size_4">4dp</dimen>
@@ -145,6 +147,16 @@
     <dimen name="size_160">160dp</dimen>
     <dimen name="size_200">200dp</dimen>
     <dimen name="size_240">240dp</dimen>
+    <dimen name="size_280">280dp</dimen>
+    <dimen name="size_320">320dp</dimen>
+
+
+    <dimen name="size__4">-4dp</dimen>
+    <dimen name="size__8">-8dp</dimen>
+    <dimen name="size__16">-16dp</dimen>
+    <dimen name="size__24">-24dp</dimen>
+    <dimen name="size__32">-32dp</dimen>
+    <dimen name="size__40">-40dp</dimen>
 
     <!--    size of hambuger icon-->
     <dimen name="hamburger_icon_dimens">30dp</dimen>

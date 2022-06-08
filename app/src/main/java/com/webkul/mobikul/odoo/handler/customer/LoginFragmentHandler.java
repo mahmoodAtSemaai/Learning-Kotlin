@@ -131,6 +131,7 @@ public class LoginFragmentHandler {
                     if (loginResponse.isSuccess()) {
 
                         AnalyticsImpl.INSTANCE.trackLoginSuccessfull(AnalyticsSourceConstants.EVENT_SOURCE_PROPERTY_MOBILE, AnalyticsSourceConstants.EVENT_SOURCE_LOGIN);
+                        setIsFirstTime();
 
 
                         //#*#*#*#* For Fingerprint Login Permission *#*#*#*#
@@ -196,6 +197,10 @@ public class LoginFragmentHandler {
         } else {
             SnackbarHelper.getSnackbar((Activity) mContext, mContext.getString(R.string.error_enter_valid_login_details), Snackbar.LENGTH_LONG, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
         }
+    }
+
+    private void setIsFirstTime() {
+        AppSharedPref.setIsAppRunFirstTime(mContext, false);
     }
 
     public void fingerprintLogin() {
