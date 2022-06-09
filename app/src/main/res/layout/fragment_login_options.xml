@@ -19,16 +19,18 @@
         tools:context=".features.authentication.presentation.fragment.AuthenticationFragment">
 
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_header"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:adjustViewBounds="true"
             android:alpha="0.6"
-            android:background="@drawable/ic_color_primary_light_bg"
+            android:scaleType="fitXY"
             app:layout_constraintBottom_toTopOf="@id/gl_horizontal_40"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_color_primary_light_bg" />
 
 
         <TextView
@@ -55,7 +57,6 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="@dimen/size_16"
             app:cardElevation="@dimen/size_8"
-            app:layout_constraintBottom_toTopOf="@+id/guideline17"
             app:layout_constraintEnd_toStartOf="@+id/gl_vertical_95"
             app:layout_constraintStart_toStartOf="@+id/gl_vertical_05"
             app:layout_constraintTop_toTopOf="@+id/gl_horizontal_23">
@@ -200,11 +201,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:rotation="-30"
-            android:src="@drawable/ic_phone"
-            app:layout_constraintBottom_toTopOf="@+id/guideline13"
+            app:layout_constraintBottom_toTopOf="@+id/gl_horizontal_40"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.224" />
+            app:layout_constraintVertical_bias="0.224"
+            app:srcCompat="@drawable/ic_phone" />
 
         <ImageView
             android:id="@+id/iv_footer"
@@ -213,10 +214,10 @@
             android:layout_marginStart="@dimen/size__32"
             android:layout_marginEnd="@dimen/size__32"
             android:layout_marginBottom="@dimen/size__4"
-            android:background="@drawable/ic_background_bottom"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ic_background_bottom" />
 
 
         <androidx.constraintlayout.widget.Guideline
