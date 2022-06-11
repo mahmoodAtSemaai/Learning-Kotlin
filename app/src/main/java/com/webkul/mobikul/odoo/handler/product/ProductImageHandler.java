@@ -28,7 +28,4 @@ public class ProductImageHandler {
         mPosition = position;
     }
 
-    public void viewProductImage() {
-        FragmentHelper.addFragment(R.id.container, mContext, FullScreenImageScrollFragment.newInstance(mPosition, (ArrayList<String>) mImages), FullScreenImageScrollFragment.class.getSimpleName(), true, true);
-    }
 }

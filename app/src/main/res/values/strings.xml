@@ -44,6 +44,7 @@
     <string name="view_all">View All</string>
     <string name="please_wait">Please wait…</string>
     <string name="press_back_to_exit">Press Back again to Exit</string>
+    <string name="cart_ninety_nine_plus">99+</string>
     <!---->
     <!--DRAWER-->
     <string name="drawer_open">Open navigation drawer</string>
@@ -423,8 +424,8 @@
     <string name="darkMode">Dark Mode</string>
     <string name="setting">Settings</string>
     <string name="in_stock">In Stock</string>
-    <string name="in_stock_quantity_x">Stock: %1$d </string>
-    <string name="in_stock_quantity_0">Stock: 0 </string>
+    <string name="in_stock_quantity_x">Stock %1$d </string>
+    <string name="in_stock_quantity_0">Stock 0 </string>
     <string name="quantity_exceeding">Your order quantity exceeds the stock</string>
     <string name="product_already_added">products already added in bag</string>
     <string name="added_successfully">Added Successfully</string>
@@ -453,6 +454,7 @@
     <string name="manage_your_wishlist_by_tapping_on_heart_icon">Manage your wishlist by tapping on the Heart icon.</string>
     <string name="fingerprint_login">FingerPrint Login</string>
     <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="no_terms_and_conditions_to_display">No Terms &amp; Conditions </string>
     <string name="access_denied_message"> You need to Login again in the application to continue </string>
     <string name="delete_my_image">Delete Image</string>
@@ -605,7 +607,7 @@
     <!-- Product Activity and product details -->
     <string name="product_details_category">Category</string>
     <string name="product_details_organic">Organic</string>
-    <string name="product_details_crops">Crops</string>
+    <string name="product_details_crops">Suitable for</string>
     <string name="product_details_weight">Weight</string>
     <string name="product_details_additional_information">Additional Information</string>
     <string name="product_details_mrp">MRP</string>
@@ -633,6 +635,19 @@
     <string name="main_menu">Main Menu</string>
     <string name="text_one">1</string>
     <string name="no_products_found">No products found!</string>
+
+    <string name="product_detail_discount">Discount</string>
+    <string name="product_detail_description">Description</string>
+    <string name="product_successfully_added">Product successfully added!</string>
+    <string name="product_out_of_stock">The product is \n out of stock</string>
+    <string name="product_quantity_exceeding">Your order quantity \n exceeds the stock</string>
+    <string name="free_delivery">Free Delivery</string>
+    <string name="product_details_brand">Brand</string>
+    <string name="see_all">See All</string>
+    <string name="product_details_add_to_cart">Add to Cart</string>
+    <string name="product_details_plus">+</string>
+    <string name="product_details_minus">-</string>
+    <string name="product_details_weight_zero">0.0</string>
 
     <string name="label_checked">checked</string>
     <string name="label_unchecked">not checked</string>
@@ -676,12 +691,11 @@
     <string name="sms_otp_text">Send OTP code to SMS %s</string>
     <string name="otp_already_sent">OTP is already sent to your mobile.</string>
     <string name="are_you_sure_to_go_back">Are you sure you want to go back?</string>
-    <string name="no">No</string>
     <string name="error_user_does_not_exists">*User doesn’t exist. New users need to sign up</string>
     <string name="otp_code">OTP Code</string>
     <string name="have_a_good_day">Have a good day!!!</string>
 
-  <!-- Chat -->
+    <!-- Chat -->
     <string name="chat_title">Chat</string>
     <string name="text_nine_plus">9+</string>
 

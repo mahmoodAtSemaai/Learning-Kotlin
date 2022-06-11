@@ -1,5 +1,6 @@
 package com.webkul.mobikul.odoo.handler.extra.search;
 
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_NAME;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID;
@@ -12,10 +13,11 @@ import com.webkul.mobikul.odoo.activity.CustomerBaseActivity;
 import com.webkul.mobikul.odoo.activity.HomeActivity;
 import com.webkul.mobikul.odoo.activity.ProductActivity;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
+import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.model.generic.ProductData;
-
+import com.webkul.mobikul.odoo.model.home.HomePageResponse;
 
 
 /**
@@ -64,6 +66,11 @@ public class SearchSuggestionProductHandler {
         intent.putExtra(BUNDLE_KEY_PRODUCT_ID, mData.getProductId());
         intent.putExtra(BUNDLE_KEY_PRODUCT_TEMPLATE_ID, mData.getTemplateId());
         intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, mData.getName());
+        SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(mContext);
+        HomePageResponse homePageResponse = sqlLiteDbHelper.getHomeScreenData();
+        if(homePageResponse != null){
+            intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
+        }
         mContext.startActivity(intent);
     }
 }

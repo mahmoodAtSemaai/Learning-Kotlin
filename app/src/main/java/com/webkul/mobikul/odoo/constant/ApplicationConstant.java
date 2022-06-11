@@ -79,4 +79,7 @@ public interface ApplicationConstant {
     int HOURS_IN_A_DAY = 24;
     int MILLIS = 1000;
 
+    //Quantity
+    int QTY_ZERO = 0;
+
 }

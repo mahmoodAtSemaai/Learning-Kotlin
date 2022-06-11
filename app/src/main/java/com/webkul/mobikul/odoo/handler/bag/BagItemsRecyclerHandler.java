@@ -12,12 +12,14 @@ import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.custom.CustomToast;
+import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.dialog_frag.ChangeQtyDialogFragment;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.model.BaseResponse;
 import com.webkul.mobikul.odoo.model.cart.BagItemData;
+import com.webkul.mobikul.odoo.model.home.HomePageResponse;
 import com.webkul.mobikul.odoo.model.request.CartToWishlistRequest;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -27,6 +29,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_NAME;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID;
@@ -115,6 +118,11 @@ public class BagItemsRecyclerHandler implements ChangeQtyDialogFragment.OnQtyCha
         intent.putExtra(BUNDLE_KEY_PRODUCT_ID, data.getProductId());
         intent.putExtra(BUNDLE_KEY_PRODUCT_TEMPLATE_ID, data.getTemplateId());
         intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, data.getName());
+        SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(context);
+        HomePageResponse homePageResponse = sqlLiteDbHelper.getHomeScreenData();
+        if(homePageResponse != null){
+            intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
+        }
         context.startActivity(intent);
     }
 

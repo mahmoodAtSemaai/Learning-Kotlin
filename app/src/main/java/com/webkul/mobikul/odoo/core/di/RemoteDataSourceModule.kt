@@ -1,6 +1,7 @@
 package com.webkul.mobikul.odoo.core.di
 
 import android.content.Context
+import com.google.gson.Gson
 import com.webkul.mobikul.odoo.data.remoteSource.remoteDataSource.AddressRemoteDataSource
 import com.webkul.mobikul.odoo.data.remoteSource.remoteDataSource.AuthRemoteDataSource
 import com.webkul.mobikul.odoo.data.remoteSource.remoteDataSource.TermsConditionRemoteDataSource
@@ -22,38 +23,44 @@ object RemoteDataSourceModule {
     @Provides
     @Singleton
     fun authRemoteDataSource(
-        authServices: AuthServices,
-        @ApplicationContext context: Context
-    ): AuthRemoteDataSource = AuthRemoteDataSource(authServices, context)
+            authServices: AuthServices,
+            @ApplicationContext context: Context,
+            gson: Gson
+    ): AuthRemoteDataSource = AuthRemoteDataSource(authServices, context, gson)
 
     @Provides
     @Singleton
     fun addressRemoteDataSource(
-        addressServices: AddressServices
-    ): AddressRemoteDataSource = AddressRemoteDataSource(addressServices)
+            addressServices: AddressServices,
+            gson: Gson
+    ): AddressRemoteDataSource = AddressRemoteDataSource(addressServices, gson)
 
     @Provides
     @Singleton
     fun termsConditionRemoteDataSource(
-        termsConditionServices: TermsConditionServices
-    ): TermsConditionRemoteDataSource = TermsConditionRemoteDataSource(termsConditionServices)
+            termsConditionServices: TermsConditionServices,
+            gson: Gson
+    ): TermsConditionRemoteDataSource = TermsConditionRemoteDataSource(termsConditionServices, gson)
 
     @Provides
     @Singleton
     fun authenticationRemoteDataSource(
-        authenticationServices: AuthenticationServices
-    ): AuthenticationRemoteDataSource = AuthenticationRemoteDataSource(authenticationServices)
+            authenticationServices: AuthenticationServices,
+            gson: Gson
+    ): AuthenticationRemoteDataSource = AuthenticationRemoteDataSource(authenticationServices, gson)
 
     @Provides
     @Singleton
     fun splashRemoteDataSource(
-        splashServices: SplashServices
-    ): SplashRemoteDataSource = SplashRemoteDataSource(splashServices)
+            splashServices: SplashServices,
+            gson: Gson
+    ): SplashRemoteDataSource = SplashRemoteDataSource(splashServices, gson)
 
     @Provides
     @Singleton
     fun homeRemoteDataSource(
-        homePageServices: HomePageServices
-    ): HomePageRemoteDataSource = HomePageRemoteDataSource(homePageServices)
+            homePageServices: HomePageServices,
+            gson: Gson
+    ): HomePageRemoteDataSource = HomePageRemoteDataSource(homePageServices, gson)
 
 }

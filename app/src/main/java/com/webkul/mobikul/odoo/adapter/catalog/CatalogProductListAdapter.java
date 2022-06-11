@@ -1,17 +1,17 @@
 package com.webkul.mobikul.odoo.adapter.catalog;
 
+import static com.webkul.mobikul.odoo.activity.CatalogProductActivity.VIEW_TYPE_GRID;
+import static com.webkul.mobikul.odoo.activity.CatalogProductActivity.VIEW_TYPE_LIST;
+
 import android.content.Context;
-
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
@@ -22,9 +22,6 @@ import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.model.generic.ProductData;
 
 import java.util.List;
-
-import static com.webkul.mobikul.odoo.activity.CatalogProductActivity.VIEW_TYPE_GRID;
-import static com.webkul.mobikul.odoo.activity.CatalogProductActivity.VIEW_TYPE_LIST;
 
 /**
  * Webkul Software.

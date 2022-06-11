@@ -2,13 +2,13 @@ package com.webkul.mobikul.odoo.helper;
 
 import android.content.Context;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import com.bumptech.glide.request.target.ViewTarget;
 import com.facebook.stetho.Stetho;
@@ -17,7 +17,7 @@ import com.twitter.sdk.android.core.Twitter;
 import com.webkul.mobikul.helpers.AbandonedCartAlarmHelper;
 import com.webkul.mobikul.odoo.BuildConfig;
 import com.webkul.mobikul.odoo.R;
-import com.webkul.mobikul.odoo.activity.ProductActivity;
+import com.webkul.mobikul.odoo.activity.ProductActivityV1;
 import com.webkul.mobikul.odoo.adapter.customer.SignUpHandler;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.databinding.FragmentSignUpBinding;
@@ -71,7 +71,7 @@ public class OdooApplication extends MultiDexApplication implements LifecycleObs
     }
 
     public Class getProductActivity() {
-        return ProductActivity.class;
+        return ProductActivityV1.class;
     }
 
     public Class getSellerProfileActivity() {

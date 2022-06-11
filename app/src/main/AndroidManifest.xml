@@ -156,6 +156,12 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
         <activity
+            android:name=".activity.ProductActivityV1"
+            android:configChanges="orientation"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
+        <activity
             android:name=".activity.BagActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />

@@ -42,6 +42,7 @@
     <string name="view_all">Lihat semua</string>
     <string name="please_wait">Mohon tunggu…</string>
     <string name="press_back_to_exit">Tekan tombol kembali untuk keluar</string>
+    <string name="cart_ninety_nine_plus">99+</string>
     <!---->
     <!--DRAWER-->
     <string name="drawer_open">Open navigation drawer</string>
@@ -418,8 +419,8 @@
     <string name="darkMode">Mode Gelap</string>
     <string name="setting">Pengaturan</string>
     <string name="in_stock">Stok Tersedia</string>
-    <string name="in_stock_quantity_x">Stok: %1$d </string>
-    <string name="in_stock_quantity_0">Stok: 0 </string>
+    <string name="in_stock_quantity_x">Stok %1$d </string>
+    <string name="in_stock_quantity_0">Stok 0 </string>
     <string name="quantity_exceeding">Jumlah pesanan Anda melebihi stok</string>
     <string name="product_already_added">produk sudah ditambahkan di tas</string>
     <string name="added_successfully">Berhasil ditambahkan</string>
@@ -448,6 +449,7 @@
     <string name="manage_your_wishlist_by_tapping_on_heart_icon">Kelola daftar keinginanmu dengan menekan ikon hati.</string>
     <string name="fingerprint_login">FingerPrint Login</string>
     <string name="yes">Ya</string>
+    <string name="no">Tidak</string>
     <string name="no_terms_and_conditions_to_display">No Terms &amp; Conditions </string>
     <string name="access_denied_message"> You need to Login again in the application to continue </string>
     <string name="delete_my_image">Delete Image</string>
@@ -490,6 +492,8 @@
     <string name="privacy_policy">Kebijakan Privasi</string>
     <string name="false_">False</string>
     <string name="service_not_availabe_text">Maaf, tidak pelayanan kami belum tersedia di dalam negeri ini sekarang.</string>
+
+
 
 
     <string name="semaai_points">Poin semaai</string>
@@ -538,7 +542,7 @@
     <string name="choose_your_delivery_address">Pilih alamat pengiriman Anda</string>
     <string name="payment_mode">Mode Pembayaran</string>
     <string name="product">Produk</string>
-    <string name="product_details">Rincian Produk</string>
+    <string name="product_details">Detail Produk</string>
     <string name="delivery_details">Rincian Pengiriman</string>
     <string name="courier">Kurir</string>
     <string name="date_of_purchase">Tanggal Pembelian</string>
@@ -600,7 +604,7 @@
     <!-- Product Activity and product details -->
     <string name="product_details_category" translatable="true">Kategori</string>
     <string name="product_details_organic">Organik</string>
-    <string name="product_details_crops">Tanaman-tanaman</string>
+    <string name="product_details_crops">Cocok untuk</string>
     <string name="product_details_weight">Berat</string>
     <string name="product_details_additional_information">Informasi Tambahan</string>
     <string name="product_details_mrp">MRP</string>
@@ -609,7 +613,7 @@
     <string name="product_details_active_ingredients">Bahan Aktif</string>
     <string name="product_details_dosage">Dosis</string>
     <string name="product_details_application_method">Metode penerapan</string>
-    <string name="product_details_frequency_of_application">Dosis pakai</string>
+    <string name="product_details_frequency_of_application">Frekuensi Aplikasi</string>
     <string name="product_details_pests_and_diseases">hama dan penyakit</string>
     <string name="product_details_duration_of_effect">Durasi efek</string>
     <string name="favorite">Favorit</string>
@@ -628,6 +632,19 @@
     <string name="main_menu">Menu Utama</string>
     <string name="text_one">1</string>
     <string name="no_products_found">Tidak ada produk!!</string>
+
+    <string name="product_detail_discount">Diskon</string>
+    <string name="product_detail_description">Deskripsi</string>
+    <string name="product_successfully_added">Produk berhasil ditambahkan!</string>
+    <string name="product_out_of_stock">Stok produk habis</string>
+    <string name="product_quantity_exceeding">Jumlah pesanan Anda \n melebihi stok</string>
+    <string name="free_delivery">Gratis Ongkir</string>
+    <string name="product_details_brand">Merek</string>
+    <string name="see_all">Lihat Semua</string>
+    <string name="product_details_add_to_cart">Masukkan keranjang</string>
+    <string name="product_details_plus">+</string>
+    <string name="product_details_minus">-</string>
+    <string name="product_details_weight_zero">0.0</string>
 
     <!-- SplashScreen  -->
     <string name="welcome">Selamat Datang</string>
@@ -668,7 +685,6 @@
     <string name="sms_otp_text">Kirim kode OTP ke SMS %s</string>
     <string name="otp_already_sent">Kode OTP telah terkirim ke nomor anda.</string>
     <string name="are_you_sure_to_go_back">Yakin ingin kembali?</string>
-    <string name="no">Tidak</string>
     <string name="error_user_does_not_exists">*Pengguna tidak ditemukan. Silakan daftar untuk pengguna baru.</string>
     <string name="otp_code">Kode OTP</string>
     <string name="have_a_good_day">Semoga harimu menyenangkan!!!</string>

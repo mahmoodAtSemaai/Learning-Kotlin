@@ -22,6 +22,7 @@ import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
+import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.databinding.ItemCatalogProductListBinding;
 import com.webkul.mobikul.odoo.databinding.ItemCatalogProductListHomeBinding;
 import com.webkul.mobikul.odoo.databinding.ItemProductGridBinding;
@@ -36,6 +37,7 @@ import com.webkul.mobikul.odoo.model.generic.AttributeData;
 import com.webkul.mobikul.odoo.model.generic.ProductCombination;
 import com.webkul.mobikul.odoo.model.generic.ProductData;
 import com.webkul.mobikul.odoo.model.generic.ProductVariant;
+import com.webkul.mobikul.odoo.model.home.HomePageResponse;
 import com.webkul.mobikul.odoo.model.request.AddToWishlistRequest;
 
 import java.util.HashMap;
@@ -48,6 +50,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_NAME;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID;
@@ -86,6 +89,11 @@ public class ProductHandler {
         intent.putExtra(BUNDLE_KEY_PRODUCT_ID, mData.getProductId());
         intent.putExtra(BUNDLE_KEY_PRODUCT_TEMPLATE_ID, mData.getTemplateId());
         intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, mData.getName());
+        SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(mContext);
+        HomePageResponse homePageResponse = sqlLiteDbHelper.getHomeScreenData();
+        if(homePageResponse != null){
+            intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
+        }
 //        Pair<View, String> p1 = Pair.create((View)mProductDefaultBinding.productImage, "product_image");
 
         String transitionName = mContext.getString(R.string.transition);
