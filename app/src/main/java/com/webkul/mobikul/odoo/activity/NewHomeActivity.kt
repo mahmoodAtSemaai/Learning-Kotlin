@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -181,7 +180,10 @@ class NewHomeActivity : BaseActivity() {
         val count = AppSharedPref.getCartCount(this@NewHomeActivity, 0)
         if (count != 0) {
             binding.badgeInfo.visibility = View.VISIBLE
-            binding.badgeInfo.text = count.toString()
+            if (count < 100)
+                binding.badgeInfo.text = count.toString()
+            else
+                binding.badgeInfo.text = getString(R.string.cart_ninety_nine_plus)
         } else {
             binding.badgeInfo.visibility = View.GONE
         }

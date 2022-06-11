@@ -1,32 +1,42 @@
 package com.webkul.mobikul.odoo.handler.product;
 
+import static com.webkul.mobikul.odoo.activity.ProductActivity.RC_ADD_TO_CART;
+import static com.webkul.mobikul.odoo.activity.ProductActivity.RC_BUY_NOW;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CHAT_TITLE;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_REQ_CODE;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_SELLER_ID;
+import static com.webkul.mobikul.odoo.helper.ProductHelper.ATTR_TYPE_COLOR;
+import static com.webkul.mobikul.odoo.helper.ProductHelper.ATTR_TYPE_HIDDEN;
+import static com.webkul.mobikul.odoo.helper.ProductHelper.ATTR_TYPE_RADIO;
+import static com.webkul.mobikul.odoo.helper.ProductHelper.ATTR_TYPE_SELECT;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.SystemClock;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatSpinner;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.core.content.res.ResourcesCompat;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.BaseActivity;
 import com.webkul.mobikul.odoo.activity.ChatActivity;
 import com.webkul.mobikul.odoo.activity.ProductActivity;
+import com.webkul.mobikul.odoo.activity.ProductActivityV1;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.custom.CustomToast;
 import com.webkul.mobikul.odoo.dialog_frag.ChangeQtyDialogFragment;
-import com.webkul.mobikul.odoo.dialog_frag.ProductAddedToBagDialogFrag;
-import com.webkul.mobikul.odoo.dialog_frag.RateAppDialogFragm;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.fragment.ProductReviewFragment;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
@@ -54,17 +64,6 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.webkul.mobikul.odoo.activity.ProductActivity.RC_ADD_TO_CART;
-import static com.webkul.mobikul.odoo.activity.ProductActivity.RC_BUY_NOW;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CHAT_TITLE;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_REQ_CODE;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_SELLER_ID;
-import static com.webkul.mobikul.odoo.helper.ProductHelper.ATTR_TYPE_COLOR;
-import static com.webkul.mobikul.odoo.helper.ProductHelper.ATTR_TYPE_HIDDEN;
-import static com.webkul.mobikul.odoo.helper.ProductHelper.ATTR_TYPE_RADIO;
-import static com.webkul.mobikul.odoo.helper.ProductHelper.ATTR_TYPE_SELECT;
-
 /**
  * Created by shubham.agarwal on 23/5/17.
  */
@@ -72,59 +71,61 @@ import static com.webkul.mobikul.odoo.helper.ProductHelper.ATTR_TYPE_SELECT;
 public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChangeListener {
     @SuppressWarnings("unused")
     private static final String TAG = "ProductActivityHandler";
-    private final Context mContext;
-    private final ProductData mData;
+    private final Context context;
+    private final ProductData data;
     private long mLastClickTime = 0;
-
+    private static final int QTY_ZERO = 0;
     public ProductActivityHandler(Context context, ProductData productData) {
-        mContext = context;
-        mData = productData;
+        this.context = context;
+        data = productData;
     }
 
     public void changeQty() {
-        ChangeQtyDialogFragment.newInstance(this, mData.getQuantity()).show(((BaseActivity) mContext).mSupportFragmentManager, ChangeQtyDialogFragment.class.getSimpleName());
+        ChangeQtyDialogFragment.newInstance(this, data.getQuantity()).show(((BaseActivity) context).mSupportFragmentManager, ChangeQtyDialogFragment.class.getSimpleName());
     }
 
     public void setWishlistForvariants(boolean isAddedToWishlist) {
-        mData.setAddedToWishlist(isAddedToWishlist);
+        data.setAddedToWishlist(isAddedToWishlist);
     }
 
     @Override
     public void onQtyChanged(int qty) {
         qty = isQuantityExceeding(qty);
-        mData.setQuantity(qty);
+        data.setQuantity(qty);
     }
 
     private int isQuantityExceeding(int qty) {
-        if (!mData.isNever() && qty > mData.getAvailableQuantity()) {
-            showQuantityWarning(mContext.getString(R.string.quantity_exceeding));
-            return mData.getAvailableQuantity();
+        if (!data.isInStock()) {
+            ((ProductActivityV1) context).showWarning(true);
+            return data.getAvailableQuantity();
+        } else if (!data.isNever() && qty > data.getAvailableQuantity()) {
+            ((ProductActivityV1) context).showWarning(false);
+            return data.getAvailableQuantity();
         }
         return qty;
     }
 
     private void showQuantityWarning(String message) {
-        new SweetAlertDialog(mContext, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
-            .setCustomImage(R.drawable.ic_warning)
-            .setTitleText("")
-            .setContentText(message)
-            .setConfirmText(mContext.getString(R.string.continue_))
-            .setConfirmClickListener(sweetAlertDialog -> {
-                sweetAlertDialog.dismiss();
-        }).show();
+        new SweetAlertDialog(context, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                .setCustomImage(R.drawable.ic_warning)
+                .setTitleText("")
+                .setContentText(message)
+                .setConfirmText(context.getString(R.string.continue_))
+                .setConfirmClickListener(sweetAlertDialog -> {
+                    sweetAlertDialog.dismiss();
+                }).show();
     }
 
     public void addToCart(boolean isBuyNow) {
-        Log.d(TAG, "addToCart: ");
-        if (!AppSharedPref.isLoggedIn(mContext)) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.AlertDialogTheme);
+        if (!AppSharedPref.isLoggedIn(context)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
             builder.setTitle(R.string.guest_user)
                     .setMessage(R.string.error_please_login_to_continue)
                     .setPositiveButton(R.string.ok, (dialog, which) -> {
-                        Intent intent = new Intent(mContext, SignInSignUpActivity.class);
+                        Intent intent = new Intent(context, SignInSignUpActivity.class);
                         intent.putExtra(BUNDLE_KEY_REQ_CODE, isBuyNow ? RC_BUY_NOW : RC_ADD_TO_CART);
-                        intent.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ProductActivity.class.getSimpleName());
-                        ((ProductActivity) mContext).startActivityForResult(intent, isBuyNow ? RC_BUY_NOW : RC_ADD_TO_CART);
+                        intent.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ProductActivityV1.class.getSimpleName());
+                        ((ProductActivityV1) context).startActivityForResult(intent, isBuyNow ? RC_BUY_NOW : RC_ADD_TO_CART);
                         dialog.dismiss();
                     })
                     .setNegativeButton(R.string.cancel, (dialog, which) -> {
@@ -135,68 +136,72 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
         }
 
         String productId;
-        if (mData.getVariants().isEmpty()) {
-            Log.d(TAG, "addToCart: true");
-            productId = mData.getProductId();
+        if (data.getVariants().isEmpty()) {
+            productId = data.getProductId();
         } else {
             productId = getProductIdForVariant();
-            Log.d(TAG, "addToCart: " + productId);
 
+        }
+
+        if(checkQuantity(data.getQuantity())){
+            ((ProductActivityV1) context).showWarning(true);
+            return;
         }
 
         if (productId == null) {
-            SnackbarHelper.getSnackbar((Activity) mContext, mContext.getString(R.string.error_could_not_add_to_bag_pls_try_again), Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
+            SnackbarHelper.getSnackbar((Activity) context, context.getString(R.string.error_could_not_add_to_bag_pls_try_again), Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
             return;
         }
 
-        if (!mData.isNever() && mData.getQuantity() > mData.getAvailableQuantity()) {
-            SnackbarHelper.getSnackbar((Activity) mContext, mContext.getString(R.string.product_not_available_in_this_quantity), Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
+        if (!data.isNever() && data.getQuantity() > data.getAvailableQuantity()) {
+            SnackbarHelper.getSnackbar((Activity) context, context.getString(R.string.product_not_available_in_this_quantity), Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
             return;
         }
 
-        ApiConnection.addToCart(mContext, new AddToBagRequest(productId, mData.getQuantity())).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new CustomObserver<AddToCartResponse>(mContext) {
+        ApiConnection.addToCart(context, new AddToBagRequest(productId, data.getQuantity())).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CustomObserver<AddToCartResponse>(context) {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
                         super.onSubscribe(d);
-                        AlertDialogHelper.showDefaultProgressDialog(mContext);
+                        AlertDialogHelper.showDefaultProgressDialog(context);
                     }
 
                     @Override
                     public void onNext(@NonNull AddToCartResponse addToCartResponse) {
                         super.onNext(addToCartResponse);
-                        if (addToCartResponse.isAccessDenied()){
-                            AlertDialogHelper.showDefaultWarningDialogWithDismissListener(mContext, mContext.getString(R.string.error_login_failure), mContext.getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
+                        if (addToCartResponse.isAccessDenied()) {
+                            AlertDialogHelper.showDefaultWarningDialogWithDismissListener(context, context.getString(R.string.error_login_failure), context.getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
                                 @Override
                                 public void onClick(SweetAlertDialog sweetAlertDialog) {
                                     sweetAlertDialog.dismiss();
-                                    AppSharedPref.clearCustomerData(mContext);
-                                    Intent i = new Intent(mContext, SignInSignUpActivity.class);
-                                    i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ((ProductActivity)mContext).getClass().getSimpleName());
-                                    mContext.startActivity(i);
+                                    AppSharedPref.clearCustomerData(context);
+                                    Intent i = new Intent(context, SignInSignUpActivity.class);
+                                    i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ((ProductActivityV1) context).getClass().getSimpleName());
+                                    context.startActivity(i);
                                 }
                             });
-                        }else {
-                            FirebaseAnalyticsImpl.logAddToCartEvent(mContext,productId,addToCartResponse.getProductName());
-                            if(addToCartResponse.isSuccess()) {
-                                AnalyticsImpl.INSTANCE.trackAddItemToBagSuccessful(mData.getQuantity(),
-                                        mData.getProductId(), mData.getSeller().getMarketplaceSellerId(),
-                                        mData.getName());
+                        } else {
+                            FirebaseAnalyticsImpl.logAddToCartEvent(context, productId, addToCartResponse.getProductName());
+                            if (addToCartResponse.isSuccess()) {
+                                AnalyticsImpl.INSTANCE.trackAddItemToBagSuccessful(data.getQuantity(),
+                                        data.getProductId(), data.getSeller().getMarketplaceSellerId(),
+                                        data.getName());
                             } else {
                                 AnalyticsImpl.INSTANCE.trackAddItemToBagFailed(addToCartResponse.getMessage(),
                                         addToCartResponse.getResponseCode(), "");
                             }
                             if (isBuyNow) {
                                 if (addToCartResponse.isSuccess()) {
-                                    IntentHelper.beginCheckout(mContext);
+                                    IntentHelper.beginCheckout(context);
                                 } else {
                                     showQuantityWarning(addToCartResponse.getMessage());
                                 }
                             } else {
                                 if (addToCartResponse.isSuccess()) {
-                                    ProductAddedToBagDialogFrag.newInstance(addToCartResponse.getProductName(), mContext.getString(R.string.added_successfully)).show(((BaseActivity) mContext).mSupportFragmentManager, RateAppDialogFragm.class.getSimpleName());
+                                    ((ProductActivityV1) context).showSuccessfullDialog();
+                                    ((ProductActivityV1) context).getBagItemsCount();
                                 } else {
-                                    showQuantityWarning(addToCartResponse.getMessage().replace(".0", ""));
+                                    ((ProductActivityV1) context).showWarning(false);
                                 }
                             }
                         }
@@ -211,28 +216,28 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
 
     private String getProductIdForVariant() {
         Map<String, String> attrValueIdMap = new HashMap<>();
-        for (AttributeData eachAttributeData : mData.getAttributes()) {
+        for (AttributeData eachAttributeData : data.getAttributes()) {
             switch (eachAttributeData.getType()) {
                 case ATTR_TYPE_COLOR:
-                    RadioGroup colorTypeRg = ((ProductActivity) mContext).mBinding.attributesContainer.findViewWithTag(eachAttributeData.getType() + eachAttributeData.getAttributeId());
+                    RadioGroup colorTypeRg = ((ProductActivity) context).mBinding.attributesContainer.findViewWithTag(eachAttributeData.getType() + eachAttributeData.getAttributeId());
                     attrValueIdMap.put(eachAttributeData.getAttributeId(), colorTypeRg.findViewById(colorTypeRg.getCheckedRadioButtonId()).getTag().toString());
                     break;
 
                 case ATTR_TYPE_RADIO:
-                    RadioGroup radioTypeRg = ((ProductActivity) mContext).mBinding.attributesContainer.findViewWithTag(eachAttributeData.getType() + eachAttributeData.getAttributeId());
+                    RadioGroup radioTypeRg = ((ProductActivity) context).mBinding.attributesContainer.findViewWithTag(eachAttributeData.getType() + eachAttributeData.getAttributeId());
                     attrValueIdMap.put(eachAttributeData.getAttributeId(), radioTypeRg.findViewById(radioTypeRg.getCheckedRadioButtonId()).getTag().toString());
                     break;
 
                 case ATTR_TYPE_SELECT:
                 case ATTR_TYPE_HIDDEN:
-                    AppCompatSpinner selectTypeSpinner = ((ProductActivity) mContext).mBinding.attributesContainer.findViewWithTag(eachAttributeData.getType() + eachAttributeData.getAttributeId());
+                    AppCompatSpinner selectTypeSpinner = ((ProductActivity) context).mBinding.attributesContainer.findViewWithTag(eachAttributeData.getType() + eachAttributeData.getAttributeId());
                     attrValueIdMap.put(eachAttributeData.getAttributeId(), eachAttributeData.getAttributeOptionDatas().get(selectTypeSpinner.getSelectedItemPosition()).getValueId());
                     break;
             }
         }
 
 
-        for (ProductVariant eachProductVariant : mData.getVariants()) {
+        for (ProductVariant eachProductVariant : data.getVariants()) {
             Map<String, String> tempAttrValueIdMap = new HashMap<>();
             for (ProductCombination eachProductCombination : eachProductVariant.getCombinations()) {
                 tempAttrValueIdMap.put(eachProductCombination.getAttributeId(), eachProductCombination.getValueId());
@@ -245,16 +250,16 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
     }
 
     public void shareProduct() {
-        AnalyticsImpl.INSTANCE.trackShareButtonSelected(mData.getProductId(), mData.getName());
+        AnalyticsImpl.INSTANCE.trackShareButtonSelected(data.getProductId(), data.getName());
         Intent sendIntent = new Intent();
-        FirebaseAnalyticsImpl.logShareEvent(mContext,mData.getProductId(),mData.getName());
+        FirebaseAnalyticsImpl.logShareEvent(context, data.getProductId(), data.getName());
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, mData.getAbsoluteUrl());
+        sendIntent.putExtra(Intent.EXTRA_TEXT, data.getAbsoluteUrl());
         sendIntent.setType("text/plain");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            mContext.startActivity(Intent.createChooser(sendIntent, "Choose an Action:", null));
+            context.startActivity(Intent.createChooser(sendIntent, "Choose an Action:", null));
         } else {
-            mContext.startActivity(sendIntent);
+            context.startActivity(sendIntent);
         }
     }
 
@@ -264,51 +269,51 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
         }
         mLastClickTime = SystemClock.elapsedRealtime();
         String productId;
-        if (mData.getVariants().isEmpty()) {
-            productId = mData.getProductId();
+        if (data.getVariants().isEmpty()) {
+            productId = data.getProductId();
         } else {
             productId = getProductIdForVariant();
         }
 
         if (productId == null) {
-            SnackbarHelper.getSnackbar((Activity) mContext, mContext.getString(R.string
+            SnackbarHelper.getSnackbar((Activity) context, context.getString(R.string
                     .error_could_not_add_to_wishlist_pls_try_again), Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType
                     .TYPE_WARNING).show();
             return;
         }
 
-        if (mData.isAddedToWishlist()) {
-            ApiConnection.removeFromWishlist(mContext, productId).subscribeOn(Schedulers.io())
+        if (data.isAddedToWishlist()) {
+            ApiConnection.removeFromWishlist(context, productId).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new CustomObserver<BaseResponse>(mContext) {
+                    .subscribe(new CustomObserver<BaseResponse>(context) {
                         @Override
                         public void onSubscribe(@NonNull Disposable d) {
                             super.onSubscribe(d);
-                            AlertDialogHelper.showDefaultProgressDialog(mContext);
+                            AlertDialogHelper.showDefaultProgressDialog(context);
                         }
 
                         @Override
                         public void onNext(@NonNull BaseResponse response) {
                             super.onNext(response);
-                            if (response.isAccessDenied()){
-                                AlertDialogHelper.showDefaultWarningDialogWithDismissListener(mContext, mContext.getString(R.string.error_login_failure), mContext.getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
+                            if (response.isAccessDenied()) {
+                                AlertDialogHelper.showDefaultWarningDialogWithDismissListener(context, context.getString(R.string.error_login_failure), context.getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
                                     @Override
                                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                                         sweetAlertDialog.dismiss();
-                                        AppSharedPref.clearCustomerData(mContext);
-                                        Intent i = new Intent(mContext, SignInSignUpActivity.class);
-                                        i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ((ProductActivity)mContext).getClass().getSimpleName());
-                                        mContext.startActivity(i);
+                                        AppSharedPref.clearCustomerData(context);
+                                        Intent i = new Intent(context, SignInSignUpActivity.class);
+                                        i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ((ProductActivityV1) context).getClass().getSimpleName());
+                                        context.startActivity(i);
                                     }
                                 });
-                            }else {
+                            } else {
                                 if (response.isSuccess()) {
-                                    mData.setAddedToWishlist(false);
-                                    CustomToast.makeText(mContext, response.getMessage(), Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
-                                    ((ImageButton) v).setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(),
+                                    data.setAddedToWishlist(false);
+                                    CustomToast.makeText(context, response.getMessage(), Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
+                                    ((ImageButton) v).setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),
                                             R.drawable.ic_vector_wishlist_grey_24dp, null));
                                 } else {
-                                    AlertDialogHelper.showDefaultErrorDialog(mContext, mContext.getString(
+                                    AlertDialogHelper.showDefaultErrorDialog(context, context.getString(
                                             R.string.move_to_wishlist), response.getMessage());
                                 }
                             }
@@ -321,39 +326,39 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
                     });
 
         } else {
-            ApiConnection.addToWishlist(mContext, new AddToWishlistRequest(productId)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new CustomObserver<BaseResponse>(mContext) {
+            ApiConnection.addToWishlist(context, new AddToWishlistRequest(productId)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new CustomObserver<BaseResponse>(context) {
                         @Override
                         public void onSubscribe(@NonNull Disposable d) {
                             super.onSubscribe(d);
-                            AlertDialogHelper.showDefaultProgressDialog(mContext);
+                            AlertDialogHelper.showDefaultProgressDialog(context);
                         }
 
                         @Override
                         public void onNext(@NonNull BaseResponse response) {
                             super.onNext(response);
-                            if (response.isAccessDenied()){
-                                AlertDialogHelper.showDefaultWarningDialogWithDismissListener(mContext, mContext.getString(R.string.error_login_failure), mContext.getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
+                            if (response.isAccessDenied()) {
+                                AlertDialogHelper.showDefaultWarningDialogWithDismissListener(context, context.getString(R.string.error_login_failure), context.getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
                                     @Override
                                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                                         sweetAlertDialog.dismiss();
-                                        AppSharedPref.clearCustomerData(mContext);
-                                        Intent i = new Intent(mContext, SignInSignUpActivity.class);
-                                        i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ((ProductActivity)mContext).getClass().getSimpleName());
-                                        mContext.startActivity(i);
+                                        AppSharedPref.clearCustomerData(context);
+                                        Intent i = new Intent(context, SignInSignUpActivity.class);
+                                        i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ((ProductActivityV1) context).getClass().getSimpleName());
+                                        context.startActivity(i);
                                     }
                                 });
 
 
-                            }else {
+                            } else {
                                 if (response.isSuccess()) {
-                                    mData.setAddedToWishlist(true);
-                                    FirebaseAnalyticsImpl.logAddToWishlistEvent(mContext,productId,mData.getName());
-                                    CustomToast.makeText(mContext, response.getMessage(), Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
-                                    ((ImageButton) v).setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(),
+                                    data.setAddedToWishlist(true);
+                                    FirebaseAnalyticsImpl.logAddToWishlistEvent(context, productId, data.getName());
+                                    CustomToast.makeText(context, response.getMessage(), Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
+                                    ((ImageButton) v).setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),
                                             R.drawable.ic_vector_wishlist_red_24dp, null));
                                 } else {
-                                    AlertDialogHelper.showDefaultErrorDialog(mContext, mContext.getString(
+                                    AlertDialogHelper.showDefaultErrorDialog(context, context.getString(
                                             R.string.move_to_wishlist), response.getMessage());
                                 }
                             }
@@ -372,26 +377,53 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
-        FragmentHelper.replaceFragment(R.id.container, mContext, ProductReviewFragment.newInstance(mData.getTemplateId()), ProductReviewFragment.class.getSimpleName(), true, true);
+        FragmentHelper.replaceFragment(R.id.container, context, ProductReviewFragment.newInstance(data.getTemplateId()), ProductReviewFragment.class.getSimpleName(), true, true);
     }
 
     public void onClickSellerName(String sellerID) {
-        AnalyticsImpl.INSTANCE.trackSellerProfileSelected(Helper.getScreenName(mContext),
-                mData.getSeller().getMarketplaceSellerId(), (int) mData.getSeller().getAverageRating(),
-                mData.getSeller().getSellerName());
-        Intent intent = new Intent(mContext, ((OdooApplication) mContext.getApplicationContext()).getSellerProfileActivity());
+        AnalyticsImpl.INSTANCE.trackSellerProfileSelected(Helper.getScreenName(context),
+                data.getSeller().getMarketplaceSellerId(), (int) data.getSeller().getAverageRating(),
+                data.getSeller().getSellerName());
+        Intent intent = new Intent(context, ((OdooApplication) context.getApplicationContext()).getSellerProfileActivity());
         intent.putExtra(BUNDLE_KEY_SELLER_ID, sellerID);
-        mContext.startActivity(intent);
+        context.startActivity(intent);
     }
 
     public void onClickChatButton(String sellerId, String sellerName) {
         launchChatActivity(Integer.parseInt(sellerId), sellerName);
     }
 
-    private void launchChatActivity(int sellerId, String sellerName){
-        Intent i = new Intent(mContext, ChatActivity.class);
+    private void launchChatActivity(int sellerId, String sellerName) {
+        Intent i = new Intent(context, ChatActivity.class);
         i.putExtra(BUNDLE_KEY_SELLER_ID, String.valueOf(sellerId));
         i.putExtra(BUNDLE_KEY_CHAT_TITLE, sellerName);
-        mContext.startActivity(i);
+        context.startActivity(i);
+    }
+
+    public void onClickMinus(int qty) {
+        if (qty <= QTY_ZERO) {
+            data.setQuantity(QTY_ZERO);
+        } else {
+            qty--;
+            data.setQuantity(qty);
+        }
+    }
+
+    public void onClickPlus(int qty) {
+        qty++;
+        if(qty > 9999999){
+            qty--;
+        }
+        qty = isQuantityExceeding(qty);
+        data.setQuantity(qty);
+    }
+
+    public boolean checkQuantity(int qty) {
+        return qty == QTY_ZERO;
+    }
+
+    public void onClickEditext(int qty) {
+        qty = isQuantityExceeding(qty);
+        data.setQuantity(qty);
     }
 }

@@ -34,6 +34,7 @@
     <dimen name="spacing_no">0dp</dimen>
 
 
+    <dimen name="size_0">0dp</dimen>
     <dimen name="size_1">1dp</dimen>
     <dimen name="size_2">2dp</dimen>
 
@@ -173,6 +174,7 @@
     <dimen name="font_weight_0">0dp</dimen>
     <dimen name="badge_dimension">18dp</dimen>
     <dimen name="top_margin_badge">7dp</dimen>
+    <dimen name="right_margin_badge">-9dp</dimen>
     <dimen name="size_30">30dp</dimen>
     <dimen name="size_46">46dp</dimen>
     <dimen name="size_50">50dp</dimen>
@@ -203,5 +205,8 @@
    =============================================================================================================================================================-->
     <dimen name="vector_height">16dp</dimen>
     <dimen name="vector_width">16dp</dimen>
+
+    <dimen name="warning_vector_height">112dp</dimen>
+    <dimen name="warning_vector_width">186dp</dimen>
 
 </resources>

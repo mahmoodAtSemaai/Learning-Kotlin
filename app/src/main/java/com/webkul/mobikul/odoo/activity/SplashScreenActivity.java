@@ -437,6 +437,11 @@ public class SplashScreenActivity extends BaseActivity {
                     intent = new Intent(SplashScreenActivity.this, ((OdooApplication) getApplication()).getProductActivity());
                     intent.putExtra(BUNDLE_KEY_PRODUCT_ID, getIntent().getExtras().getString("id"));
                     intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, getIntent().getExtras().getString("name"));
+                    SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(getApplicationContext());
+                    HomePageResponse homePageResponse = sqlLiteDbHelper.getHomeScreenData();
+                    if(homePageResponse != null){
+                        intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
+                    }
                     break;
 
                 case TYPE_CATEGORY:

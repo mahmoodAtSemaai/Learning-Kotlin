@@ -9,6 +9,7 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGORY_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGORY_NAME;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_NAME;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_SEARCH_DOMAIN;
@@ -42,9 +43,11 @@ import com.webkul.mobikul.odoo.activity.ChatActivity;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.constant.ApplicationConstant;
 import com.webkul.mobikul.odoo.constant.BundleConstant;
+import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.CatalogHelper;
 import com.webkul.mobikul.odoo.helper.OdooApplication;
+import com.webkul.mobikul.odoo.model.home.HomePageResponse;
 import com.webkul.mobikul.odoo.model.notification.FcmAdvanceData;
 
 import java.io.InputStream;
@@ -108,6 +111,11 @@ public class FCMMessageReceiverService extends FirebaseMessagingService {
                         intent = new Intent(this, ((OdooApplication) getApplication()).getProductActivity());
                         intent.putExtra(BUNDLE_KEY_PRODUCT_ID, fcmAdvanceData.getId());
                         intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, fcmAdvanceData.getName());
+                        SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(this);
+                        HomePageResponse homePageResponse = sqlLiteDbHelper.getHomeScreenData();
+                        if(homePageResponse != null){
+                            intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
+                        }
                         break;
 
                     case TYPE_CATEGORY:

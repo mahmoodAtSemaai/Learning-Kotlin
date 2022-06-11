@@ -14,6 +14,7 @@ import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.custom.CustomToast;
+import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.fragment.WishlistFragment;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
@@ -22,6 +23,7 @@ import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.model.BaseResponse;
 import com.webkul.mobikul.odoo.model.customer.wishlist.WishListData;
+import com.webkul.mobikul.odoo.model.home.HomePageResponse;
 import com.webkul.mobikul.odoo.model.request.WishListToCartRequest;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -31,6 +33,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_NAME;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID;
@@ -71,6 +74,11 @@ public class WishlistProductInfoItemHandler {
         intent.putExtra(BUNDLE_KEY_PRODUCT_ID, mData.getProductId());
         intent.putExtra(BUNDLE_KEY_PRODUCT_TEMPLATE_ID, mData.getTemplateId());
         intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, mData.getName());
+        SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(mContext);
+        HomePageResponse homePageResponse = sqlLiteDbHelper.getHomeScreenData();
+        if(homePageResponse != null){
+            intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
+        }
         mContext.startActivity(intent);
     }
 

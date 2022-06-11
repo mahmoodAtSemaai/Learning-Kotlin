@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/size_10"
+        android:paddingBottom="@dimen/size_10">
+
+        <TextView
+            android:id="@+id/tv_id"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:text="@string/product_details_crops"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/gl_vertical_40"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_vertical_40"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.40" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_suitable_crops"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/gl_vertical_40"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_see_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/size_5"
+            android:layout_marginLeft="@dimen/size_5"
+            android:layout_marginTop="@dimen/size_5"
+            android:text="@string/see_all"
+            android:textColor="@color/background_orange"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/gl_vertical_40"
+            app:layout_constraintTop_toBottomOf="@+id/rv_suitable_crops" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

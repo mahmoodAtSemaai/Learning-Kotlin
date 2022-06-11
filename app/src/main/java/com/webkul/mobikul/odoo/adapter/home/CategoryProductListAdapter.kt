@@ -1,18 +1,19 @@
 package com.webkul.mobikul.odoo.adapter.home
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityOptionsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl
 import com.webkul.mobikul.odoo.constant.BundleConstant
+import com.webkul.mobikul.odoo.database.SqlLiteDbHelper
 import com.webkul.mobikul.odoo.databinding.ItemCategoryProductsBinding
+import com.webkul.mobikul.odoo.handler.home.HomeBannerHandler
 import com.webkul.mobikul.odoo.helper.Helper
 import com.webkul.mobikul.odoo.helper.OdooApplication
 import com.webkul.mobikul.odoo.model.generic.ProductData
@@ -50,6 +51,11 @@ class CategoryProductListAdapter(
         intent.putExtra(BundleConstant.BUNDLE_KEY_PRODUCT_ID, data.productId)
         intent.putExtra(BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID, data.templateId)
         intent.putExtra(BundleConstant.BUNDLE_KEY_PRODUCT_NAME, data.name)
+        val sqlLiteDbHelper = SqlLiteDbHelper(context)
+        val homePageResponse = sqlLiteDbHelper.homeScreenData
+        if (homePageResponse != null) {
+            intent.putExtra(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse)
+        }
         context.startActivity(intent)
     }
 

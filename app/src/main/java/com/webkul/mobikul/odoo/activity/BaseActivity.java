@@ -88,7 +88,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(this);
         mSqLiteDatabase = sqlLiteDbHelper.getWritableDatabase();
         if (!(this instanceof SplashScreenActivity) && !(this instanceof CheckoutActivity)
-                && !(this instanceof ProductActivity)) {
+                && !(this instanceof ProductActivityV1)) {
             ForceUpdateManager.init(this);
         }
         trackActivityOpened();
@@ -200,7 +200,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private void trackActivityOpened() {
         if ((this instanceof BagActivity || this instanceof CatalogProductActivity ||
-                this instanceof ProductActivity || this instanceof SettingsActivity ||
+                this instanceof ProductActivityV1 || this instanceof SettingsActivity ||
                 this instanceof SplashScreenActivity || this instanceof SubCategoryActivity ||
                 this instanceof UpdateAddressActivity || this instanceof UserApprovalActivity) &&
                 !getScreenTitle().equals(TAG))
@@ -209,7 +209,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private void trackActivityClosed() {
         if ((this instanceof BagActivity || this instanceof CatalogProductActivity ||
-                this instanceof ProductActivity || this instanceof SettingsActivity ||
+                this instanceof ProductActivityV1 || this instanceof SettingsActivity ||
                 this instanceof SplashScreenActivity || this instanceof SubCategoryActivity ||
                 this instanceof UpdateAddressActivity || this instanceof UserApprovalActivity) &&
                 !getScreenTitle().equals(TAG))

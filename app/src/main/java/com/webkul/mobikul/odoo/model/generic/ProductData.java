@@ -1,5 +1,7 @@
 package com.webkul.mobikul.odoo.model.generic;
 
+import static com.webkul.mobikul.odoo.constant.ApplicationConstant.QTY_ZERO;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -347,17 +349,26 @@ public class ProductData extends BaseObservable implements Parcelable {
     /*QTY*/
     @Bindable
     public int getQuantity() {
-        if (quantity < 1) {
-            return 1;
+        if (quantity < QTY_ZERO) {
+            return 0;
+        }
+        else if (quantity == QTY_ZERO){
+            setQuantity(quantity);
         }
         return quantity;
     }
 
     public void setQuantity(int quantity) {
-        if (quantity < 1) {
+        if (quantity < QTY_ZERO) {
             return;
+        }else if((quantity == QTY_ZERO) && (!isInStock())){
+            this.quantity = QTY_ZERO;
         }
-        this.quantity = quantity;
+        else if((quantity == QTY_ZERO) && (isInStock())){
+            this.quantity = 1;
+        }else{
+            this.quantity = quantity;
+        }
         AnalyticsImpl.INSTANCE.trackItemQuantitySelected(quantity, productId, name);
         notifyPropertyChanged(BR.quantity);
     }
@@ -437,4 +448,14 @@ public class ProductData extends BaseObservable implements Parcelable {
         return availableThreshold;
     }
 
+    public String calculateProductDetailDiscount() {
+        if (!getPriceReduce().isEmpty()) {
+            Double original_price = StringtoDouble(priceUnit);
+            Double reduced_price = StringtoDouble(priceReduce);
+            double discount = (((original_price - reduced_price)) / original_price) * 100;
+            discount = (double) (Math.round(discount));
+            int discountInInt = (int) discount;
+            return discountInInt + "%";
+        } else return "";
+    }
 }
