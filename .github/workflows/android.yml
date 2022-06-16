@@ -1,0 +1,113 @@
+name: Android CI TEST
+
+
+#Takes input branch,url and build variant
+on: 
+  workflow_dispatch:
+    inputs:
+      build_variant:
+        description: 'Choose one of the build_variant.(1)envStagingMarketplaceDebug (2)envTestingMarketplaceDebug (3)envProductionMarketplaceDebug'     
+        required: true
+        default: envStagingMarketplaceDebug
+      branch:
+        description: 'which branch'
+        required: true
+      url:
+        description: 'which url should the apk point to'
+        required: true
+
+#Specify the job and its properties
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+#specify the env variables
+
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+#Select the branch
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{github.event.inputs.branch}}
+
+#Replace the url pointing to the env
+    - name: Replace the test env url
+      run: sed -i "s#{{url_test}}#\${{ github.event.inputs.url }}#" /home/runner/work/android-app/android-app/gradle.properties
+
+    - name: cat the file to validate url
+      run: cat /home/runner/work/android-app/android-app/gradle.properties
+
+#Setup jdk version
+
+    - name: set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: gradle
+
+# #send notification about the branch being used
+#     - name: Slack Notification
+#       uses: act10ns/slack@v1
+#       with: 
+#         status: ${{ job.status }}
+#         channel: '#notif-jenkins'
+#         message: The branch ${{github.event.inputs.branch}} is being used for building the artifact.
+#       if: always()  
+
+# #Send notification about the build variant that you are using
+#     - name: Slack Notification
+#       uses: act10ns/slack@v1
+#       with: 
+#         status: ${{ job.status }}
+#         channel: '#notif-jenkins'
+#         message: The build variant ${{ github.event.inputs.build_variant}} is being used for building the artifact.
+#       if: always()  
+
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+  
+
+# #Send notification that the build process is starting
+#     - name: Slack Notification
+#       uses: act10ns/slack@v1
+#       with: 
+#         status: starting
+#         channel: '#notif-jenkins'
+#         message: Building the app.
+#       if: always()
+
+
+
+#Start the build process
+    - name: Build with Gradle
+      run: ./gradlew assemble${{ github.event.inputs.build_variant}}
+
+
+# #send notification the build process is complete
+#     - name: Slack Notification
+#       uses: act10ns/slack@v1
+#       with: 
+#         status: starting
+#         channel: '#notif-jenkins'
+#         message: Build is complete, Uploading the artifact
+#       if: always()
+
+#upload the artifact
+    - uses: actions/upload-artifact@v3
+      with:
+        name: apk
+        path: /home/runner/work/android-app/android-app/appMarketplace/build/outputs/
+
+# #send notification the upload is complete
+#     - name: Slack Notification
+#       uses: act10ns/slack@v1
+#       with: 
+#         status: starting
+#         channel: '#notif-jenkins'
+#         message: uploaded the artifact.
+#       if: always()
