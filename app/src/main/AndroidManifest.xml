@@ -87,10 +87,10 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Accepts URIs that begin with "example://mobikul” -->
+                <!-- Accepts URIs that begin with "https://www.semaai.com” -->
                 <data
-                    android:host="18.141.163.230"
-                    android:scheme="http" />
+                    android:host="semaai.com"
+                    android:scheme="https" />
             </intent-filter>
 
 
