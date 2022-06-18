@@ -13,8 +13,8 @@ on:
         description: 'which branch'
         required: true
       url:
-        description: 'which url should the apk point to'
-        required: true
+        description: 'which url should the apk point to(Only to be filled in case of test build) eg-rpc.semaai.com'
+        required: false
 
 #Specify the job and its properties
 jobs:
