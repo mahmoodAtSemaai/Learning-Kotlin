@@ -13,8 +13,8 @@ on:
         description: 'which branch'
         required: true
       url:
-        description: 'which url should the apk point to'
-        required: true
+        description: 'which url should the apk point to(Only to be filled in case of test build) eg-https://rpc.semaai.com'
+        required: false
 
 #Specify the job and its properties
 jobs:
@@ -35,10 +35,10 @@ jobs:
 
 #Replace the url pointing to the env
     - name: Replace the test env url
-      run: sed -i "s#{{url_test}}#\${{ github.event.inputs.url }}#" /home/runner/work/android-app/android-app/gradle.properties
+      run: sed -i "s#{{url_test}}#\${{ github.event.inputs.url }}#" /home/runner/work/semaai-android-app/semaai-android-app/gradle.properties
 
     - name: cat the file to validate url
-      run: cat /home/runner/work/android-app/android-app/gradle.properties
+      run: cat /home/runner/work/semaai-android-app/semaai-android-app/gradle.properties
 
 #Setup jdk version
 
@@ -101,7 +101,7 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: apk
-        path: /home/runner/work/android-app/android-app/appMarketplace/build/outputs/
+        path: /home/runner/work/semaai-android-app/semaai-android-app/appMarketplace/build/outputs/
 
 # #send notification the upload is complete
 #     - name: Slack Notification
