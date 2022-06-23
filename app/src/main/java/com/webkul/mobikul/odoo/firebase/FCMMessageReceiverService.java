@@ -12,6 +12,7 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGOR
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_NAME;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_SEARCH_DOMAIN;
 import static com.webkul.mobikul.odoo.helper.CatalogHelper.CatalogProductRequestType.SEARCH_DOMAIN;
 
@@ -111,6 +112,7 @@ public class FCMMessageReceiverService extends FirebaseMessagingService {
                         intent = new Intent(this, ((OdooApplication) getApplication()).getProductActivity());
                         intent.putExtra(BUNDLE_KEY_PRODUCT_ID, fcmAdvanceData.getId());
                         intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, fcmAdvanceData.getName());
+                        intent.putExtra(BUNDLE_KEY_PRODUCT_TEMPLATE_ID, fcmAdvanceData.getProductTemplateId());
                         SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(this);
                         HomePageResponse homePageResponse = sqlLiteDbHelper.getHomeScreenData();
                         if(homePageResponse != null){

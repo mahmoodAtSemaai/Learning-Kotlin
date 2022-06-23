@@ -39,6 +39,12 @@ public class FcmAdvanceData {
     @Expose
     private String domain;
 
+    /*product template id*/
+    @SerializedName("product_template_id")
+    @Expose
+    private String productTemplateId;
+
+
     /*chat notification data*/
     @SerializedName("title")
     @Expose
@@ -103,6 +109,14 @@ public class FcmAdvanceData {
         }
 
         return domain;
+    }
+
+    public String getProductTemplateId() {
+        if (productTemplateId == null) {
+            return "";
+        }
+
+        return productTemplateId;
     }
 
     public String getTitle() {
