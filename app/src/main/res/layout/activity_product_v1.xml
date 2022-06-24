@@ -617,7 +617,7 @@
                 android:layout_marginStart="@dimen/size_16"
                 android:layout_marginLeft="@dimen/size_16"
                 android:background="@drawable/btn_rounded_corners_chat_bg"
-                android:onClick="@{() -> handler.onClickChatButton(data.seller.marketplaceSellerId, data.seller.sellerName)}"
+                android:onClick="@{() -> handler.onClickChatButton(data.seller.marketplaceSellerId, data.seller.sellerName,data.seller.sellerProfileImage)}"
                 android:src="@drawable/ic_chat"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/btn_minus"

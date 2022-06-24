@@ -24,6 +24,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.webkul.mobikul.marketplace.odoo.constant.MarketplaceBundleConstant.BUNDLE_KEY_SELLER_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CHAT_PROFILE_PICTURE_URL;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CHAT_TITLE;
 
 /**
@@ -90,14 +91,15 @@ public class SellerProfileActivityHandler {
 
     }
 
-    public void onClickChatButton(int sellerId, String sellerName) {
-        launchChatActivity(sellerId, sellerName);
+    public void onClickChatButton(int sellerId, String sellerName, String sellerProfileImage) {
+        launchChatActivity(sellerId, sellerName, sellerProfileImage);
     }
 
-    private void launchChatActivity(int sellerId, String sellerName){
+    private void launchChatActivity(int sellerId, String sellerName, String sellerProfileImage){
         Intent i = new Intent(mContext, ChatActivity.class);
         i.putExtra(BUNDLE_KEY_SELLER_ID, String.valueOf(sellerId));
         i.putExtra(BUNDLE_KEY_CHAT_TITLE, sellerName);
+        i.putExtra(BUNDLE_KEY_CHAT_PROFILE_PICTURE_URL, sellerProfileImage);
         mContext.startActivity(i);
     }
 }

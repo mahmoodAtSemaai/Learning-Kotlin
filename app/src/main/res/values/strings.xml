@@ -698,5 +698,6 @@
     <!-- Chat -->
     <string name="chat_title">Chat</string>
     <string name="text_nine_plus">9+</string>
+    <string name="chat_no_conversations">You don’t have any conversation</string>
 
 </resources>

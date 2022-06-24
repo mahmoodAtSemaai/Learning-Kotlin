@@ -183,7 +183,9 @@ public interface BundleConstant {
     String BUNDLE_KEY_CHAT_URL = "chatUrl";
     String BUNDLE_KEY_CHAT_UUID = "chatUuid";
     String BUNDLE_KEY_CHAT_TITLE = "chatTitleName";
+    String BUNDLE_KEY_CHAT_PROFILE_PICTURE_URL = "chatProfilePictureUrl";
     String QUERY_KEY_CHAT_URL = "chat_url";
     String QUERY_KEY_CHAT_UUID = "uuid";
     String QUERY_KEY_CHAT_TITLE = "title";
+    String QUERY_KEY_CHAT_PROFILE_PICTURE_URL = "image";
 }

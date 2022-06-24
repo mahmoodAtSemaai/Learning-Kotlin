@@ -3,6 +3,7 @@ package com.webkul.mobikul.odoo.handler.product;
 import static com.webkul.mobikul.odoo.activity.ProductActivity.RC_ADD_TO_CART;
 import static com.webkul.mobikul.odoo.activity.ProductActivity.RC_BUY_NOW;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CHAT_PROFILE_PICTURE_URL;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CHAT_TITLE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_REQ_CODE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_SELLER_ID;
@@ -389,14 +390,15 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
         context.startActivity(intent);
     }
 
-    public void onClickChatButton(String sellerId, String sellerName) {
-        launchChatActivity(Integer.parseInt(sellerId), sellerName);
+    public void onClickChatButton(String sellerId, String sellerName, String sellerProfileImage) {
+        launchChatActivity(Integer.parseInt(sellerId), sellerName,sellerProfileImage);
     }
 
-    private void launchChatActivity(int sellerId, String sellerName) {
+    private void launchChatActivity(int sellerId, String sellerName, String sellerProfileImage) {
         Intent i = new Intent(context, ChatActivity.class);
         i.putExtra(BUNDLE_KEY_SELLER_ID, String.valueOf(sellerId));
         i.putExtra(BUNDLE_KEY_CHAT_TITLE, sellerName);
+        i.putExtra(BUNDLE_KEY_CHAT_PROFILE_PICTURE_URL, sellerProfileImage);
         context.startActivity(i);
     }
 
