@@ -644,6 +644,7 @@
     <string name="free_delivery">Free Delivery</string>
     <string name="product_details_brand">Brand</string>
     <string name="see_all">See All</string>
+    <string name="see_less">See less</string>
     <string name="product_details_add_to_cart">Add to Cart</string>
     <string name="product_details_plus">+</string>
     <string name="product_details_minus">-</string>

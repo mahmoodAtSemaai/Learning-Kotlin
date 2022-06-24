@@ -8,15 +8,15 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="horizontal"
-        android:paddingTop="@dimen/size_10"
-        android:paddingBottom="@dimen/size_10">
+        android:paddingTop="@dimen/size_4"
+        android:paddingBottom="@dimen/size_4">
 
-        <TextView
-            android:id="@+id/tv_id"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_suitable_id"
             android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:text="@string/product_details_crops"
-            android:textColor="@color/black"
+            android:textColor="@color/text_color_primary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/gl_vertical_40"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +38,7 @@
             app:layout_constraintStart_toStartOf="@+id/gl_vertical_40"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_see_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
