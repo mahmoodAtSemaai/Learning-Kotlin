@@ -35,6 +35,8 @@ import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.database.SaveData;
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.databinding.ActivitySplashScreenBinding;
+import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse;
+import com.webkul.mobikul.odoo.model.chat.ChatCreateChannelResponse;
 import com.webkul.mobikul.odoo.ui.auth.SignInSignUpActivityV1;
 import com.webkul.mobikul.odoo.features.onboarding.presentation.OnboardingActivity;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
@@ -164,7 +166,7 @@ public class SplashScreenActivity extends BaseActivity {
     }
 
     private void setLocaleConfig() {
-        String languageCode = AppSharedPref.getLanguageCode(this);;
+        String languageCode = AppSharedPref.getLanguageCode(this);
         Locale locale = new Locale(languageCode.substring(0, 2), languageCode.substring(3, 5));
         Configuration config = new Configuration();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -175,6 +177,31 @@ public class SplashScreenActivity extends BaseActivity {
         getApplicationContext().getResources().updateConfiguration(config, getApplicationContext().getResources().getDisplayMetrics());
     }
 
+    private void createChatChannel() {
+        if (AppSharedPref.isSeller(this) && FirebaseRemoteConfigHelper.isChatFeatureEnabled()) {
+            ApiConnection.createChannel(this).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread()).
+                    subscribe(new CustomObserver<ChatBaseResponse<ChatCreateChannelResponse>>(this) {
+                        @Override
+                        public void onNext(ChatBaseResponse<ChatCreateChannelResponse> chatCreateChannelResponseChatBaseResponse) {
+                            super.onNext(chatCreateChannelResponseChatBaseResponse);
+                            Log.i(TAG,chatCreateChannelResponseChatBaseResponse.getMessage());
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+                            super.onError(t);
+                            t.printStackTrace();
+                            Log.i(TAG,t.getMessage());
+                        }
+
+                        @Override
+                        public void onComplete() {
+                            super.onComplete();
+                        }
+                    });
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -198,6 +225,7 @@ public class SplashScreenActivity extends BaseActivity {
             }
         }
 
+        createChatChannel();
 
         if (AppSharedPref.isLoggedIn(SplashScreenActivity.this) || AppSharedPref.isAllowedGuestCheckout(this)) {
             if (NetworkHelper.isNetworkAvailable(this)) {
@@ -439,7 +467,7 @@ public class SplashScreenActivity extends BaseActivity {
                     intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, getIntent().getExtras().getString("name"));
                     SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(getApplicationContext());
                     HomePageResponse homePageResponse = sqlLiteDbHelper.getHomeScreenData();
-                    if(homePageResponse != null){
+                    if (homePageResponse != null) {
                         intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
                     }
                     break;

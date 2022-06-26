@@ -196,7 +196,7 @@ public class    OrderFragment extends BaseFragment {
 
 
     private void setViewGroupVisibility(OrderDataResponse orderDataResponse) {
-        if (orderDataResponse.getPaymentMode().equalsIgnoreCase(getString(R.string.cod_text))) {
+        if (orderDataResponse.getPaymentMode().equalsIgnoreCase(getString(R.string.cod_text_2))) {
             setVisibility(binding.dueDateDetail, View.GONE);
             setVisibility(binding.bankPaymentMethodDetail, View.GONE);
         } else {
@@ -229,7 +229,7 @@ public class    OrderFragment extends BaseFragment {
     }
 
     private void setTextOnViews(OrderDataResponse orderDataResponse) {
-        String codText = getString(R.string.cod_text);
+        String codText = getString(R.string.cod_text_2);
         String paymentMode = orderDataResponse.getPaymentMode().equalsIgnoreCase(codText) ?
                 codText : orderDataResponse.getBank().getName() + " " + orderDataResponse.getPaymentMode();
         OrderPaymentData orderPaymentData = new OrderPaymentData(paymentMode, orderDataResponse.getAmountTotal(),

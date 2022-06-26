@@ -529,7 +529,7 @@
                         android:layout_weight="0.1"
                         android:src="@drawable/ic_vector_chat"
                         android:background="?attr/colorPrimary"
-                        android:onClick="@{() -> handler.onClickChatButton(data.seller.marketplaceSellerId, data.seller.sellerName)}"
+                        android:onClick="@{() -> handler.onClickChatButton(data.seller.marketplaceSellerId, data.seller.sellerName,data.seller.sellerProfileImage)}"
                         android:visibility="gone"/>
 
                     <androidx.appcompat.widget.AppCompatTextView

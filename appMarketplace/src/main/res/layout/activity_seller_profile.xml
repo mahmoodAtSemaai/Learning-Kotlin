@@ -201,7 +201,7 @@
                                     android:src="@drawable/ic_vector_chat"
                                     android:background="?attr/colorPrimary"
                                     android:visibility="gone"
-                                    android:onClick="@{()->handler.onClickChatButton(data.sellerId, data.name)}"
+                                    android:onClick="@{()->handler.onClickChatButton(data.sellerId, data.name, data.sellerProfileImage)}"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintTop_toTopOf="@id/seller_name_tv"
                                     app:layout_constraintBottom_toBottomOf="@id/seller_country_tv"

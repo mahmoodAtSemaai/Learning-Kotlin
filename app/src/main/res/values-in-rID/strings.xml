@@ -614,7 +614,7 @@
     <string name="product_details_dosage">Dosis</string>
     <string name="product_details_application_method">Metode penerapan</string>
     <string name="product_details_frequency_of_application">Frekuensi Aplikasi</string>
-    <string name="product_details_pests_and_diseases">hama dan penyakit</string>
+    <string name="product_details_pests_and_diseases">Hama dan penyakit</string>
     <string name="product_details_duration_of_effect">Durasi efek</string>
     <string name="favorite">Favorit</string>
     <string name="transaction">Transaksi</string>
@@ -641,6 +641,7 @@
     <string name="free_delivery">Gratis Ongkir</string>
     <string name="product_details_brand">Merek</string>
     <string name="see_all">Lihat Semua</string>
+    <string name="see_less">Lihat lebih sedikit</string>
     <string name="product_details_add_to_cart">Masukkan keranjang</string>
     <string name="product_details_plus">+</string>
     <string name="product_details_minus">-</string>
@@ -692,5 +693,6 @@
     <!-- Chat -->
     <string name="chat_title">Chat</string>
     <string name="text_nine_plus">9+</string>
+    <string name="chat_no_conversations">Anda tidak memiliki percakapan apapun</string>
 
 </resources>

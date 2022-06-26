@@ -219,7 +219,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/vp_product_slider"
+                    app:layout_constraintBottom_toBottomOf="@+id/vp_product_slider"
                     app:tabBackground="@drawable/selector_dots_tab_layout"
                     app:tabGravity="center"
                     app:tabIndicatorHeight="0dp"
@@ -284,7 +284,7 @@
                     android:textStyle="bold"
                     app:layout_constraintEnd_toStartOf="@+id/btn_wishlist"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tl_product_slider"
+                    app:layout_constraintTop_toBottomOf="@+id/vp_product_slider"
                     tools:text="LAFAYETTE CONVERTIBLE HEELS" />
 
                 <ImageButton
@@ -617,7 +617,7 @@
                 android:layout_marginStart="@dimen/size_16"
                 android:layout_marginLeft="@dimen/size_16"
                 android:background="@drawable/btn_rounded_corners_chat_bg"
-                android:onClick="@{() -> handler.onClickChatButton(data.seller.marketplaceSellerId, data.seller.sellerName)}"
+                android:onClick="@{() -> handler.onClickChatButton(data.seller.marketplaceSellerId, data.seller.sellerName,data.seller.sellerProfileImage)}"
                 android:src="@drawable/ic_chat"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@+id/btn_minus"

@@ -12,6 +12,7 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGOR
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_NAME;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_SEARCH_DOMAIN;
 import static com.webkul.mobikul.odoo.helper.CatalogHelper.CatalogProductRequestType.SEARCH_DOMAIN;
 
@@ -111,6 +112,7 @@ public class FCMMessageReceiverService extends FirebaseMessagingService {
                         intent = new Intent(this, ((OdooApplication) getApplication()).getProductActivity());
                         intent.putExtra(BUNDLE_KEY_PRODUCT_ID, fcmAdvanceData.getId());
                         intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, fcmAdvanceData.getName());
+                        intent.putExtra(BUNDLE_KEY_PRODUCT_TEMPLATE_ID, fcmAdvanceData.getProductTemplateId());
                         SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(this);
                         HomePageResponse homePageResponse = sqlLiteDbHelper.getHomeScreenData();
                         if(homePageResponse != null){
@@ -129,6 +131,7 @@ public class FCMMessageReceiverService extends FirebaseMessagingService {
                         intent.putExtra(BundleConstant.BUNDLE_KEY_CHAT_URL, fcmAdvanceData.getChatUrl());
                         intent.putExtra(BundleConstant.BUNDLE_KEY_CHAT_UUID, fcmAdvanceData.getUuid());
                         intent.putExtra(BundleConstant.BUNDLE_KEY_CHAT_TITLE, fcmAdvanceData.getTitle());
+                        intent.putExtra(BundleConstant.BUNDLE_KEY_CHAT_PROFILE_PICTURE_URL, fcmAdvanceData.getImage());
                         notificationId = fcmAdvanceData.getUuid();
                         break;
                     case TYPE_NONE:
@@ -144,7 +147,7 @@ public class FCMMessageReceiverService extends FirebaseMessagingService {
                 }
 
 
-                if (URLUtil.isValidUrl(fcmAdvanceData.getImage())) {
+                if (URLUtil.isValidUrl(fcmAdvanceData.getImage()) && !fcmAdvanceData.getType().equals(TYPE_CHAT)) {
                     try {
                         NotificationCompat.BigPictureStyle notificationBigPictureStyle = new NotificationCompat.BigPictureStyle();
                         Bitmap remote_picture = BitmapFactory.decodeStream((InputStream) new URL(fcmAdvanceData.getResizedImageUrl(this)).getContent());
