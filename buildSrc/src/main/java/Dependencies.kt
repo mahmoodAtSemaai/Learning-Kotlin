@@ -89,6 +89,9 @@ object DepVersions {
     //appMarketPlace Modules
     const val jUnit = "4.13.2"
 
+    //SemaaiUIModule
+    const val extJUnit = "1.1.3"
+
     const val greenRobot = "3.3.1"
 
     const val activty = "1.4.0"
@@ -112,6 +115,7 @@ object Modules {
     const val app = ":app"
     const val appMarketplace = ":appMarketplace"
     const val sweetAlertDialog = ":SweetAlertDialog"
+    const val semaaiUI = ":SemaaiUI"
 }
 
 object Flavours {
@@ -222,6 +226,7 @@ object Dependencies {
     const val screenGrab = "tools.fastlane:screengrab:${DepVersions.screenGrab}"
 
     const val espressoContrib = "androidx.test.espresso:espresso-contrib:${DepVersions.espresso}"
+    const val extJUnit = "androidx.test.ext:junit:${DepVersions.extJUnit}"
     const val coreKTX = "androidx.core:core-ktx:${DepVersions.coreKTX}"
     const val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${DepVersions.kotlin}"
     const val lifecycleExtension = "androidx.lifecycle:lifecycle-extensions:${DepVersions.lifecycleExtension}"
