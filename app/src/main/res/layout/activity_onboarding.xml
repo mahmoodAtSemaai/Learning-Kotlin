@@ -33,7 +33,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_skip_slides"
-            style="@style/medium_normal_text"
+            style="@style/Semaai.TextAppearance.Subtitle3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"

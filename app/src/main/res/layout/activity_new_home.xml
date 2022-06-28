@@ -44,6 +44,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/search_view"
+                    style="@style/Semaai.TextAppearance.Caption"
                     android:layout_width="@dimen/font_weight_0"
                     android:layout_height="@dimen/search_item_view"
                     android:layout_centerVertical="true"
@@ -59,10 +60,7 @@
                     android:paddingStart="@dimen/padding_start"
                     android:paddingLeft="@dimen/padding_start"
                     android:paddingEnd="@dimen/padding_end"
-                    android:paddingRight="@dimen/padding_end"
-                    android:textSize="@dimen/font_size_12">
-
-                </androidx.appcompat.widget.AppCompatTextView>
+                    android:paddingRight="@dimen/padding_end" />
 
                 <RelativeLayout
                     android:layout_width="@dimen/font_weight_0"
@@ -96,29 +94,26 @@
 
 
                             <androidx.appcompat.widget.AppCompatTextView
+                                style="@style/Semaai.TextAppearance.Overline"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/font_weight_0"
                                 android:layout_weight="5"
                                 android:drawablePadding="@dimen/points_box_spacing"
                                 android:gravity="center|start"
                                 android:text="@string/point"
-                                android:textAlignment="textStart"
-                                android:textSize="@dimen/font_size_9" />
-
+                                android:textAlignment="textStart" />
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/loyalty_points"
+                                style="@style/Semaai.TextAppearance.Overline"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/font_weight_0"
                                 android:layout_weight="5"
                                 android:gravity="start"
                                 android:text=""
-                                android:textAlignment="textStart"
-                                android:textSize="@dimen/size_10"
-                                android:textStyle="bold" />
+                                android:textAlignment="textStart" />
 
                         </LinearLayout>
-
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="@dimen/size_25"
@@ -127,11 +122,7 @@
                             android:layout_marginLeft="@dimen/size_2"
                             android:layout_marginTop="@dimen/size_10"
                             android:layout_marginBottom="@dimen/size_10"
-                            android:src="@drawable/ic_semaai_points">
-
-
-                        </androidx.appcompat.widget.AppCompatImageView>
-
+                            android:src="@drawable/ic_semaai_points" />
 
                     </RelativeLayout>
 
@@ -142,18 +133,18 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1.5">
 
-
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/iv_chat_icon"
                         android:layout_width="@dimen/hamburger_icon_dimens"
                         android:layout_height="@dimen/hamburger_icon_dimens"
                         android:layout_centerInParent="true"
-                        android:visibility="invisible"
-                        android:src="@drawable/ic_chat" />
+                        android:src="@drawable/ic_chat"
+                        android:visibility="invisible" />
 
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/iv_unread_chat_count"
+                        style="@style/Semaai.TextAppearance.Caption.Bold"
                         android:layout_width="@dimen/badge_dimension"
                         android:layout_height="@dimen/badge_dimension"
                         android:layout_alignEnd="@+id/iv_chat_icon"
@@ -161,19 +152,15 @@
                         android:layout_marginRight="@dimen/right_margin_badge"
                         android:background="@drawable/badge_symbol_orange"
                         android:gravity="center"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_size_12sp"
-                        android:textStyle="bold"
+                        android:textColor="@color/text_color_white"
                         android:visibility="invisible" />
 
                 </RelativeLayout>
-
 
                 <RelativeLayout
                     android:layout_width="@dimen/font_weight_0"
                     android:layout_height="match_parent"
                     android:layout_weight="1.5">
-
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/cart_icon"
@@ -182,9 +169,9 @@
                         android:layout_centerInParent="true"
                         android:src="@drawable/cart" />
 
-
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/badge_info"
+                        style="@style/Semaai.TextAppearance.Caption.Bold"
                         android:layout_width="@dimen/badge_dimension"
                         android:layout_height="@dimen/badge_dimension"
                         android:layout_alignEnd="@+id/cart_icon"
@@ -193,27 +180,21 @@
                         android:background="@drawable/badge_symbol"
                         android:gravity="center"
                         android:text="@string/text_one"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_size_12sp"
-                        android:textStyle="bold" />
-
+                        android:textColor="@color/text_color_white" />
 
                 </RelativeLayout>
 
-
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/drawer_icon"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/size_0"
                     android:layout_height="@dimen/hamburger_icon_dimens"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:src="@drawable/ic_baseline_menu_24" />
 
-
             </LinearLayout>
 
         </com.google.android.material.appbar.MaterialToolbar>
-
 
         <fragment
             android:id="@+id/home_nav_host"
@@ -236,7 +217,6 @@
             android:fitsSystemWindows="true"
             android:visibility="gone" />
 
-
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/home_bottom_nav"
             android:layout_width="match_parent"
@@ -249,8 +229,6 @@
             app:layout_constraintRight_toRightOf="parent"
             app:menu="@menu/home_nav_menu" />
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </layout>

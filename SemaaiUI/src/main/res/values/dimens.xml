@@ -16,6 +16,55 @@
     <dimen name="font_size_28">28sp</dimen>
     <dimen name="font_size_32">32sp</dimen>
 
+    <dimen name="margin_4">4dp</dimen>
+    <dimen name="margin_6">6dp</dimen>
+    <dimen name="margin_8">8dp</dimen>
+    <dimen name="margin_10">10dp</dimen>
+    <dimen name="margin_12">12dp</dimen>
+    <dimen name="margin_14">14dp</dimen>
+    <dimen name="margin_16">16dp</dimen>
+    <dimen name="margin_18">18dp</dimen>
+    <dimen name="margin_20">20dp</dimen>
+    <dimen name="margin_24">24dp</dimen>
+    <dimen name="margin_32">32dp</dimen>
+    <dimen name="margin_40">40dp</dimen>
+    <dimen name="margin_48">48dp</dimen>
+    <dimen name="margin_56">56dp</dimen>
+    <dimen name="margin_64">64dp</dimen>
+    <dimen name="margin_80">80dp</dimen>
+    <dimen name="margin_96">96dp</dimen>
+    <dimen name="margin_120">120dp</dimen>
+    <dimen name="margin_160">160dp</dimen>
+    <dimen name="margin_200">200dp</dimen>
+    <dimen name="margin_240">240dp</dimen>
+    <dimen name="margin_280">280dp</dimen>
+    <dimen name="margin_320">320dp</dimen>
+
+
+    <dimen name="padding_4">4dp</dimen>
+    <dimen name="padding_6">6dp</dimen>
+    <dimen name="padding_8">8dp</dimen>
+    <dimen name="padding_10">10dp</dimen>
+    <dimen name="padding_12">12dp</dimen>
+    <dimen name="padding_14">14dp</dimen>
+    <dimen name="padding_16">16dp</dimen>
+    <dimen name="padding_18">18dp</dimen>
+    <dimen name="padding_20">20dp</dimen>
+    <dimen name="padding_24">24dp</dimen>
+    <dimen name="padding_32">32dp</dimen>
+    <dimen name="padding_40">40dp</dimen>
+    <dimen name="padding_48">48dp</dimen>
+    <dimen name="padding_56">56dp</dimen>
+    <dimen name="padding_64">64dp</dimen>
+    <dimen name="padding_80">80dp</dimen>
+    <dimen name="padding_96">96dp</dimen>
+    <dimen name="padding_120">120dp</dimen>
+    <dimen name="padding_160">160dp</dimen>
+    <dimen name="padding_200">200dp</dimen>
+    <dimen name="padding_240">240dp</dimen>
+    <dimen name="padding_280">280dp</dimen>
+    <dimen name="padding_320">320dp</dimen>
+
     <dimen name="size_4">4dp</dimen>
     <dimen name="size_6">6dp</dimen>
     <dimen name="size_8">8dp</dimen>

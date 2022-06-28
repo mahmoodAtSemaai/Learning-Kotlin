@@ -72,10 +72,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/no_products_found"
-                android:textSize="@dimen/font_size_18" />
+                style="@style/Semaai.TextAppearance.Subtitle2" />
 
         </LinearLayout>
-
 
     </RelativeLayout>
 

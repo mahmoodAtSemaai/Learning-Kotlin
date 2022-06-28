@@ -57,12 +57,10 @@
                 android:paddingTop="@dimen/size_1"
                 app:htmlText="@{data.categoryName}"
                 android:textAllCaps="false"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/font_size_12"
+                style="@style/Semaai.TextAppearance.Caption"
                 tools:text="Magento" />
 
         </LinearLayout>
-
 
     </LinearLayout>
 

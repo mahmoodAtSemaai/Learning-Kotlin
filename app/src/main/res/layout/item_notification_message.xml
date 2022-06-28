@@ -53,22 +53,21 @@
                             app:imageUrl="@{data.icon}" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="0dp"
+                            style="@style/Semaai.TextAppearance.Subtitle2.Bold"
+                            android:layout_width="@dimen/size_0"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="@{data.title}"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textStyle="bold"
                             tools:text="Make your own Summer Style" />
 
                         <ToggleButton
                             android:id="@+id/notification_bell_toggle"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginBottom="@dimen/spacing_generic"
-                            android:layout_marginLeft="@dimen/spacing_generic"
+                            android:layout_width="@dimen/size_24"
+                            android:layout_height="@dimen/size_24"
                             android:layout_marginStart="@dimen/spacing_generic"
+                            android:layout_marginLeft="@dimen/spacing_generic"
                             android:layout_marginTop="@dimen/spacing_generic"
+                            android:layout_marginBottom="@dimen/spacing_generic"
                             android:background="@drawable/selector_notification_bell"
                             android:checked="@{data.read}"
                             android:text=""
@@ -76,11 +75,10 @@
                             android:textOn=""
                             tools:ignore="ContentDescription" />
 
-
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
-
                     <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/Semaai.TextAppearance.Body2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@{data.body}"
@@ -101,15 +99,16 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
+            style="@style/Semaai.TextAppearance.Body2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginBottom="@dimen/spacing_generic"
             android:layout_marginEnd="@dimen/spacing_generic"
             android:layout_marginRight="@dimen/spacing_generic"
-            android:drawableLeft="@drawable/shape_dot_default"
-            android:drawablePadding="8dp"
+            android:layout_marginBottom="@dimen/spacing_generic"
             android:drawableStart="@drawable/shape_dot_default"
+            android:drawableLeft="@drawable/shape_dot_default"
+            android:drawablePadding="@dimen/padding_8"
             android:text="@{data.period}"
             android:textColor="@color/grey_600"
             tools:text="an hour ago" />
