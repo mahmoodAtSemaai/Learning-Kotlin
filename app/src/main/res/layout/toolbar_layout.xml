@@ -34,11 +34,10 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_toolBar"
-                style="@style/large_bold_title_text"
+                style="@style/Semaai.TextAppearance.Headline6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@color/text_color_white"
                 tools:text="Checkout" />
 
         </androidx.appcompat.widget.Toolbar>

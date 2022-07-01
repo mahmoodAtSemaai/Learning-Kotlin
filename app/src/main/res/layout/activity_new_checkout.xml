@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -13,7 +12,6 @@
         <variable
             name="data"
             type="com.webkul.mobikul.odoo.model.checkout.OrderDataResponse" />
-
 
         <variable
             name="useSemaaiPoints"
@@ -32,7 +30,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nsv_checkout"
             android:layout_width="match_parent"
@@ -46,7 +43,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white">
-
 
                 <include
                     android:id="@+id/address_heading"
@@ -142,7 +138,7 @@
 
                     <TextView
                         android:id="@+id/tv_semaai_points_text"
-                        style="@style/medium_bold_text_no_caps"
+                        style="@style/Semaai.TextAppearance.Subtitle3.Bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/spacing_generic"
@@ -152,13 +148,11 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-
                     <TextView
                         android:id="@+id/tv_semaai_points"
-                        style="@style/medium_bold_text_no_caps"
+                        style="@style/Semaai.TextAppearance.Caption.Bold"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/font_size_12"
                         android:gravity="end"
                         android:text="10.000"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_semaai_points_text"
@@ -206,7 +200,7 @@
 
         <TextView
             android:id="@+id/tv_error_message"
-            style="@style/medium_bold_text_no_caps"
+            style="@style/Semaai.TextAppearance.Subtitle3.Bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/grey_bg_light"
@@ -218,7 +212,7 @@
 
         <TextView
             android:id="@+id/appCompatButton4"
-            style="@style/medium_bold_text_no_caps"
+            style="@style/Semaai.TextAppearance.Subtitle3.Bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@color/grey_bg"
@@ -234,7 +228,7 @@
 
         <TextView
             android:id="@+id/textView3"
-            style="@style/medium_normal_text"
+            style="@style/Semaai.TextAppearance.Body1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@color/grey_bg"
@@ -249,15 +243,13 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_confirm_order"
+            style="@style/Semaai.TextAppearance.Subtitle2.Bold"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/grey_600"
             android:paddingVertical="@dimen/size_6"
             android:text="@string/confirmation"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="@dimen/font_size_18"
-            android:textStyle="bold"
+            android:textColor="@color/text_color_white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

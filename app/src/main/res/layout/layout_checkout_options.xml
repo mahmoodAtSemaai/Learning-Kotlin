@@ -41,13 +41,12 @@
 
             <TextView
                 android:id="@+id/tv_method_heading"
-                style="@style/medium_bold_text"
+                style="@style/Semaai.TextAppearance.Subtitle2.Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/size_10"
                 android:layout_marginLeft="@dimen/size_10"
                 android:text="@{data.optionHeading}"
-                android:textSize="@dimen/font_size_18"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_method_icon"
                 app:layout_constraintStart_toEndOf="@+id/iv_method_icon"
                 app:layout_constraintTop_toTopOf="@+id/iv_method_icon"
@@ -73,7 +72,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_arrow_right" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

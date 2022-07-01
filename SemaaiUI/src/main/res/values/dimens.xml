@@ -16,6 +16,8 @@
     <dimen name="font_size_28">28sp</dimen>
     <dimen name="font_size_32">32sp</dimen>
 
+    <dimen name="margin_1">1dp</dimen>
+    <dimen name="margin_2">2dp</dimen>
     <dimen name="margin_4">4dp</dimen>
     <dimen name="margin_6">6dp</dimen>
     <dimen name="margin_8">8dp</dimen>
@@ -30,6 +32,7 @@
     <dimen name="margin_40">40dp</dimen>
     <dimen name="margin_48">48dp</dimen>
     <dimen name="margin_56">56dp</dimen>
+    <dimen name="margin_60">60dp</dimen>
     <dimen name="margin_64">64dp</dimen>
     <dimen name="margin_80">80dp</dimen>
     <dimen name="margin_96">96dp</dimen>
@@ -40,7 +43,7 @@
     <dimen name="margin_280">280dp</dimen>
     <dimen name="margin_320">320dp</dimen>
 
-
+    <dimen name="padding_0">0dp</dimen>
     <dimen name="padding_4">4dp</dimen>
     <dimen name="padding_6">6dp</dimen>
     <dimen name="padding_8">8dp</dimen>

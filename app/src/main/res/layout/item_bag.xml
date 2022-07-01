@@ -4,9 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-
     <data>
-
 
         <import type="com.webkul.mobikul.odoo.helper.ImageHelper.ImageType" />
 
@@ -35,16 +33,14 @@
             type="int" />
     </data>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
+        android:layout_marginBottom="@dimen/margin_2"
         android:background="@color/white"
         android:elevation="@dimen/size_4"
         android:padding="@dimen/spacing_generic"
         tools:targetApi="lollipop">
-
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_product"
@@ -74,17 +70,16 @@
             app:srcCompat="@drawable/ic_vector_close_bg"
             tools:ignore="ContentDescription" />
 
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_product_name"
-            style="@style/large_bold_title_text"
-            android:layout_width="0dp"
+            style="@style/Semaai.TextAppearance.Subtitle2.Bold"
+            android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/size_6"
             android:ellipsize="end"
             android:maxLines="2"
             android:text="@{data.productName}"
-            android:textSize="@dimen/font_size_18"
+            android:textAllCaps="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_product"
             app:layout_constraintTop_toBottomOf="@+id/iv_delete"
@@ -92,7 +87,7 @@
 
         <TextView
             android:id="@+id/tv_quantity"
-            style="@style/large_bold_title_text"
+            style="@style/Semaai.TextAppearance.Body1.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_6"
@@ -104,16 +99,13 @@
             android:paddingHorizontal="@dimen/spacing_generic"
             android:paddingVertical="@dimen/size_6"
             android:text="@{@string/qty_x_int(data.qty)}"
-            android:textAllCaps="false"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/size_14"
             app:layout_constraintStart_toStartOf="@+id/tv_product_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_product_name"
             tools:text="Qty: 1" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_product_availability"
-            style="@style/medium_normal_text_accent"
+            style="@style/Semaai.TextAppearance.Body2.Bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_6"
@@ -129,18 +121,16 @@
 
         <TextView
             android:id="@+id/tv_move_to_wishlist"
-            style="@style/medium_normal_text_accent"
-            android:layout_width="0dp"
+            style="@style/Semaai.TextAppearance.Body2.Bold"
+            android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_6"
             android:onClick="@{()->handler.addToWishlist()}"
             android:text="@string/move_to_wishlist"
-            android:textStyle="bold"
             android:visibility="@{isLoggedIn &amp;&amp; wishlistEnabled ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="@+id/tv_product_availability"
             app:layout_constraintStart_toStartOf="@+id/tv_product_availability"
             app:layout_constraintTop_toBottomOf="@+id/tv_product_availability" />
-
 
         <View
             android:id="@+id/view4"
@@ -151,10 +141,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_move_to_wishlist" />
 
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_unit_price_heading"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_tiny"
             android:text="@string/unit_price"
@@ -164,23 +153,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view4" />
 
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_reduced_price"
-            style="@style/medium_bold_text"
+            style="@style/Semaai.TextAppearance.Body2.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_6"
             android:text="@{data.priceReduce.isEmpty() ? data.priceUnit : data.priceReduce}"
-            android:textAllCaps="false"
-            android:textSize="@dimen/font_size_14"
             app:layout_constraintEnd_toStartOf="@+id/view5"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_unit_price_heading"
             tools:text="Rp34,000" />
-
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_price_unit"
@@ -196,7 +181,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_discount"
             tools:text="Rp34,000" />
-
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_discount"
@@ -216,16 +200,15 @@
         <View
             android:id="@+id/view5"
             style="@style/DividerVertical"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/size_0"
             android:background="@color/grey_400"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/tv_unit_price_heading"
             app:layout_constraintTop_toTopOf="@+id/tv_sub_total_heading" />
 
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_sub_total_heading"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_tiny"
             android:text="@string/subtotal"
@@ -234,7 +217,6 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/tv_unit_price_heading"
             app:layout_constraintTop_toBottomOf="@+id/view4" />
-
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_sub_total_value"
@@ -248,9 +230,7 @@
             app:layout_constraintTop_toTopOf="@+id/tv_reduced_price"
             tools:text="Rp360.00" />
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </layout>
 
