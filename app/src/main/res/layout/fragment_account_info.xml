@@ -40,7 +40,6 @@
                     android:layout_height="wrap_content"
                     app:cardUseCompatPadding="true">
 
-
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -78,8 +77,6 @@
                         </com.webkul.mobikul.odoo.custom.NoChangingBackgroundTextInputLayout>
 
                         <!--Change Password-->
-
-
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -114,7 +111,6 @@
                                 android:layout_marginBottom="@dimen/spacing_tiny"
                                 android:text="@string/new_password" />
 
-
                             <com.webkul.mobikul.odoo.custom.NoChangingBackgroundTextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -138,9 +134,7 @@
 
                             </com.webkul.mobikul.odoo.custom.NoChangingBackgroundTextInputLayout>
 
-
                             <!--CONFIRM NEW PASSWORD-->
-
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -370,7 +364,6 @@
                 android:text="@string/save"
                 android:textAllCaps="true"
                 android:textStyle="bold" />
-
 
         </androidx.cardview.widget.CardView>
 

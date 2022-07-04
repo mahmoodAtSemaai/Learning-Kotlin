@@ -135,7 +135,7 @@
                         android:gravity="center|start"
                         android:text="@string/points"
                         android:textAlignment="textStart"
-                        android:textSize="@dimen/font_size_12" />
+                        style="@style/Semaai.TextAppearance.Caption" />
 
 
                     <androidx.appcompat.widget.AppCompatTextView

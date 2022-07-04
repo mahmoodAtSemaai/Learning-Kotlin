@@ -112,8 +112,7 @@
                                     android:gravity="center_horizontal"
                                     android:text="@string/products"
                                     android:textColor="?attr/colorAccent"
-                                    android:textSize="@dimen/text_size_medium"
-                                    android:textStyle="bold"
+                                    style="@style/Semaai.TextAppearance.Subtitle2.Bold"
                                     app:layout_constraintLeft_toLeftOf="parent"
                                     app:layout_constraintRight_toRightOf="@+id/product_image"
                                     app:layout_constraintTop_toBottomOf="@+id/product_image" />
@@ -129,7 +128,7 @@
                                     android:onClick="@{()->handler.onClickPendingProducts()}"
                                     android:padding="16dp"
                                     android:text="@{@string/x_pending_products(data.pendingProductCount)}"
-                                    android:textColor="@color/white_ish"
+                                    android:textColor="@color/text_color_white"
                                     app:layout_constraintLeft_toRightOf="@+id/product_image"
                                     app:layout_constraintRight_toRightOf="parent"
                                     app:layout_constraintTop_toTopOf="parent" />
@@ -145,7 +144,7 @@
                                     android:onClick="@{()->handler.onClickApprovedProducts()}"
                                     android:padding="16dp"
                                     android:text="@{@string/x_approved_products(data.approvedProductCount)}"
-                                    android:textColor="@color/white_ish"
+                                    android:textColor="@color/text_color_white"
                                     app:layout_constraintLeft_toRightOf="@+id/product_image"
                                     app:layout_constraintRight_toRightOf="parent"
                                     app:layout_constraintTop_toBottomOf="@+id/pending_products" />
@@ -161,7 +160,7 @@
                                     android:onClick="@{()->handler.onClickRejectedProducts()}"
                                     android:padding="16dp"
                                     android:text="@{@string/x_rejected_products(data.rejectedProductCount)}"
-                                    android:textColor="@color/white_ish"
+                                    android:textColor="@color/text_color_white"
                                     app:layout_constraintLeft_toRightOf="@+id/product_image"
                                     app:layout_constraintRight_toRightOf="parent"
                                     app:layout_constraintTop_toBottomOf="@+id/approved_products" />
@@ -204,8 +203,7 @@
                                     android:gravity="center_horizontal"
                                     android:text="@string/orders"
                                     android:textColor="?attr/colorAccent"
-                                    android:textSize="@dimen/text_size_medium"
-                                    android:textStyle="bold"
+                                    style="@style/Semaai.TextAppearance.Subtitle2.Bold"
                                     app:layout_constraintLeft_toLeftOf="parent"
                                     app:layout_constraintRight_toRightOf="@+id/order_image"
                                     app:layout_constraintTop_toBottomOf="@+id/order_image" />
@@ -221,7 +219,7 @@
                                     android:onClick="@{()->handler.onClickNewOrders()}"
                                     android:padding="16dp"
                                     android:text="@{@string/x_new_order(data.new_solCount)}"
-                                    android:textColor="@color/white_ish"
+                                    android:textColor="@color/text_color_white"
                                     app:layout_constraintLeft_toRightOf="@+id/order_image"
                                     app:layout_constraintRight_toRightOf="parent"
                                     app:layout_constraintTop_toTopOf="parent" />
@@ -237,7 +235,7 @@
                                     android:onClick="@{()->handler.onClickApprovedOrders()}"
                                     android:padding="16dp"
                                     android:text="@{@string/x_approved_orders(data.approved_solCount)}"
-                                    android:textColor="@color/white_ish"
+                                    android:textColor="@color/text_color_white"
                                     app:layout_constraintLeft_toRightOf="@+id/order_image"
                                     app:layout_constraintRight_toRightOf="parent"
                                     app:layout_constraintTop_toBottomOf="@+id/new_orders" />
@@ -253,7 +251,7 @@
                                     android:onClick="@{()->handler.onClickShppedOrders()}"
                                     android:padding="16dp"
                                     android:text="@{@string/x_shipped_orders(data.shipped_solCount)}"
-                                    android:textColor="@color/white_ish"
+                                    android:textColor="@color/text_color_white"
                                     app:layout_constraintLeft_toRightOf="@+id/order_image"
                                     app:layout_constraintRight_toRightOf="parent"
                                     app:layout_constraintTop_toBottomOf="@+id/approved_orders" />
@@ -296,8 +294,7 @@
                                     android:gravity="center_horizontal"
                                     android:text="@string/payments"
                                     android:textColor="?attr/colorAccent"
-                                    android:textSize="@dimen/text_size_medium"
-                                    android:textStyle="bold"
+                                    style="@style/Semaai.TextAppearance.Subtitle2.Bold"
                                     app:layout_constraintLeft_toLeftOf="parent"
                                     app:layout_constraintRight_toRightOf="@+id/payment_image"
                                     app:layout_constraintTop_toBottomOf="@+id/payment_image" />
@@ -312,7 +309,7 @@
                                     android:gravity="center"
                                     android:padding="16dp"
                                     android:text="@{@string/x_requested_payments(data.requestedPaymentCount)}"
-                                    android:textColor="@color/white_ish"
+                                    android:textColor="@color/text_color_white"
                                     app:layout_constraintLeft_toRightOf="@+id/payment_image"
                                     app:layout_constraintRight_toRightOf="parent"
                                     app:layout_constraintTop_toTopOf="parent" />
@@ -327,7 +324,7 @@
                                     android:gravity="center"
                                     android:padding="16dp"
                                     android:text="@{@string/x_to_be_approved_payments(data.toBeApprovedPaymentCount)}"
-                                    android:textColor="@color/white_ish"
+                                    android:textColor="@color/text_color_white"
                                     app:layout_constraintLeft_toRightOf="@+id/payment_image"
                                     app:layout_constraintRight_toRightOf="parent"
                                     app:layout_constraintTop_toBottomOf="@+id/requested_payments" />
@@ -342,7 +339,7 @@
                                     android:gravity="center"
                                     android:padding="16dp"
                                     android:text="@{@string/x_approved_payments(data.approvedPaymentCount)}"
-                                    android:textColor="@color/white_ish"
+                                    android:textColor="@color/text_color_white"
                                     app:layout_constraintLeft_toRightOf="@+id/payment_image"
                                     app:layout_constraintRight_toRightOf="parent"
                                     app:layout_constraintTop_toBottomOf="@+id/to_be_approved_payments" />

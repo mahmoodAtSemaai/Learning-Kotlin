@@ -72,7 +72,7 @@
                     android:paddingLeft="@dimen/padding_start"
                     android:paddingEnd="@dimen/padding_end"
                     android:paddingRight="@dimen/padding_end"
-                    android:textSize="@dimen/font_size_12"
+                    style="@style/Semaai.TextAppearance.Caption"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/rl_cart"
                     app:layout_constraintStart_toStartOf="parent"

@@ -121,7 +121,6 @@
                         app:srcCompat="@drawable/ic_camera_white_24dp"
                         tools:ignore="ContentDescription" />
 
-
                 </FrameLayout>
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -131,7 +130,7 @@
                     android:layout_centerHorizontal="true"
                     android:inputType="textCapSentences"
                     android:text="@{@string/hello_x_(customerName)}"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/text_color_primary"
                     tools:text="Hello Shubham Agarwal!" />
 
 
@@ -373,15 +372,11 @@
                         android:padding="@dimen/spacing_generic"
                         android:text="@string/sign_out" />
 
-
                 </androidx.appcompat.widget.LinearLayoutCompat>
-
 
             </androidx.cardview.widget.CardView>
 
-
         </androidx.appcompat.widget.LinearLayoutCompat>
-
 
     </ScrollView>
 
