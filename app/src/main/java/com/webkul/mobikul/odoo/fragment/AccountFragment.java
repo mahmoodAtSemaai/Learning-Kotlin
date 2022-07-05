@@ -245,6 +245,7 @@ public class AccountFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        mBinding.username.setPaintFlags(0);
         mBinding.setCustomerName(AppSharedPref.getCustomerName(getContext()));
         mBinding.setIsEmailVerified(AppSharedPref.isEmailVerified(getContext()));
     }

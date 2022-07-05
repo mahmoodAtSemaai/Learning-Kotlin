@@ -93,9 +93,6 @@ class NewDrawerFragment : BaseFragment() {
 
 
     fun openAccountFragment() {
-
-        mBinding.username.paintFlags = 0
-
         mBinding.profileImage.setOnClickListener {
             val action = NewDrawerFragmentDirections.actionNewDrawerFragmentToAccountFragment2()
             navController.navigate(action)

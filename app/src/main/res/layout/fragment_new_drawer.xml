@@ -109,8 +109,6 @@
                     android:textSize="@dimen/font_size_16"
                     android:textStyle="bold"
                     android:fontFamily="@font/roboto_medium"
-                    android:background="@color/transparent"
-                    android:backgroundTint="@color/transparent"
                     />
 
 
