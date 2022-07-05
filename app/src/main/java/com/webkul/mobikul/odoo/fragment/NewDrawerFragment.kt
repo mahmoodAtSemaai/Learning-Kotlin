@@ -66,7 +66,7 @@ class NewDrawerFragment : BaseFragment() {
 
         return mBinding.root
     }
-    
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -85,7 +85,7 @@ class NewDrawerFragment : BaseFragment() {
         }
 
         languageSettings()
-        
+
         openAccountFragment()
 
         getLoyaltyPoints()
@@ -93,6 +93,9 @@ class NewDrawerFragment : BaseFragment() {
 
 
     fun openAccountFragment() {
+
+        mBinding.username.paintFlags = 0
+
         mBinding.profileImage.setOnClickListener {
             val action = NewDrawerFragmentDirections.actionNewDrawerFragmentToAccountFragment2()
             navController.navigate(action)
@@ -162,7 +165,7 @@ class NewDrawerFragment : BaseFragment() {
     }
 
     fun showPoints(loyaltyPoints: Int) {
-        mBinding.drawerLoyalityPoints.text=loyaltyPoints.toString()
+        mBinding.drawerLoyalityPoints.text = loyaltyPoints.toString()
     }
 
 
@@ -191,7 +194,7 @@ class NewDrawerFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        mBinding.customerName =AppSharedPref.getCustomerName(context)
+        mBinding.customerName = AppSharedPref.getCustomerName(context)
         getLoyaltyPoints()
     }
 }
