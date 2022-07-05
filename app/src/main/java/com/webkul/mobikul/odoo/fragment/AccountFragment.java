@@ -53,7 +53,7 @@ public class AccountFragment extends BaseFragment {
 
     @SuppressWarnings("unused")
     private static final String TAG = "AccountFragment";
-    public FragmentAccountBinding mBinding;
+    public FragmentAccountBinding binding ;
     public String referralCode;
     NavController navController;
     public static AccountFragment newInstance() {
@@ -62,15 +62,15 @@ public class AccountFragment extends BaseFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_account, container, false);
-        mBinding.customerProfileImage.setOnClickListener(new View.OnClickListener() {
+        binding  = DataBindingUtil.inflate(inflater, R.layout.fragment_account, container, false);
+        binding .customerProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!AppSharedPref.getCustomerProfileImage(getContext()).trim().isEmpty())
                     showEnlargedProfileImage();
             }
         });
-        return mBinding.getRoot();
+        return binding .getRoot();
     }
 
     public void showEnlargedProfileImage() {
@@ -222,11 +222,11 @@ public class AccountFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mBinding.setWishlistEnabled(AppSharedPref.isAllowedWishlist(getActivity()));
+        binding .setWishlistEnabled(AppSharedPref.isAllowedWishlist(getActivity()));
         Helper.hideKeyboard(getContext());
         navController = Navigation.findNavController(view);
 
-        mBinding.allOrdersText.setOnClickListener(new View.OnClickListener() {
+        binding .allOrdersText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 navController.navigate(R.id.orderListFragment);
@@ -238,15 +238,16 @@ public class AccountFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mBinding.setHandler(new AccountFragmentHandler(getContext(), this));
+        binding .setHandler(new AccountFragmentHandler(getContext(), this));
         hitApiForReferralCode();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mBinding.setCustomerName(AppSharedPref.getCustomerName(getContext()));
-        mBinding.setIsEmailVerified(AppSharedPref.isEmailVerified(getContext()));
+        binding .username.setPaintFlags(0);
+        binding .setCustomerName(AppSharedPref.getCustomerName(getContext()));
+        binding .setIsEmailVerified(AppSharedPref.isEmailVerified(getContext()));
     }
 
     public void uploadFile(final Uri selectedImageUri, boolean isFromCropImage) {
@@ -268,7 +269,7 @@ public class AccountFragment extends BaseFragment {
             filePath = selectedImageUri.getPath();
         }
         SaveCustomerDetailRequest saveCustomerDetailRequest;
-        if (mBinding.getHandler().isRequestForProfileImage()){
+        if (binding .getHandler().isRequestForProfileImage()){
             saveCustomerDetailRequest = new SaveCustomerDetailRequest(null,null,encodeImage(filePath),null);
         }else {
             saveCustomerDetailRequest = new SaveCustomerDetailRequest(null,null,null,encodeImage(filePath));
@@ -299,15 +300,15 @@ public class AccountFragment extends BaseFragment {
                         });
                     }else {
                         if (saveCustomerDetailResponse.isSuccess()) {
-                            mBinding.executePendingBindings();
+                            binding .executePendingBindings();
                             SnackbarHelper.getSnackbar((Activity) getContext(), saveCustomerDetailResponse.getMessage(), Snackbar.LENGTH_SHORT).show();
-                            if (mBinding.getHandler().isRequestForProfileImage()){
+                            if (binding .getHandler().isRequestForProfileImage()){
                                 AppSharedPref.setCustomerProfileImage(getContext(), saveCustomerDetailResponse.getCustomerProfileImage());
-                                ImageHelper.load(mBinding.customerProfileImage, saveCustomerDetailResponse.getCustomerProfileImage(), R.drawable.ic_men_avatar, DiskCacheStrategy.NONE, true, ImageHelper.ImageType.PROFILE_PIC_GENERIC);
+                                ImageHelper.load(binding .customerProfileImage, saveCustomerDetailResponse.getCustomerProfileImage(), R.drawable.ic_men_avatar, DiskCacheStrategy.NONE, true, ImageHelper.ImageType.PROFILE_PIC_GENERIC);
 
                             }else {
                                 AppSharedPref.setCustomerBannerImage(getContext(), saveCustomerDetailResponse.getCustomerBannerImage());
-                                ImageHelper.load(mBinding.profileBanner, saveCustomerDetailResponse.getCustomerBannerImage(),null, DiskCacheStrategy.NONE, true, ImageHelper.ImageType.BANNER_SIZE_LARGE);
+                                ImageHelper.load(binding .profileBanner, saveCustomerDetailResponse.getCustomerBannerImage(),null, DiskCacheStrategy.NONE, true, ImageHelper.ImageType.BANNER_SIZE_LARGE);
 
                             }
                         } else {
@@ -330,11 +331,11 @@ public class AccountFragment extends BaseFragment {
 
 
     public void updateProfileImageAfterDelete(){
-        if (mBinding.getHandler().isRequestForProfileImage()){
-            ImageHelper.load(mBinding.customerProfileImage, "", R.drawable.ic_men_avatar, DiskCacheStrategy.NONE, true, ImageHelper.ImageType.PROFILE_PIC_GENERIC);
+        if (binding .getHandler().isRequestForProfileImage()){
+            ImageHelper.load(binding .customerProfileImage, "", R.drawable.ic_men_avatar, DiskCacheStrategy.NONE, true, ImageHelper.ImageType.PROFILE_PIC_GENERIC);
 
         }else {
-            ImageHelper.load(mBinding.profileBanner, "", null, DiskCacheStrategy.NONE, true, ImageHelper.ImageType.BANNER_SIZE_LARGE);
+            ImageHelper.load(binding .profileBanner, "", null, DiskCacheStrategy.NONE, true, ImageHelper.ImageType.BANNER_SIZE_LARGE);
 
         }
     }
@@ -400,7 +401,7 @@ public class AccountFragment extends BaseFragment {
     public void showReferralCode(String code){
         AppSharedPref.setReferralCode(getContext(), code);
         String message = getContext().getString(R.string.copy_referral_code) + ": " + code;
-        mBinding.referralCode.setText(message);
+        binding .referralCode.setText(message);
     }
 
 }

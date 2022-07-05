@@ -124,10 +124,13 @@
                 </FrameLayout>
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/profile_image_container"
                     android:layout_centerHorizontal="true"
+                    android:background="@color/transparent"
+                    android:backgroundTint="@color/transparent"
                     android:inputType="textCapSentences"
                     android:text="@{@string/hello_x_(customerName)}"
                     android:textColor="@color/text_color_primary"

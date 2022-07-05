@@ -315,7 +315,7 @@ public class HomeActivity extends BaseActivity implements OnTabSelectListener,/*
                 if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Fragment fragment = mSupportFragmentManager.findFragmentByTag(AccountFragment.class.getSimpleName());
                     if (fragment != null && fragment.isAdded()) {
-                        ((AccountFragment) fragment).mBinding.getHandler().startPickImage();
+                        ((AccountFragment) fragment).binding.getHandler().startPickImage();
                     }
                 } else {
                     SnackbarHelper.getSnackbar(this, getString(R.string.error_permision_required_to_change_profile_image), Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
@@ -325,7 +325,7 @@ public class HomeActivity extends BaseActivity implements OnTabSelectListener,/*
                 if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Fragment fragment = mSupportFragmentManager.findFragmentByTag(AccountFragment.class.getSimpleName());
                     if (fragment != null && fragment.isAdded()) {
-                        ((AccountFragment) fragment).mBinding.getHandler().pickImageFromFileSystemIntent();
+                        ((AccountFragment) fragment).binding.getHandler().pickImageFromFileSystemIntent();
                     }
                 } else {
                     SnackbarHelper.getSnackbar(this, getString(R.string.error_permision_required_to_change_profile_image), Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
