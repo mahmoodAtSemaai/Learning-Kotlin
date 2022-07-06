@@ -58,10 +58,10 @@
                 android:layout_weight="1" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_continue_shopping"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_generic"
-                android:onClick="@{()->IntentHelper.continueShopping(context)}"
                 android:padding="@dimen/spacing_normal"
                 android:text="@string/start_shopping"
                 android:textAllCaps="true"
