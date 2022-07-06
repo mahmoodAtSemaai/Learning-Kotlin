@@ -527,7 +527,7 @@
     <string name="phone_number_verification">Verifikasi Nomor Telepon</string>
     <string name="enter_your_phone_number">Masukkan Nomor Telepon Anda</string>
     <string name="enter_otp_code">Masukkan Kode OTP</string>
-    <string name="check_for_otp_text">Periksa WhatsApp anda, dan masukkan kode dari Semaai ke kolom di bawah ini. Kode OTP ini bersifat rahasia, <b>jangan beritahukan</b> kode ini kepada siapapun. </string>
+    <string name="check_for_otp_text">Periksa SMS anda, dan masukkan kode dari Semaai ke kolom di bawah ini. Kode OTP ini bersifat rahasia, <b>jangan beritahukan</b> kode ini kepada siapapun. </string>
     <string name="send_again">Kirim lagi</string>
     <string name="select_your_coupon">Pilih Kupon Anda >></string>
     <string name="bank_transfer_va">Transfer Bank Virtual Account</string>
