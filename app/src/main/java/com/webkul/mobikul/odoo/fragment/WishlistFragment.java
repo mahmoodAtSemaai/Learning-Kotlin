@@ -2,7 +2,6 @@ package com.webkul.mobikul.odoo.fragment;
 
 import android.content.Context;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CUSTOMER_FRAG_TYPE;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,7 +21,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.BaseActivity;
-import com.webkul.mobikul.odoo.activity.CustomerBaseActivity;
 import com.webkul.mobikul.odoo.activity.NewHomeActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.adapter.customer.WishlistProductInfoRvAdapter;
@@ -35,7 +33,6 @@ import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.CartUpdateListener;
-import com.webkul.mobikul.odoo.helper.CustomerHelper;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.model.BaseResponse;
 import com.webkul.mobikul.odoo.model.customer.wishlist.MyWishListResponse;
@@ -64,7 +61,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class WishlistFragment extends BaseFragment implements WishlistProductInfoRvAdapter.WishListInterface {
     private static final String TAG = "WishlistFragment";
-    public FragmentWishlistBinding mBinding;
+    public FragmentWishlistBinding binding;
     private NavHostFragment navHostFragment;
     private NavController navController;
 
@@ -80,8 +77,8 @@ public class WishlistFragment extends BaseFragment implements WishlistProductInf
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_wishlist, container, false);
-        return mBinding.getRoot();
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_wishlist, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -130,13 +127,13 @@ public class WishlistFragment extends BaseFragment implements WishlistProductInf
 
                 } else {
                     getActivity().setTitle(getString(R.string.wishlist) + " (" + myWishListResponse.getWishLists().size() + ")");
-                    mBinding.setData(myWishListResponse);
-                    mBinding.executePendingBindings();
+                    binding.setData(myWishListResponse);
+                    binding.executePendingBindings();
                     DividerItemDecoration dividerItemDecorationHorizontal = new DividerItemDecoration(getContext(), LinearLayout.VERTICAL);
-                    mBinding.wishlistProductRv.addItemDecoration(dividerItemDecorationHorizontal);
+                    binding.wishlistProductRv.addItemDecoration(dividerItemDecorationHorizontal);
                     wishListData = myWishListResponse.getWishLists();
                     wishlistProductInfoRvAdapter = new WishlistProductInfoRvAdapter(getContext(), myWishListResponse.getWishLists(), wishListInterface);
-                    mBinding.wishlistProductRv.setAdapter(wishlistProductInfoRvAdapter);
+                    binding.wishlistProductRv.setAdapter(wishlistProductInfoRvAdapter);
                     if(cartUpdateListener!=null){
                         cartUpdateListener.updateCart();
                     }
@@ -167,7 +164,7 @@ public class WishlistFragment extends BaseFragment implements WishlistProductInf
             navController = navHostFragment.getNavController();
         }
 
-        mBinding.btnContinueShopping.setOnClickListener(v -> {
+        binding.btnContinueShopping.setOnClickListener(v -> {
             if (navController != null) {
                 navController.navigate(R.id.action_wishlistFragment_to_homeFragment);
             }else{
