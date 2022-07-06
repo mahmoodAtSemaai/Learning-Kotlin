@@ -45,7 +45,7 @@ import java.io.ByteArrayOutputStream
 
 
 class NewHomeActivity : BaseActivity(), CartUpdateListener {
-    private lateinit var binding: ActivityNewHomeBinding
+    lateinit var binding: ActivityNewHomeBinding
     private val RC_ACCESS_FINE_LOCATION_NEW_ADDRESS = 1001
     private val RC_CHECK_LOCATION_SETTINGS = 1003
     private val RC_PICK_IMAGE = 1004
