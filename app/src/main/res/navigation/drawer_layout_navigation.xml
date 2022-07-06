@@ -23,7 +23,13 @@
         android:id="@+id/accountFragment2"
         android:name="com.webkul.mobikul.odoo.fragment.AccountFragment"
         android:label="AccountFragment"
-        tools:layout="@layout/fragment_account" />
+        tools:layout="@layout/fragment_account" >
+
+        <action
+            android:id="@+id/action_accountFragment_to_orderListFragment"
+            app:destination="@id/orderListFragment" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/orderListFragment"

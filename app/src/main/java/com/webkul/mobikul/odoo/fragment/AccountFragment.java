@@ -229,7 +229,7 @@ public class AccountFragment extends BaseFragment {
         binding .allOrdersText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navController.navigate(R.id.orderListFragment);
+                navController.navigate(R.id.action_accountFragment_to_orderListFragment);
             }
         });
 
