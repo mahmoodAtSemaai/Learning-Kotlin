@@ -1,5 +1,6 @@
 package com.webkul.mobikul.odoo.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.BaseActivity;
 import com.webkul.mobikul.odoo.activity.CustomerBaseActivity;
+import com.webkul.mobikul.odoo.activity.NewHomeActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.adapter.customer.WishlistProductInfoRvAdapter;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
@@ -25,6 +27,7 @@ import com.webkul.mobikul.odoo.databinding.FragmentWishlistBinding;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
+import com.webkul.mobikul.odoo.helper.CartUpdateListener;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.model.BaseResponse;
 import com.webkul.mobikul.odoo.model.customer.wishlist.MyWishListResponse;
@@ -69,6 +72,8 @@ public class WishlistFragment extends BaseFragment implements WishlistProductInf
     WishlistProductInfoRvAdapter.WishListInterface wishListInterface;
     WishlistProductInfoRvAdapter wishlistProductInfoRvAdapter;
 
+    private CartUpdateListener cartUpdateListener;
+
     public static WishlistFragment newInstance() {
         return new WishlistFragment();
     }
@@ -77,6 +82,14 @@ public class WishlistFragment extends BaseFragment implements WishlistProductInf
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_wishlist, container, false);
         return mBinding.getRoot();
+    }
+
+    @Override
+    public void onAttach(@androidx.annotation.NonNull Context context) {
+        if(context instanceof CartUpdateListener) {
+            cartUpdateListener = (CartUpdateListener) context;
+        }
+        super.onAttach(context);
     }
 
     @Override
@@ -123,6 +136,9 @@ public class WishlistFragment extends BaseFragment implements WishlistProductInf
                     wishListData = myWishListResponse.getWishLists();
                     wishlistProductInfoRvAdapter = new WishlistProductInfoRvAdapter(getContext(), myWishListResponse.getWishLists(), wishListInterface);
                     mBinding.wishlistProductRv.setAdapter(wishlistProductInfoRvAdapter);
+                    if(cartUpdateListener!=null){
+                        cartUpdateListener.updateCart();
+                    }
                 }
             }
 

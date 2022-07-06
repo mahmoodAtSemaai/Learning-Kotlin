@@ -96,11 +96,6 @@ public class CustomerBaseActivity extends BaseLocationActivity implements Fragme
             mBinding.searchView.openSearch();
         } else if (item.getItemId() == R.id.menu_item_bag) {
             IntentHelper.goToBag(this);
-        } else if (item.getItemId() == R.id.menu_item_wishlist) {
-            Intent intent = new Intent(this, CustomerBaseActivity.class);
-            intent.putExtra(BUNDLE_KEY_CUSTOMER_FRAG_TYPE, CustomerHelper.CustomerFragType.TYPE_WISHLIST);
-            startActivity(intent);
-
         }
         return super.onOptionsItemSelected(item);
     }

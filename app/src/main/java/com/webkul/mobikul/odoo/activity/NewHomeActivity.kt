@@ -31,6 +31,7 @@ import com.webkul.mobikul.odoo.databinding.ActivityNewHomeBinding
 import com.webkul.mobikul.odoo.fragment.AccountFragment
 import com.webkul.mobikul.odoo.handler.home.FragmentNotifier.HomeActivityFragments
 import com.webkul.mobikul.odoo.helper.AppSharedPref
+import com.webkul.mobikul.odoo.helper.CartUpdateListener
 import com.webkul.mobikul.odoo.helper.SnackbarHelper
 import com.webkul.mobikul.odoo.model.ReferralResponse
 import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse
@@ -43,7 +44,7 @@ import org.greenrobot.eventbus.ThreadMode
 import java.io.ByteArrayOutputStream
 
 
-class NewHomeActivity : BaseActivity() {
+class NewHomeActivity : BaseActivity(), CartUpdateListener {
     private lateinit var binding: ActivityNewHomeBinding
     private val RC_ACCESS_FINE_LOCATION_NEW_ADDRESS = 1001
     private val RC_CHECK_LOCATION_SETTINGS = 1003
@@ -300,5 +301,9 @@ class NewHomeActivity : BaseActivity() {
             binding.ivChatIcon.visibility = View.INVISIBLE
             binding.ivUnreadChatCount.visibility = View.INVISIBLE
         }
+    }
+
+    override fun updateCart() {
+        getBagItemsCount()
     }
 }
