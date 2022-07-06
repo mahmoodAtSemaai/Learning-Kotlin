@@ -73,7 +73,8 @@
                         android:layout_height="wrap_content"
                         android:isIndicator="true"
                         android:numStars="5"
-                        android:rating="@{data.averageRating}" />
+                        android:rating="@{data.averageRating}"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
 

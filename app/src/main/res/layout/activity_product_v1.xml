@@ -392,19 +392,22 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_min"
                     app:layout_constraintStart_toEndOf="@+id/iv_seller_info"
-                    app:layout_constraintTop_toTopOf="@+id/iv_seller_info" />
+                    app:layout_constraintTop_toTopOf="@+id/iv_seller_info"
+                    app:layout_constraintBottom_toTopOf="@id/rb_seller_rating"/>
 
                 <androidx.appcompat.widget.AppCompatRatingBar
                     android:id="@+id/rb_seller_rating"
                     style="@style/Base.Widget.AppCompat.RatingBar.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/size_8"
+                    android:layout_marginTop="@dimen/size_4"
                     android:isIndicator="true"
                     android:progressTint="@color/background_orange"
                     android:rating="@{data.seller.averageRating}"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="@+id/tv_seller_name"
                     app:layout_constraintTop_toBottomOf="@+id/tv_seller_name"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_seller_info"
                     tools:rating="4" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -414,6 +417,7 @@
                     android:layout_marginStart="@dimen/size_8"
                     android:layout_marginLeft="@dimen/size_8"
                     android:text="@{String.valueOf(Float.valueOf(data.seller.averageRating))}"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/rb_seller_rating"
                     app:layout_constraintStart_toEndOf="@+id/rb_seller_rating"
                     app:layout_constraintTop_toTopOf="@+id/rb_seller_rating" />
