@@ -2,6 +2,7 @@ package com.webkul.mobikul.odoo.fragment;
 
 import android.content.Context;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CUSTOMER_FRAG_TYPE;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.CartUpdateListener;
+import com.webkul.mobikul.odoo.helper.CustomerHelper;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.model.BaseResponse;
 import com.webkul.mobikul.odoo.model.customer.wishlist.MyWishListResponse;
@@ -161,11 +163,18 @@ public class WishlistFragment extends BaseFragment implements WishlistProductInf
 
     private void setOnclickListeners() {
         navHostFragment = (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.home_nav_host);
-        assert navHostFragment != null;
-        navController = navHostFragment.getNavController();
+        if (navHostFragment != null) {
+            navController = navHostFragment.getNavController();
+        }
 
         mBinding.btnContinueShopping.setOnClickListener(v -> {
-            navController.navigate(R.id.action_wishlistFragment_to_homeFragment);
+            if (navController != null) {
+                navController.navigate(R.id.action_wishlistFragment_to_homeFragment);
+            }else{
+                Intent intent = new Intent(requireActivity(), NewHomeActivity.class);
+                requireActivity().startActivity(intent);
+            }
+
         });
     }
 
