@@ -1,10 +1,10 @@
 package com.webkul.mobikul.odoo.helper;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
 import static android.content.Context.MODE_PRIVATE;
 import static com.webkul.mobikul.odoo.BuildConfig.DEFAULT_ITEM_PER_PAGE;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 
 /**
  * Created by Shubham Agarwal on 4/1/17. @Webkul Software Private limited
@@ -73,6 +73,7 @@ public class AppSharedPref {
     private static final String KEY_IS_SEARCH_ENABLE = "KEY_IS_SEARCH_ENABLE";
     private static final String PRIVACY_POLICY_URL = "PRIVACY_POLICY_URL";
     private static final String ANALYTICS_ID = "ANALYTICS_ID";
+    private static final String KEY_IS_USER_APPROVED = "KEY_IS_USER_APPROVED";
 
 
     /*SHARED PREF AND EDITOR*/
@@ -103,6 +104,11 @@ public class AppSharedPref {
         return !getCustomerLoginBase64Str(context).isEmpty() || !getAuthToken(context).isEmpty();
     }
 
+    /*IS LOGGED IN*/
+    public static boolean isUserApproved(Context context) {
+        return !getCustomerLoginBase64Str(context).isEmpty() || !getAuthToken(context).isEmpty();
+    }
+
     /*IS SOCIAL LOGIN*/
     public static boolean isSocialLoggedIn(Context context) {
         return getSharedPreference(context, CUSTOMER_PREF).getBoolean(KEY_CUSTOMER_IS_SOCIAL_LOGGED_IN, false);
@@ -129,6 +135,16 @@ public class AppSharedPref {
     public static void setCustomerLoginBase64Str(Context context, String customerLoginBase64Str) {
         getSharedPreferenceEditor(context, CUSTOMER_PREF).putString(KEY_CUSTOMER_LOGIN_BASE_64_STR, customerLoginBase64Str.trim()).apply();
     }
+
+    /* CUSTOMER APPROVED */
+    public static boolean getUserIsApproved(Context context) {
+        return getSharedPreference(context, CUSTOMER_PREF).getBoolean(KEY_IS_USER_APPROVED, false);
+    }
+
+    public static void setUserIsApproved(Context context, Boolean approved) {
+        getSharedPreferenceEditor(context, CUSTOMER_PREF).putBoolean(KEY_IS_USER_APPROVED, approved).apply();
+    }
+
 
     /*Customer Email*/
     public static String getCustomerEmail(Context context) {
@@ -487,10 +503,10 @@ public class AppSharedPref {
     }
 
     public static String getUserAnalyticsId(Context context) {
-       return getSharedPreference(context, SPLASH_PREF).getString(ANALYTICS_ID, null);
+        return getSharedPreference(context, SPLASH_PREF).getString(ANALYTICS_ID, null);
     }
 
-    public static String getAuthToken(Context context){
-        return getSharedPreference(context, CUSTOMER_PREF).getString(KEY_CUSTOMER_JWT_AUTH_TOKEN,"");
+    public static String getAuthToken(Context context) {
+        return getSharedPreference(context, CUSTOMER_PREF).getString(KEY_CUSTOMER_JWT_AUTH_TOKEN, "");
     }
 }

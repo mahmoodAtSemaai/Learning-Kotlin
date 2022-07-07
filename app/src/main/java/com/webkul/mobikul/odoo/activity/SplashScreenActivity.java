@@ -35,9 +35,6 @@ import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.database.SaveData;
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.databinding.ActivitySplashScreenBinding;
-import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse;
-import com.webkul.mobikul.odoo.model.chat.ChatCreateChannelResponse;
-import com.webkul.mobikul.odoo.ui.auth.SignInSignUpActivityV1;
 import com.webkul.mobikul.odoo.features.onboarding.presentation.OnboardingActivity;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
@@ -47,10 +44,13 @@ import com.webkul.mobikul.odoo.helper.IntentHelper;
 import com.webkul.mobikul.odoo.helper.NetworkHelper;
 import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
+import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse;
+import com.webkul.mobikul.odoo.model.chat.ChatCreateChannelResponse;
 import com.webkul.mobikul.odoo.model.extra.SplashScreenActivityData;
 import com.webkul.mobikul.odoo.model.extra.SplashScreenResponse;
 import com.webkul.mobikul.odoo.model.home.HomePageResponse;
 import com.webkul.mobikul.odoo.model.user.UserModel;
+import com.webkul.mobikul.odoo.ui.auth.SignInSignUpActivityV1;
 import com.webkul.mobikul.odoo.updates.FirebaseRemoteConfigHelper;
 
 import java.util.Locale;
@@ -185,14 +185,14 @@ public class SplashScreenActivity extends BaseActivity {
                         @Override
                         public void onNext(ChatBaseResponse<ChatCreateChannelResponse> chatCreateChannelResponseChatBaseResponse) {
                             super.onNext(chatCreateChannelResponseChatBaseResponse);
-                            Log.i(TAG,chatCreateChannelResponseChatBaseResponse.getMessage());
+                            Log.i(TAG, chatCreateChannelResponseChatBaseResponse.getMessage());
                         }
 
                         @Override
                         public void onError(Throwable t) {
                             super.onError(t);
                             t.printStackTrace();
-                            Log.i(TAG,t.getMessage());
+                            Log.i(TAG, t.getMessage());
                         }
 
                         @Override
@@ -231,14 +231,21 @@ public class SplashScreenActivity extends BaseActivity {
             if (NetworkHelper.isNetworkAvailable(this)) {
                 initSplashScreenAPI();
             } else {
-                SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(SplashScreenActivity.this);
-                HomePageResponse homePageResponse = sqlLiteDbHelper.getHomeScreenData();
-                if (homePageResponse != null) {
 
-                    directToNewHomeActivity(homePageResponse);
+                if (AppSharedPref.getUserIsApproved(SplashScreenActivity.this)) {
 
-                } else {
-                    initSplashScreenAPI();
+                    SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(SplashScreenActivity.this);
+                    HomePageResponse homePageResponse = sqlLiteDbHelper.getHomeScreenData();
+                    if (homePageResponse != null) {
+
+                        directToNewHomeActivity(homePageResponse);
+
+                    } else {
+                        initSplashScreenAPI();
+                    }
+                }else{
+                    IntentHelper.goToUserUnapprovedScreen(SplashScreenActivity.this);
+                    finish();
                 }
             }
             /*adding subscribe on here instead of zip to create the observable on io thread. */
@@ -331,6 +338,7 @@ public class SplashScreenActivity extends BaseActivity {
                     public void onNext(@androidx.annotation.NonNull SplashScreenResponse splashScreenResponse) {
                         super.onNext(splashScreenResponse);
                         if (!splashScreenResponse.isUserApproved()) {
+                            AppSharedPref.setUserIsApproved(SplashScreenActivity.this,splashScreenResponse.isUserApproved());
                             // user not approved => redirect to user unapproved screen
                             IntentHelper.goToUserUnapprovedScreen(SplashScreenActivity.this);
                             finish();
