@@ -135,7 +135,7 @@
                     android:layout_marginRight="@dimen/spacing_tiny"
                     android:gravity="center"
                     android:maxLines="1"
-                    android:padding="2dp"
+                    android:padding="@dimen/padding_2"
                     android:text="@{data.priceReduce}"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textSize="@dimen/text_size_min"
@@ -152,11 +152,25 @@
                     android:background="@{data.priceReduce.empty ?  null : @drawable/bg_strikethrough}"
                     android:gravity="center"
                     android:maxLines="1"
+                    android:padding="@dimen/padding_2"
                     android:text="@{data.priceUnit}"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textSize="@dimen/text_size_min"
                     app:textStyle="@{data.priceReduce.empty ? &quot;bold&quot; : &quot;normal&quot;}"
                     tools:text="$310.00" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_tiny"
+                    android:layout_marginRight="@dimen/spacing_tiny"
+                    android:background="@{data.priceReduce.empty ?  null : @drawable/bg_strikethrough}"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textSize="@dimen/text_size_min"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:padding="@dimen/padding_2"
+                    android:visibility="@{data.priceReduce.empty ? View.VISIBLE : View.GONE}"/>
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>
