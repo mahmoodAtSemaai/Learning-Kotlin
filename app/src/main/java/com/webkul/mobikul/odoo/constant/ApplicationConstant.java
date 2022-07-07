@@ -62,6 +62,7 @@ public interface ApplicationConstant {
     /* Product Inventory Availability Type */
     String THRESHOLD = "threshold";
     String NEVER = "never";
+    String ALWAYS = "always";
 
 //    static boolean isNetworkAvailable(final Context context) {
 //        final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));

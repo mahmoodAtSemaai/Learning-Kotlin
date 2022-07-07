@@ -79,7 +79,7 @@ public class SearchActivity extends AppCompatActivity {
             return true;
         });
 
-        binding.seachHistoryRv.setAdapter(new SearchHistoryAdapter(context, getSearchHistoryList(""), ""));
+        binding.searchHistoryRv.setAdapter(new SearchHistoryAdapter(context, getSearchHistoryList(""), ""));
         RxTextView.textChangeEvents(binding.etSearch).debounce(DEBOUNCE_REQUEST_TIMEOUT, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CustomObserver<TextViewTextChangeEvent>(context) {
@@ -98,7 +98,7 @@ public class SearchActivity extends AppCompatActivity {
                                 @Override
                                 public void onSubscribe(@NonNull Disposable d) {
                                     super.onSubscribe(d);
-                                    binding.mainProgressBar.setVisibility(View.VISIBLE);
+                                    binding.pbSearch.setVisibility(View.VISIBLE);
                                 }
 
                                 @Override
@@ -120,7 +120,7 @@ public class SearchActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onComplete() {
-                                    binding.mainProgressBar.setVisibility(View.GONE);
+                                    binding.pbSearch.setVisibility(View.GONE);
                                 }
                             });
                         }
@@ -136,7 +136,7 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                ((SearchHistoryAdapter) binding.seachHistoryRv.getAdapter()).updateSearchHistory(getSearchHistoryList(charSequence.toString()), charSequence.toString());
+                ((SearchHistoryAdapter) binding.searchHistoryRv.getAdapter()).updateSearchHistory(getSearchHistoryList(charSequence.toString()), charSequence.toString());
                 SearchActivity.this.onTextChanged(charSequence);
             }
 
@@ -240,14 +240,14 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                binding.searchLayout.setVisibility(View.GONE);
+                binding.flSearch.setVisibility(View.GONE);
             }
         };
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             AnimationHelper.circleHideView(binding.searchBar, listenerAdapter);
         } else {
-            AnimationHelper.fadeOutView(binding.searchLayout);
+            AnimationHelper.fadeOutView(binding.flSearch);
         }
         open = false;
         RetrofitClient.getDispatcher().cancelAll();
@@ -269,10 +269,10 @@ public class SearchActivity extends AppCompatActivity {
         }
         binding.etSearch.setText("");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            binding.searchLayout.setVisibility(View.VISIBLE);
+            binding.flSearch.setVisibility(View.VISIBLE);
             AnimationHelper.circleRevealView(binding.searchBar);
         } else {
-            AnimationHelper.fadeInView(binding.searchLayout);
+            AnimationHelper.fadeInView(binding.flSearch);
         }
         initSearchView();
         open = true;
