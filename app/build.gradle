@@ -88,6 +88,7 @@ android {
         buildConfigField("String", "CURRENT_APP_VERSION", "\"${Version.name}\"")
 
         buildConfigField("String", "APP_PLAYSTORE_URL", "\"${project.APP_PLAYSTORE_URL}\"")
+        buildConfigField("String", "APP_DYNAMIC_LINK", "\"${project.APP_DYNAMIC_LINK}\"")
         buildConfigField("Boolean", "isMarketplace", "true")
 
     }
