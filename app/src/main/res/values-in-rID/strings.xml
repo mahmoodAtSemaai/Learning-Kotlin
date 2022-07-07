@@ -154,6 +154,8 @@
     <string name="view_term_and_cond">Lihat Syarat dan Ketentuan</string>
     <string name="i_agree_with_term_and_condition">Saya setuju dengan Syarat dan Ketentuan</string>
     <string name="enter_referral_code">Masukkan kode referral di sini</string>
+    <string name="alpha_numeric_values">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789</string>
+
     <!---->
     <!---->
     <!--ACCOUNT FRAGMENT-->
@@ -694,5 +696,6 @@
     <string name="chat_title">Chat</string>
     <string name="text_nine_plus">9+</string>
     <string name="chat_no_conversations">Anda tidak memiliki percakapan apapun</string>
+
 
 </resources>

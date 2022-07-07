@@ -155,6 +155,7 @@
     <string name="view_term_and_cond">View Terms and Conditions</string>
     <string name="i_agree_with_term_and_condition">I agree with Terms and Conditions</string>
     <string name="enter_referral_code">Enter referral code here</string>
+    <string name="alpha_numeric_values">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789</string>
 
     <!---->
     <!---->
