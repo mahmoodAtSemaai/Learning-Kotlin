@@ -5,6 +5,7 @@
 
     <data>
 
+
         <import type="com.webkul.mobikul.odoo.helper.ImageHelper.ImageType" />
 
         <variable

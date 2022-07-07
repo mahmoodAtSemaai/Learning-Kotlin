@@ -67,7 +67,6 @@
                             android:layout_marginStart="@dimen/spacing_generic"
                             android:layout_marginLeft="@dimen/spacing_generic"
                             android:layout_marginTop="@dimen/spacing_generic"
-                            android:layout_marginBottom="@dimen/spacing_generic"
                             android:background="@drawable/selector_notification_bell"
                             android:checked="@{data.read}"
                             android:text=""
