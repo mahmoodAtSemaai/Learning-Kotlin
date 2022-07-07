@@ -680,15 +680,15 @@
     <string name="verification_method_text">Verification Method</string>
     <string name="verification_method_selection_text">Please select verification method</string>
     <string name="send_otp_confirmation_text">For your security, we will confirm by sending a code to your mobile number. Please select one.</string>
-    <string name="change_phone_number"><b><u><font color='#FF6A13'>Change mobile number</font></u></b></string>
+    <string name="change_phone_number"><b><font color='#FF6A13'>Change mobile number</font></b></string>
     <string name="wrong_phone_number">Wrong phone number?</string>
     <string name="otp_not_received">OTP code is not received?</string>
-    <string name="resend"><u>Resend</u></string>
+    <string name="resend">Resend</string>
     <string name="error_wrong_otp">*Sorry, the OTP code you entered is wrong</string>
     <string name="error_incorrect_password">Wrong password.</string>
     <string name="error_incorrect_phone_number">*Sorry, your mobile number is incorrect</string>
     <string name="forgot_password">Forgot password?</string>
-    <string name="click_here"><u><font color='#FF6A13'>Click here</font></u></string>
+    <string name="click_here"><font color='#FF6A13'>Click here</font></string>
     <string name="sms_otp_text">Send OTP code to SMS %s</string>
     <string name="otp_already_sent">OTP is already sent to your mobile.</string>
     <string name="are_you_sure_to_go_back">Are you sure you want to go back?</string>

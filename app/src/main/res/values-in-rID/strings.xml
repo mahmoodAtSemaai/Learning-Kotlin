@@ -674,10 +674,10 @@
     <string name="verification_method_text">Metode verifikasi</string>
     <string name="verification_method_selection_text">Pilih metode verifikasi</string>
     <string name="send_otp_confirmation_text">Untuk keamanan anda, kami akan melakukan konfirmasi dengan mengirimkan kode ke nomor handphone anda. Silahkan pilih salah satu.</string>
-    <string name="change_phone_number"><b><u><font color='#FF6A13'>Ganti nomor handphone</font></u></b></string>
+    <string name="change_phone_number"><b><font color='#FF6A13'>Ganti nomor handphone</font></b></string>
     <string name="wrong_phone_number">Salah nomor handphone?</string>
     <string name="otp_not_received">Kode OTP belum diterima?</string>
-    <string name="resend"><u>Kirim ulang</u></string>
+    <string name="resend">Kirim ulang</string>
     <string name="error_wrong_otp">*Maaf, kode OTP yang anda masukkan salah</string>
     <string name="error_incorrect_password">Password salah.</string>
     <string name="error_incorrect_phone_number">*Maaf, nomor telepon salah</string>
