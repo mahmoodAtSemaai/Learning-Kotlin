@@ -24,8 +24,8 @@
         android:background="@color/white"
         android:gravity="center_vertical"
         android:onClick="@{()->handler.viewProduct()}"
-        android:paddingTop="@dimen/size_12"
-        android:paddingBottom="@dimen/size_8">
+        android:paddingTop="@dimen/size_4"
+        android:paddingBottom="@dimen/size_6">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_search_item"
