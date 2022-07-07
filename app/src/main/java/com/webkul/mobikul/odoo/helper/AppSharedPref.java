@@ -104,11 +104,6 @@ public class AppSharedPref {
         return !getCustomerLoginBase64Str(context).isEmpty() || !getAuthToken(context).isEmpty();
     }
 
-    /*IS LOGGED IN*/
-    public static boolean isUserApproved(Context context) {
-        return !getCustomerLoginBase64Str(context).isEmpty() || !getAuthToken(context).isEmpty();
-    }
-
     /*IS SOCIAL LOGIN*/
     public static boolean isSocialLoggedIn(Context context) {
         return getSharedPreference(context, CUSTOMER_PREF).getBoolean(KEY_CUSTOMER_IS_SOCIAL_LOGGED_IN, false);
