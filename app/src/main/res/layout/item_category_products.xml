@@ -67,15 +67,12 @@
             <TextView
                 android:id="@+id/discount_price"
                 style="@style/Semaai.TextAppearance.Caption.Bold"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/size_10"
                 android:background="@drawable/background_discount_price"
                 android:padding="@dimen/spacing_tiny"
                 android:text="@{data.calculateDiscount()}"
                 android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/product_image"
                 app:visibility="@{data.priceReduce.empty==true ? View.INVISIBLE : View.VISIBLE}" />
