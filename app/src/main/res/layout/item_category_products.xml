@@ -65,7 +65,7 @@
                 tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
 
             <TextView
-                android:id="@+id/discount_price"
+                android:id="@+id/tv_discount_price"
                 style="@style/Semaai.TextAppearance.Caption.Bold"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
