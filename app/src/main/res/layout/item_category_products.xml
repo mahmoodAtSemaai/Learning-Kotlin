@@ -65,20 +65,16 @@
                 tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
 
             <TextView
-                android:id="@+id/discount_price"
+                android:id="@+id/tv_discount_price"
                 style="@style/Semaai.TextAppearance.Caption.Bold"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/size_10"
-                android:layout_marginTop="@dimen/spacing_tiny"
                 android:background="@drawable/background_discount_price"
                 android:padding="@dimen/spacing_tiny"
                 android:text="@{data.calculateDiscount()}"
                 android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/product_image"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/product_image"
                 app:visibility="@{data.priceReduce.empty==true ? View.INVISIBLE : View.VISIBLE}" />
 
             <FrameLayout
@@ -117,7 +113,7 @@
                 android:text="@{data.name}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/discount_price"
+                app:layout_constraintTop_toBottomOf="@+id/product_image"
                 tools:text="Popuk bio konversi alabala babatala" />
 
             <androidx.appcompat.widget.AppCompatTextView
