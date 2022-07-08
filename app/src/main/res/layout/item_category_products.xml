@@ -67,7 +67,7 @@
             <TextView
                 android:id="@+id/discount_price"
                 style="@style/Semaai.TextAppearance.Caption.Bold"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_discount_price"
                 android:padding="@dimen/spacing_tiny"
