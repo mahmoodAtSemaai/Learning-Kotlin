@@ -64,7 +64,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
-                        android:text="@{@string/x_products(data.productCount)}"
+                        android:text="@{@string/x_products(data.SellerProducts.tcount)}"
                         tools:text="1 Product" />
 
                     <RatingBar
