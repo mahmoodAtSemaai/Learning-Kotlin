@@ -66,6 +66,15 @@ android {
             versionNameSuffix '-DEBUG'
         }
     }
+
+
+    variantFilter { variant ->
+        def appType = variant.getFlavors().get(1).name
+        if (appType == 'OdooBuilder') {
+            variant.setIgnore(true)
+        }
+    }
+
 }
 repositories {
     maven { url Url.maven }
