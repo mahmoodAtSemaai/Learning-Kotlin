@@ -1,6 +1,7 @@
 package com.webkul.mobikul.odoo.features.authentication.presentation.fragment
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -16,6 +17,7 @@ import com.webkul.mobikul.odoo.activity.UserApprovalActivity
 import com.webkul.mobikul.odoo.constant.ApplicationConstant.SECONDS_IN_A_MINUTE
 import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.core.extension.getProgressDialogWithText
+import com.webkul.mobikul.odoo.core.extension.showKeyboard
 import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
 import com.webkul.mobikul.odoo.databinding.FragmentLoginOtpBinding
@@ -29,6 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
 @AndroidEntryPoint
 class LoginOtpFragment @Inject constructor() : BindingBaseFragment<FragmentLoginOtpBinding>(),
     IView<LoginOtpIntent, LoginOtpState> {
@@ -40,9 +43,9 @@ class LoginOtpFragment @Inject constructor() : BindingBaseFragment<FragmentLogin
 
     companion object {
         fun newInstance(phoneNumber: String) = LoginOtpFragment().also { loginOtpFragment ->
-            val bundle = Bundle()
-            bundle.putString(BundleConstant.BUNDLE_KEY_PHONE_NUMBER, phoneNumber)
-            loginOtpFragment.arguments = bundle
+            loginOtpFragment.arguments = Bundle().apply {
+                putString(BundleConstant.BUNDLE_KEY_PHONE_NUMBER, phoneNumber)
+            }
         }
     }
 
@@ -55,6 +58,8 @@ class LoginOtpFragment @Inject constructor() : BindingBaseFragment<FragmentLogin
 
         setObservers()
         setListeners()
+        clearOTPFields(true)
+
         getOTP()
         requireActivity().onBackPressedDispatcher.addCallback(this,true) {
             showBackPressedAlertDialog()
@@ -95,7 +100,6 @@ class LoginOtpFragment @Inject constructor() : BindingBaseFragment<FragmentLogin
 
     private fun setListeners() {
         binding.apply {
-            etOtp1.requestFocus()
             etOtp1.addTextChangedListener(GenericTextWatcher(etOtp2, etOtp1))
             etOtp2.addTextChangedListener(GenericTextWatcher(etOtp3, etOtp1))
             etOtp3.addTextChangedListener(GenericTextWatcher(etOtp4, etOtp2))
@@ -131,11 +135,13 @@ class LoginOtpFragment @Inject constructor() : BindingBaseFragment<FragmentLogin
     override fun render(state: LoginOtpState) {
         when (state) {
             is LoginOtpState.Error -> {
+                clearOTPFields(false)
                 progressDialog.dismiss()
             }
             is LoginOtpState.OTPSent -> {
                 progressDialog.dismiss()
                 binding.tvInvalidOtp.visibility = View.INVISIBLE
+                clearOTPFields(false)
                 setResendText(false)
                 triggerIntent(LoginOtpIntent.StartTimer(SECONDS_IN_A_MINUTE))
             }
@@ -170,20 +176,26 @@ class LoginOtpFragment @Inject constructor() : BindingBaseFragment<FragmentLogin
             }
             is LoginOtpState.InvalidOTP -> {
                 binding.tvInvalidOtp.visibility = View.VISIBLE
-                clearOTPFeilds()
+                clearOTPFields(false)
                 progressDialog.dismiss()
             }
         }
     }
 
-    private fun clearOTPFeilds() {
+    private fun clearOTPFields(firstTimeLaunched : Boolean) {
         binding.apply {
-            etOtp1.text.clear()
-            etOtp2.text.clear()
-            etOtp3.text.clear()
-            etOtp4.text.clear()
+            if(!firstTimeLaunched) {
+                etOtp1.text.clear()
+                etOtp2.text.clear()
+                etOtp3.text.clear()
+                etOtp4.text.clear()
+            }
 
-            etOtp1.requestFocus()
+            etOtp1.apply {
+                showKeyboard()
+                setText(" ")
+                setText("")
+            }
         }
     }
 
