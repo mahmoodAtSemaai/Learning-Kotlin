@@ -528,6 +528,7 @@
     <string name="shopeepay_description_text">ShopeePay is Shopee’s digital wallet where users can make safe and cashless payments. You can use it for: (a) Online transactions within Shopee - such as buying mobile load and bills payment</string>
     <string name="activate_shopee_pay_now">Activate Shopee Pay Now</string>
     <string name="read_more">Read More</string>
+    <string name="read_less">Read Less</string>
     <string name="phone_number_verification">Phone Number Verification</string>
     <string name="enter_your_phone_number">Enter Your Phone Number</string>
     <string name="enter_otp_code">Enter OTP Code</string>

@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
+import android.view.ViewTreeObserver
 import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
@@ -36,7 +37,6 @@ import com.webkul.mobikul.odoo.model.home.HomePageResponse
 import com.webkul.mobikul.odoo.updates.FirebaseRemoteConfigHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_product_v1.*
 
 class ProductActivityV1 : BaseActivity() {
     private val TAG = "ProductActivityV1"
@@ -44,6 +44,9 @@ class ProductActivityV1 : BaseActivity() {
     private val RC_BUY_NOW = 1002
     lateinit var binding: ActivityProductV1Binding
     private var currentProductId: String = ""
+    private var expandable = false
+    private val DESCRIPTION_TEXTVIEW_LIMIT = 4
+    var lineCount = 0
     private val productDataCustomObserver: CustomObserver<ProductData?> =
         object : CustomObserver<ProductData?>(this) {
             override fun onNext(productData: ProductData) {
@@ -102,6 +105,27 @@ class ProductActivityV1 : BaseActivity() {
         }
         quantityEditTextOnChange()
         setProductDetails(productData)
+        getDescriptionLineCount()
+    }
+
+    private fun getDescriptionLineCount(){
+        binding.tvProductDesciption.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                binding.tvProductDesciption.viewTreeObserver.removeOnGlobalLayoutListener(this);
+                lineCount = binding.tvProductDesciption.layout.lineCount
+                if(lineCount > DESCRIPTION_TEXTVIEW_LIMIT){
+                    expandDescription()
+                }
+            }
+        })
+    }
+
+    private fun expandDescription() {
+        binding.apply {
+            tvProductDesciption.maxLines = DESCRIPTION_TEXTVIEW_LIMIT
+            tvReadMore.visibility = View.VISIBLE
+        }
+        expandable = true
     }
 
     private fun setProductDetails(productData: ProductData) {
@@ -370,6 +394,19 @@ class ProductActivityV1 : BaseActivity() {
             binding.etMaterialSearchView.visibility = View.VISIBLE
             binding.etMaterialSearchView.openSearch()
         }
+
+        binding.apply {
+            tvReadMore.setOnClickListener {
+                if(expandable){
+                    tvProductDesciption.maxLines = lineCount
+                    tvReadMore.text = getString(R.string.read_less)
+                }else{
+                    tvProductDesciption.maxLines = DESCRIPTION_TEXTVIEW_LIMIT
+                    tvReadMore.text = getString(R.string.read_more)
+                }
+                expandable = !expandable
+            }
+        }
     }
 
     private fun launchNewDrawerActivity() {
@@ -382,4 +419,5 @@ class ProductActivityV1 : BaseActivity() {
             overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left)
         }
     }
+
 }

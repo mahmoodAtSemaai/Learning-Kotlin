@@ -466,6 +466,19 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_description"
                     tools:text="Fungisida sistemik berbentuk pekatan yang dapat diemulsikan. Berwarna coklat kekuning-kuningan sampai coklat tua untuk mengendalikan penyakit pada tanaman." />
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_read_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_4"
+                    android:text="@string/read_more"
+                    android:textColor="@color/background_orange"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="@+id/tv_product_desciption"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_product_desciption"
+                    tools:text="Read More" />
+
                 <View
                     android:id="@+id/div_horizontal_2"
                     android:layout_width="match_parent"
@@ -476,7 +489,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_product_desciption" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_read_more" />
 
                 <TextView
                     android:id="@+id/tv_details_product"

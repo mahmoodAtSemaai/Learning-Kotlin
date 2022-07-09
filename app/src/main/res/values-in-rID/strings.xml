@@ -527,6 +527,7 @@
         Anda dapat menggunakannya untuk: (a) Transaksi online di Shopee - seperti membeli pulsa seluler dan pembayaran tagihan</string>
     <string name="activate_shopee_pay_now">Aktifkan Shopee Pay Sekarang</string>
     <string name="read_more">Baca Selengkapnya</string>
+    <string name="read_less">Baca Lebih Sedikit</string>
     <string name="phone_number_verification">Verifikasi Nomor Telepon</string>
     <string name="enter_your_phone_number">Masukkan Nomor Telepon Anda</string>
     <string name="enter_otp_code">Masukkan Kode OTP</string>
