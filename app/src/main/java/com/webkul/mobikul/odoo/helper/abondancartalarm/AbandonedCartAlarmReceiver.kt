@@ -24,6 +24,7 @@ import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.webkul.mobikul.odoo.R
+import com.webkul.mobikul.odoo.activity.BagActivity
 import com.webkul.mobikul.odoo.activity.BaseActivity
 import com.webkul.mobikul.odoo.activity.HomeActivity
 import com.webkul.mobikul.odoo.constant.ApplicationConstant
@@ -40,7 +41,7 @@ class AbandonedCartAlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         try {
 //            BaseActivity.setLocale(context,false)
-            val cartIntent = Intent(context, BaseActivity::class.java)
+            val cartIntent = Intent(context, BagActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             cartIntent.putExtra(ApplicationConstant.BUNDLE_KEY_OPEN_CART, true)
 
@@ -50,8 +51,8 @@ class AbandonedCartAlarmReceiver : BroadcastReceiver() {
             val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
             val notificationBuilder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ABANDONED_CART)
                     .setSmallIcon(R.mipmap.ic_launcher)
-                    .setContentTitle(context.getString(R.string.your_cart_misses_you))
-                    .setContentText(context.getString(R.string.products_waiting_in_cart_msg))
+                    .setContentTitle(context.getString(R.string.your_cart_misses_you_ind))
+                    .setContentText(context.getString(R.string.products_waiting_in_cart_msg_ind))
                     .setLargeIcon(icon)
                     .setAutoCancel(true)
                     .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -60,8 +61,8 @@ class AbandonedCartAlarmReceiver : BroadcastReceiver() {
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
 
             notificationBuilder.setStyle(NotificationCompat.BigTextStyle()
-                    .bigText(context.getString(R.string.products_waiting_in_cart_msg))
-                    .setBigContentTitle(context.getString(R.string.your_cart_misses_you)))
+                    .bigText(context.getString(R.string.products_waiting_in_cart_msg_ind))
+                    .setBigContentTitle(context.getString(R.string.your_cart_misses_you_ind)))
 
             val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
