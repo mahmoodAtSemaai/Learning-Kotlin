@@ -699,5 +699,7 @@
     <string name="text_nine_plus">9+</string>
     <string name="chat_no_conversations">Anda tidak memiliki percakapan apapun</string>
 
+    <string name="sorry_product_not_available">Maaf, produk ini tidak tersedia</string>
+    <string name="search_another_product">Anda bisa mencari produk lain yang anda butuhkan disini</string>
 
 </resources>
