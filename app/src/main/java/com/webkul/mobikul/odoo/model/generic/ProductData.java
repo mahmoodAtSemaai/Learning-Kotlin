@@ -2,6 +2,8 @@ package com.webkul.mobikul.odoo.model.generic;
 
 import static com.webkul.mobikul.odoo.constant.ApplicationConstant.QTY_ZERO;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,13 +13,17 @@ import androidx.databinding.Bindable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.webkul.mobikul.odoo.BR;
+import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.adapter.product.MobikulCategoryDetails;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.constant.ApplicationConstant;
+import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.model.Seller;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import dagger.hilt.android.qualifiers.ApplicationContext;
 
 /**
  * Created by shubham.agarwal on 2/5/17.

@@ -41,18 +41,18 @@
         android:layout_margin="5dp"
         android:background="@drawable/shape_rectangular_white_bg_grey200_border_half_dp"
         android:clickable="true"
-        android:padding="1.5dp"
         android:gravity="center"
         android:onClick="@{() -> handler.viewProduct()}"
         android:orientation="vertical"
+        android:padding="1.5dp"
         app:layout_width="@{sliderMode.equals(ApplicationConstant.SLIDER_MODE_DEFAULT) ? @dimen/product_container_small : ViewGroup.LayoutParams.MATCH_PARENT}"
         tools:layout_width="@dimen/product_container_small">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center_horizontal"
+            android:background="@color/white">
 
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -72,37 +72,37 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:background="@android:color/transparent"
                 android:onClick="@{(view)->handler.onClickWishlistIcon(view)}"
                 android:visibility="@{isLoggedIn &amp;&amp; wishlistEnabled ? View.VISIBLE : View.GONE}"
                 app:srcCompat="@{data.addedToWishlist ? @drawable/ic_vector_wishlist_red_24dp : @drawable/ic_vector_wishlist_grey_24dp}"
                 tools:src="@drawable/ic_vector_wishlist_grey_24dp" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/product_image_small"
-                    android:layout_marginHorizontal="@dimen/spacing_normal"
-                    android:padding="@dimen/spacing_min"
-                    android:background="@drawable/bg_out_of_stock"
-                    android:layout_alignParentTop="true"
-                    android:gravity="center"
-                    android:text="@string/out_of_stock"
-                    android:textSize="@dimen/text_size_min"
-                    android:textColor="@color/white"
-                    android:visibility="@{data.isNever() ? View.GONE : (data.inStock ? View.GONE : View.VISIBLE)}"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginHorizontal="@dimen/spacing_normal"
+                android:layout_marginTop="@dimen/product_image_small"
+                android:background="@drawable/bg_out_of_stock"
+                android:gravity="center"
+                android:padding="@dimen/spacing_min"
+                android:text="@string/out_of_stock"
+                android:textSize="@dimen/text_size_min"
+                android:visibility="@{data.outOfStock ? View.VISIBLE : View.GONE }"
+                tools:visibility="visible" />
 
         </RelativeLayout>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:gravity="center"
             android:orientation="vertical"
-            android:background="@color/white"
             android:padding="@dimen/spacing_tiny">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -115,8 +115,8 @@
                 android:maxLines="3"
                 android:minLines="3"
                 android:text="@{data.name}"
-                android:textStyle="bold"
                 android:textSize="@dimen/text_size_min"
+                android:textStyle="bold"
                 tools:text="Mobikul" />
 
 

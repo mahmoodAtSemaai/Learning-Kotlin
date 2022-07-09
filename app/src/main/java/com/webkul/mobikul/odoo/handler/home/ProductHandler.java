@@ -1,20 +1,28 @@
 package com.webkul.mobikul.odoo.handler.home;
 
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_NAME;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID;
+import static com.webkul.mobikul.odoo.helper.ProductHelper.ATTR_TYPE_COLOR;
+import static com.webkul.mobikul.odoo.helper.ProductHelper.ATTR_TYPE_HIDDEN;
+import static com.webkul.mobikul.odoo.helper.ProductHelper.ATTR_TYPE_RADIO;
+import static com.webkul.mobikul.odoo.helper.ProductHelper.ATTR_TYPE_SELECT;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.appcompat.widget.AppCompatSpinner;
-
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
 
+import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.content.res.ResourcesCompat;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.BaseActivity;
 import com.webkul.mobikul.odoo.activity.ProductActivity;
@@ -24,7 +32,6 @@ import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.databinding.ItemCatalogProductListBinding;
-import com.webkul.mobikul.odoo.databinding.ItemCatalogProductListHomeBinding;
 import com.webkul.mobikul.odoo.databinding.ItemProductGridBinding;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
@@ -49,22 +56,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_NAME;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID;
-import static com.webkul.mobikul.odoo.helper.ProductHelper.ATTR_TYPE_COLOR;
-import static com.webkul.mobikul.odoo.helper.ProductHelper.ATTR_TYPE_HIDDEN;
-import static com.webkul.mobikul.odoo.helper.ProductHelper.ATTR_TYPE_RADIO;
-import static com.webkul.mobikul.odoo.helper.ProductHelper.ATTR_TYPE_SELECT;
 
-
-/**
- * Handler class used in Featured, New, Related Products..
- *
- * @author shubham.agarwal
- */
 
 public class ProductHandler {
 
@@ -100,7 +92,7 @@ public class ProductHandler {
         if(mProductDefaultBinding !=null) {
             imageView = mProductDefaultBinding.productImage;
         }else
-            imageView = mProductListtBinding.productImage;
+            imageView = mProductListtBinding.ivProduct;
         ActivityOptionsCompat options = ActivityOptionsCompat.
                 makeSceneTransitionAnimation((Activity)mContext, imageView,transitionName);
 //        mContext.startActivity(intent, options.toBundle());
