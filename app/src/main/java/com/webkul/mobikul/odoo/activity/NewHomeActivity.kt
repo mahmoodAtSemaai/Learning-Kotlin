@@ -180,11 +180,11 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
     }
 
     private fun getBagItemsCount() {
-        val count = AppSharedPref.getCartCount(this@NewHomeActivity, 0)
+        val count = AppSharedPref.getCartCount(this@NewHomeActivity, ApplicationConstant.MIN_ITEM_TO_BE_SHOWN_IN_CART)
         binding.apply {
-        if (count != 0) {
+        if (count != ApplicationConstant.MIN_ITEM_TO_BE_SHOWN_IN_CART) {
                 badgeInfo.makeVisible()
-                if (count < 10)
+                if (count < ApplicationConstant.MAX_ITEM_TO_BE_SHOWN_IN_CART)
                     badgeInfo.text = count.toString()
                 else
                     badgeInfo.text = getString(R.string.text_nine_plus)
