@@ -11,19 +11,19 @@
         android:paddingBottom="@dimen/size_4">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_category_id"
+            android:id="@+id/tv_product_detail_id"
             android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
-            android:text="@string/product_details_category"
+            android:text="@string/product_details_brand"
             android:textColor="@color/text_color_primary"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintEnd_toStartOf="@+id/gl_vertical_40"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_value"
+            android:id="@+id/tv_product_detail_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/size_5"
@@ -35,11 +35,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="@+id/gl_vertical_40"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
+            android:id="@+id/gl_vertical_40"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"

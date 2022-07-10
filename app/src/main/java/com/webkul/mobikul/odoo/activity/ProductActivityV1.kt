@@ -40,6 +40,7 @@ import com.webkul.mobikul.odoo.model.home.HomePageResponse
 import com.webkul.mobikul.odoo.updates.FirebaseRemoteConfigHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_product_v1.*
 
 class ProductActivityV1 : BaseActivity() {
     private val TAG = "ProductActivityV1"
@@ -50,6 +51,7 @@ class ProductActivityV1 : BaseActivity() {
     private var expandable = false
     private val DESCRIPTION_TEXTVIEW_LIMIT = 4
     var lineCount = 0
+    private var categoryId : String = ""
     private val productDataCustomObserver: CustomObserver<ProductData?> =
         object : CustomObserver<ProductData?>(this) {
             override fun onNext(productData: ProductData) {
@@ -112,15 +114,17 @@ class ProductActivityV1 : BaseActivity() {
     }
 
     private fun getDescriptionLineCount(){
-        binding.tvProductDesciption.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                binding.tvProductDesciption.viewTreeObserver.removeOnGlobalLayoutListener(this);
-                lineCount = binding.tvProductDesciption.layout.lineCount
-                if(lineCount > DESCRIPTION_TEXTVIEW_LIMIT){
-                    expandDescription()
+        if(binding.tvProductDesciption.visibility != View.GONE) {
+            binding.tvProductDesciption.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    binding.tvProductDesciption.viewTreeObserver.removeOnGlobalLayoutListener(this);
+                    lineCount = binding.tvProductDesciption.layout.lineCount
+                    if(lineCount > DESCRIPTION_TEXTVIEW_LIMIT){
+                        expandDescription()
+                    }
                 }
-            }
-        })
+            })
+        }
     }
 
     private fun expandDescription() {
@@ -137,15 +141,15 @@ class ProductActivityV1 : BaseActivity() {
         binding.rvProductDetails.apply {
             layoutManager = linearLayoutManager
             setHasFixedSize(true)
-            adapter = ProductDetailsAdapterV1(productDetails, this@ProductActivityV1)
+            adapter = ProductDetailsAdapterV1(productDetails,categoryId,this@ProductActivityV1)
         }
     }
 
     private fun getProductDetails(productData: ProductData): MutableMap<String, List<String>> {
         val details = mutableMapOf<String, List<String>>()
         val mobikulCategoryDetails = productData.mobikulCategoryDetails
-        details[getString(R.string.product_details_category)] =
-            mutableListOf(mobikulCategoryDetails.category.toString())
+        details[getString(R.string.product_details_category)] = mutableListOf(mobikulCategoryDetails.category.toString())
+        categoryId = mobikulCategoryDetails.categoryId.toString()
         details[getString(R.string.product_details_brand)] =
             mutableListOf(productData.getBrandName())
         details[getString(R.string.product_details_active_ingredients)] =
