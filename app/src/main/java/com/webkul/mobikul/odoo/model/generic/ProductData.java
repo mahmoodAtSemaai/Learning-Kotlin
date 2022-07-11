@@ -368,9 +368,9 @@ public class ProductData extends BaseObservable implements Parcelable {
     public void setQuantity(int quantity) {
         if (quantity < QTY_ZERO) {
             return;
-        } else if ((quantity == QTY_ZERO) && (!isInStock())) {
+        } else if ((quantity == QTY_ZERO) && isOutOfStock()) {
             this.quantity = QTY_ZERO;
-        } else if ((quantity == QTY_ZERO) && (isInStock())) {
+        } else if ((quantity == QTY_ZERO) && !isOutOfStock()) {
             this.quantity = 1;
         } else {
             this.quantity = quantity;
@@ -430,7 +430,7 @@ public class ProductData extends BaseObservable implements Parcelable {
     }
 
     public boolean isOutOfStock() {
-        return ((isAlways() || isThreshold()) && getQuantity() == 0);
+        return ((isAlways() || isThreshold()) && (getAvailableQuantity() == 0));
     }
 
 
