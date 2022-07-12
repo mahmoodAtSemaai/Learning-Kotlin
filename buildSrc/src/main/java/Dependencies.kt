@@ -109,6 +109,8 @@ object DepVersions {
     const val fragmentKTX = "1.4.1"
 
     const val timberLogging="5.0.1"
+
+    const val shimmerAndroid ="0.5.0"
 }
 
 object Modules {
@@ -271,4 +273,6 @@ object Dependencies {
 
     const val timberLogging="com.jakewharton.timber:timber:${DepVersions.timberLogging}"
 
+    //Shimmer Library
+    const val shimmerAndroid = "com.facebook.shimmer:shimmer:${DepVersions.shimmerAndroid}"
 }

@@ -18,19 +18,14 @@
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:layout_width="match_parent"
         android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="vertical">
-
-
+            android:background="@color/white">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/featured_categories_rv"
@@ -42,18 +37,36 @@
                 android:visibility="@{data.featuredCategories.empty ? View.GONE : View.VISIBLE}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:listitem="@layout/item_featured_category_home"
                 tools:targetApi="lollipop" />
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_featured_categories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <include
+                    layout="@layout/shimmer_placeholder_featured_category_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
             <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/featured_categories_rv">
 
                 <com.google.android.material.appbar.AppBarLayout
-                    android:layout_width="match_parent"
                     android:id="@+id/app_bar_layout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white">
 
@@ -77,13 +90,24 @@
                                 android:scaleType="fitCenter"
                                 tools:ignore="UnusedAttribute" />
 
+                            <com.facebook.shimmer.ShimmerFrameLayout
+                                android:id="@+id/shimmer_banner"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone">
+
+                                <include
+                                    layout="@layout/shimmer_placeholder_item_view_pager_home_banner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+                            </com.facebook.shimmer.ShimmerFrameLayout>
 
                             <com.google.android.material.tabs.TabLayout
                                 android:id="@+id/banner_dots_tab_layout"
                                 android:layout_width="match_parent"
+                                android:layout_height="@dimen/tab_dot_switcher_height"
                                 android:layout_alignParentBottom="true"
                                 android:paddingBottom="@dimen/size_10"
-                                android:layout_height="@dimen/tab_dot_switcher_height"
                                 android:visibility="@{data.bannerImages.empty? View.GONE : View.VISIBLE}"
                                 app:layout_constraintTop_toBottomOf="@id/banner_view_pager"
                                 app:tabBackground="@drawable/selector_dots_tab_layout"
@@ -104,15 +128,14 @@
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
                     android:background="@color/activityBackground"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                    >
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 </androidx.viewpager2.widget.ViewPager2>
 
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

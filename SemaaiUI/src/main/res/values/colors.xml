@@ -84,4 +84,6 @@
     <color name="background_appbar_color">#FFD8B8</color>
 
     <color name="green_2A4332">#2A4332</color>
+
+    <color name="background_shimmer_item_home">#ffe9d8</color>
 </resources>
