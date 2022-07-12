@@ -3,6 +3,7 @@ package com.webkul.mobikul.odoo.model.checkout
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.webkul.mobikul.odoo.helper.CalendarUtil
+import com.webkul.mobikul.odoo.helper.StringUtil
 import com.webkul.mobikul.odoo.model.customer.order.OrderItem
 
 data class OrderDataResponse(
@@ -119,9 +120,17 @@ data class OrderDataResponse(
     var mobileOrderStatus: String = ""
 ) {
 
+    @SerializedName("acquirer_id")
+    @Expose
+    var acquirerId : Int? = null
+
     fun getPaymentExpiryDate(): String {
         if (expireDate == null)
             return ""
         return CalendarUtil.getDateInBahasa(expireDate)
+    }
+
+    fun getAmountFromString(): Long {
+        return StringUtil.getPaymentAmount(grandTotal)
     }
 }
