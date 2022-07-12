@@ -133,7 +133,7 @@ public class AppSharedPref {
 
     /* CUSTOMER APPROVED */
     public static boolean getUserIsApproved(Context context) {
-        return getSharedPreference(context, CUSTOMER_PREF).getBoolean(KEY_IS_USER_APPROVED, false);
+        return getSharedPreference(context, CUSTOMER_PREF).getBoolean(KEY_IS_USER_APPROVED, true);
     }
 
     public static void setUserIsApproved(Context context, Boolean approved) {
