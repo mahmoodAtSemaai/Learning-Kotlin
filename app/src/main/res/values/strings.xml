@@ -683,7 +683,7 @@
     <string name="verification_method_text">Verification Method</string>
     <string name="verification_method_selection_text">Please select verification method</string>
     <string name="send_otp_confirmation_text">For your security, we will confirm by sending a code to your mobile number. Please select one.</string>
-    <string name="change_phone_number"><b><font color='#FF6A13'>Change mobile number</font></b></string>
+    <string name="change_phone_number">Change mobile number</string>
     <string name="wrong_phone_number">Wrong phone number?</string>
     <string name="otp_not_received">OTP code is not received?</string>
     <string name="resend">Resend</string>
