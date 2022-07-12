@@ -386,7 +386,11 @@ class CheckoutActivity : BaseActivity() {
                 }
 
                 override fun onNext(orderReviewResponse: OrderReviewResponse) {
-                    placeOrder(orderReviewResponse.transactionId)
+                    if(orderReviewResponse.isSuccess) placeOrder(orderReviewResponse.transactionId)
+                    else {
+                        dialog.hide()
+                        AlertDialogHelper.showDefaultWarningDialog(this@CheckoutActivity," ",orderReviewResponse.message)
+                    }
                 }
 
                 override fun onError(t: Throwable) {

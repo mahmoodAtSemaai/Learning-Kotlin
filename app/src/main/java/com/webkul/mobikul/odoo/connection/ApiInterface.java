@@ -74,7 +74,7 @@ public interface ApiInterface {
     String MOBIKUL_CHECKOUT_ADD_TO_CART = "mobikul/mycart/addToCart";
     String MOBIKUL_CHECKOUT_EMPTY_CART = "mobikul/mycart/setToEmpty";
     String MOBIKUL_CHECKOUT_PAYMENT_ACQUIRERS = "mobikul/paymentAcquirers";
-    String LOYALTY_CHECKOUT_ORDER_REVIEW = "v1/sale-orders/review";
+    String LOYALTY_CHECKOUT_ORDER_REVIEW = "v2/sale-orders/review";
     String LOYALTY_CHECKOUT_PLACE_ORDER = "v1/sale-orders/place";
     String MOBIKUL_CHECKOUT_SALE_ORDERS = "sale-orders";
     String MOBIKUL_CHECKOUT_SHIPPING_METHODS = "/mobikul/ShippingMethods";
