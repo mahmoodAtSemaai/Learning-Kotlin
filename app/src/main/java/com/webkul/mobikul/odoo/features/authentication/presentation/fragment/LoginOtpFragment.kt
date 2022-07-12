@@ -58,12 +58,16 @@ class LoginOtpFragment @Inject constructor() : BindingBaseFragment<FragmentLogin
 
         setObservers()
         setListeners()
-        clearOTPFields(true)
+        clearOTP(true)
 
         getOTP()
         requireActivity().onBackPressedDispatcher.addCallback(this,true) {
             showBackPressedAlertDialog()
         }
+    }
+
+    private fun clearOTP(isFirstTimeLaunched : Boolean) {
+        triggerIntent(LoginOtpIntent.ClearOTP(isFirstTimeLaunched))
     }
 
     private fun showBackPressedAlertDialog() {
@@ -135,13 +139,13 @@ class LoginOtpFragment @Inject constructor() : BindingBaseFragment<FragmentLogin
     override fun render(state: LoginOtpState) {
         when (state) {
             is LoginOtpState.Error -> {
-                clearOTPFields(false)
+                clearOTP(false)
                 progressDialog.dismiss()
             }
             is LoginOtpState.OTPSent -> {
                 progressDialog.dismiss()
                 binding.tvInvalidOtp.visibility = View.INVISIBLE
-                clearOTPFields(false)
+                clearOTP(false)
                 setResendText(false)
                 triggerIntent(LoginOtpIntent.StartTimer(SECONDS_IN_A_MINUTE))
             }
@@ -176,9 +180,10 @@ class LoginOtpFragment @Inject constructor() : BindingBaseFragment<FragmentLogin
             }
             is LoginOtpState.InvalidOTP -> {
                 binding.tvInvalidOtp.visibility = View.VISIBLE
-                clearOTPFields(false)
+                clearOTP(false)
                 progressDialog.dismiss()
             }
+            is LoginOtpState.OTPCleared -> clearOTPFields(state.isFirstTimeLaunched)
         }
     }
 
