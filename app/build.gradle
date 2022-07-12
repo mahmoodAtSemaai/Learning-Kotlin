@@ -97,12 +97,6 @@ android {
         exclude 'META-INF/rxjava.properties'
     }
 
-    variantFilter { variant ->
-        def appType = variant.getFlavors().get(1).name
-        if (appType == 'OdooBuilder') {
-            variant.setIgnore(true)
-        }
-    }
 }
 
 dependencies {
