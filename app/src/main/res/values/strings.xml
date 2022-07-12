@@ -675,7 +675,7 @@
 
     <string name="enter_phone_number_text">Please enter your mobile number and wait for the OTP code to be sent to your number</string>
     <string name="account_does_not_exists">Don\'t have a Semaai account yet?</string>
-    <string name="sign_up_now"><font color='#FF6A13'>Sign up now</font></string>
+    <string name="sign_up_now">Sign up now</string>
     <string name="number_hint">08123456789</string>
     <string name="incorrect_mobile_number_format">*Sorry, your mobile number format is incorrect. Please use “08”</string>
     <string name="incorrect_mobile_number">*Sorry, your mobile number is incorrect.</string>

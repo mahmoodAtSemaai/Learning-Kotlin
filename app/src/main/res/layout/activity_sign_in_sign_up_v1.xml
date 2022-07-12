@@ -30,9 +30,8 @@
                 android:layout_marginBottom="@dimen/spacing_generic"
                 android:text="@string/use_email_address"
                 android:textAllCaps="true"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                style="@style/Semaai.TextAppearance.Subtitle2.Bold"
+                android:textColor="@android:color/white" />
 
             <LinearLayout
                 android:layout_width="match_parent"

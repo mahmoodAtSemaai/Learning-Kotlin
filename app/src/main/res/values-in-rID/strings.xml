@@ -670,7 +670,7 @@
 
     <string name="enter_phone_number_text">Masukkan nomor handphone anda dan tunggu kode OTP dikirimkan ke nomor anda</string>
     <string name="account_does_not_exists">Belum punya akun Semaai?</string>
-    <string name="sign_up_now"><font color='#FF6A13'>Daftar sekarang</font></string>
+    <string name="sign_up_now">Daftar sekarang</string>
     <string name="number_hint">08123456789</string>
     <string name="incorrect_mobile_number_format">Maaf, format nomor salah. Harap mulai dengan \'08\'</string>
     <string name="incorrect_mobile_number">*Maaf, nomor telepon salah</string>
