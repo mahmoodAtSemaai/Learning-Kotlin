@@ -51,8 +51,8 @@ class AbandonedCartAlarmReceiver : BroadcastReceiver() {
             val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
             val notificationBuilder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ABANDONED_CART)
                     .setSmallIcon(R.mipmap.ic_launcher)
-                    .setContentTitle(context.getString(R.string.your_cart_misses_you_ind))
-                    .setContentText(context.getString(R.string.products_waiting_in_cart_msg_ind))
+                    .setContentTitle(context.getString(R.string.your_cart_misses_you))
+                    .setContentText(context.getString(R.string.products_waiting_in_cart_msg))
                     .setLargeIcon(icon)
                     .setAutoCancel(true)
                     .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -61,8 +61,8 @@ class AbandonedCartAlarmReceiver : BroadcastReceiver() {
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
 
             notificationBuilder.setStyle(NotificationCompat.BigTextStyle()
-                    .bigText(context.getString(R.string.products_waiting_in_cart_msg_ind))
-                    .setBigContentTitle(context.getString(R.string.your_cart_misses_you_ind)))
+                    .bigText(context.getString(R.string.products_waiting_in_cart_msg))
+                    .setBigContentTitle(context.getString(R.string.your_cart_misses_you)))
 
             val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

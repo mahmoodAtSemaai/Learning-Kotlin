@@ -706,6 +706,4 @@
 
     <string name="sorry_product_not_available">Sorry, the product is not available</string>
     <string name="search_another_product">You can search another product you want</string>
-    <string name="your_cart_misses_you_ind">Keranjangnya kangen nih</string>
-    <string name="products_waiting_in_cart_msg_ind">Kamu masih punya produk di dalam keranjang. Segera pesan sebelum kehabisan!</string>
 </resources>
