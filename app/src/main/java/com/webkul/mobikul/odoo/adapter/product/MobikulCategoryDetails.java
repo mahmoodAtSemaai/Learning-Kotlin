@@ -10,6 +10,9 @@ public class MobikulCategoryDetails {
     @SerializedName("category")
     @Expose
     private String category;
+    @SerializedName("category_id")
+    @Expose
+    private Integer categoryId;
     @SerializedName("crops")
     @Expose
     private ArrayList<String> crops = new ArrayList<>();
@@ -50,10 +53,11 @@ public class MobikulCategoryDetails {
     @Expose
     private String durationOfEffect;
 
+
     public MobikulCategoryDetails() {
     }
 
-    public MobikulCategoryDetails(String category, ArrayList<String> crops, boolean organic, double weight, String additionalInformation, double mrp, String plantingMethod, String plantSpacing, String activeIngredients, String dosage, String applicationMethod, String frequencyOfApplication, String pestsAndDiseases, String durationOfEffect) {
+    public MobikulCategoryDetails(String category, ArrayList<String> crops, boolean organic, double weight, String additionalInformation, double mrp, String plantingMethod, String plantSpacing, String activeIngredients, String dosage, String applicationMethod, String frequencyOfApplication, String pestsAndDiseases, String durationOfEffect, Integer categoryId) {
         this.category = category;
         this.crops = crops;
         this.organic = organic;
@@ -68,6 +72,7 @@ public class MobikulCategoryDetails {
         this.frequencyOfApplication = frequencyOfApplication;
         this.pestsAndDiseases = pestsAndDiseases;
         this.durationOfEffect = durationOfEffect;
+        this.categoryId = categoryId;
     }
 
     public String getCategory() {
@@ -76,6 +81,14 @@ public class MobikulCategoryDetails {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategory(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
     public ArrayList<String> getCrops() {

@@ -1,6 +1,5 @@
 package com.webkul.mobikul.odoo.features.authentication.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.webkul.mobikul.odoo.core.mvicore.IModel
 import com.webkul.mobikul.odoo.core.platform.BaseViewModel
@@ -60,8 +59,16 @@ class LoginOtpViewModel @Inject constructor(
                     is LoginOtpIntent.GetHomePageData -> getHomePageData()
                     is LoginOtpIntent.StartTimer -> startTimer(it.time)
                     is LoginOtpIntent.StopTimer -> stopTimer()
+                    is LoginOtpIntent.ClearOTP -> clearOTP(it.firstTimeLaunched)
                 }
             }
+        }
+    }
+
+
+    private fun clearOTP(firstTimeLaunched: Boolean) {
+        viewModelScope.launch {
+            _state.value = LoginOtpState.OTPCleared(firstTimeLaunched)
         }
     }
 

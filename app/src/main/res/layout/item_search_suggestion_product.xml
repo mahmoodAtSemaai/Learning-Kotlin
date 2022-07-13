@@ -17,78 +17,95 @@
             type="com.webkul.mobikul.odoo.handler.extra.search.SearchSuggestionProductHandler" />
     </data>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_search_item_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:gravity="center_vertical"
         android:onClick="@{()->handler.viewProduct()}"
-        android:padding="16dp">
+        android:paddingTop="@dimen/size_4"
+        android:paddingBottom="@dimen/size_6">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="@dimen/product_image_tiny"
-            android:layout_height="@dimen/product_image_tiny"
-            android:layout_marginEnd="@dimen/spacing_generic"
-            android:layout_marginRight="@dimen/spacing_generic"
-            android:scaleType="centerInside"
-            app:imageType="@{ImageType.PRODUCT_TINY}"
+            android:id="@+id/iv_search_item"
+            android:layout_width="@dimen/size_80"
+            android:layout_height="@dimen/size_80"
+            android:layout_marginStart="@dimen/size_16"
+            android:layout_marginLeft="@dimen/size_16"
+            app:imageType="@{ImageType.PRODUCT_SMALL}"
             app:imageUrl="@{data.thumbNail}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:placeholder="@{@drawable/ic_vector_odoo_placeholder_grey400_48dp}"
             app:srcCompat="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
 
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_search_item_name"
+            android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="@dimen/spacing_generic"
-            android:layout_marginLeft="@dimen/spacing_generic"
-            android:layout_marginRight="@dimen/spacing_generic"
-            android:layout_marginStart="@dimen/spacing_generic"
-            android:orientation="vertical">
+            android:layout_marginStart="@dimen/size_12"
+            android:layout_marginEnd="@dimen/size_16"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@{data.outOfStock ? @color/colorDarkGrey : @color/text_color_primary}"
+            app:htmlText="@{data.name}"
+            app:layout_constraintBottom_toTopOf="@+id/tv_search_item_price_unit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/iv_search_item"
+            app:layout_constraintTop_toTopOf="@+id/iv_search_item"
+            tools:text="Magento Marketplace Multi Vendor Module" />
 
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_search_item_price_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@{data.priceReduce.empty ?  null : @drawable/bg_strikethrough}"
+            android:text="@{data.priceUnit}"
+            android:textColor="@{data.outOfStock ? @color/colorDarkGrey : @color/black}"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_search_item"
+            app:layout_constraintStart_toStartOf="@+id/tv_search_item_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_search_item_name"
+            app:textStyle="@{data.priceReduce.empty ? &quot;bold&quot; : &quot;normal&quot;}"
+            tools:text="$349.00" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_tiny"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/text_color_primary"
-                app:htmlText="@{data.name}"
-                tools:text="Magento Marketplace Multi Vendor Module" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_search_item_price_reduce"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/size_8"
+            android:text="@{data.priceReduce}"
+            android:textColor="@{data.outOfStock ? @color/colorDarkGrey : @color/text_color_primary}"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_search_item_price_unit"
+            app:layout_constraintStart_toEndOf="@+id/tv_search_item_price_unit"
+            app:layout_constraintTop_toTopOf="@+id/tv_search_item_price_unit"
+            app:visibility="@{!data.priceReduce.empty}"
+            tools:text="$300.00" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_out_of_stock_text"
+            style="@style/medium_bold_text_no_caps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_out_of_stock_2"
+            android:paddingHorizontal="@dimen/size_4"
+            android:paddingVertical="@dimen/size_2"
+            android:text="@string/out_of_stock"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size_14"
+            android:visibility="@{data.outOfStock ? View.VISIBLE : View.GONE }"
+            app:layout_constraintEnd_toEndOf="@+id/iv_search_item"
+            app:layout_constraintStart_toStartOf="@+id/iv_search_item"
+            app:layout_constraintTop_toBottomOf="@+id/iv_search_item"
+            tools:visibility="visible" />
 
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/spacing_generic"
-                    android:layout_marginRight="@dimen/spacing_generic"
-                    android:background="@{data.priceReduce.empty ?  null : @drawable/bg_strikethrough}"
-                    android:text="@{data.priceUnit}"
-                    app:textStyle="@{data.priceReduce.empty ? &quot;bold&quot; : &quot;normal&quot;}"
-                    tools:text="$349.00" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{data.priceReduce}"
-                    android:textStyle="bold"
-                    app:visibility="@{!data.priceReduce.empty}"
-                    tools:text="$300.00" />
-
-            </LinearLayout>
-
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

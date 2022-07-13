@@ -96,6 +96,7 @@ android {
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
     }
+
 }
 
 dependencies {
@@ -126,7 +127,8 @@ dependencies {
             Dependencies.lifeData,
             Dependencies.viewModelState,
             Dependencies.viewModel,
-            Dependencies.fragmentKtx
+            Dependencies.fragmentKtx,
+            Dependencies.shimmerAndroid
     )
 
     androidTestImplementation(

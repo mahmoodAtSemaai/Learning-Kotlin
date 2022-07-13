@@ -190,7 +190,10 @@
         <item name="android:background">@drawable/shape_square_white_bg_gray_border_1dp</item>
         <item name="android:digits">0123456789</item>
         <item name="android:gravity">center</item>
-        <item name="android:inputType">numberDecimal|number</item>
+        <item name="android:longClickable">false</item>
+        <item name="android:importantForAutofill" tools:targetApi="o">no</item>
+        <item name="android:autofillHints" tools:targetApi="o">no</item>
+        <item name="android:inputType">number</item>
         <item name="android:maxLength">1</item>
         <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">center</item>
         <item name="android:textColor">@color/black</item>

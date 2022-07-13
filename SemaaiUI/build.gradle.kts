@@ -37,6 +37,7 @@ dependencies {
     implementation(Dependencies.coreKTX)
     implementation(Dependencies.appCompat)
     implementation(Dependencies.materialDesignSupport)
+    implementation(Dependencies.shimmerAndroid)
     testImplementation(Dependencies.jUnit)
     androidTestImplementation(Dependencies.espressoCore)
     androidTestImplementation(Dependencies.extJUnit)

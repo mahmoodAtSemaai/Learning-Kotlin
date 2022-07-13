@@ -15,7 +15,6 @@
         android:focusable="true"
         tools:context=".features.authentication.presentation.fragment.AuthenticationFragment">
 
-
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_header"
             android:layout_width="match_parent"
@@ -28,7 +27,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_color_primary_light_bg" />
-
 
         <TextView
             android:id="@+id/tv_welcome"
@@ -46,7 +44,6 @@
             app:layout_constraintStart_toStartOf="@+id/gl_vertical_05"
             app:layout_constraintTop_toTopOf="@+id/iv_phone"
             tools:ignore="RtlSymmetry" />
-
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_phone_number_container"
@@ -110,7 +107,6 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-
                 <Button
                     android:id="@+id/btn_confirm_number"
                     style="@style/custom_button_2"
@@ -147,23 +143,21 @@
 
         </androidx.cardview.widget.CardView>
 
-
-        <androidx.appcompat.widget.AppCompatTextView
+        <TextView
             android:id="@+id/tv_account_does_not_exists"
             style="@style/medium_normal_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_20"
             android:paddingVertical="@dimen/size_12"
             android:text="@string/account_does_not_exists"
             android:textSize="@dimen/font_size_14"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_sign_up"
-            app:layout_constraintEnd_toStartOf="@+id/tv_sign_up"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@id/tv_sign_up"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="@+id/gl_vertical_05"
-            app:layout_constraintTop_toTopOf="@+id/tv_sign_up" />
+            app:layout_constraintStart_toStartOf="@id/gl_vertical_05"
+            app:layout_constraintTop_toBottomOf="@id/cv_phone_number_container" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <TextView
             android:id="@+id/tv_sign_up"
             style="@style/medium_bold_text_accent"
             android:layout_width="wrap_content"
@@ -172,14 +166,15 @@
             android:layout_marginLeft="@dimen/size_4"
             android:layout_marginTop="@dimen/size_20"
             android:paddingVertical="@dimen/size_12"
+            android:textColor="@color/colorPrimary"
             android:text="@string/sign_up_now"
             android:textSize="@dimen/font_size_14"
-            app:layout_constraintEnd_toStartOf="@+id/gl_vertical_95"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tv_account_does_not_exists"
-            app:layout_constraintTop_toBottomOf="@+id/cv_phone_number_container" />
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintEnd_toStartOf="@id/gl_vertical_95"
+            app:layout_constraintStart_toEndOf="@id/tv_account_does_not_exists"
+            app:layout_constraintTop_toBottomOf="@id/cv_phone_number_container" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <TextView
             android:id="@+id/tv_privacy_policy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -190,17 +185,16 @@
             android:text="@string/privacy_policy"
             android:textColor="@color/green_2A4332"
             android:visibility="visible"
-            app:layout_constraintEnd_toStartOf="@+id/gl_vertical_95"
-            app:layout_constraintStart_toStartOf="@+id/gl_vertical_05"
-            app:layout_constraintTop_toBottomOf="@+id/tv_account_does_not_exists" />
-
+            app:layout_constraintEnd_toStartOf="@id/gl_vertical_95"
+            app:layout_constraintStart_toStartOf="@id/gl_vertical_05"
+            app:layout_constraintTop_toBottomOf="@id/tv_account_does_not_exists" />
 
         <ImageView
             android:id="@+id/iv_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:rotation="-30"
-            app:layout_constraintBottom_toTopOf="@+id/gl_horizontal_40"
+            app:layout_constraintBottom_toTopOf="@id/gl_horizontal_40"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.224"
@@ -209,15 +203,15 @@
         <ImageView
             android:id="@+id/iv_footer"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size_80"
+            android:layout_height="0dp"
             android:layout_marginStart="@dimen/size__32"
             android:layout_marginEnd="@dimen/size__32"
             android:layout_marginBottom="@dimen/size__4"
+            android:background="@drawable/ic_background_bottom"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/ic_background_bottom" />
-
+            app:layout_constraintTop_toTopOf="@id/gl_horizontal_90" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/gl_horizontal_23"
@@ -226,13 +220,19 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.23" />
 
-
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/gl_horizontal_40"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.4" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_horizontal_90"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.9" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/gl_vertical_05"
@@ -247,7 +247,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.95" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

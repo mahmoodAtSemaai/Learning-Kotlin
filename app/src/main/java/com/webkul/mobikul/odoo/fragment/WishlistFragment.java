@@ -1,11 +1,10 @@
 package com.webkul.mobikul.odoo.fragment;
 
 import android.content.Context;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
+
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,9 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.BaseActivity;
-import com.webkul.mobikul.odoo.activity.CustomerBaseActivity;
 import com.webkul.mobikul.odoo.activity.NewHomeActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.adapter.customer.WishlistProductInfoRvAdapter;
@@ -34,39 +39,31 @@ import com.webkul.mobikul.odoo.model.customer.wishlist.MyWishListResponse;
 import com.webkul.mobikul.odoo.model.customer.wishlist.WishListData;
 import com.webkul.mobikul.odoo.model.request.WishListToCartRequest;
 
+import java.util.List;
+
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
-
-import java.util.List;
-
 
 /**
-
  * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
+ *
  * @author Webkul <support@webkul.com>
-
+ * @package Mobikul App
+ * @Category Mobikul
  * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
  * @license https://store.webkul.com/license.html ASL Licence
-
  * @link https://store.webkul.com/license.html
-
  */
 
 public class WishlistFragment extends BaseFragment implements WishlistProductInfoRvAdapter.WishListInterface {
     private static final String TAG = "WishlistFragment";
-    public FragmentWishlistBinding mBinding;
-
+    public FragmentWishlistBinding binding;
+    private NavHostFragment navHostFragment;
+    private NavController navController;
 
     List<WishListData> wishListData;
     WishlistProductInfoRvAdapter.WishListInterface wishListInterface;
@@ -80,8 +77,8 @@ public class WishlistFragment extends BaseFragment implements WishlistProductInf
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_wishlist, container, false);
-        return mBinding.getRoot();
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_wishlist, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -96,8 +93,9 @@ public class WishlistFragment extends BaseFragment implements WishlistProductInf
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-       wishListInterface = this;
+        wishListInterface = this;
         callApi();
+        setOnclickListeners();
     }
 
     @Override
@@ -110,32 +108,32 @@ public class WishlistFragment extends BaseFragment implements WishlistProductInf
         ApiConnection.getWishlist(getContext()).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<MyWishListResponse>(getContext()) {
 
-            @Override
-            public void onNext(@NonNull MyWishListResponse myWishListResponse) {
-                super.onNext(myWishListResponse);
-                if (myWishListResponse.isAccessDenied()) {
-                    AlertDialogHelper.showDefaultWarningDialogWithDismissListener(getContext(), getString(R.string.error_login_failure), getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            sweetAlertDialog.dismiss();
-                            AppSharedPref.clearCustomerData(getContext());
-                            Intent i = new Intent(getContext(), SignInSignUpActivity.class);
-                            i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, getActivity().getClass().getSimpleName());
-                            startActivity(i);
-                        }
-                    });
+                    @Override
+                    public void onNext(@NonNull MyWishListResponse myWishListResponse) {
+                        super.onNext(myWishListResponse);
+                        if (myWishListResponse.isAccessDenied()) {
+                            AlertDialogHelper.showDefaultWarningDialogWithDismissListener(getContext(), getString(R.string.error_login_failure), getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismiss();
+                                    AppSharedPref.clearCustomerData(getContext());
+                                    Intent i = new Intent(getContext(), SignInSignUpActivity.class);
+                                    i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, getActivity().getClass().getSimpleName());
+                                    startActivity(i);
+                                }
+                            });
 
 
 
                 } else {
                     getActivity().setTitle(getString(R.string.wishlist) + " (" + myWishListResponse.getWishLists().size() + ")");
-                    mBinding.setData(myWishListResponse);
-                    mBinding.executePendingBindings();
+                    binding.setData(myWishListResponse);
+                    binding.executePendingBindings();
                     DividerItemDecoration dividerItemDecorationHorizontal = new DividerItemDecoration(getContext(), LinearLayout.VERTICAL);
-                    mBinding.wishlistProductRv.addItemDecoration(dividerItemDecorationHorizontal);
+                    binding.wishlistProductRv.addItemDecoration(dividerItemDecorationHorizontal);
                     wishListData = myWishListResponse.getWishLists();
                     wishlistProductInfoRvAdapter = new WishlistProductInfoRvAdapter(getContext(), myWishListResponse.getWishLists(), wishListInterface);
-                    mBinding.wishlistProductRv.setAdapter(wishlistProductInfoRvAdapter);
+                    binding.wishlistProductRv.setAdapter(wishlistProductInfoRvAdapter);
                     if(cartUpdateListener!=null){
                         cartUpdateListener.updateCart();
                     }
@@ -158,6 +156,23 @@ public class WishlistFragment extends BaseFragment implements WishlistProductInf
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+
+    private void setOnclickListeners() {
+        navHostFragment = (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.home_nav_host);
+        if (navHostFragment != null) {
+            navController = navHostFragment.getNavController();
+        }
+
+        binding.btnContinueShopping.setOnClickListener(v -> {
+            if (navController != null) {
+                navController.navigate(R.id.action_wishlistFragment_to_homeFragment);
+            }else{
+                Intent intent = new Intent(requireActivity(), NewHomeActivity.class);
+                requireActivity().startActivity(intent);
+            }
+
+        });
     }
 
     @androidx.annotation.NonNull

@@ -16,73 +16,56 @@ import com.webkul.mobikul.odoo.model.generic.ProductData;
 
 import java.util.List;
 
-/**
-
- * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
- * @author Webkul <support@webkul.com>
-
- * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
- * @license https://store.webkul.com/license.html ASL Licence
-
- * @link https://store.webkul.com/license.html
-
- */
 
 public class SearchSuggestionProductAdapter extends RecyclerView.Adapter<SearchSuggestionProductAdapter.ViewHolder> {
     @SuppressWarnings("unused")
     private static final String TAG = "SearchSuggestionProduct";
 
-    private final Context mContext;
-    private List<ProductData> mProducts;
-    private String mSearchQuery;
+    private final Context context;
+    private List<ProductData> products;
+    private String searchQuery;
 
     public SearchSuggestionProductAdapter(Context context, List<ProductData> products, String searchQuery) {
-        mContext = context;
-        mProducts = products;
-        mSearchQuery = searchQuery;
+        this.context = context;
+        this.products = products;
+        this.searchQuery = searchQuery;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(mContext);
+        LayoutInflater inflater = LayoutInflater.from(context);
         View contactView = inflater.inflate(R.layout.item_search_suggestion_product, parent, false);
         return new ViewHolder(contactView);
     }
 
 
     public void updateData(List<ProductData> products, String searchQuery) {
-        this.mProducts = products;
-        mSearchQuery = searchQuery;
+        this.products = products;
+        this.searchQuery = searchQuery;
         notifyDataSetChanged();
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        int indexOfMatch = mProducts.get(position).getName().toLowerCase().indexOf(mSearchQuery.toLowerCase());
-        if (!mSearchQuery.isEmpty() && indexOfMatch > -1) {
-            mProducts.get(position).setName(SearchHelper.getHighlightedString(mProducts.get(position).getName(), mSearchQuery, indexOfMatch));
+        int indexOfMatch = products.get(position).getName().toLowerCase().indexOf(searchQuery.toLowerCase());
+        if (!searchQuery.isEmpty() && indexOfMatch > -1) {
+            products.get(position).setName(SearchHelper.getHighlightedString(products.get(position).getName(), searchQuery, indexOfMatch));
         }
-        holder.mBinding.setData(mProducts.get(position));
-        holder.mBinding.setHandler(new SearchSuggestionProductHandler(mContext, mProducts.get(position)));
+        holder.binding.setData(products.get(position));
+        holder.binding.setHandler(new SearchSuggestionProductHandler(context, products.get(position)));
     }
 
     @Override
     public int getItemCount() {
-        return mProducts.size();
+        return products.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        private final ItemSearchSuggestionProductBinding mBinding;
+        private final ItemSearchSuggestionProductBinding binding;
 
         private ViewHolder(View itemView) {
             super(itemView);
-            mBinding = DataBindingUtil.bind(itemView);
+            binding = DataBindingUtil.bind(itemView);
         }
     }
 }

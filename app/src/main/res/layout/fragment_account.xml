@@ -129,14 +129,10 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/profile_image_container"
                     android:layout_centerHorizontal="true"
-                    android:background="@color/transparent"
-                    android:backgroundTint="@color/transparent"
-                    android:inputType="textCapSentences"
+                    android:inputType="textNoSuggestions"
                     android:text="@{@string/hello_x_(customerName)}"
                     android:textColor="@color/text_color_primary"
                     tools:text="Hello Shubham Agarwal!" />
-
-
             </RelativeLayout>
 
             <androidx.cardview.widget.CardView
@@ -203,8 +199,8 @@
                         android:layout_margin="@dimen/spacing_tiny" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
                         android:id="@+id/all_orders_text"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
                         android:drawableStart="@drawable/ic_vector_order_grey_24dp_wrapper"
@@ -241,9 +237,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
+                        android:drawableStart="@drawable/ic_vector_referral_code_grey_wrapper"
                         android:drawableLeft="@drawable/ic_vector_referral_code_grey_wrapper"
                         android:drawablePadding="@dimen/spacing_generic"
-                        android:drawableStart="@drawable/ic_vector_referral_code_grey_wrapper"
                         android:gravity="center|start"
                         android:onClick="@{()->handler.viewReferralCode()}"
                         android:padding="@dimen/spacing_generic"
@@ -259,9 +255,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
+                        android:drawableStart="@drawable/ic_vector_semaai_points_balance"
                         android:drawableLeft="@drawable/ic_vector_semaai_points_balance"
                         android:drawablePadding="@dimen/spacing_generic"
-                        android:drawableStart="@drawable/ic_vector_semaai_points_balance"
                         android:gravity="center|start"
                         android:padding="@dimen/spacing_generic"
                         android:text="@string/semaai_points_balance"
@@ -353,10 +349,10 @@
                         android:drawableLeft="@drawable/ic_chat_history_24"
                         android:drawablePadding="@dimen/spacing_generic"
                         android:gravity="center|start"
-                        android:visibility="gone"
                         android:onClick="@{()->handler.showChatHistory()}"
                         android:padding="@dimen/spacing_generic"
-                        android:text="Chat History" />
+                        android:text="Chat History"
+                        android:visibility="gone" />
 
                     <View
                         style="@style/DividerHorizontal"

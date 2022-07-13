@@ -217,7 +217,13 @@ public class    OrderFragment extends BaseFragment {
                         getString(R.string.cancelled) : getString(R.string.time_expired));
                 setVisibility(binding.bankPaymentMethodDetail, View.GONE);
                 setVisibility(binding.purchaseDateDetail, View.VISIBLE);
-            } else {
+            } else if(orderDataResponse.getMobileOrderStatus().equalsIgnoreCase(getString(R.string.backend_cancelled_state))){
+                setVisibility(binding.dueDateDetail, View.GONE);
+                setText(binding.tvStatus, getString(R.string.pending));
+                setVisibility(binding.bankPaymentMethodDetail, View.GONE);
+                setVisibility(binding.purchaseDateDetail, View.VISIBLE);
+            }
+            else {
                 setVisibility(binding.purchaseDateDetail, View.GONE);
                 setText(binding.tvStatus, getString(R.string.pending));
             }

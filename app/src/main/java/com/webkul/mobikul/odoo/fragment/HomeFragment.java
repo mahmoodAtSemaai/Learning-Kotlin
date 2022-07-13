@@ -3,7 +3,6 @@ package com.webkul.mobikul.odoo.fragment;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_URL;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.LayerDrawable;
@@ -18,18 +17,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AbsListView;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
+
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.webkul.mobikul.odoo.R;
@@ -51,9 +47,7 @@ import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.model.BaseResponse;
-import com.webkul.mobikul.odoo.model.ReferralResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse;
-import com.webkul.mobikul.odoo.model.chat.ChatUnreadMessageCount;
 import com.webkul.mobikul.odoo.model.customer.address.AddressData;
 import com.webkul.mobikul.odoo.model.customer.address.AddressFormResponse;
 import com.webkul.mobikul.odoo.model.customer.address.MyAddressesResponse;
@@ -65,7 +59,9 @@ import com.webkul.mobikul.odoo.model.request.BaseLazyRequest;
 import com.webkul.mobikul.odoo.updates.FirebaseRemoteConfigHelper;
 
 import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
+
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -75,23 +71,28 @@ import io.reactivex.schedulers.Schedulers;
 
 public class HomeFragment extends BaseFragment implements CustomRetrofitCallback {
 
+    public static final int VIEW_TYPE_LIST = 1;
+    public static final int VIEW_TYPE_GRID = 2;
     @SuppressWarnings("unused")
     private static final String TAG = "HomeFragment";
     public FragmentHomeBinding binding;
-
-    private int CHECK_FOR_EXISTING_ADDRESS = 1;
-    private int BILLING_ADDRESS_POSITION = 1;
-    private int COMPANY_ID = 1;
-    private boolean mIsFirstCall = true;
-    private boolean isImageVisible = false;
-    private CustomToast mToast;
-    public static final int VIEW_TYPE_LIST = 1;
     Handler handler = new Handler();
     Runnable runnable;
-    public static final int VIEW_TYPE_GRID = 2;
+    private final int CHECK_FOR_EXISTING_ADDRESS = 1;
+    private final int BILLING_ADDRESS_POSITION = 1;
+    private final int COMPANY_ID = 1;
+    private final boolean mIsFirstCall = true;
+    private boolean isImageVisible = false;
+    private CustomToast mToast;
     private FeaturedCategoryData mFeaturedCategoryData;
-    private int appBarOffset=0;
-
+    FeaturedCategoriesAdapter.FeaturedCategoryDataValue value = new FeaturedCategoriesAdapter.FeaturedCategoryDataValue() {
+        @Override
+        public void data(FeaturedCategoryData featuredCategoryData, Integer pos) {
+            mFeaturedCategoryData = featuredCategoryData;
+            binding.viewPager2.setCurrentItem(pos);
+        }
+    };
+    private int appBarOffset = 0;
     private int unreadChatCount = 0;
 
     @Override
@@ -128,17 +129,15 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
             public void onRefresh() {
                 binding.refreshLayout.setRefreshing(true);
                 hitApiForFetchingData();
-                ((NewHomeActivity)getActivity()).hitApiForLoyaltyPoints(AppSharedPref.getCustomerId(getContext()));
+                ((NewHomeActivity) getActivity()).hitApiForLoyaltyPoints(AppSharedPref.getCustomerId(getContext()));
             }
         });
     }
-
 
     @Override
     public void onResume() {
         super.onResume();
     }
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -154,26 +153,31 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     }
 
     private void hitApiForFetchingData() {
+
+        //start loader animation while fetching feature categories and banners
+        showShimmerAnimation();
+
         ApiConnection.getHomePageData(getContext()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<HomePageResponse>(getContext()) {
 
             @Override
             public void onNext(@NonNull HomePageResponse homePageResponse) {
                 super.onNext(homePageResponse);
-                    new SaveData(getActivity(), homePageResponse);
+                new SaveData(getActivity(), homePageResponse);
                 Log.i("HIT DATA === ", homePageResponse.toString());
                 loadHomePage(homePageResponse, true);
             }
 
             @Override
             public void onComplete() {
-                if(binding.refreshLayout.isEnabled() && binding.refreshLayout.isRefreshing())
-                    binding.refreshLayout.setRefreshing(false);
+                if (binding.refreshLayout.isEnabled() && binding.refreshLayout.isRefreshing())
+
+                    //stop loader animation once data loaded
+                    stopShimmerAnimation();
+
+                binding.refreshLayout.setRefreshing(false);
             }
         });
-
-
     }
-
 
     @Override
     public void onSuccess(Object object) {
@@ -181,7 +185,6 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
     @Override
     public void onError(Throwable t) {
-
     }
 
     private void loadHomePage(HomePageResponse homePageResponse, boolean isFromApi) {
@@ -196,12 +199,12 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
             @Override
             public void onScrollStateChanged(@androidx.annotation.NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                     if(newState== AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
-                         binding.refreshLayout.setEnabled(false);
-                     if(newState==AbsListView.OnScrollListener.SCROLL_STATE_FLING)
-                         binding.refreshLayout.setEnabled(false);
-                     if(newState==AbsListView.OnScrollListener.SCROLL_STATE_IDLE)
-                         binding.refreshLayout.setEnabled(false);
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
+                    binding.refreshLayout.setEnabled(false);
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING)
+                    binding.refreshLayout.setEnabled(false);
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE)
+                    binding.refreshLayout.setEnabled(false);
             }
         });
 
@@ -214,28 +217,28 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
         for (int i = 0; i < homePageResponse.getBannerImages().size(); i++) {
             if (!homePageResponse.getBannerImages().get(i).getUrl().equals("false")) {
-                isImageVisible=true;
+                isImageVisible = true;
                 break;
             }
         }
-        if(!isImageVisible) binding.appBarLayout.setVisibility(View.GONE);
+        if (!isImageVisible) binding.appBarLayout.setVisibility(View.GONE);
 
         binding.bannerDotsTabLayout.setupWithViewPager(binding.bannerViewPager, true);
-        binding.bannerViewPager.setAdapter(new HomeBannerAdapter(getContext(), homePageResponse.getBannerImages() , binding.bannerViewPager));
+        binding.bannerViewPager.setAdapter(new HomeBannerAdapter(getContext(), homePageResponse.getBannerImages(), binding.bannerViewPager));
 
 //         setBannerHeight();
 
         binding.bannerViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if(position==0)
-                    handler.postDelayed(runnable , 5000);
+                if (position == 0)
+                    handler.postDelayed(runnable, 5000);
             }
 
             @Override
             public void onPageSelected(int position) {
                 handler.removeCallbacks(runnable);
-                handler.postDelayed(runnable , 5000);
+                handler.postDelayed(runnable, 5000);
             }
 
             @Override
@@ -244,12 +247,12 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
             }
         });
 
-        runnable  = () -> {
+        runnable = () -> {
             int position = binding.bannerViewPager.getCurrentItem();
-            if(position < homePageResponse.getBannerImages().size()-1)
-            binding.bannerViewPager.setCurrentItem(position + 1);
+            if (position < homePageResponse.getBannerImages().size() - 1)
+                binding.bannerViewPager.setCurrentItem(position + 1);
             else
-            binding.bannerViewPager.setCurrentItem(0);
+                binding.bannerViewPager.setCurrentItem(0);
 
         };
 
@@ -261,7 +264,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         Display display = wm.getDefaultDisplay();
         int width = display.getWidth();
         final CollapsingToolbarLayout.LayoutParams layoutparams = (CollapsingToolbarLayout.LayoutParams) binding.bannerRelativeLayout.getLayoutParams();
-        layoutparams.height=width/4;
+        layoutparams.height = width / 4;
     }
 
     public void fetchExistingAddresses() {
@@ -372,7 +375,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
                 .putExtra(BUNDLE_KEY_URL, addressData.getUrl()));
     }
 
-    private void fetchUnreadChatCount(){
+    private void fetchUnreadChatCount() {
         ApiConnection.getUnreadChatCount(getActivity()).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CustomObserver<ChatBaseResponse>(getActivity()) {
@@ -380,7 +383,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
                     public void onNext(ChatBaseResponse chatUnreadMessageCountChatBaseResponse) {
                         super.onNext(chatUnreadMessageCountChatBaseResponse);
                         int chatUnreadMessageCount = chatUnreadMessageCountChatBaseResponse.getUnreadMessagesCount();
-                        if(chatUnreadMessageCount>0){
+                        if (chatUnreadMessageCount > 0) {
                             unreadChatCount = chatUnreadMessageCount;
                             getActivity().invalidateOptionsMenu();
                         }
@@ -411,10 +414,6 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         AppSharedPref.clearCustomerData(getContext());
     }
 
-
-
-
-
     @Override
     public void onStart() {
         super.onStart();
@@ -429,7 +428,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     }
 
     private void setChatMenu(Menu menu) {
-        if(FirebaseRemoteConfigHelper.isChatFeatureEnabled()) {
+        if (FirebaseRemoteConfigHelper.isChatFeatureEnabled()) {
             MenuItem wishlistMenuItem = menu.findItem(R.id.menu_item_wishlist);
             if (wishlistMenuItem.isVisible()) {
                 wishlistMenuItem.setVisible(false);
@@ -452,13 +451,46 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
 
-    FeaturedCategoriesAdapter.FeaturedCategoryDataValue value = new FeaturedCategoriesAdapter.FeaturedCategoryDataValue() {
-        @Override
-        public void data(FeaturedCategoryData featuredCategoryData, Integer pos) {
-            mFeaturedCategoryData = featuredCategoryData;
-            binding.viewPager2.setCurrentItem(pos);
-        }
-    };
+    }
 
+    /**
+     * Visible Shimmer on the UI and Start Animation
+     */
+    private void showShimmerAnimation() {
+
+        //Hide Featured Categories and Banners
+        binding.bannerViewPager.setVisibility(View.INVISIBLE);
+        binding.featuredCategoriesRv.setVisibility(View.INVISIBLE);
+
+        //set visibility to visible
+        binding.shimmerFeaturedCategories.setVisibility(View.VISIBLE);
+        binding.shimmerBanner.setVisibility(View.VISIBLE);
+
+        //start shimmer animation while fetching feature categories and banners
+        binding.shimmerFeaturedCategories.startShimmer();
+        binding.shimmerBanner.startShimmer();
+
+    }
+
+    /**
+     * Remove Shimmer from UI with {View.GONE} and Stop Animation
+     */
+    private void stopShimmerAnimation() {
+
+        //stop shimmer animation
+        binding.shimmerFeaturedCategories.stopShimmer();
+        binding.shimmerBanner.stopShimmer();
+
+        //Show Featured Categories and Banners
+        binding.bannerViewPager.setVisibility(View.VISIBLE);
+        binding.shimmerFeaturedCategories.setVisibility(View.VISIBLE);
+
+        //set visibility to {View.GONE}
+        binding.shimmerFeaturedCategories.setVisibility(View.GONE);
+        binding.shimmerBanner.setVisibility(View.GONE);
+    }
 }

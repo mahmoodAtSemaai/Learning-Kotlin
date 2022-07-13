@@ -18,8 +18,6 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.webkul.mobikul.odoo.R;
-import com.webkul.mobikul.odoo.activity.BaseActivity;
-import com.webkul.mobikul.odoo.activity.HomeActivity;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.databinding.ActivitySettingsBinding;
@@ -33,13 +31,13 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
 public class SettingHandler {
-    private ActivitySettingsBinding mBinding;
+    private ActivitySettingsBinding binding;
     private Context context;
     private SweetAlertDialog mSweetAlertDialog;
     private String source;
 
     public SettingHandler(ActivitySettingsBinding mBinding, Context context) {
-        this.mBinding = mBinding;
+        this.binding = mBinding;
         this.context = context;
         source = "Setting";
     }
@@ -117,13 +115,11 @@ public class SettingHandler {
 
     public void onClickedShowRecentView() {
         try {
-            if (mBinding.showRecentView.isChecked()) {
-                System.out.println("TestingShowRecentView==> Checked");
+            if (binding.scShowRecentView.isChecked()) {
                 AppSharedPref.setRecentViewEnable(context, true);
                 AnalyticsImpl.INSTANCE.trackShowRecentViewProductListToggleSuccess(true);
 
             } else {
-                System.out.println("TestingShowRecentView==> UnChecked");
                 AppSharedPref.setRecentViewEnable(context, false);
                 AnalyticsImpl.INSTANCE.trackShowRecentViewProductListToggleSuccess(false);
             }

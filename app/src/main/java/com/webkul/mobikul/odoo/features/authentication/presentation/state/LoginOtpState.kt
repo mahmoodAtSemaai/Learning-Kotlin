@@ -22,4 +22,5 @@ sealed class LoginOtpState : IState {
     data class CountDownTimer(val timeRemaining: Int) : LoginOtpState()
     object UnauthorisedUser : LoginOtpState()
     object InvalidOTP : LoginOtpState()
+    data class OTPCleared(val isFirstTimeLaunched: Boolean) : LoginOtpState()
 }

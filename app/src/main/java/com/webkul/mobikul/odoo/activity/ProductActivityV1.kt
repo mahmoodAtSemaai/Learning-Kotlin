@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
+import android.view.ViewTreeObserver
 import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
@@ -20,8 +21,11 @@ import com.webkul.mobikul.odoo.adapter.product.ProductDetailsAdapterV1
 import com.webkul.mobikul.odoo.adapter.product.ProductImageAdapter
 import com.webkul.mobikul.odoo.connection.ApiConnection
 import com.webkul.mobikul.odoo.connection.CustomObserver
+import com.webkul.mobikul.odoo.constant.ApplicationConstant
 import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.constant.BundleConstant.*
+import com.webkul.mobikul.odoo.core.extension.makeGone
+import com.webkul.mobikul.odoo.core.extension.makeVisible
 import com.webkul.mobikul.odoo.database.SaveData
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper
 import com.webkul.mobikul.odoo.databinding.ActivityProductV1Binding
@@ -44,6 +48,10 @@ class ProductActivityV1 : BaseActivity() {
     private val RC_BUY_NOW = 1002
     lateinit var binding: ActivityProductV1Binding
     private var currentProductId: String = ""
+    private var expandable = false
+    private val DESCRIPTION_TEXTVIEW_LIMIT = 4
+    var lineCount = 0
+    private var categoryId : String = ""
     private val productDataCustomObserver: CustomObserver<ProductData?> =
         object : CustomObserver<ProductData?>(this) {
             override fun onNext(productData: ProductData) {
@@ -102,6 +110,29 @@ class ProductActivityV1 : BaseActivity() {
         }
         quantityEditTextOnChange()
         setProductDetails(productData)
+        getDescriptionLineCount()
+    }
+
+    private fun getDescriptionLineCount(){
+        if(binding.tvProductDesciption.visibility != View.GONE) {
+            binding.tvProductDesciption.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    binding.tvProductDesciption.viewTreeObserver.removeOnGlobalLayoutListener(this);
+                    lineCount = binding.tvProductDesciption.layout.lineCount
+                    if(lineCount > DESCRIPTION_TEXTVIEW_LIMIT){
+                        expandDescription()
+                    }
+                }
+            })
+        }
+    }
+
+    private fun expandDescription() {
+        binding.apply {
+            tvProductDesciption.maxLines = DESCRIPTION_TEXTVIEW_LIMIT
+            tvReadMore.visibility = View.VISIBLE
+        }
+        expandable = true
     }
 
     private fun setProductDetails(productData: ProductData) {
@@ -110,15 +141,15 @@ class ProductActivityV1 : BaseActivity() {
         binding.rvProductDetails.apply {
             layoutManager = linearLayoutManager
             setHasFixedSize(true)
-            adapter = ProductDetailsAdapterV1(productDetails, this@ProductActivityV1)
+            adapter = ProductDetailsAdapterV1(productDetails,categoryId,this@ProductActivityV1)
         }
     }
 
     private fun getProductDetails(productData: ProductData): MutableMap<String, List<String>> {
         val details = mutableMapOf<String, List<String>>()
         val mobikulCategoryDetails = productData.mobikulCategoryDetails
-        details[getString(R.string.product_details_category)] =
-            mutableListOf(mobikulCategoryDetails.category.toString())
+        details[getString(R.string.product_details_category)] = mutableListOf(mobikulCategoryDetails.category.toString())
+        categoryId = mobikulCategoryDetails.categoryId.toString()
         details[getString(R.string.product_details_brand)] =
             mutableListOf(productData.getBrandName())
         details[getString(R.string.product_details_active_ingredients)] =
@@ -250,15 +281,17 @@ class ProductActivityV1 : BaseActivity() {
     }
 
     fun getBagItemsCount() {
-        val count = AppSharedPref.getCartCount(this, 0)
-        if (count != 0) {
-            binding.tvBadge.visibility = View.VISIBLE
-            if (count < 100)
-                binding.tvBadge.text = count.toString()
-            else
-                binding.tvBadge.text = getString(R.string.cart_ninety_nine_plus)
-        } else {
-            binding.tvBadge.visibility = View.GONE
+        val count = AppSharedPref.getCartCount(this, ApplicationConstant.MIN_ITEM_TO_BE_SHOWN_IN_CART)
+        binding.apply {
+            if (count != ApplicationConstant.MIN_ITEM_TO_BE_SHOWN_IN_CART) {
+                tvBadge.makeVisible()
+                if (count < ApplicationConstant.MAX_ITEM_TO_BE_SHOWN_IN_CART)
+                    tvBadge.text = count.toString()
+                else
+                    tvBadge.text = getString(R.string.text_nine_plus)
+            } else {
+                tvBadge.makeGone()
+            }
         }
     }
 
@@ -370,6 +403,19 @@ class ProductActivityV1 : BaseActivity() {
             binding.etMaterialSearchView.visibility = View.VISIBLE
             binding.etMaterialSearchView.openSearch()
         }
+
+        binding.apply {
+            tvReadMore.setOnClickListener {
+                if(expandable){
+                    tvProductDesciption.maxLines = lineCount
+                    tvReadMore.text = getString(R.string.read_less)
+                }else{
+                    tvProductDesciption.maxLines = DESCRIPTION_TEXTVIEW_LIMIT
+                    tvReadMore.text = getString(R.string.read_more)
+                }
+                expandable = !expandable
+            }
+        }
     }
 
     private fun launchNewDrawerActivity() {
@@ -382,4 +428,5 @@ class ProductActivityV1 : BaseActivity() {
             overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left)
         }
     }
+
 }

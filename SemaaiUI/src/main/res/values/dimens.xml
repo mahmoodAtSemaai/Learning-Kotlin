@@ -44,6 +44,7 @@
     <dimen name="margin_320">320dp</dimen>
 
     <dimen name="padding_0">0dp</dimen>
+    <dimen name="padding_2">2dp</dimen>
     <dimen name="padding_4">4dp</dimen>
     <dimen name="padding_6">6dp</dimen>
     <dimen name="padding_8">8dp</dimen>
@@ -68,6 +69,10 @@
     <dimen name="padding_280">280dp</dimen>
     <dimen name="padding_320">320dp</dimen>
 
+
+
+    <dimen name="size_0">0dp</dimen>
+    <dimen name="size_1">1dp</dimen>
     <dimen name="size_4">4dp</dimen>
     <dimen name="size_6">6dp</dimen>
     <dimen name="size_8">8dp</dimen>
@@ -80,9 +85,13 @@
     <dimen name="size_24">24dp</dimen>
     <dimen name="size_32">32dp</dimen>
     <dimen name="size_40">40dp</dimen>
+    <dimen name="size_45">45dp</dimen>
     <dimen name="size_48">48dp</dimen>
+    <dimen name="size_50">50dp</dimen>
     <dimen name="size_56">56dp</dimen>
     <dimen name="size_64">64dp</dimen>
+    <dimen name="size_72">72dp</dimen>
+    <dimen name="size_75">75dp</dimen>
     <dimen name="size_80">80dp</dimen>
     <dimen name="size_96">96dp</dimen>
     <dimen name="size_120">120dp</dimen>

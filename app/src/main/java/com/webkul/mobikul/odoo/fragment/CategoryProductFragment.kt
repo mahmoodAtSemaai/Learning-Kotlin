@@ -2,15 +2,12 @@ package com.webkul.mobikul.odoo.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity
@@ -21,7 +18,8 @@ import com.webkul.mobikul.odoo.connection.CustomObserver
 import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.database.SaveData
 import com.webkul.mobikul.odoo.databinding.FragmentCategoryProductBinding
-import com.webkul.mobikul.odoo.helper.*
+import com.webkul.mobikul.odoo.helper.AlertDialogHelper
+import com.webkul.mobikul.odoo.helper.AppSharedPref
 import com.webkul.mobikul.odoo.helper.CatalogHelper.CatalogProductRequestType
 import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -56,9 +54,10 @@ class CategoryProductFragment : Fragment() {
         mOffset = 0
         callApi()
     }
-
+    
     fun callApi() {
-        binding.pbCenter.visibility = View.VISIBLE
+        binding.shimmerProgressBar.visibility = View.VISIBLE
+        binding.shimmerProgressBar.startShimmer()
         ApiConnection.getCategoryProducts(requireContext(), id, mOffset, 10)
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : CustomObserver<CatalogProductResponse?>(requireContext()) {
@@ -68,7 +67,8 @@ class CategoryProductFragment : Fragment() {
                     if (catalogProductResponse.isAccessDenied) {
                         redirectToSignUp()
                     } else {
-                        binding.pbCenter.visibility = View.GONE
+                        binding.shimmerProgressBar.stopShimmer()
+                        binding.shimmerProgressBar.visibility = View.GONE
                         if (mIsFirstCall) {
 
                             isFirstCall(catalogProductResponse)
@@ -79,10 +79,12 @@ class CategoryProductFragment : Fragment() {
                     }
                 }
                 override fun onError(t: Throwable) {
+
+                    //on network error hide shimmer and stop loading animation
+                    binding.shimmerProgressBar.stopShimmer()
+                    binding.shimmerProgressBar.visibility = View.GONE
                 }
             })
-
-
     }
 
     private fun updateCatalogProductResponse(catalogProductResponse: CatalogProductResponse) {

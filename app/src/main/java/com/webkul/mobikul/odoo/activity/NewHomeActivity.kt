@@ -27,6 +27,8 @@ import com.webkul.mobikul.odoo.connection.CustomObserver
 import com.webkul.mobikul.odoo.constant.ApplicationConstant
 import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE
+import com.webkul.mobikul.odoo.core.extension.makeGone
+import com.webkul.mobikul.odoo.core.extension.makeVisible
 import com.webkul.mobikul.odoo.databinding.ActivityNewHomeBinding
 import com.webkul.mobikul.odoo.fragment.AccountFragment
 import com.webkul.mobikul.odoo.handler.home.FragmentNotifier.HomeActivityFragments
@@ -178,15 +180,17 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
     }
 
     private fun getBagItemsCount() {
-        val count = AppSharedPref.getCartCount(this@NewHomeActivity, 0)
-        if (count != 0) {
-            binding.badgeInfo.visibility = View.VISIBLE
-            if (count < 100)
-                binding.badgeInfo.text = count.toString()
-            else
-                binding.badgeInfo.text = getString(R.string.cart_ninety_nine_plus)
-        } else {
-            binding.badgeInfo.visibility = View.GONE
+        val count = AppSharedPref.getCartCount(this@NewHomeActivity, ApplicationConstant.MIN_ITEM_TO_BE_SHOWN_IN_CART)
+        binding.apply {
+        if (count != ApplicationConstant.MIN_ITEM_TO_BE_SHOWN_IN_CART) {
+                badgeInfo.makeVisible()
+                if (count < ApplicationConstant.MAX_ITEM_TO_BE_SHOWN_IN_CART)
+                    badgeInfo.text = count.toString()
+                else
+                    badgeInfo.text = getString(R.string.text_nine_plus)
+            } else {
+                badgeInfo.makeGone()
+            }
         }
     }
 
