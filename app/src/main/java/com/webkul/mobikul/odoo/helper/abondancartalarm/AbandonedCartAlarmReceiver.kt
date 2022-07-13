@@ -24,6 +24,7 @@ import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.webkul.mobikul.odoo.R
+import com.webkul.mobikul.odoo.activity.BagActivity
 import com.webkul.mobikul.odoo.activity.BaseActivity
 import com.webkul.mobikul.odoo.activity.HomeActivity
 import com.webkul.mobikul.odoo.constant.ApplicationConstant
@@ -40,7 +41,7 @@ class AbandonedCartAlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         try {
 //            BaseActivity.setLocale(context,false)
-            val cartIntent = Intent(context, BaseActivity::class.java)
+            val cartIntent = Intent(context, BagActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             cartIntent.putExtra(ApplicationConstant.BUNDLE_KEY_OPEN_CART, true)
 

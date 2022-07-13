@@ -50,13 +50,13 @@
 
             <TextView
                 android:id="@+id/tv_header"
-                style="@style/large_bold_title_text"
+                style="@style/Semaai.TextAppearance.Headline6.Orange"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
                 android:text="@string/welcome"
                 android:textAllCaps="true"
-                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/gl_horizontal_12" />
@@ -65,8 +65,10 @@
             <ImageView
                 android:id="@+id/iv_sign_in_sign_up"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/size_280"
-                android:layout_marginTop="@dimen/size_48"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_12"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 app:layout_constraintEnd_toStartOf="@+id/gl_vertical_90"
                 app:layout_constraintStart_toStartOf="@+id/gl_vertical_10"
                 app:layout_constraintTop_toBottomOf="@+id/tv_header"
@@ -74,12 +76,11 @@
 
             <TextView
                 android:id="@+id/tv_existing_account"
-                style="@style/medium_bold_text_no_caps"
+                style="@style/Semaai.TextAppearance.Subtitle2.Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_48"
+                android:layout_marginTop="@dimen/margin_24"
                 android:text="@string/already_have_an_account"
-                android:textSize="@dimen/font_size_18"
                 app:layout_constraintEnd_toStartOf="@+id/gl_vertical_90"
                 app:layout_constraintStart_toStartOf="@+id/gl_vertical_10"
                 app:layout_constraintTop_toBottomOf="@+id/iv_sign_in_sign_up" />
@@ -129,18 +130,19 @@
 
             <TextView
                 android:id="@+id/tv_contact_whatsapp_admin"
-                style="@style/medium_bold_text_no_caps"
+                style="@style/Semaai.TextAppearance.Subtitle3.Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_logo_whatsapp"
                 android:drawableLeft="@drawable/ic_logo_whatsapp"
                 android:drawablePadding="@dimen/size_10"
                 android:paddingTop="@dimen/size_4"
+                android:layout_marginBottom="20dp"
                 android:text="@string/contact_us"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_sign_up"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_sign_up"
                 tools:ignore="UseCompatTextViewDrawableXml" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

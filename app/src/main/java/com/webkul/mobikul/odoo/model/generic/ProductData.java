@@ -2,6 +2,8 @@ package com.webkul.mobikul.odoo.model.generic;
 
 import static com.webkul.mobikul.odoo.constant.ApplicationConstant.QTY_ZERO;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,13 +13,17 @@ import androidx.databinding.Bindable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.webkul.mobikul.odoo.BR;
+import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.adapter.product.MobikulCategoryDetails;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.constant.ApplicationConstant;
+import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.model.Seller;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import dagger.hilt.android.qualifiers.ApplicationContext;
 
 /**
  * Created by shubham.agarwal on 2/5/17.
@@ -131,6 +137,7 @@ public class ProductData extends BaseObservable implements Parcelable {
     @Expose
     private String absoluteUrl;
 
+
     protected ProductData(Parcel in) {
         variants = in.createTypedArrayList(ProductVariant.CREATOR);
         name = in.readString();
@@ -149,7 +156,7 @@ public class ProductData extends BaseObservable implements Parcelable {
         totalreviewsAvailable = in.readInt();
         forecastQuantity = in.readString();
         quantity = in.readInt();
-        accessDenied = in.readByte() !=0;
+        accessDenied = in.readByte() != 0;
         alternativeProducts = in.createTypedArrayList(ProductData.CREATOR);
         absoluteUrl = in.readString();
         inventoryAvailability = in.readString();
@@ -188,6 +195,7 @@ public class ProductData extends BaseObservable implements Parcelable {
     public int describeContents() {
         return 0;
     }
+
 
     public List<ProductVariant> getVariants() {
         if (variants == null) {
@@ -351,8 +359,7 @@ public class ProductData extends BaseObservable implements Parcelable {
     public int getQuantity() {
         if (quantity < QTY_ZERO) {
             return 0;
-        }
-        else if (quantity == QTY_ZERO){
+        } else if (quantity == QTY_ZERO) {
             setQuantity(quantity);
         }
         return quantity;
@@ -361,12 +368,11 @@ public class ProductData extends BaseObservable implements Parcelable {
     public void setQuantity(int quantity) {
         if (quantity < QTY_ZERO) {
             return;
-        }else if((quantity == QTY_ZERO) && (!isInStock())){
+        } else if ((quantity == QTY_ZERO) && isOutOfStock()) {
             this.quantity = QTY_ZERO;
-        }
-        else if((quantity == QTY_ZERO) && (isInStock())){
+        } else if ((quantity == QTY_ZERO) && !isOutOfStock()) {
             this.quantity = 1;
-        }else{
+        } else {
             this.quantity = quantity;
         }
         AnalyticsImpl.INSTANCE.trackItemQuantitySelected(quantity, productId, name);
@@ -410,6 +416,11 @@ public class ProductData extends BaseObservable implements Parcelable {
         return inventoryAvailability.equals(ApplicationConstant.THRESHOLD);
     }
 
+    public boolean isAlways() {
+        return inventoryAvailability.equals(ApplicationConstant.ALWAYS);
+    }
+
+
     public boolean isNever() {
         return inventoryAvailability.equals(ApplicationConstant.NEVER);
     }
@@ -417,6 +428,11 @@ public class ProductData extends BaseObservable implements Parcelable {
     public boolean isAccessDenied() {
         return accessDenied;
     }
+
+    public boolean isOutOfStock() {
+        return ((isAlways() || isThreshold()) && (getAvailableQuantity() == 0));
+    }
+
 
     public ArrayList<ProductData> getAlternativeProducts() {
         if (alternativeProducts == null)

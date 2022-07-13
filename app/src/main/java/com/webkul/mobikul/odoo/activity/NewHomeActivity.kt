@@ -27,10 +27,13 @@ import com.webkul.mobikul.odoo.connection.CustomObserver
 import com.webkul.mobikul.odoo.constant.ApplicationConstant
 import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE
+import com.webkul.mobikul.odoo.core.extension.makeGone
+import com.webkul.mobikul.odoo.core.extension.makeVisible
 import com.webkul.mobikul.odoo.databinding.ActivityNewHomeBinding
 import com.webkul.mobikul.odoo.fragment.AccountFragment
 import com.webkul.mobikul.odoo.handler.home.FragmentNotifier.HomeActivityFragments
 import com.webkul.mobikul.odoo.helper.AppSharedPref
+import com.webkul.mobikul.odoo.helper.CartUpdateListener
 import com.webkul.mobikul.odoo.helper.SnackbarHelper
 import com.webkul.mobikul.odoo.model.ReferralResponse
 import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse
@@ -43,8 +46,8 @@ import org.greenrobot.eventbus.ThreadMode
 import java.io.ByteArrayOutputStream
 
 
-class NewHomeActivity : BaseActivity() {
-    private lateinit var binding: ActivityNewHomeBinding
+class NewHomeActivity : BaseActivity(), CartUpdateListener {
+    lateinit var binding: ActivityNewHomeBinding
     private val RC_ACCESS_FINE_LOCATION_NEW_ADDRESS = 1001
     private val RC_CHECK_LOCATION_SETTINGS = 1003
     private val RC_PICK_IMAGE = 1004
@@ -177,15 +180,17 @@ class NewHomeActivity : BaseActivity() {
     }
 
     private fun getBagItemsCount() {
-        val count = AppSharedPref.getCartCount(this@NewHomeActivity, 0)
-        if (count != 0) {
-            binding.badgeInfo.visibility = View.VISIBLE
-            if (count < 100)
-                binding.badgeInfo.text = count.toString()
-            else
-                binding.badgeInfo.text = getString(R.string.cart_ninety_nine_plus)
-        } else {
-            binding.badgeInfo.visibility = View.GONE
+        val count = AppSharedPref.getCartCount(this@NewHomeActivity, ApplicationConstant.MIN_ITEM_TO_BE_SHOWN_IN_CART)
+        binding.apply {
+        if (count != ApplicationConstant.MIN_ITEM_TO_BE_SHOWN_IN_CART) {
+                badgeInfo.makeVisible()
+                if (count < ApplicationConstant.MAX_ITEM_TO_BE_SHOWN_IN_CART)
+                    badgeInfo.text = count.toString()
+                else
+                    badgeInfo.text = getString(R.string.text_nine_plus)
+            } else {
+                badgeInfo.makeGone()
+            }
         }
     }
 
@@ -300,5 +305,9 @@ class NewHomeActivity : BaseActivity() {
             binding.ivChatIcon.visibility = View.INVISIBLE
             binding.ivUnreadChatCount.visibility = View.INVISIBLE
         }
+    }
+
+    override fun updateCart() {
+        getBagItemsCount()
     }
 }

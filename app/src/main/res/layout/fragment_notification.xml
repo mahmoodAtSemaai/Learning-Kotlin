@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-
     <data>
 
         <import type="android.view.View" />
@@ -17,7 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/notification_list_rv"
             android:layout_width="match_parent"
@@ -26,16 +24,13 @@
             app:visibility="@{!data.allNotificationMessages.empty}"
             tools:targetApi="lollipop" />
 
-
         <ProgressBar
             android:layout_width="wrap_content"
             android:id="@+id/progress_bar"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/custom_progress_drawable"
-            android:visibility="visible">
-
-        </ProgressBar>
+            android:visibility="visible"/>
 
         <include
             android:id="@+id/empty_layout"

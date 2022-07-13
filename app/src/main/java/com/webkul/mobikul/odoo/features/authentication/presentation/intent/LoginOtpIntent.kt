@@ -16,5 +16,6 @@ sealed class LoginOtpIntent : IIntent {
     object GetSplashData : LoginOtpIntent()
     object GetHomePageData : LoginOtpIntent()
     object StopTimer : LoginOtpIntent()
-    data class StartTimer(val time : Int) : LoginOtpIntent()
+    data class StartTimer(val time: Int) : LoginOtpIntent()
+    data class ClearOTP(val firstTimeLaunched: Boolean) : LoginOtpIntent()
 }

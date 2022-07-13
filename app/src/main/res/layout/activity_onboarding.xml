@@ -33,7 +33,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_skip_slides"
-            style="@style/medium_normal_text"
+            style="@style/Semaai.TextAppearance.Subtitle3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
@@ -44,7 +44,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/banner_dots_tab_layout"
-            app:underline="@{true}"
             tools:text="@string/skip" />
 
         <androidx.appcompat.widget.AppCompatImageView

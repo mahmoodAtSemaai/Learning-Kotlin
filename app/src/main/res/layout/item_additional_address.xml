@@ -36,18 +36,17 @@
 
         <TextView
             android:id="@+id/textView7"
-            style="@style/medium_bold_text"
+            style="@style/Semaai.TextAppearance.Subtitle3.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{data.name}"
-            android:textAllCaps="false"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="User Name" />
 
         <TextView
             android:id="@+id/textView8"
-            style="@style/medium_normal_text"
+            style="@style/Semaai.TextAppearance.Body1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_12"
@@ -60,13 +59,12 @@
 
         <TextView
             android:id="@+id/textView10"
-            style="@style/medium_bold_text"
+            style="@style/Semaai.TextAppearance.Subtitle3.Bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_12"
             android:onClick="@{() -> handler.editAddress()}"
             android:text="@string/edit_address"
-            android:textAllCaps="false"
             android:textColor="@color/colorAccent"
             app:layout_constraintEnd_toStartOf="@+id/tv_delete_address"
             app:layout_constraintHorizontal_bias="0.5"
@@ -75,14 +73,13 @@
 
         <TextView
             android:id="@+id/tv_delete_address"
-            style="@style/medium_bold_text"
+            style="@style/Semaai.TextAppearance.Subtitle3.Bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_12"
             android:gravity="end"
             android:onClick="@{() -> handler.deleteAddress()}"
             android:text="@string/delete_address"
-            android:textAllCaps="false"
             android:textColor="@color/colorAccent"
             android:visibility="@{position == 0 ? View.INVISIBLE : View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"

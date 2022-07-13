@@ -18,13 +18,11 @@
 
         <TextView
             android:id="@+id/tv_heading"
-            style="@style/large_bold_title_text"
+            style="@style/Semaai.TextAppearance.Headline6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/size_24"
-            android:fontFamily="@font/roboto"
             android:text="@{data.titleText}"
-            android:textAllCaps="false"
             android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toTopOf="@+id/gl_horizontal_15"
             app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +31,7 @@
 
         <TextView
             android:id="@+id/tv_description"
-            style="@style/medium_normal_text"
+            style="@style/Semaai.TextAppearance.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/size_24"

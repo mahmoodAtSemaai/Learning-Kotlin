@@ -12,6 +12,7 @@ buildscript {
         classpath(Dependencies.firebaseCrashlyticsGradle)
         classpath(Dependencies.hiltClassPath)
         classpath(Dependencies.safeargs)
+        classpath(Dependencies.kotlin)
     }
 }
 

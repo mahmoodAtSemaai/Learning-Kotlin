@@ -88,6 +88,7 @@ android {
         buildConfigField("String", "CURRENT_APP_VERSION", "\"${Version.name}\"")
 
         buildConfigField("String", "APP_PLAYSTORE_URL", "\"${project.APP_PLAYSTORE_URL}\"")
+        buildConfigField("String", "APP_DYNAMIC_LINK", "\"${project.APP_DYNAMIC_LINK}\"")
         buildConfigField("Boolean", "isMarketplace", "true")
 
     }
@@ -95,6 +96,7 @@ android {
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
     }
+
 }
 
 dependencies {
@@ -125,7 +127,8 @@ dependencies {
             Dependencies.lifeData,
             Dependencies.viewModelState,
             Dependencies.viewModel,
-            Dependencies.fragmentKtx
+            Dependencies.fragmentKtx,
+            Dependencies.shimmerAndroid
     )
 
     androidTestImplementation(
@@ -177,7 +180,8 @@ dependencies {
             Dependencies.coroutinesCore,
             Dependencies.coroutinesAndroid,
             Dependencies.timberLogging,
-            project(Modules.sweetAlertDialog)
+            project(Modules.sweetAlertDialog),
+            project(Modules.semaaiUI)
     )
 
     kapt(

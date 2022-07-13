@@ -79,7 +79,7 @@ public class SearchActivity extends AppCompatActivity {
             return true;
         });
 
-        binding.seachHistoryRv.setAdapter(new SearchHistoryAdapter(context, getSearchHistoryList(""), ""));
+        binding.rvSearchHistory.setAdapter(new SearchHistoryAdapter(context, getSearchHistoryList(""), ""));
         RxTextView.textChangeEvents(binding.etSearch).debounce(DEBOUNCE_REQUEST_TIMEOUT, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CustomObserver<TextViewTextChangeEvent>(context) {
@@ -98,18 +98,18 @@ public class SearchActivity extends AppCompatActivity {
                                 @Override
                                 public void onSubscribe(@NonNull Disposable d) {
                                     super.onSubscribe(d);
-                                    binding.mainProgressBar.setVisibility(View.VISIBLE);
+                                    binding.pbSearch.setVisibility(View.VISIBLE);
                                 }
 
                                 @Override
                                 public void onNext(@NonNull CatalogProductResponse catalogProductResponse) {
                                     super.onNext(catalogProductResponse);
-                                    FirebaseAnalyticsImpl.logSearchEvent(context,textViewTextChangeEvent.text().toString());
+                                    FirebaseAnalyticsImpl.logSearchEvent(context, textViewTextChangeEvent.text().toString());
                                     binding.setSearchSuggestionData(catalogProductResponse);
-                                    if (binding.suggestionProductsRv.getAdapter() == null) {
-                                        binding.suggestionProductsRv.setAdapter(new SearchSuggestionProductAdapter(context, catalogProductResponse.getProducts(), textViewTextChangeEvent.text().toString()));
+                                    if (binding.rvSearchSuggestions.getAdapter() == null) {
+                                        binding.rvSearchSuggestions.setAdapter(new SearchSuggestionProductAdapter(context, catalogProductResponse.getProducts(), textViewTextChangeEvent.text().toString()));
                                     } else {
-                                        ((SearchSuggestionProductAdapter) binding.suggestionProductsRv.getAdapter()).updateData(catalogProductResponse.getProducts(), textViewTextChangeEvent.text().toString());
+                                        ((SearchSuggestionProductAdapter) binding.rvSearchSuggestions.getAdapter()).updateData(catalogProductResponse.getProducts(), textViewTextChangeEvent.text().toString());
                                     }
                                 }
 
@@ -120,7 +120,7 @@ public class SearchActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onComplete() {
-                                    binding.mainProgressBar.setVisibility(View.GONE);
+                                    binding.pbSearch.setVisibility(View.GONE);
                                 }
                             });
                         }
@@ -136,7 +136,7 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                ((SearchHistoryAdapter) binding.seachHistoryRv.getAdapter()).updateSearchHistory(getSearchHistoryList(charSequence.toString()), charSequence.toString());
+                ((SearchHistoryAdapter) binding.rvSearchHistory.getAdapter()).updateSearchHistory(getSearchHistoryList(charSequence.toString()), charSequence.toString());
                 SearchActivity.this.onTextChanged(charSequence);
             }
 
@@ -172,8 +172,8 @@ public class SearchActivity extends AppCompatActivity {
         return searchQueries;
     }
 
-    private void deleteAllSearchHistory(){
-        ((BaseActivity) context).mSqLiteDatabase.delete(SearchHistoryContract.SearchHistoryEntry.TABLE_NAME,null,null);
+    private void deleteAllSearchHistory() {
+        ((BaseActivity) context).mSqLiteDatabase.delete(SearchHistoryContract.SearchHistoryEntry.TABLE_NAME, null, null);
 
     }
 
@@ -240,14 +240,14 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                binding.searchLayout.setVisibility(View.GONE);
+                binding.flSearch.setVisibility(View.GONE);
             }
         };
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            AnimationHelper.circleHideView(binding.searchBar, listenerAdapter);
+            AnimationHelper.circleHideView(binding.llSearchBar, listenerAdapter);
         } else {
-            AnimationHelper.fadeOutView(binding.searchLayout);
+            AnimationHelper.fadeOutView(binding.flSearch);
         }
         open = false;
         RetrofitClient.getDispatcher().cancelAll();
@@ -269,10 +269,10 @@ public class SearchActivity extends AppCompatActivity {
         }
         binding.etSearch.setText("");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            binding.searchLayout.setVisibility(View.VISIBLE);
-            AnimationHelper.circleRevealView(binding.searchBar);
+            binding.flSearch.setVisibility(View.VISIBLE);
+            AnimationHelper.circleRevealView(binding.llSearchBar);
         } else {
-            AnimationHelper.fadeInView(binding.searchLayout);
+            AnimationHelper.fadeInView(binding.flSearch);
         }
         initSearchView();
         open = true;
@@ -284,21 +284,21 @@ public class SearchActivity extends AppCompatActivity {
 
     private void displayVoiceButton(boolean display) {
         if (display && Helper.isVoiceAvailable(context)) {
-            binding.actionVoice.setVisibility(View.VISIBLE);
+            binding.ibActionVoice.setVisibility(View.VISIBLE);
         } else {
-            binding.actionVoice.setVisibility(View.GONE);
+            binding.ibActionVoice.setVisibility(View.GONE);
         }
     }
 
     private void displayClearButton(boolean display) {
-        binding.actionClear.setVisibility(display ? View.VISIBLE : View.GONE);
+        binding.ibActionClear.setVisibility(display ? View.VISIBLE : View.GONE);
     }
 
     private void showSuggestions() {
-        binding.suggestionProductsRv.setVisibility(View.VISIBLE);
+        binding.rvSearchSuggestions.setVisibility(View.VISIBLE);
     }
 
     private void dismissSuggestions() {
-        binding.suggestionProductsRv.setVisibility(View.GONE);
+        binding.rvSearchSuggestions.setVisibility(View.GONE);
     }
 }

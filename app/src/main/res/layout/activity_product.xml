@@ -133,7 +133,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentBottom="true"
-                                android:visibility="@{data == null ? View.GONE : (data.isNever() ? View.GONE : (data.inStock ? View.GONE : View.VISIBLE))}">
+                                android:visibility="@{data == null ? View.GONE : (data.isOutOfStock ? View.VISIBLE : View.GONE)}">
 
                                 <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="match_parent"

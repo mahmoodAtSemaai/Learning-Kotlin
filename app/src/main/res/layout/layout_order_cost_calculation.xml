@@ -15,7 +15,6 @@
 
     </data>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,8 +24,8 @@
 
         <TextView
             android:id="@+id/tv_payment_method_text"
-            style="@style/medium_normal_text"
-            android:layout_width="0dp"
+            style="@style/Semaai.TextAppearance.Body1"
+            android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/spacing_generic"
             android:layout_marginRight="@dimen/spacing_generic"
@@ -38,8 +37,8 @@
 
         <TextView
             android:id="@+id/tv_payment_method"
-            style="@style/medium_normal_text"
-            android:layout_width="0dp"
+            style="@style/Semaai.TextAppearance.Body1"
+            android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_generic"
             android:layout_marginLeft="@dimen/spacing_generic"
@@ -53,8 +52,8 @@
 
         <TextView
             android:id="@+id/tv_total_price_text"
-            style="@style/medium_normal_text"
-            android:layout_width="0dp"
+            style="@style/Semaai.TextAppearance.Body1"
+            android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_8"
             android:layout_marginEnd="@dimen/spacing_generic"
@@ -69,8 +68,8 @@
 
         <TextView
             android:id="@+id/tv_total_price"
-            style="@style/medium_normal_text"
-            android:layout_width="0dp"
+            style="@style/Semaai.TextAppearance.Body1"
+            android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_generic"
             android:layout_marginLeft="@dimen/spacing_generic"
@@ -85,8 +84,8 @@
 
         <TextView
             android:id="@+id/tv_semaai_points_text"
-            style="@style/medium_normal_text"
-            android:layout_width="0dp"
+            style="@style/Semaai.TextAppearance.Body1"
+            android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_8"
             android:layout_marginEnd="@dimen/spacing_generic"
@@ -100,8 +99,8 @@
 
         <TextView
             android:id="@+id/tv_semaai_points"
-            style="@style/medium_normal_text"
-            android:layout_width="0dp"
+            style="@style/Semaai.TextAppearance.Body1"
+            android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_generic"
             android:layout_marginLeft="@dimen/spacing_generic"
@@ -116,8 +115,8 @@
 
         <TextView
             android:id="@+id/tv_shipping_method_text"
-            style="@style/medium_normal_text"
-            android:layout_width="0dp"
+            style="@style/Semaai.TextAppearance.Body1"
+            android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_8"
             android:layout_marginEnd="@dimen/spacing_generic"
@@ -131,8 +130,8 @@
 
         <TextView
             android:id="@+id/tv_shipping_method_cost"
-            style="@style/medium_normal_text"
-            android:layout_width="0dp"
+            style="@style/Semaai.TextAppearance.Body1"
+            android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_generic"
             android:layout_marginLeft="@dimen/spacing_generic"
@@ -147,15 +146,13 @@
 
         <TextView
             android:id="@+id/tv_total_payment_text"
-            style="@style/medium_bold_text"
-            android:layout_width="0dp"
+            style="@style/Semaai.TextAppearance.Subtitle2.Bold"
+            android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_8"
             android:layout_marginEnd="@dimen/size_8"
             android:layout_marginRight="@dimen/size_12"
             android:text="@string/total_payment"
-            android:textAllCaps="false"
-            android:textSize="@dimen/font_size_18"
             android:visibility="@{data.netPriceValue.isEmpty() ? View.GONE : View.VISIBLE}"
             app:layout_constraintEnd_toStartOf="@+id/tv_total_payment"
             app:layout_constraintHorizontal_bias="0.5"
@@ -164,22 +161,19 @@
 
         <TextView
             android:id="@+id/tv_total_payment"
-            style="@style/large_bold_title_text"
-            android:layout_width="0dp"
+            style="@style/Semaai.TextAppearance.Subtitle2.Bold"
+            android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_generic"
             android:layout_marginLeft="@dimen/spacing_generic"
             android:gravity="end"
             android:text="@{data.netPriceValue}"
-            android:textAllCaps="false"
-            android:textSize="@dimen/font_size_18"
             android:visibility="@{data.netPriceValue.isEmpty() ? View.GONE : View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/tv_total_payment_text"
             app:layout_constraintTop_toTopOf="@+id/tv_total_payment_text"
             tools:text="Rp74,000" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

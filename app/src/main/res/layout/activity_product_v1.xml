@@ -37,6 +37,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_product_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".activity.ProductActivityV1">
@@ -54,12 +55,14 @@
             app:navigationIcon="@drawable/ic_vector_arrow_back_orange">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_product_details_search_bar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_search"
+                    style="@style/Semaai.TextAppearance.Caption"
                     android:layout_width="@dimen/font_weight_0"
                     android:layout_height="@dimen/search_item_view"
                     android:layout_gravity="center_vertical"
@@ -72,7 +75,6 @@
                     android:paddingLeft="@dimen/padding_start"
                     android:paddingEnd="@dimen/padding_end"
                     android:paddingRight="@dimen/padding_end"
-                    android:textSize="@dimen/font_size_12"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/rl_cart"
                     app:layout_constraintStart_toStartOf="parent"
@@ -130,6 +132,7 @@
         </com.google.android.material.appbar.MaterialToolbar>
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/nsv_product_details"
             android:layout_width="@dimen/size_0"
             android:layout_height="@dimen/size_0"
             android:background="@color/white"
@@ -161,6 +164,7 @@
                     tools:ignore="UnusedAttribute,SpeakableTextPresentCheck" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_product_out_of_stock_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/margin_horizontal_button"
@@ -170,13 +174,14 @@
                     android:text="@string/out_of_stock"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_large"
-                    android:visibility="@{data == null ? View.GONE : (data.inStock ? View.GONE : View.VISIBLE)}"
+                    android:visibility="@{data == null ? View.GONE : (data.isOutOfStock ? View.VISIBLE : View.GONE)}"
                     app:layout_constraintBottom_toBottomOf="@+id/vp_product_slider"
                     app:layout_constraintEnd_toEndOf="@+id/vp_product_slider"
                     app:layout_constraintStart_toStartOf="@+id/vp_product_slider"
                     app:layout_constraintTop_toTopOf="@+id/vp_product_slider" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_delivery"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/size_16"
@@ -216,10 +221,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/spacing_generic"
                     android:visibility="@{data.images.size() &lt; 2 ? View.INVISIBLE: View.VISIBLE}"
+                    app:layout_constraintBottom_toBottomOf="@+id/vp_product_slider"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="@+id/vp_product_slider"
                     app:tabBackground="@drawable/selector_dots_tab_layout"
                     app:tabGravity="center"
                     app:tabIndicatorHeight="0dp"
@@ -237,7 +242,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
-                        android:id="@+id/tv_discount"
+                        android:id="@+id/tv_discount_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/size_4"
@@ -249,6 +254,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:id="@+id/tv_discount_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto"
@@ -259,10 +265,10 @@
                         android:textSize="@dimen/text_size_medium"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/tv_discount"
+                        app:layout_constraintEnd_toEndOf="@+id/tv_discount_text"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="@+id/tv_discount"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_discount"
+                        app:layout_constraintStart_toStartOf="@+id/tv_discount_text"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_discount_text"
                         tools:text="100%" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -358,10 +364,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_8"
-                    android:text="@{data.inStock ? (data.isThreshold() ? (data.getAvailableQuantity() > data.getAvailableThreshold() ? @string/in_stock : @string/in_stock_quantity_x(data.getAvailableQuantity)) : @string/in_stock_quantity_x(data.getAvailableQuantity)) : @string/out_of_stock }"
-                    android:visibility="@{data.isNever ? (data.isInStock ? View.GONE : View.VISIBLE) : View.VISIBLE}"
+                    android:text="@{data.outOfStock ? @string/out_of_stock : (data.isThreshold() &amp;&amp; (data.getAvailableQuantity() >= data.getAvailableThreshold()) ? @string/in_stock : @string/in_stock_quantity_x(data.getAvailableQuantity))}"
+                    android:visibility="@{data.isNever ? View.GONE : View.VISIBLE}"
                     app:layout_constraintStart_toStartOf="@+id/tv_reduce_price"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_reduce_price" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_reduce_price"
+                    tools:text="Out of Stock" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/iv_seller_info"
@@ -391,6 +398,7 @@
                     android:text="@{data.seller.sellerName}"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_min"
+                    app:layout_constraintBottom_toTopOf="@id/rb_seller_rating"
                     app:layout_constraintStart_toEndOf="@+id/iv_seller_info"
                     app:layout_constraintTop_toTopOf="@+id/iv_seller_info" />
 
@@ -399,10 +407,12 @@
                     style="@style/Base.Widget.AppCompat.RatingBar.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/size_8"
+                    android:layout_marginTop="@dimen/size_4"
                     android:isIndicator="true"
                     android:progressTint="@color/background_orange"
                     android:rating="@{data.seller.averageRating}"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_seller_info"
                     app:layout_constraintStart_toStartOf="@+id/tv_seller_name"
                     app:layout_constraintTop_toBottomOf="@+id/tv_seller_name"
                     tools:rating="4" />
@@ -414,6 +424,7 @@
                     android:layout_marginStart="@dimen/size_8"
                     android:layout_marginLeft="@dimen/size_8"
                     android:text="@{String.valueOf(Float.valueOf(data.seller.averageRating))}"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/rb_seller_rating"
                     app:layout_constraintStart_toEndOf="@+id/rb_seller_rating"
                     app:layout_constraintTop_toTopOf="@+id/rb_seller_rating" />
@@ -455,6 +466,19 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_description"
                     tools:text="Fungisida sistemik berbentuk pekatan yang dapat diemulsikan. Berwarna coklat kekuning-kuningan sampai coklat tua untuk mengendalikan penyakit pada tanaman." />
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_read_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_4"
+                    android:text="@string/read_more"
+                    android:textColor="@color/background_orange"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="@+id/tv_product_desciption"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_product_desciption"
+                    tools:text="Read More" />
+
                 <View
                     android:id="@+id/div_horizontal_2"
                     android:layout_width="match_parent"
@@ -465,7 +489,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_product_desciption" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_read_more" />
 
                 <TextView
                     android:id="@+id/tv_details_product"
@@ -536,11 +560,12 @@
         </androidx.core.widget.NestedScrollView>
 
         <ProgressBar
-            visibility="@{data == null ? View.VISIBLE : View.GONE}"
+            android:id="@+id/pb_product_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/custom_progress_drawable"
+            android:visibility="@{data == null ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -698,11 +723,11 @@
                 android:layout_marginTop="@dimen/size_6"
                 android:layout_marginEnd="@dimen/size_16"
                 android:layout_marginBottom="@dimen/size_6"
-                android:background="@{handler.checkQuantity(data.quantity) ? @drawable/btn_add_to_cart_disabled : @drawable/btn_add_to_cart_enabled}"
+                android:background="@{data.isOutOfStock ? @drawable/btn_add_to_cart_disabled : @drawable/btn_add_to_cart_enabled}"
                 android:onClick="@{() -> handler.addToCart(false)}"
                 android:text="@string/product_details_add_to_cart"
                 android:textAlignment="center"
-                android:textColor="@{handler.checkQuantity(data.quantity) ? @color/white : @color/background_orange}"
+                android:textColor="@{data.isOutOfStock ? @color/white : @color/background_orange}"
                 android:textSize="@dimen/font_size_12"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"

@@ -60,9 +60,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@{title}"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/text_color_primary"
-            android:textStyle="bold"
+            style="@style/Semaai.TextAppearance.Subtitle2.Bold"
             tools:text="@string/empty_bag" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -71,8 +69,7 @@
             android:gravity="center"
             android:padding="@dimen/spacing_generic"
             android:text="@{subtitle}"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/text_color_primary"
+            style="@style/Semaai.TextAppearance.Body2"
             tools:text="@string/add_item_to_your_bag_now" />
 
         <androidx.legacy.widget.Space
@@ -92,7 +89,6 @@
             android:textStyle="bold"
             android:visibility="@{hideContinueShoppingBtn ? View.GONE : View.VISIBLE}" />
     </androidx.appcompat.widget.LinearLayoutCompat>
-
 
 </layout>
 

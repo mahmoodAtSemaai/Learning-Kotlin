@@ -5,7 +5,6 @@
 
     <data>
 
-
         <import type="com.webkul.mobikul.odoo.helper.IntentHelper" />
 
         <variable
@@ -52,15 +51,13 @@
                     android:textStyle="bold" />
             </androidx.appcompat.widget.Toolbar>
 
-
         </com.google.android.material.appbar.AppBarLayout>
-
 
         <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="0dp"
+            android:padding="@dimen/padding_0"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.core.widget.NestedScrollView
@@ -69,7 +66,7 @@
                 android:scrollbars="none"
                 android:visibility="@{data == null || data.items.empty ? View.GONE :View.VISIBLE}"
                 app:layout_marginBottom="@{@dimen/button_height_generic+ @dimen/spacing_generic}"
-                tools:layout_marginBottom="60dp">
+                tools:layout_marginBottom="@dimen/margin_60">
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -92,7 +89,6 @@
                         android:orientation="vertical"
                         app:layout_constraintGuide_percent="0.95" />
 
-
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_products"
                         android:layout_width="match_parent"
@@ -106,15 +102,14 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_continue_shopping"
-                        style="@style/medium_bold_text_accent"
-                        android:layout_width="0dp"
+                        style="@style/Semaai.TextAppearance.Subtitle2.Accent"
+                        android:layout_width="@dimen/size_0"
                         android:layout_height="wrap_content"
                         android:drawableEnd="@drawable/ic_vector_arrow_forward_accent_24dp_wrapper"
                         android:drawableRight="@drawable/ic_vector_arrow_forward_accent_24dp_wrapper"
                         android:onClick="@{() -> IntentHelper.continueShopping(context)}"
                         android:paddingVertical="@dimen/size_12"
                         android:text="@string/continue_shopping"
-                        android:textSize="@dimen/font_size_18"
                         app:layout_constraintEnd_toStartOf="@+id/guideline10"
                         app:layout_constraintStart_toStartOf="@+id/guideline9"
                         app:layout_constraintTop_toBottomOf="@+id/rv_products" />
@@ -122,14 +117,14 @@
                     <View
                         android:id="@+id/divider_2"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="@dimen/size_1"
                         android:background="@color/grey_400"
                         app:layout_constraintTop_toBottomOf="@+id/tv_continue_shopping" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_empty_shopping_bag"
-                        style="@style/medium_bold_text_accent"
-                        android:layout_width="0dp"
+                        style="@style/Semaai.TextAppearance.Subtitle2.Accent"
+                        android:layout_width="@dimen/size_0"
                         android:layout_height="wrap_content"
                         android:drawableEnd="@drawable/ic_delete"
                         android:drawableRight="@drawable/ic_delete"
@@ -145,14 +140,14 @@
                     <View
                         android:id="@+id/divider_3"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="@dimen/size_1"
                         android:background="@color/grey_400"
                         app:layout_constraintTop_toBottomOf="@+id/tv_empty_shopping_bag" />
 
 
                     <TextView
                         android:id="@+id/tv_subtotal_heading"
-                        style="@style/medium_normal_text"
+                        style="@style/Semaai.TextAppearance.Subtitle3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/size_8"
@@ -162,8 +157,8 @@
 
                     <TextView
                         android:id="@+id/tv_taxes_heading"
-                        style="@style/medium_normal_text"
-                        android:layout_width="0dp"
+                        style="@style/Semaai.TextAppearance.Body1"
+                        android:layout_width="@dimen/size_0"
                         android:layout_height="wrap_content"
                         android:text="@string/taxes"
                         app:layout_constraintEnd_toEndOf="@+id/tv_subtotal_heading"
@@ -172,23 +167,22 @@
 
                     <TextView
                         android:id="@+id/tv_points_redeemed_heading"
-                        style="@style/medium_normal_text"
-                        android:layout_width="0dp"
+                        style="@style/Semaai.TextAppearance.Body1"
+                        android:layout_width="@dimen/size_0"
                         android:layout_height="wrap_content"
                         android:text="@string/semaai_points_redeemed"
+                        android:visibility="@{data.pointsRedeemed == null ? View.GONE : View.VISIBLE}"
                         app:layout_constraintEnd_toEndOf="@+id/tv_total_heading"
                         app:layout_constraintStart_toStartOf="@+id/tv_taxes_heading"
-                        app:layout_constraintTop_toBottomOf="@id/tv_taxes_heading"
-                        android:visibility="@{data.pointsRedeemed == null ? View.GONE : View.VISIBLE}"/>
+                        app:layout_constraintTop_toBottomOf="@id/tv_taxes_heading" />
 
                     <TextView
                         android:id="@+id/tv_total_heading"
-                        style="@style/large_bold_title_text"
-                        android:layout_width="0dp"
+                        style="@style/Semaai.TextAppearance.Subtitle1.Bold"
+                        android:layout_width="@dimen/size_0"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_tiny"
                         android:text="@string/total"
-                        android:textAllCaps="false"
                         app:layout_constraintEnd_toStartOf="@+id/tv_total_value"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="@+id/tv_subtotal_heading"
@@ -196,7 +190,7 @@
 
                     <TextView
                         android:id="@+id/tv_total_value"
-                        style="@style/large_bold_title_text"
+                        style="@style/Semaai.TextAppearance.Subtitle1.Bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{data.grandTotal.value}"
@@ -208,12 +202,11 @@
 
                     <TextView
                         android:id="@+id/tv_taxes_value"
-                        style="@style/medium_normal_text"
-                        android:layout_width="0dp"
+                        style="@style/Semaai.TextAppearance.Body2"
+                        android:layout_width="@dimen/size_0"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="1dp"
                         android:text="@{data.tax.value}"
-                        android:textSize="@dimen/font_size_14"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_taxes_heading"
                         app:layout_constraintEnd_toStartOf="@+id/guideline10"
                         app:layout_constraintStart_toStartOf="@+id/tv_total_value"
@@ -222,45 +215,41 @@
 
                     <TextView
                         android:id="@+id/tv_points_redeemed_value"
-                        style="@style/medium_normal_text"
-                        android:layout_width="0dp"
+                        style="@style/Semaai.TextAppearance.Body2"
+                        android:layout_width="@dimen/size_0"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="1dp"
+                        android:layout_marginBottom="@dimen/margin_1"
                         android:text="@{data.pointsRedeemed.value}"
-                        android:textSize="@dimen/font_size_14"
+                        android:visibility="@{data.pointsRedeemed == null ? View.GONE : View.VISIBLE}"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_points_redeemed_heading"
                         app:layout_constraintEnd_toStartOf="@+id/guideline10"
                         app:layout_constraintStart_toStartOf="@+id/tv_total_value"
                         app:layout_constraintTop_toBottomOf="@+id/tv_taxes_heading"
-                        tools:text="$1000.0000"
-                        android:visibility="@{data.pointsRedeemed == null ? View.GONE : View.VISIBLE}"/>
+                        tools:text="$1000.0000" />
 
                     <TextView
                         android:id="@+id/tv_subtotal_value"
-                        style="@style/medium_normal_text"
-                        android:layout_width="0dp"
+                        style="@style/Semaai.TextAppearance.Body2"
+                        android:layout_width="@dimen/size_0"
                         android:layout_height="wrap_content"
                         android:text="@{data.subtotal.value}"
-                        android:textSize="@dimen/font_size_14"
                         app:layout_constraintBottom_toTopOf="@+id/tv_taxes_heading"
                         app:layout_constraintEnd_toStartOf="@+id/guideline10"
                         app:layout_constraintStart_toStartOf="@+id/tv_total_value"
                         app:layout_constraintTop_toTopOf="@+id/tv_subtotal_heading"
                         tools:text="$1000.0000" />
 
-
                     <View
                         android:id="@+id/view3"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="@dimen/size_1"
                         android:layout_marginTop="@dimen/size_6"
                         android:background="@color/grey_400"
                         app:layout_constraintTop_toBottomOf="@+id/tv_total_heading" />
 
-
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/cl_semaai_points"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/size_0"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/size_8"
                         android:background="@drawable/shape_rectangular_white_bg_gray_border_1dp"
@@ -273,7 +262,7 @@
 
                         <TextView
                             android:id="@+id/tv_semaai_points_text"
-                            style="@style/medium_bold_text_no_caps"
+                            style="@style/Semaai.TextAppearance.Subtitle3.Bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:drawablePadding="@dimen/spacing_generic"
@@ -286,10 +275,9 @@
 
                         <TextView
                             android:id="@+id/tv_semaai_points"
-                            style="@style/medium_bold_text"
-                            android:layout_width="0dp"
+                            style="@style/Semaai.TextAppearance.Caption.Bold"
+                            android:layout_width="@dimen/size_0"
                             android:layout_height="match_parent"
-                            android:layout_marginHorizontal="@dimen/font_size_12"
                             android:gravity="end"
                             android:text="10.000"
                             app:layout_constraintBottom_toBottomOf="@+id/tv_semaai_points_text"
@@ -297,7 +285,6 @@
                             app:layout_constraintStart_toEndOf="@+id/tv_semaai_points_text"
                             app:layout_constraintTop_toTopOf="@+id/tv_semaai_points_text"
                             tools:text="10.000" />
-
 
                         <CheckBox
                             android:id="@+id/cb_use_points"
@@ -310,10 +297,9 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/cl_semaai_coupons"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/size_0"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/size_12"
                         android:background="@drawable/shape_rectangular_white_bg_gray_border_1dp"
@@ -326,7 +312,7 @@
 
                         <TextView
                             android:id="@+id/tv_semaai_coupons_text"
-                            style="@style/medium_bold_text_no_caps"
+                            style="@style/Semaai.TextAppearance.Subtitle3.Bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:drawablePadding="@dimen/spacing_generic"
@@ -341,8 +327,8 @@
 
                         <TextView
                             android:id="@+id/tv_semaai_coupons"
-                            style="@style/medium_bold_text_accent"
-                            android:layout_width="0dp"
+                            style="@style/Semaai.TextAppearance.Subtitle3.Bold"
+                            android:layout_width="@dimen/size_0"
                             android:layout_height="match_parent"
                             android:layout_marginStart="@dimen/spacing_generic"
                             android:layout_marginLeft="@dimen/spacing_generic"
@@ -352,7 +338,6 @@
                             app:layout_constraintHorizontal_bias="0.5"
                             app:layout_constraintStart_toEndOf="@+id/tv_semaai_coupons_text"
                             app:layout_constraintTop_toTopOf="@+id/tv_semaai_coupons_text" />
-
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -367,7 +352,6 @@
                 android:background="@drawable/custom_progress_drawable"
                 android:indeterminate="true"
                 android:visibility="@{data == null || data.items.empty ? View.VISIBLE :View.GONE}" />
-
 
             <Button
                 android:id="@+id/btn_go_to_checkout"
@@ -384,9 +368,7 @@
                 android:textStyle="bold"
                 android:visibility="@{data==null || data.items.empty ? View.GONE :View.VISIBLE}" />
 
-
         </FrameLayout>
-
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

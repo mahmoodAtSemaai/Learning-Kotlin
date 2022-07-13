@@ -96,7 +96,7 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
     }
 
     private int isQuantityExceeding(int qty) {
-        if (!data.isInStock()) {
+        if (data.isOutOfStock()) {
             ((ProductActivityV1) context).showWarning(true);
             return data.getAvailableQuantity();
         } else if (!data.isNever() && qty > data.getAvailableQuantity()) {

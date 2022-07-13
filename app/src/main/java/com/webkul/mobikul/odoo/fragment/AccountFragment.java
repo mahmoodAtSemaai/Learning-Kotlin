@@ -1,25 +1,28 @@
 package com.webkul.mobikul.odoo.fragment;
 
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
+import static com.webkul.mobikul.odoo.helper.ImageHelper.encodeImage;
+
 import android.app.Activity;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
-import com.google.android.material.snackbar.Snackbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.snackbar.Snackbar;
 import com.webkul.mobikul.odoo.R;
-import com.webkul.mobikul.odoo.activity.NewHomeActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
@@ -37,40 +40,37 @@ import com.webkul.mobikul.odoo.model.ReferralResponse;
 import com.webkul.mobikul.odoo.model.customer.account.SaveCustomerDetailResponse;
 import com.webkul.mobikul.odoo.model.request.SaveCustomerDetailRequest;
 
+import org.greenrobot.eventbus.EventBus;
+
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
-import static com.webkul.mobikul.odoo.helper.ImageHelper.encodeImage;
-
-import org.greenrobot.eventbus.EventBus;
-
 
 
 public class AccountFragment extends BaseFragment {
 
     @SuppressWarnings("unused")
     private static final String TAG = "AccountFragment";
-    public FragmentAccountBinding mBinding;
+    public FragmentAccountBinding binding;
     public String referralCode;
     NavController navController;
+
     public static AccountFragment newInstance() {
         return new AccountFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_account, container, false);
-        mBinding.customerProfileImage.setOnClickListener(new View.OnClickListener() {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_account, container, false);
+        binding.customerProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!AppSharedPref.getCustomerProfileImage(getContext()).trim().isEmpty())
                     showEnlargedProfileImage();
             }
         });
-        return mBinding.getRoot();
+        return binding.getRoot();
     }
 
     public void showEnlargedProfileImage() {
@@ -222,14 +222,14 @@ public class AccountFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mBinding.setWishlistEnabled(AppSharedPref.isAllowedWishlist(getActivity()));
+        binding.setWishlistEnabled(AppSharedPref.isAllowedWishlist(getActivity()));
         Helper.hideKeyboard(getContext());
         navController = Navigation.findNavController(view);
 
-        mBinding.allOrdersText.setOnClickListener(new View.OnClickListener() {
+        binding.allOrdersText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navController.navigate(R.id.orderListFragment);
+                navController.navigate(R.id.action_accountFragment_to_orderListFragment);
             }
         });
 
@@ -238,45 +238,45 @@ public class AccountFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mBinding.setHandler(new AccountFragmentHandler(getContext(), this));
+        binding.setHandler(new AccountFragmentHandler(getContext(), this));
         hitApiForReferralCode();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mBinding.setCustomerName(AppSharedPref.getCustomerName(getContext()));
-        mBinding.setIsEmailVerified(AppSharedPref.isEmailVerified(getContext()));
+        binding.setCustomerName(AppSharedPref.getCustomerName(getContext()));
+        binding.setIsEmailVerified(AppSharedPref.isEmailVerified(getContext()));
     }
 
     public void uploadFile(final Uri selectedImageUri, boolean isFromCropImage) {
 
         String filePath = "";
-        if (!isFromCropImage){
+        if (!isFromCropImage) {
 
-        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-        android.database.Cursor cursor = getContext().getContentResolver().query(selectedImageUri, filePathColumn, null, null, null);
-        if (cursor == null) {
-            SnackbarHelper.getSnackbar((Activity) getContext(), getString(R.string.error_in_changing_profile_image), Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
-            return;
-        }
-        cursor.moveToFirst();
-        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            android.database.Cursor cursor = getContext().getContentResolver().query(selectedImageUri, filePathColumn, null, null, null);
+            if (cursor == null) {
+                SnackbarHelper.getSnackbar((Activity) getContext(), getString(R.string.error_in_changing_profile_image), Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
+                return;
+            }
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             filePath = cursor.getString(columnIndex);
-        cursor.close();
-        }else {
+            cursor.close();
+        } else {
             filePath = selectedImageUri.getPath();
         }
         SaveCustomerDetailRequest saveCustomerDetailRequest;
-        if (mBinding.getHandler().isRequestForProfileImage()){
-            saveCustomerDetailRequest = new SaveCustomerDetailRequest(null,null,encodeImage(filePath),null);
-        }else {
-            saveCustomerDetailRequest = new SaveCustomerDetailRequest(null,null,null,encodeImage(filePath));
+        if (binding.getHandler().isRequestForProfileImage()) {
+            saveCustomerDetailRequest = new SaveCustomerDetailRequest(null, null, encodeImage(filePath), null);
+        } else {
+            saveCustomerDetailRequest = new SaveCustomerDetailRequest(null, null, null, encodeImage(filePath));
         }
 
 
-        if (!TextUtils.isEmpty(filePath)){
-            ApiConnection.saveCustomerDetails(getContext(),saveCustomerDetailRequest).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<SaveCustomerDetailResponse>(getContext()) {
+        if (!TextUtils.isEmpty(filePath)) {
+            ApiConnection.saveCustomerDetails(getContext(), saveCustomerDetailRequest).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<SaveCustomerDetailResponse>(getContext()) {
                 @Override
                 public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
                     super.onSubscribe(d);
@@ -286,7 +286,7 @@ public class AccountFragment extends BaseFragment {
                 @Override
                 public void onNext(@io.reactivex.annotations.NonNull SaveCustomerDetailResponse saveCustomerDetailResponse) {
                     super.onNext(saveCustomerDetailResponse);
-                    if (saveCustomerDetailResponse.isAccessDenied()){
+                    if (saveCustomerDetailResponse.isAccessDenied()) {
                         AlertDialogHelper.showDefaultWarningDialogWithDismissListener(getContext(), getString(R.string.error_login_failure), getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
@@ -297,17 +297,17 @@ public class AccountFragment extends BaseFragment {
                                 startActivity(i);
                             }
                         });
-                    }else {
+                    } else {
                         if (saveCustomerDetailResponse.isSuccess()) {
-                            mBinding.executePendingBindings();
+                            binding.executePendingBindings();
                             SnackbarHelper.getSnackbar((Activity) getContext(), saveCustomerDetailResponse.getMessage(), Snackbar.LENGTH_SHORT).show();
-                            if (mBinding.getHandler().isRequestForProfileImage()){
+                            if (binding.getHandler().isRequestForProfileImage()) {
                                 AppSharedPref.setCustomerProfileImage(getContext(), saveCustomerDetailResponse.getCustomerProfileImage());
-                                ImageHelper.load(mBinding.customerProfileImage, saveCustomerDetailResponse.getCustomerProfileImage(), R.drawable.ic_men_avatar, DiskCacheStrategy.NONE, true, ImageHelper.ImageType.PROFILE_PIC_GENERIC);
+                                ImageHelper.load(binding.customerProfileImage, saveCustomerDetailResponse.getCustomerProfileImage(), R.drawable.ic_men_avatar, DiskCacheStrategy.NONE, true, ImageHelper.ImageType.PROFILE_PIC_GENERIC);
 
-                            }else {
+                            } else {
                                 AppSharedPref.setCustomerBannerImage(getContext(), saveCustomerDetailResponse.getCustomerBannerImage());
-                                ImageHelper.load(mBinding.profileBanner, saveCustomerDetailResponse.getCustomerBannerImage(),null, DiskCacheStrategy.NONE, true, ImageHelper.ImageType.BANNER_SIZE_LARGE);
+                                ImageHelper.load(binding.profileBanner, saveCustomerDetailResponse.getCustomerBannerImage(), null, DiskCacheStrategy.NONE, true, ImageHelper.ImageType.BANNER_SIZE_LARGE);
 
                             }
                         } else {
@@ -321,7 +321,7 @@ public class AccountFragment extends BaseFragment {
 
                 }
             });
-        }else {
+        } else {
             SnackbarHelper.getSnackbar((Activity) getContext(), getString(R.string.error_in_changing_profile_image), Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
         }
 
@@ -329,12 +329,12 @@ public class AccountFragment extends BaseFragment {
     }
 
 
-    public void updateProfileImageAfterDelete(){
-        if (mBinding.getHandler().isRequestForProfileImage()){
-            ImageHelper.load(mBinding.customerProfileImage, "", R.drawable.ic_men_avatar, DiskCacheStrategy.NONE, true, ImageHelper.ImageType.PROFILE_PIC_GENERIC);
+    public void updateProfileImageAfterDelete() {
+        if (binding.getHandler().isRequestForProfileImage()) {
+            ImageHelper.load(binding.customerProfileImage, "", R.drawable.ic_men_avatar, DiskCacheStrategy.NONE, true, ImageHelper.ImageType.PROFILE_PIC_GENERIC);
 
-        }else {
-            ImageHelper.load(mBinding.profileBanner, "", null, DiskCacheStrategy.NONE, true, ImageHelper.ImageType.BANNER_SIZE_LARGE);
+        } else {
+            ImageHelper.load(binding.profileBanner, "", null, DiskCacheStrategy.NONE, true, ImageHelper.ImageType.BANNER_SIZE_LARGE);
 
         }
     }
@@ -364,7 +364,7 @@ public class AccountFragment extends BaseFragment {
 
     }
 
-    public void hitApiForReferralCode(){
+    public void hitApiForReferralCode() {
 
         ApiConnection.getReferralCode(getContext(), AppSharedPref.getCustomerId(getContext())).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<ReferralResponse>(getContext()) {
             @Override
@@ -375,19 +375,17 @@ public class AccountFragment extends BaseFragment {
         });
     }
 
-    public void handleReferralResponse(ReferralResponse response){
+    public void handleReferralResponse(ReferralResponse response) {
         if (response.getStatus() == ApplicationConstant.SUCCESS || response.getStatus() == ApplicationConstant.CREATED) {
             showReferralCode(response.getReferralCode());
-        }
-        else if(response.getStatus() == ApplicationConstant.NOT_FOUND){
+        } else if (response.getStatus() == ApplicationConstant.NOT_FOUND) {
             hitApiToGenerateReferralCode(AppSharedPref.getCustomerId(getContext()));
-        }
-        else {
+        } else {
             SnackbarHelper.getSnackbar((Activity) getContext(), response.getMessage(), Snackbar.LENGTH_LONG, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
         }
     }
 
-    public void hitApiToGenerateReferralCode(String userId){
+    public void hitApiToGenerateReferralCode(String userId) {
         ApiConnection.generateReferralCode(getContext(), userId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<ReferralResponse>(getContext()) {
             @Override
             public void onNext(@io.reactivex.annotations.NonNull ReferralResponse response) {
@@ -397,10 +395,10 @@ public class AccountFragment extends BaseFragment {
         });
     }
 
-    public void showReferralCode(String code){
+    public void showReferralCode(String code) {
         AppSharedPref.setReferralCode(getContext(), code);
         String message = getContext().getString(R.string.copy_referral_code) + ": " + code;
-        mBinding.referralCode.setText(message);
+        binding.referralCode.setText(message);
     }
 
 }

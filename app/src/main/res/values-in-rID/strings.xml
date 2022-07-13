@@ -154,6 +154,8 @@
     <string name="view_term_and_cond">Lihat Syarat dan Ketentuan</string>
     <string name="i_agree_with_term_and_condition">Saya setuju dengan Syarat dan Ketentuan</string>
     <string name="enter_referral_code">Masukkan kode referral di sini</string>
+    <string name="alpha_numeric_values">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789</string>
+
     <!---->
     <!---->
     <!--ACCOUNT FRAGMENT-->
@@ -431,6 +433,7 @@
     <string name="cancel">BATAL</string>
     <string name="cancel_small">Batal</string>
     <string name="cancelled">Cancelled</string>
+    <string name="backend_cancelled_state">Canceled</string>
     <string name="confirm">KONFIRMASI</string>
     <string name="confirm_small">Konfirmasi</string>
     <string name="no_fingerprint_permission">Otentifikasi menggunakan sidik jari tidak tersedia</string>
@@ -524,10 +527,11 @@
         Anda dapat menggunakannya untuk: (a) Transaksi online di Shopee - seperti membeli pulsa seluler dan pembayaran tagihan</string>
     <string name="activate_shopee_pay_now">Aktifkan Shopee Pay Sekarang</string>
     <string name="read_more">Baca Selengkapnya</string>
+    <string name="read_less">Baca Lebih Sedikit</string>
     <string name="phone_number_verification">Verifikasi Nomor Telepon</string>
     <string name="enter_your_phone_number">Masukkan Nomor Telepon Anda</string>
     <string name="enter_otp_code">Masukkan Kode OTP</string>
-    <string name="check_for_otp_text">Periksa WhatsApp anda, dan masukkan kode dari Semaai ke kolom di bawah ini. Kode OTP ini bersifat rahasia, <b>jangan beritahukan</b> kode ini kepada siapapun. </string>
+    <string name="check_for_otp_text">Periksa SMS anda, dan masukkan kode dari Semaai ke kolom di bawah ini. Kode OTP ini bersifat rahasia, <b>jangan beritahukan</b> kode ini kepada siapapun. </string>
     <string name="send_again">Kirim lagi</string>
     <string name="select_your_coupon">Pilih Kupon Anda >></string>
     <string name="bank_transfer_va">Transfer Bank Virtual Account</string>
@@ -666,7 +670,7 @@
 
     <string name="enter_phone_number_text">Masukkan nomor handphone anda dan tunggu kode OTP dikirimkan ke nomor anda</string>
     <string name="account_does_not_exists">Belum punya akun Semaai?</string>
-    <string name="sign_up_now"><font color='#FF6A13'>Daftar sekarang</font></string>
+    <string name="sign_up_now">Daftar sekarang</string>
     <string name="number_hint">08123456789</string>
     <string name="incorrect_mobile_number_format">Maaf, format nomor salah. Harap mulai dengan \'08\'</string>
     <string name="incorrect_mobile_number">*Maaf, nomor telepon salah</string>
@@ -674,10 +678,10 @@
     <string name="verification_method_text">Metode verifikasi</string>
     <string name="verification_method_selection_text">Pilih metode verifikasi</string>
     <string name="send_otp_confirmation_text">Untuk keamanan anda, kami akan melakukan konfirmasi dengan mengirimkan kode ke nomor handphone anda. Silahkan pilih salah satu.</string>
-    <string name="change_phone_number"><b><u><font color='#FF6A13'>Ganti nomor handphone</font></u></b></string>
+    <string name="change_phone_number">Ganti nomor handphone</string>
     <string name="wrong_phone_number">Salah nomor handphone?</string>
     <string name="otp_not_received">Kode OTP belum diterima?</string>
-    <string name="resend"><u>Kirim ulang</u></string>
+    <string name="resend">Kirim ulang</string>
     <string name="error_wrong_otp">*Maaf, kode OTP yang anda masukkan salah</string>
     <string name="error_incorrect_password">Password salah.</string>
     <string name="error_incorrect_phone_number">*Maaf, nomor telepon salah</string>
@@ -694,5 +698,8 @@
     <string name="chat_title">Chat</string>
     <string name="text_nine_plus">9+</string>
     <string name="chat_no_conversations">Anda tidak memiliki percakapan apapun</string>
+
+    <string name="sorry_product_not_available">Maaf, produk ini tidak tersedia</string>
+    <string name="search_another_product">Anda bisa mencari produk lain yang anda butuhkan disini</string>
 
 </resources>

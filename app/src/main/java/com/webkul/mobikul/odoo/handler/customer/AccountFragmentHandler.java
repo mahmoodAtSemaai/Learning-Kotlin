@@ -1,6 +1,6 @@
 package com.webkul.mobikul.odoo.handler.customer;
 
-import static com.webkul.mobikul.odoo.BuildConfig.APP_PLAYSTORE_URL;
+import static com.webkul.mobikul.odoo.BuildConfig.APP_DYNAMIC_LINK;
 import static com.webkul.mobikul.odoo.activity.HomeActivity.RC_CAMERA;
 import static com.webkul.mobikul.odoo.activity.HomeActivity.RC_PICK_IMAGE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
@@ -162,7 +162,7 @@ public class AccountFragmentHandler {
     public String createMessageToShare(String referralCode) {
         String message = context.getString(R.string.lets_use_this_code) + ": " + referralCode + " ";
         message += context.getString(R.string.for_purchasing) + "\n";
-        message += APP_PLAYSTORE_URL + " .";
+        message += APP_DYNAMIC_LINK + " .";
         return message;
     }
 

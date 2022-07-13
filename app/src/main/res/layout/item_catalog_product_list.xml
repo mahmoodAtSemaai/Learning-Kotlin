@@ -34,119 +34,108 @@
             type="com.webkul.mobikul.odoo.handler.home.ProductHandler" />
     </data>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/llc_catalog_product"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="1dp"
-        android:layout_marginEnd="0.5dp"
-        android:layout_marginLeft="0.5dp"
-        android:layout_marginRight="0.5dp"
-        android:layout_marginStart="0.5dp"
-        android:layout_marginTop="1dp"
+        android:layout_margin="@dimen/size_1"
         android:background="@drawable/shape_rectangular_white_bg_grey400_border_half_dp"
         android:clickable="true"
-        android:onClick="@{() -> handler.viewProduct()}"
-        android:orientation="horizontal">
-
-        <FrameLayout
-            android:layout_width="@dimen/product_image_generic"
-            android:layout_height="@dimen/product_image_generic">
+        android:onClick="@{() -> handler.viewProduct()}">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/product_image"
+            android:id="@+id/iv_product"
             android:layout_width="@dimen/product_image_generic"
             android:layout_height="@dimen/product_image_generic"
             android:layout_centerHorizontal="true"
             android:background="@color/white"
             app:imageType="@{ImageType.PRODUCT_GENERIC}"
             app:imageUrl="@{data.thumbNail}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:placeholder="@{@drawable/ic_vector_odoo_placeholder_grey400_48dp}"
             tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_top_grid"
-                android:layout_marginHorizontal="@dimen/spacing_normal"
-                android:padding="@dimen/spacing_min"
-                android:background="@drawable/bg_out_of_stock"
-                android:gravity="center"
-                android:text="@string/out_of_stock"
-                android:textSize="@dimen/text_size_min"
-                android:textColor="@color/white"
-                android:visibility="@{data.isNever() ? View.GONE : (data.inStock ? View.GONE : View.VISIBLE)}"/>
-
-        </FrameLayout>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:padding="@dimen/spacing_normal">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/product_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_tiny"
-                android:ellipsize="end"
-                android:maxLines="3"
-                android:minLines="3"
-                android:text="@{data.name}"
-                android:textSize="@dimen/text_size_min"
-                tools:text="Mobikul" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_out_of_stock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_out_of_stock"
+            android:gravity="center"
+            android:paddingHorizontal="@dimen/size_12"
+            android:paddingVertical="@dimen/size_2"
+            android:text="@string/out_of_stock"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_min"
+            android:visibility="@{data.outOfStock ? View.VISIBLE : View.GONE }"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_product"
+            app:layout_constraintEnd_toEndOf="@+id/iv_product"
+            app:layout_constraintStart_toStartOf="@+id/iv_product" />
 
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_tiny">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_product_name"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/size_12"
+            android:layout_marginTop="@dimen/size_16"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:minLines="3"
+            android:text="@{data.name}"
+            android:textSize="@dimen/text_size_min"
+            app:layout_constraintEnd_toStartOf="@+id/ib_wish_list"
+            app:layout_constraintStart_toEndOf="@+id/iv_product"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Mobikul" />
 
-                <!--Normal Price-->
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/spacing_tiny"
-                    android:layout_marginRight="@dimen/spacing_tiny"
-                    android:background="@{data.priceReduce.empty ?  null : @drawable/bg_strikethrough}"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:text="@{data.priceUnit}"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textSize="@dimen/text_size_min"
-                    app:textStyle="@{data.priceReduce.empty ? &quot;bold&quot; : &quot;normal&quot;}"
-                    tools:text="$310.00" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_price_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@{data.priceReduce.empty ?  null : @drawable/bg_strikethrough}"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@{data.priceUnit}"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="@dimen/text_size_min"
+            app:layout_constraintStart_toStartOf="@+id/tv_product_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_product_name"
+            app:textStyle="@{data.priceReduce.empty ? &quot;bold&quot; : &quot;normal&quot;}"
+            tools:text="$310.00" />
 
-                <!--SPECIAL/REDUCED PRICE-->
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:padding="2dp"
-                    android:text="@{data.priceReduce}"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textSize="@dimen/text_size_min"
-                    android:textStyle="bold"
-                    app:visibility="@{!data.priceReduce.empty}"
-                    tools:text="$310.00" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_price_reduce"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/size_4"
+            android:layout_marginLeft="@dimen/size_4"
+            android:gravity="start"
+            android:maxLines="1"
+            android:text="@{data.priceReduce}"
+            android:textSize="@dimen/text_size_min"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/tv_product_name"
+            app:layout_constraintStart_toEndOf="@+id/tv_price_unit"
+            app:layout_constraintTop_toBottomOf="@+id/tv_product_name"
+            app:visibility="@{!data.priceReduce.empty}"
+            tools:text="$310.00" />
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <ImageButton
+            android:id="@+id/ib_wish_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:onClick="@{(view)->handler.onClickWishlistIcon(view)}"
             android:padding="@dimen/spacing_normal"
             android:visibility="@{isLoggedIn &amp;&amp; wishlistEnabled ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@{data.addedToWishlist ? @drawable/ic_vector_wishlist_red_24dp : @drawable/ic_vector_wishlist_grey_24dp}"
             tools:src="@drawable/ic_vector_wishlist_grey_24dp" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </layout>

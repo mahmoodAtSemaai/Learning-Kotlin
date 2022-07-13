@@ -26,11 +26,10 @@
 
         <TextView
             android:id="@+id/tv_address_name"
-            style="@style/medium_bold_text_no_caps"
+            style="@style/Semaai.TextAppearance.Subtitle3.Bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{addressData.name}"
-            android:textAllCaps="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -38,7 +37,7 @@
 
         <TextView
             android:id="@+id/tv_phone_number"
-            style="@style/medium_normal_text"
+            style="@style/Semaai.TextAppearance.Subtitle3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{`(`+addressData.phone+`)`}"
@@ -50,7 +49,7 @@
 
         <TextView
             android:id="@+id/tv_address_display_name"
-            style="@style/medium_normal_text"
+            style="@style/Semaai.TextAppearance.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{addressData.districtName.isEmpty() == false ? addressData.completeAddressDescription : addressData.incompleteAddressDescription}"
@@ -60,7 +59,7 @@
             tools:text="Jl. K.H. Royani 1, no. 51, RT 02, RW 09. Kelurahan Karet Kuningan, Kecamatan Setia Budi, Kota Jakarta Selatan, DKI Jakarta, ID 12940" />
 
         <TextView
-            style="@style/medium_bold_text_no_caps"
+            style="@style/Semaai.TextAppearance.Subtitle3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{@string/shipping_address_incomplete}"

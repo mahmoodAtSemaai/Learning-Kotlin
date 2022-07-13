@@ -156,6 +156,7 @@ public class SignUpHandler {
                 super.onNext(signUpResponse);
                 setIsFirstTime();
                 if (signUpResponse.isSuccess()) {
+                    AppSharedPref.setUserIsApproved(context,signUpResponse.isUserApproved());
                     AnalyticsImpl.INSTANCE.trackSignupSuccessfull(AnalyticsSourceConstants.EVENT_SOURCE_SIGNUP,
                             AnalyticsSourceConstants.EVENT_SOURCE_PROPERTY_MOBILE,
                             data.getName(),
@@ -169,7 +170,6 @@ public class SignUpHandler {
                                 subscribe(new CustomObserver<ChatBaseResponse<ChatCreateChannelResponse>>(context) {
                                 });
                     }
-
                     fetchBillingAddress(context, signUpResponse);
                 } else {
                     AnalyticsImpl.INSTANCE.trackSignupFailed(

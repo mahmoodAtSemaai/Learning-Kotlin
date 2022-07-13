@@ -58,7 +58,7 @@ public class MaterialSearchViewHandler {
     }
 
     public void clearSearch() {
-        mMaterialSearchView.mBinding.etSearch.setText("");
+        mMaterialSearchView.binding.etSearch.setText("");
     }
 
 

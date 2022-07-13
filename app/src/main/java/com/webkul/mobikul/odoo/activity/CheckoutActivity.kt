@@ -17,6 +17,9 @@ import com.webkul.mobikul.odoo.adapter.checkout.CheckoutProductsAdapter
 import com.webkul.mobikul.odoo.connection.ApiConnection
 import com.webkul.mobikul.odoo.connection.CustomObserver
 import com.webkul.mobikul.odoo.constant.BundleConstant.*
+import com.webkul.mobikul.odoo.core.extension.makeGone
+import com.webkul.mobikul.odoo.core.extension.makeInvisible
+import com.webkul.mobikul.odoo.core.extension.makeVisible
 import com.webkul.mobikul.odoo.databinding.ActivityNewCheckoutBinding
 import com.webkul.mobikul.odoo.fragment.PaymentStatusFragment
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper
@@ -42,6 +45,7 @@ class CheckoutActivity : BaseActivity() {
     private val TOP_Y = 0
     private val START_X = 0
     private var isUserWantToRedeemPoints: Boolean = false
+    val orderValueZero = 0L
 
     private val startActivityForShippingAddressResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
@@ -121,20 +125,19 @@ class CheckoutActivity : BaseActivity() {
             && selectedPaymentMethod != null
             && selectedPaymentMethod?.paymentAcquirerId?.isEmpty() == false
         ) {
-            binding.btnConfirmOrder.setBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.colorAccent
-                )
-            )
+            setButtonState(true)
         } else {
-            binding.btnConfirmOrder.setBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.grey_600
-                )
-            )
+            setButtonState(false)
         }
+    }
+
+    private fun setButtonState(enabled: Boolean) {
+        binding.btnConfirmOrder.setBackgroundColor(
+            ContextCompat.getColor(
+                this,
+                if (enabled) R.color.colorAccent else R.color.grey_600
+            )
+        )
     }
 
     private fun getArguments() {
@@ -147,7 +150,8 @@ class CheckoutActivity : BaseActivity() {
         refreshRecyclerView: Boolean,
         refreshPaymentDetails: Boolean
     ) {
-        ApiConnection.getOrderData(this, orderId, isUserWantToRedeemPoints).subscribeOn(Schedulers.io())
+        ApiConnection.getOrderData(this, orderId, isUserWantToRedeemPoints)
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : CustomObserver<OrderDataResponse?>(this@CheckoutActivity) {
                 override fun onSubscribe(d: Disposable) {
@@ -201,6 +205,29 @@ class CheckoutActivity : BaseActivity() {
             binding.rvCheckout.adapter =
                 CheckoutProductsAdapter(this@CheckoutActivity, orderDataResponse.items)
             binding.root.visibility = View.VISIBLE
+        }
+        if (orderDataResponse.getAmountFromString() == orderValueZero) {
+            binding.layoutPaymentMethod.root.makeGone()
+            binding.paymentDetailContainer.tvPaymentMethod.makeGone()
+            binding.paymentDetailContainer.tvPaymentMethodText.makeGone()
+            //TODO have a look here @Mahmood
+            selectedPaymentMethod = SelectedPaymentMethod(
+                getString(R.string.cod_text),
+                orderDataResponse.acquirerId.toString(),
+                "",
+                "",
+                true
+            )
+            if (orderDataResponse.shippingAddressId.districtName.isEmpty().not()) {
+                setButtonState(true)
+            } else {
+                setButtonState(false)
+            }
+
+        }
+        else{
+            binding.layoutPaymentMethod.root.makeVisible()
+            binding.paymentDetailContainer.tvPaymentMethod.makeVisible()
         }
         if (refreshPaymentDetails)
             setPaymentDetailContainer(orderDataResponse)
@@ -359,7 +386,11 @@ class CheckoutActivity : BaseActivity() {
                 }
 
                 override fun onNext(orderReviewResponse: OrderReviewResponse) {
-                    placeOrder(orderReviewResponse.transactionId)
+                    if(orderReviewResponse.isSuccess) placeOrder(orderReviewResponse.transactionId)
+                    else {
+                        dialog.hide()
+                        AlertDialogHelper.showDefaultWarningDialog(this@CheckoutActivity," ",orderReviewResponse.message)
+                    }
                 }
 
                 override fun onError(t: Throwable) {
@@ -500,7 +531,7 @@ class CheckoutActivity : BaseActivity() {
         isUserWantToRedeemPoints = AppSharedPref.getIsCustomerWantToRedeemPoints(this)
     }
 
-    private fun setIsCustomerWantToRedeemPointsfalse(){
+    private fun setIsCustomerWantToRedeemPointsfalse() {
         AppSharedPref.setIsCustomerWantToRedeemPoints(this, false)
     }
 

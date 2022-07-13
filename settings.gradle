@@ -1,2 +1,2 @@
-include ':app', ':appMarketplace', ':SweetAlertDialog'
+include ':app', ':appMarketplace', ':SweetAlertDialog', ':SemaaiUI'
 //include ':app', ':SweetAlertDialog'

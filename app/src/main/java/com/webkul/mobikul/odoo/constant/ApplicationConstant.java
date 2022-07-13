@@ -62,6 +62,7 @@ public interface ApplicationConstant {
     /* Product Inventory Availability Type */
     String THRESHOLD = "threshold";
     String NEVER = "never";
+    String ALWAYS = "always";
 
 //    static boolean isNetworkAvailable(final Context context) {
 //        final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
@@ -81,5 +82,7 @@ public interface ApplicationConstant {
 
     //Quantity
     int QTY_ZERO = 0;
+    int MAX_ITEM_TO_BE_SHOWN_IN_CART = 10;
+    int MIN_ITEM_TO_BE_SHOWN_IN_CART = 0;
 
 }
