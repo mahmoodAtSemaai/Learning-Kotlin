@@ -56,7 +56,7 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CHECKOU
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_ORDER_ID;
 
 
-public class OrderFragment extends BaseFragment {
+public class    OrderFragment extends BaseFragment {
 
     private FragmentOrderBinding binding;
     private SweetAlertDialog dialog;
@@ -102,7 +102,8 @@ public class OrderFragment extends BaseFragment {
                     navController.navigate(R.id.orderListFragment);
                 }
             });
-        } catch (Exception e) {
+        }
+        catch (Exception e){
 
         }
 
@@ -124,9 +125,10 @@ public class OrderFragment extends BaseFragment {
 
     private int getOrderIdFromArguments() {
 
-        if (getArguments().getString(BUNDLE_KEY_ORDER_ID) != null) {
+        if(getArguments().getString(BUNDLE_KEY_ORDER_ID)!=null){
             return Integer.parseInt(getArguments().getString(BUNDLE_KEY_ORDER_ID));
-        } else {
+        }
+        else {
             assert getArguments() != null;
             return getArguments().getInt("orderid");
         }
@@ -162,11 +164,14 @@ public class OrderFragment extends BaseFragment {
     }
 
     private void handleOrderDataResponse(OrderDataResponse orderDataResponse) {
-        binding.setData(orderDataResponse);
-        setTextOnViews(orderDataResponse);
-        binding.executePendingBindings();
-        setupRecyclerView(orderDataResponse);
-        setViewGroupVisibility(orderDataResponse);
+        try{
+            binding.setData(orderDataResponse);
+            setTextOnViews(orderDataResponse);
+            binding.executePendingBindings();
+            setupRecyclerView(orderDataResponse);
+            setViewGroupVisibility(orderDataResponse);
+        }catch (Exception e){
+        }
 
     }
 
@@ -178,10 +183,10 @@ public class OrderFragment extends BaseFragment {
         dialog.setConfirmText(getString(R.string.ok));
         dialog.setConfirmClickListener(sweetAlertDialog -> {
             dialog.dismiss();
-            if (navController != null) {
+            if(navController!=null) {
                 navController.popBackStack();
                 navController.navigate(R.id.orderListFragment);
-            } else {
+            }else{
                 requireActivity().finish();
             }
         });
@@ -189,8 +194,9 @@ public class OrderFragment extends BaseFragment {
     }
 
 
+
     private void setViewGroupVisibility(OrderDataResponse orderDataResponse) {
-        if (orderDataResponse.getPaymentMode().equalsIgnoreCase(getString(R.string.cod_text))) {
+        if (orderDataResponse.getPaymentMode().equalsIgnoreCase(getString(R.string.cod_text_2))) {
             setVisibility(binding.dueDateDetail, View.GONE);
             setVisibility(binding.bankPaymentMethodDetail, View.GONE);
         } else {
@@ -211,12 +217,13 @@ public class OrderFragment extends BaseFragment {
                         getString(R.string.cancelled) : getString(R.string.time_expired));
                 setVisibility(binding.bankPaymentMethodDetail, View.GONE);
                 setVisibility(binding.purchaseDateDetail, View.VISIBLE);
-            } else if (orderDataResponse.getMobileOrderStatus().equalsIgnoreCase(getString(R.string.backend_cancelled_state))) {
+            } else if(orderDataResponse.getMobileOrderStatus().equalsIgnoreCase(getString(R.string.backend_cancelled_state))){
                 setVisibility(binding.dueDateDetail, View.GONE);
                 setText(binding.tvStatus, getString(R.string.pending));
                 setVisibility(binding.bankPaymentMethodDetail, View.GONE);
                 setVisibility(binding.purchaseDateDetail, View.VISIBLE);
-            } else {
+            }
+            else {
                 setVisibility(binding.purchaseDateDetail, View.GONE);
                 setText(binding.tvStatus, getString(R.string.pending));
             }
@@ -228,8 +235,7 @@ public class OrderFragment extends BaseFragment {
     }
 
     private void setTextOnViews(OrderDataResponse orderDataResponse) {
-        String codText = getString(R.string.cod_text);
-
+        String codText = getString(R.string.cod_text_2);
         String paymentMode = orderDataResponse.getPaymentMode().equalsIgnoreCase(codText) ?
                 codText : orderDataResponse.getBank().getName() + " " + orderDataResponse.getPaymentMode();
         OrderPaymentData orderPaymentData = new OrderPaymentData(paymentMode, orderDataResponse.getAmountTotal(),
