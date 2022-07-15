@@ -135,7 +135,23 @@ public class BagItemsRecyclerHandler implements ChangeQtyDialogFragment.OnQtyCha
     @Override
     public void onQtyChanged(int qty) {
         Toast.makeText(context, R.string.updating_bag, Toast.LENGTH_SHORT).show();
-        hitUpdateCartApi(qty);
+        if ((data.isAlways() || data.isThreshold()) && isQuantityExceeding(qty)) {
+            showQuantityWarning(getWarningMessage(qty, data.getAvailableQuantity()));
+            hitUpdateCartApi(data.getAvailableQuantity());
+        }
+        else{
+            hitUpdateCartApi(qty);
+        }
+    }
+
+    private String getWarningMessage(int qty, int availableQuantity){
+        String message = context.getString(R.string.ask_for) + " " + qty + " " +
+                context.getString(R.string.products_but) + " " + availableQuantity + " ";
+        if (availableQuantity > 0)
+            message += context.getString(R.string.are_available);
+        else
+            message += context.getString(R.string.is_available);
+        return message;
     }
 
     private Boolean isQuantityExceeding(int qty) {

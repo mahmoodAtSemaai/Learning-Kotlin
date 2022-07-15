@@ -207,5 +207,11 @@ public class BagItemData extends BaseObservable implements Parcelable {
     public boolean isNever() {
         return inventoryAvailability.equals(ApplicationConstant.NEVER);
     }
+    public boolean isThreshold() {
+        return inventoryAvailability.equals(ApplicationConstant.THRESHOLD);
+    }
+    public boolean isAlways() {
+        return inventoryAvailability.equals(ApplicationConstant.ALWAYS);
+    }
 
 }

@@ -43,6 +43,7 @@
         android:clickable="true"
         android:onClick="@{() -> handler.viewProduct()}">
 
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_product"
             android:layout_width="@dimen/product_image_generic"
@@ -56,21 +57,29 @@
             app:placeholder="@{@drawable/ic_vector_odoo_placeholder_grey400_48dp}"
             tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_out_of_stock"
-            android:layout_width="wrap_content"
+
+        <FrameLayout
+            android:layout_width="@dimen/product_image_generic"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_out_of_stock"
-            android:gravity="center"
-            android:paddingHorizontal="@dimen/size_12"
-            android:paddingVertical="@dimen/size_2"
-            android:text="@string/out_of_stock"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_min"
-            android:visibility="@{data.outOfStock ? View.VISIBLE : View.GONE }"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_product"
-            app:layout_constraintEnd_toEndOf="@+id/iv_product"
-            app:layout_constraintStart_toStartOf="@+id/iv_product" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/iv_product"
+            app:layout_constraintBottom_toBottomOf="@id/iv_product"
+            android:paddingBottom="@dimen/spacing_generic">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_top_grid"
+                android:layout_marginHorizontal="@dimen/spacing_normal"
+                android:padding="@dimen/spacing_min"
+                android:background="@{data.isPreOrder() ? @drawable/bg_pre_order : @drawable/bg_out_of_stock}"
+                android:gravity="center"
+                android:text="@{data.isPreOrder() ? @string/pre_order : @string/out_of_stock}"
+                android:textSize="@dimen/text_size_min"
+                android:textColor="@color/white"
+                android:visibility="@{(data.isNever() || data.isCustom || data.isService) ? View.GONE : (data.isPreOrder ? View.VISIBLE : (data.inStock ? View.GONE : View.VISIBLE))}"/>
+
+        </FrameLayout>
 
 
         <androidx.appcompat.widget.AppCompatTextView

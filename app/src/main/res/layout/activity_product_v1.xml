@@ -154,7 +154,7 @@
                     android:id="@+id/vp_product_slider"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/product_image_large"
-                    android:background="@{data == null ? @color/bottomNavigationBackground : (data.isNever ? @color/bottomNavigationBackground : (data.inStock ? @color/bottomNavigationBackground : @color/black_alpha_50))}"
+                    android:background="@{data == null ? @color/bottomNavigationBackground : ((data.isNever || data.isCustom || data.isPreOrder || data.isService) ? @color/bottomNavigationBackground : (data.inStock ? @color/bottomNavigationBackground : @color/black_alpha_50))}"
                     android:clickable="true"
                     android:scaleType="fitCenter"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -174,7 +174,7 @@
                     android:text="@string/out_of_stock"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_large"
-                    android:visibility="@{data == null ? View.GONE : (data.isOutOfStock ? View.VISIBLE : View.GONE)}"
+                    android:visibility="@{data == null ? View.GONE : ((data.isNever() || data.isPreOrder() || data.isCustom() || data.isService()) ? View.GONE : (data.inStock ? View.GONE : View.VISIBLE))}"
                     app:layout_constraintBottom_toBottomOf="@+id/vp_product_slider"
                     app:layout_constraintEnd_toEndOf="@+id/vp_product_slider"
                     app:layout_constraintStart_toStartOf="@+id/vp_product_slider"
@@ -215,6 +215,23 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_pre_order"
+                    android:layout_width="@dimen/size_140"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/spacing_tiny"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:background="@drawable/bg_pre_order_new"
+                    android:visibility="@{data == null ? View.GONE : (data.isPreOrder ? View.VISIBLE : View.GONE)}"
+                    android:text="@string/pre_order"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/text_size_small"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="@+id/vp_product_slider"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tl_product_slider"
@@ -364,8 +381,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_8"
-                    android:text="@{data.outOfStock ? @string/out_of_stock : (data.isThreshold() &amp;&amp; (data.getAvailableQuantity() >= data.getAvailableThreshold()) ? @string/in_stock : @string/in_stock_quantity_x(data.getAvailableQuantity))}"
-                    android:visibility="@{data.isNever ? View.GONE : View.VISIBLE}"
+                    android:text="@{data.inStock ? (data.isThreshold() ? (data.getAvailableQuantity() > data.getAvailableThreshold() ? @string/in_stock : @string/in_stock_quantity_x(data.getAvailableQuantity)) : @string/in_stock_quantity_x(data.getAvailableQuantity)) : @string/out_of_stock }"
+                    android:visibility="@{data == null ? View.GONE : ((data.isNever() || data.isPreOrder() || data.isCustom() || data.isService()) ? View.GONE : View.VISIBLE)}"
                     app:layout_constraintStart_toStartOf="@+id/tv_reduce_price"
                     app:layout_constraintTop_toBottomOf="@+id/tv_reduce_price"
                     tools:text="Out of Stock" />
@@ -440,6 +457,30 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/iv_seller_info" />
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_estimated_arrival"
+                    android:layout_width="@dimen/size_0"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_8"
+                    android:layout_marginEnd="@dimen/size_16"
+                    android:layout_marginRight="@dimen/size_16"
+                    android:text="@{@string/estimated_arrival_x(data.getDeliveryLeadTime)}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/iv_seller_info"
+                    app:layout_constraintTop_toBottomOf="@+id/div_horizontal_1"
+                    tools:text="Estimated arrival June 1" />
+
+                <View
+                    android:id="@+id/div_horizontal_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_2"
+                    android:layout_marginTop="@dimen/size_8"
+                    android:background="@color/grey_bg"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_estimated_arrival" />
+
                 <TextView
                     android:id="@+id/tv_description"
                     android:layout_width="wrap_content"
@@ -450,7 +491,7 @@
                     android:textStyle="bold"
                     android:visibility="@{data.description.empty? View.GONE : View.VISIBLE}"
                     app:layout_constraintStart_toStartOf="@+id/iv_seller_info"
-                    app:layout_constraintTop_toBottomOf="@+id/div_horizontal_1" />
+                    app:layout_constraintTop_toBottomOf="@+id/div_horizontal_4" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_product_desciption"
@@ -723,11 +764,11 @@
                 android:layout_marginTop="@dimen/size_6"
                 android:layout_marginEnd="@dimen/size_16"
                 android:layout_marginBottom="@dimen/size_6"
-                android:background="@{data.isOutOfStock ? @drawable/btn_add_to_cart_disabled : @drawable/btn_add_to_cart_enabled}"
+                android:background="@{(data.isNever() || data.isCustom || data.isService || data.isPreOrder) ? @drawable/btn_add_to_cart_enabled : (handler.checkQuantity(data.quantity) ? @drawable/btn_add_to_cart_disabled : @drawable/btn_add_to_cart_enabled)}"
                 android:onClick="@{() -> handler.addToCart(false)}"
                 android:text="@string/product_details_add_to_cart"
                 android:textAlignment="center"
-                android:textColor="@{data.isOutOfStock ? @color/white : @color/background_orange}"
+                android:textColor="@{(data.isNever() || data.isCustom || data.isService || data.isPreOrder) ? @color/background_orange : (handler.checkQuantity(data.quantity) ? @color/white : @color/background_orange)}"
                 android:textSize="@dimen/font_size_12"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"

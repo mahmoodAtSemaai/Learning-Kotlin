@@ -5,7 +5,6 @@
 
     <data>
 
-
         <import type="com.webkul.mobikul.odoo.helper.ImageHelper.ImageType" />
 
         <variable
@@ -71,32 +70,43 @@
                 style="@style/Semaai.TextAppearance.Caption.Bold"
                 android:layout_width="@dimen/size_0"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/size_10"
+                android:layout_marginTop="@dimen/spacing_generic"
                 android:background="@drawable/background_discount_price"
                 android:padding="@dimen/spacing_tiny"
                 android:text="@{data.calculateDiscount()}"
                 android:textColor="@color/white"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/iv_product"
                 app:visibility="@{data.priceReduce.empty==true ? View.INVISIBLE : View.VISIBLE}" />
 
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_out_of_stock_text"
-                style="@style/Semaai.TextAppearance.Caption.Bold"
-                android:layout_width="match_parent"
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_marginStart="@dimen/size_30"
+                android:layout_marginEnd="@dimen/size_30"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/size_10"
-                android:background="@drawable/background_out_of_stock"
-                android:gravity="center"
-                android:padding="@dimen/size_4"
-                android:text="@string/out_of_stock"
-                android:textColor="@color/white"
-                android:visibility="@{data.outOfStock ? View.VISIBLE : View.GONE }"
-                app:layout_constraintBottom_toBottomOf="@+id/iv_product"
+                android:visibility="@{data == null ? View.GONE : ((data.isNever() || data.isCustom() || data.isService()) ? View.GONE : (data.isPreOrder ? View.VISIBLE : (data.inStock ? View.GONE : View.VISIBLE)))}"
+                android:background="@{data.isPreOrder ? @drawable/bg_pre_order : @drawable/bg_out_of_stock}"
+                app:layout_constraintBottom_toBottomOf="@id/iv_product"
                 app:layout_constraintEnd_toEndOf="@id/iv_product"
                 app:layout_constraintStart_toStartOf="@id/iv_product"
-                tools:visibility="visible" />
+                android:paddingHorizontal="@dimen/size_20"
+                android:layout_marginBottom="@dimen/spacing_generic">
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/Semaai.TextAppearance.Caption.Bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_tiny"
+                    android:layout_marginBottom="@dimen/spacing_tiny"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:text="@{data.isPreOrder ? @string/pre_order : @string/out_of_stock}"
+                    android:textSize="@dimen/text_size_12sp"
+                    android:textColor="@color/white" />
+
+            </FrameLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_product_name"
@@ -166,13 +176,32 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/size_10"
                 android:layout_marginTop="@dimen/margin_4"
-                android:text="@{data.outOfStock ? @string/out_of_stock : (data.isThreshold() &amp;&amp; (data.getAvailableQuantity() >= data.getAvailableThreshold()) ? @string/in_stock : @string/in_stock_quantity_x(data.getAvailableQuantity))}"
+                android:paddingBottom="@dimen/spacing_generic"
+                android:text="@{data.inStock ? (data.isThreshold() ? (data.getAvailableQuantity() > data.getAvailableThreshold() ? @string/in_stock : @string/in_stock_quantity_x(data.getAvailableQuantity())) : @string/in_stock_quantity_x(data.getAvailableQuantity())) : @string/in_stock_quantity_0 }"
                 android:textColor="@color/colorDarkGrey"
-                android:visibility="@{data.isNever ? View.INVISIBLE : View.VISIBLE}"
+                android:textSize="@dimen/font_size_13sp"
+                android:visibility="@{data == null ? View.GONE : ((data.isNever() || data.isCustom() || data.isPreOrder() || data.isService) ? View.GONE : View.VISIBLE)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_seller_name"
                 tools:text="Stock 10k" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_estimated_arrival"
+                style="@style/medium_normal_text"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/size_10"
+                android:layout_marginTop="@dimen/spacing_tiny"
+                android:paddingBottom="@dimen/spacing_generic"
+                android:text="@{@string/estimated_arrival_x(data.getDeliveryLeadTime)}"
+                android:textColor="@color/colorDarkGrey"
+                android:textSize="@dimen/font_size_13sp"
+                android:visibility="@{data == null ? View.GONE : (data.isPreOrder() ? View.VISIBLE : View.GONE)}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_seller_name"
+                tools:text="Estimated arrival 22 June" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

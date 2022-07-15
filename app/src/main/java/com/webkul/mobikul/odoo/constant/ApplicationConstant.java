@@ -41,7 +41,7 @@ public interface ApplicationConstant {
     String TYPE_CATEGORY = "category";
     String TYPE_CHAT = "chat";
     String TYPE_NONE = "none";
-
+    String TYPE_SERVICE = "service";
 
     /*PAYMENT ACQUIRER CODES*/
     String ACQUIRER_CODE_STRIPE = "STRIPE";
@@ -60,9 +60,11 @@ public interface ApplicationConstant {
     String BUNDLE_KEY_OPEN_CART = "BUNDLE_KEY_OPEN_CART";
 
     /* Product Inventory Availability Type */
+    String ALWAYS = "always";
     String THRESHOLD = "threshold";
     String NEVER = "never";
-    String ALWAYS = "always";
+    String PRE_ORDER = "pre-order";
+    String CUSTOM = "custom";
 
 //    static boolean isNetworkAvailable(final Context context) {
 //        final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
