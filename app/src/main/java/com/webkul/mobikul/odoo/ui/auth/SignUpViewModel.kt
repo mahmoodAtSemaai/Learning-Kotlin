@@ -10,27 +10,28 @@ import com.webkul.mobikul.odoo.domain.enums.SignUpFieldsValidation
 import com.webkul.mobikul.odoo.domain.usecase.auth.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val signUpUseCase: SignUpUseCase,
-    private val countryStateUseCase: CountryStateUseCase,
-    private val billingAddressUseCase: BillingAddressUseCase,
-    private val viewMarketPlaceTnCUseCase: ViewMarketPlaceTnCUseCase,
-    private val viewTnCUseCase: ViewTnCUseCase
-) : BaseViewModel(), IModel<SignUpState, SignUpIntent> {
+        private val signUpUseCase: SignUpUseCase,
+        private val countryStateUseCase: CountryStateUseCase,
+        private val billingAddressUseCase: BillingAddressUseCase,
+        private val viewMarketPlaceTnCUseCase: ViewMarketPlaceTnCUseCase,
+        private val viewTnCUseCase: ViewTnCUseCase
+) : BaseViewModel(), IModel<SignUpState, SignUpIntent, SignUpEffect> {
 
     override val intents: Channel<SignUpIntent> = Channel(Channel.UNLIMITED)
 
     private val _state = MutableStateFlow<SignUpState>(SignUpState.Idle)
     override val state: StateFlow<SignUpState>
         get() = _state
+
+    private val _effect = Channel<SignUpEffect>()
+    override val effect: Flow<SignUpEffect>
+        get() = _effect.receiveAsFlow()
 
     init {
         handlerIntent()
@@ -63,7 +64,8 @@ class SignUpViewModel @Inject constructor(
     private fun navigateToLoginScreen() {
         viewModelScope.launch {
             _state.value = SignUpState.NavigateToLogin
-        }    }
+        }
+    }
 
     private fun getSignUpTnC() {
         viewModelScope.launch {
@@ -129,7 +131,7 @@ class SignUpViewModel @Inject constructor(
                     signUpState = when (it) {
                         is Resource.Default -> SignUpState.Idle
                         is Resource.Failure -> {
-                            when(it.failureStatus){
+                            when (it.failureStatus) {
                                 FailureStatus.ACCESS_DENIED -> SignUpState.AccessDenied(it.message)
                                 else -> SignUpState.Idle
                             }
@@ -182,21 +184,21 @@ class SignUpViewModel @Inject constructor(
                 signUp.catch {
                     when (it.message?.toInt()) {
                         SignUpFieldsValidation.EMPTY_PHONE_NO.value -> signUpState =
-                            SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_PHONE_NO)
+                                SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_PHONE_NO)
                         SignUpFieldsValidation.EMPTY_NAME.value -> signUpState =
-                            SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_NAME)
+                                SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_NAME)
                         SignUpFieldsValidation.EMPTY_PASSWORD.value -> signUpState =
-                            SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_PASSWORD)
+                                SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_PASSWORD)
                         SignUpFieldsValidation.INVALID_PASSWORD.value -> signUpState =
-                            SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.INVALID_PASSWORD)
+                                SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.INVALID_PASSWORD)
                         SignUpFieldsValidation.UNEQUAL_PASS_AND_CONFIRM_PASS.value -> signUpState =
-                            SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.UNEQUAL_PASS_AND_CONFIRM_PASS)
+                                SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.UNEQUAL_PASS_AND_CONFIRM_PASS)
                         SignUpFieldsValidation.EMPTY_TERMS_CONDITIONS.value -> signUpState =
-                            SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_TERMS_CONDITIONS)
+                                SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_TERMS_CONDITIONS)
                         SignUpFieldsValidation.EMPTY_PROFILE_URL.value -> signUpState =
-                            SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_PROFILE_URL)
+                                SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_PROFILE_URL)
                         SignUpFieldsValidation.EMPTY_COUNTRY.value -> signUpState =
-                            SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_COUNTRY)
+                                SignUpState.InvalidSignUpDetailsError(SignUpFieldsValidation.EMPTY_COUNTRY)
 
 
                     }
@@ -204,7 +206,7 @@ class SignUpViewModel @Inject constructor(
                     when (it) {
                         is Resource.Default -> signUpState = SignUpState.Idle
                         is Resource.Failure -> signUpState =
-                            SignUpState.Error(it.message, it.failureStatus)
+                                SignUpState.Error(it.message, it.failureStatus)
                         is Resource.Loading -> signUpState = SignUpState.Loading
                         is Resource.Success -> signUpState = SignUpState.SignUp(it.value)
                     }

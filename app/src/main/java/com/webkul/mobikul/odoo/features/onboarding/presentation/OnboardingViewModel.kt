@@ -5,33 +5,36 @@ import com.webkul.mobikul.odoo.core.data.local.AppPreferences
 import com.webkul.mobikul.odoo.core.mvicore.IModel
 import com.webkul.mobikul.odoo.core.platform.BaseViewModel
 import com.webkul.mobikul.odoo.core.utils.FailureStatus
-import com.webkul.mobikul.odoo.core.utils.PRIVACY_POLICY_URL
 import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.features.onboarding.domain.usecase.CountdownTimerUseCase
 import com.webkul.mobikul.odoo.features.onboarding.domain.usecase.OnboardingUseCase
+import com.webkul.mobikul.odoo.features.onboarding.presentation.effect.OnBoardingEffect
 import com.webkul.mobikul.odoo.features.onboarding.presentation.intent.OnboardingIntent
 import com.webkul.mobikul.odoo.features.onboarding.presentation.state.OnboardingState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
-    private val onboardingUseCase: OnboardingUseCase,
-    private val countdownTimerUseCase: CountdownTimerUseCase,
-    private val appPreferences: AppPreferences
-) : BaseViewModel(), IModel<OnboardingState, OnboardingIntent> {
+        private val onboardingUseCase: OnboardingUseCase,
+        private val countdownTimerUseCase: CountdownTimerUseCase,
+        private val appPreferences: AppPreferences
+) : BaseViewModel(), IModel<OnboardingState, OnboardingIntent, OnBoardingEffect> {
 
     override val intents: Channel<OnboardingIntent> = Channel(Channel.UNLIMITED)
 
     private val _state = MutableStateFlow<OnboardingState>(OnboardingState.Idle)
     override val state: StateFlow<OnboardingState>
         get() = _state
+
+    private val _effect = Channel<OnBoardingEffect>()
+    override val effect: Flow<OnBoardingEffect>
+        get() = _effect.receiveAsFlow()
+
     private var countDownTimer: Job = Job()
 
     init {
@@ -51,7 +54,7 @@ class OnboardingViewModel @Inject constructor(
                     is OnboardingIntent.StartTimer -> {
                         startTimer(it.time)
                     }
-                    is OnboardingIntent.SetIdle ->{
+                    is OnboardingIntent.SetIdle -> {
                         setIdleState()
                     }
                 }
@@ -65,7 +68,7 @@ class OnboardingViewModel @Inject constructor(
         }
     }
 
-    private fun setFirstTimeLaunch(){
+    private fun setFirstTimeLaunch() {
         appPreferences.isFirstTime = false
         //TODO -> Handle preferences related stuff in data layer
     }

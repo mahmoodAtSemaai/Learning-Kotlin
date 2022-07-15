@@ -11,8 +11,6 @@ import com.webkul.mobikul.odoo.core.extension.close
 import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BaseActivity
 import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
-import com.webkul.mobikul.odoo.core.utils.ERROR_INTERNET_CONNECTION
-import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.data.entity.LoginEntity
 import com.webkul.mobikul.odoo.databinding.FragmentLoginV1Binding
 import com.webkul.mobikul.odoo.dialog_frag.ForgotPasswordDialogFragment
@@ -25,7 +23,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV1Binding>(),
-        IView<LoginIntent, LoginState> {
+        IView<LoginIntent, LoginState, LoginEffect> {
 
     override val layoutId = R.layout.fragment_login_v1
     private val viewModel: LoginViewModel by viewModels()
@@ -49,8 +47,13 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
                 render(it)
             }
         }
-    }
 
+        lifecycleScope.launchWhenCreated {
+            viewModel.effect.collect{
+                render(it)
+            }
+        }
+    }
 
     private fun setOnClickListeners() {
 
@@ -117,6 +120,10 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
 
             is LoginState.ForgotPassword -> showForgotPasswordDialog()
         }
+    }
+
+    override fun render(effect: LoginEffect) {
+        //TODO("Not yet implemented")
     }
 
     private fun onLoginSuccess(loginResponse: LoginEntity) {

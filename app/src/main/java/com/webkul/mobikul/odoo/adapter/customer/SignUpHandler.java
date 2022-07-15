@@ -3,7 +3,6 @@ package com.webkul.mobikul.odoo.adapter.customer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.util.Base64;
 import android.view.View;
 import android.webkit.WebView;
@@ -22,12 +21,10 @@ import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.constant.ApplicationConstant;
 import com.webkul.mobikul.odoo.databinding.FragmentSignUpBinding;
 import com.webkul.mobikul.odoo.features.authentication.presentation.AuthenticationActivity;
-import com.webkul.mobikul.odoo.fragment.LoginFragment;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.ErrorConstants;
 import com.webkul.mobikul.odoo.helper.FingerPrintLoginHelper;
-import com.webkul.mobikul.odoo.helper.FragmentHelper;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.SnackbarHelper;
 import com.webkul.mobikul.odoo.model.ReferralResponse;
@@ -40,10 +37,7 @@ import com.webkul.mobikul.odoo.model.customer.signup.TermAndConditionResponse;
 import com.webkul.mobikul.odoo.model.request.AuthenticationRequest;
 import com.webkul.mobikul.odoo.model.request.BaseLazyRequest;
 import com.webkul.mobikul.odoo.model.request.SignUpRequest;
-import com.webkul.mobikul.odoo.model.user.UserModel;
 import com.webkul.mobikul.odoo.updates.FirebaseRemoteConfigHelper;
-
-import java.sql.Ref;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.Observer;
@@ -108,15 +102,15 @@ public class SignUpHandler {
         }
     }
 
-    public void validateReferralCode(){
-        if (!data.getReferralCode().isEmpty() && data.getReferralCodeError().isEmpty()){
+    public void validateReferralCode() {
+        if (!data.getReferralCode().isEmpty() && data.getReferralCodeError().isEmpty()) {
             callReferralValidationApi(data.getReferralCode());
         } else {
             handleSignUp(data);
         }
     }
 
-    public void callReferralValidationApi(String referralCode){
+    public void callReferralValidationApi(String referralCode) {
         ApiConnection.validateReferralCode(context, referralCode).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<ReferralResponse>(context) {
             @Override
             public void onNext(@io.reactivex.annotations.NonNull ReferralResponse response) {
@@ -126,7 +120,7 @@ public class SignUpHandler {
         });
     }
 
-    public void handleReferralValidationResponse(ReferralResponse response){
+    public void handleReferralValidationResponse(ReferralResponse response) {
         if (response.getStatus() == ApplicationConstant.SUCCESS) {
             handleSignUp(data);
         } else {
@@ -164,7 +158,7 @@ public class SignUpHandler {
                             isSeller,
                             countryId);
 
-                    if(isSeller && FirebaseRemoteConfigHelper.isChatFeatureEnabled()) {
+                    if (isSeller && FirebaseRemoteConfigHelper.isChatFeatureEnabled()) {
                         ApiConnection.createChannel(context).subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread()).
                                 subscribe(new CustomObserver<ChatBaseResponse<ChatCreateChannelResponse>>(context) {

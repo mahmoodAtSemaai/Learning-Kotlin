@@ -3,11 +3,18 @@ package com.webkul.mobikul.odoo.core.di
 
 import android.content.Context
 import com.webkul.mobikul.odoo.core.data.local.AppPreferences
+import com.webkul.mobikul.odoo.core.utils.NetworkManager
 import com.webkul.mobikul.odoo.core.utils.ResourcesProvider
-import com.webkul.mobikul.odoo.domain.repository.AddressRepository
-import com.webkul.mobikul.odoo.domain.repository.AuthRepository
-import com.webkul.mobikul.odoo.domain.repository.TermsConditionRepository
+import com.webkul.mobikul.odoo.database.SqlLiteDbHelper
+import com.webkul.mobikul.odoo.domain.repository.*
 import com.webkul.mobikul.odoo.domain.usecase.auth.*
+import com.webkul.mobikul.odoo.domain.usecase.chat.CreateChatChannelUseCase
+import com.webkul.mobikul.odoo.domain.usecase.home.HomeLocalDataUseCase
+import com.webkul.mobikul.odoo.domain.usecase.home.HomeUseCase
+import com.webkul.mobikul.odoo.domain.usecase.network.IsNetworkUseCase
+import com.webkul.mobikul.odoo.domain.usecase.session.IsValidSessionUseCase
+import com.webkul.mobikul.odoo.domain.usecase.splash.SplashLocalDataUseCase
+import com.webkul.mobikul.odoo.domain.usecase.splash.SplashUseCase
 import com.webkul.mobikul.odoo.features.authentication.domain.repo.AuthenticationRepository
 import com.webkul.mobikul.odoo.features.authentication.domain.repo.HomePageRepository
 import com.webkul.mobikul.odoo.features.authentication.domain.repo.SplashPageRepository
@@ -28,86 +35,86 @@ class UseCaseModule {
     @Provides
     @Singleton
     fun provideLogInUseCase(
-        authRepository: AuthRepository
+            authRepository: AuthRepository
     ): LogInUseCase = LogInUseCase(authRepository)
 
     @Provides
     @Singleton
     fun provideSignUpUseCase(
-        authRepository: AuthRepository,
-        @ApplicationContext context: Context
+            authRepository: AuthRepository,
+            @ApplicationContext context: Context
     ): SignUpUseCase = SignUpUseCase(authRepository, context)
 
     @Provides
     @Singleton
     fun provideViewPrivacyPolicyUseCase(@ApplicationContext context: Context): ViewPrivacyPolicyUseCase =
-        ViewPrivacyPolicyUseCase(context)
+            ViewPrivacyPolicyUseCase(context)
 
     @Provides
     @Singleton
     fun provideBillingAddressUseCase(
-        addressRepository: AddressRepository
+            addressRepository: AddressRepository
     ): BillingAddressUseCase = BillingAddressUseCase(addressRepository)
 
     @Provides
     @Singleton
     fun provideCountryStateUseCase(
-        addressRepository: AddressRepository
-    ): CountryStateUseCase = CountryStateUseCase(addressRepository)
+            countryStateRepository: CountryStateRepository
+    ): CountryStateUseCase = CountryStateUseCase(countryStateRepository)
 
     @Provides
     @Singleton
     fun provideViewMarketPlaceTnCUseCase(
-        termsConditionRepository: TermsConditionRepository
+            termsConditionRepository: TermsConditionRepository
     ): ViewMarketPlaceTnCUseCase = ViewMarketPlaceTnCUseCase(termsConditionRepository)
 
     @Provides
     @Singleton
     fun provideViewTnCUseCase(
-        termsConditionRepository: TermsConditionRepository
+            termsConditionRepository: TermsConditionRepository
     ): ViewTnCUseCase = ViewTnCUseCase(termsConditionRepository)
 
     @Provides
     @Singleton
     fun provideVerifyPhoneNumberUseCase(): VerifyPhoneNumberUseCase =
-        VerifyPhoneNumberUseCase()
+            VerifyPhoneNumberUseCase()
 
     @Provides
     @Singleton
     fun provideContinuePhoneNumberUseCase(authenticationRepository: AuthenticationRepository): ContinuePhoneNumberUseCase =
-        ContinuePhoneNumberUseCase(authenticationRepository)
+            ContinuePhoneNumberUseCase(authenticationRepository)
 
     @Provides
     @Singleton
     fun provideLoginPasswordUseCase(
-        authenticationRepository: AuthenticationRepository,
-        appPreferences: AppPreferences
+            authenticationRepository: AuthenticationRepository,
+            appPreferences: AppPreferences
     ): LoginPasswordUseCase =
-        LoginPasswordUseCase(authenticationRepository, appPreferences)
+            LoginPasswordUseCase(authenticationRepository, appPreferences)
 
 
     @Provides
     @Singleton
     fun provideGenerateOtpUseCase(authenticationRepository: AuthenticationRepository): GenerateOtpUseCase =
-        GenerateOtpUseCase(authenticationRepository)
+            GenerateOtpUseCase(authenticationRepository)
 
     @Provides
     @Singleton
     fun provideVerifyOtpUseCase(
-        authenticationRepository: AuthenticationRepository,
-        appPreferences: AppPreferences
+            authenticationRepository: AuthenticationRepository,
+            appPreferences: AppPreferences
     ): VerifyOtpUseCase =
-        VerifyOtpUseCase(authenticationRepository, appPreferences)
+            VerifyOtpUseCase(authenticationRepository, appPreferences)
 
     @Provides
     @Singleton
     fun provideSplashPageUseCase(splashPageRepository: SplashPageRepository): SplashPageUseCase =
-        SplashPageUseCase(splashPageRepository)
+            SplashPageUseCase(splashPageRepository)
 
     @Provides
     @Singleton
     fun provideHomePageUseCase(homePageRepository: HomePageRepository): HomePageDataUseCase =
-        HomePageDataUseCase(homePageRepository)
+            HomePageDataUseCase(homePageRepository)
 
     @Provides
     @Singleton
@@ -116,6 +123,71 @@ class UseCaseModule {
     @Provides
     @Singleton
     fun provideOnboardingUseCase(resourcesProvider: ResourcesProvider): OnboardingUseCase =
-        OnboardingUseCase(resourcesProvider)
+            OnboardingUseCase(resourcesProvider)
 
+    @Provides
+    @Singleton
+    fun provideCreateChatChannelUseCase(
+            chatChannelRepository: ChatChannelRepository,
+            appPreferences: AppPreferences
+    ): CreateChatChannelUseCase =
+            CreateChatChannelUseCase(chatChannelRepository, appPreferences)
+
+    @Provides
+    @Singleton
+    fun provideIsFirstTimeUseCase(
+            appPreferences: AppPreferences
+    ): IsFirstTimeUseCase = IsFirstTimeUseCase(appPreferences)
+
+    @Provides
+    @Singleton
+    fun provideHomeDataUseCase(
+            homeDataRepository: HomeDataRepository,
+            homeLocalDataUseCase: HomeLocalDataUseCase
+    ): HomeUseCase = HomeUseCase(homeDataRepository, homeLocalDataUseCase)
+
+    @Provides
+    @Singleton
+    fun provideSplashDataUseCase(
+            splashDataRepository: SplashDataRepository,
+            splashLocalDataUseCase: SplashLocalDataUseCase
+    ): SplashUseCase = SplashUseCase(splashDataRepository, splashLocalDataUseCase)
+
+    @Provides
+    @Singleton
+    fun provideHomeLocalDataUseCase(
+            sqlLiteDbHelper: SqlLiteDbHelper
+    ): HomeLocalDataUseCase = HomeLocalDataUseCase(sqlLiteDbHelper)
+
+    @Provides
+    @Singleton
+    fun provideSplashLocalDataUseCase(
+            sqlLiteDbHelper: SqlLiteDbHelper
+    ): SplashLocalDataUseCase = SplashLocalDataUseCase(sqlLiteDbHelper)
+
+    @Provides
+    @Singleton
+    fun provideIsNetworkUseCase(
+            networkManager: NetworkManager
+    ): IsNetworkUseCase = IsNetworkUseCase(networkManager)
+
+
+    @Provides
+    @Singleton
+    fun provideIsUserAuthorisedUseCase(
+            appPreferences: AppPreferences
+    ): IsUserAuthorisedUseCase = IsUserAuthorisedUseCase(appPreferences)
+
+    @Provides
+    @Singleton
+    fun provideIsUserApprovedUseCase(
+            appPreferences: AppPreferences
+    ): IsUserApprovedUseCase = IsUserApprovedUseCase(appPreferences)
+
+    @Provides
+    @Singleton
+    fun provideIsValidSessionUseCase(
+            isUserAuthorisedUseCase: IsUserAuthorisedUseCase,
+            isUserApprovedUseCase: IsUserApprovedUseCase
+    ): IsValidSessionUseCase = IsValidSessionUseCase(isUserAuthorisedUseCase, isUserApprovedUseCase)
 }

@@ -22,8 +22,8 @@ import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
 import com.webkul.mobikul.odoo.core.utils.INTENT_SPLASH_SCREEN
 import com.webkul.mobikul.odoo.databinding.FragmentAuthenticationBinding
 import com.webkul.mobikul.odoo.features.authentication.domain.enums.VerifyPhoneNumberValidation
-import com.webkul.mobikul.odoo.features.authentication.presentation.AuthenticationActivity
 import com.webkul.mobikul.odoo.features.authentication.presentation.intent.AuthenticationIntent
+import com.webkul.mobikul.odoo.features.authentication.presentation.effect.AuthenticationEffect
 import com.webkul.mobikul.odoo.features.authentication.presentation.state.AuthenticationState
 import com.webkul.mobikul.odoo.features.authentication.presentation.viewmodel.AuthenticationViewModel
 import com.webkul.mobikul.odoo.helper.AppSharedPref
@@ -35,7 +35,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class AuthenticationFragment @Inject constructor() :
     BindingBaseFragment<FragmentAuthenticationBinding>(),
-    IView<AuthenticationIntent, AuthenticationState> {
+    IView<AuthenticationIntent, AuthenticationState, AuthenticationEffect> {
 
     override val layoutId: Int = R.layout.fragment_authentication
     private val viewModel: AuthenticationViewModel by viewModels()
@@ -62,6 +62,12 @@ class AuthenticationFragment @Inject constructor() :
     private fun setObservers() {
         lifecycleScope.launch {
             viewModel.state.collect {
+                render(it)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.effect.collect() {
                 render(it)
             }
         }
@@ -131,6 +137,10 @@ class AuthenticationFragment @Inject constructor() :
                 showPrivacyPolicy()
             }
         }
+    }
+
+    override fun render(effect: AuthenticationEffect) {
+        //TODO("Not yet implemented")
     }
 
     private fun showPrivacyPolicy() {

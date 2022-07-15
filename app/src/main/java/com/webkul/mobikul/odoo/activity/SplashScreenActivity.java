@@ -266,6 +266,7 @@ public class SplashScreenActivity extends BaseActivity {
         Intent intent = new Intent(SplashScreenActivity.this, NewHomeActivity.class);
         intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
         startActivity(intent);
+        finish();
     }
 
     private void HitApiForHomePage() {
@@ -291,6 +292,7 @@ public class SplashScreenActivity extends BaseActivity {
                     Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
                     intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
                     startActivity(intent);
+                    finish();
                 } else {
 
                     if (homePageResponse.isAccessDenied()) {
@@ -377,6 +379,7 @@ public class SplashScreenActivity extends BaseActivity {
                             Intent intent = new Intent(SplashScreenActivity.this, NewHomeActivity.class);
                             intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
                             startActivity(intent);
+                            finish();
                         } else {
 
                             if (homePageResponse.isAccessDenied()) {
@@ -449,6 +452,7 @@ public class SplashScreenActivity extends BaseActivity {
             @Override
             public void onComplete() {
                 startActivity(intent);
+                finish();
             }
         };
 

@@ -202,4 +202,14 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <!--TransparentTheme used for routing activity to decide which splash to launch-->
+    <style name="TransparentTheme" parent="BaseTheme.AppTheme.NoActionBar.FullScreenTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
 </resources>

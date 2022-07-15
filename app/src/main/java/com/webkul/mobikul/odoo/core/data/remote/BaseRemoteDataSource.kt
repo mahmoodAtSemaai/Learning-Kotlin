@@ -1,15 +1,13 @@
 package com.webkul.mobikul.odoo.core.data.remote
 
 import com.google.gson.Gson
-import com.webkul.mobikul.odoo.core.utils.*
-import com.webkul.mobikul.odoo.data.entity.AddressEntity
-import com.webkul.mobikul.odoo.helper.OdooApplication
+import com.webkul.mobikul.odoo.core.data.local.AppPreferences
+import com.webkul.mobikul.odoo.core.utils.FailureStatus
+import com.webkul.mobikul.odoo.core.utils.HTTP_ERROR_UNABLE_TO_PROCESS_REQUEST
+import com.webkul.mobikul.odoo.core.utils.HTTP_ERROR_UNAUTHORIZED_REQUEST
+import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.model.BaseResponse
-import com.webkul.mobikul.odoo.model.customer.address.MyAddressesResponse
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.EntryPointAccessors
+import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse
 import org.json.JSONObject
 import retrofit2.HttpException
 import java.io.IOException
@@ -17,22 +15,51 @@ import java.net.ConnectException
 import java.net.UnknownHostException
 import javax.inject.Inject
 
-open class BaseRemoteDataSource @Inject constructor(private val gson: Gson) {
+open class BaseRemoteDataSource @Inject constructor(
+        private val gson: Gson,
+        private val appPreferences: AppPreferences
+) {
 
-    suspend fun <S,T> safeApiCall(domainType : Class<S>, apiCall: suspend () -> T): Resource<S> {
+
+    suspend fun <S, T> safeApiCall(domainType: Class<S>, apiCall: suspend () -> T): Resource<S> {
         try {
             val apiResponse = apiCall.invoke()
 
-            return if(apiResponse is BaseResponse ) {
+            return if (apiResponse is BaseResponse) {
                 if (apiResponse.isSuccess) {
+                    if (apiResponse.isAccessDenied) {
+                        appPreferences.clearCustomerData()
+                        Resource.Failure(
+                                failureStatus = FailureStatus.ACCESS_DENIED,
+                                message = apiResponse.message
+                        )
+                    } else if (apiResponse.isUserApproved.not()) {
+                        appPreferences.isUserApproved = false
+                        Resource.Failure(
+                                failureStatus = FailureStatus.USER_UNAPPROVED,
+                                message = apiResponse.message
+                        )
+                    } else {
+                        val parsedResponse = gson.fromJson(gson.toJson(apiResponse), domainType)
+                        Resource.Success(parsedResponse)
+                    }
+                } else {
+                    Resource.Failure(
+                            failureStatus = FailureStatus.API_FAIL,
+                            message = apiResponse.message
+                    )
+                }
+            } else if (apiResponse is ChatBaseResponse<*>) {
+                if (apiResponse.success) {
                     val parsedResponse = gson.fromJson(gson.toJson(apiResponse), domainType)
                     Resource.Success(parsedResponse)
-                } else if (apiResponse.isAccessDenied){
-                    Resource.Failure(failureStatus = FailureStatus.ACCESS_DENIED, message = apiResponse.message)
-                }else {
-                    Resource.Failure(failureStatus = FailureStatus.API_FAIL, message = apiResponse.message)
+                } else {
+                    Resource.Failure(
+                            failureStatus = FailureStatus.API_FAIL,
+                            message = apiResponse.message
+                    )
                 }
-            }else{
+            } else {
                 val parsedResponse = gson.fromJson(gson.toJson(apiResponse), domainType)
                 Resource.Success(parsedResponse)
             }
@@ -72,7 +99,8 @@ open class BaseRemoteDataSource @Inject constructor(private val gson: Gson) {
                                 try {
                                     val jsonErrorObject =
                                             JSONObject(
-                                                    throwable.response()?.errorBody()?.string() ?: ""
+                                                    throwable.response()?.errorBody()?.string()
+                                                            ?: ""
                                             )
                                     val apiResponse = jsonErrorObject.toString()
 
@@ -118,15 +146,38 @@ open class BaseRemoteDataSource @Inject constructor(private val gson: Gson) {
         try {
             val apiResponse = apiCall.invoke()
 
-            return if(apiResponse is BaseResponse ) {
+            return if (apiResponse is BaseResponse) {
                 if (apiResponse.isSuccess) {
-                    Resource.Success(apiResponse)
-                } else if (apiResponse.isAccessDenied){
-                    Resource.Failure(failureStatus = FailureStatus.ACCESS_DENIED, message = apiResponse.message)
-                }else {
-                    Resource.Failure(failureStatus = FailureStatus.API_FAIL, message = apiResponse.message)
+                    if (apiResponse.isAccessDenied) {
+                        Resource.Failure(
+                                failureStatus = FailureStatus.ACCESS_DENIED,
+                                message = apiResponse.message
+                        )
+                    } else if (apiResponse.isUserApproved.not()) {
+                        appPreferences.isUserApproved = false
+                        Resource.Failure(
+                                failureStatus = FailureStatus.USER_UNAPPROVED,
+                                message = apiResponse.message
+                        )
+                    } else {
+                        Resource.Success(apiResponse)
+                    }
+                } else if (apiResponse is ChatBaseResponse<*>) {
+                    if (apiResponse.success) {
+                        Resource.Success(apiResponse)
+                    } else {
+                        Resource.Failure(
+                                failureStatus = FailureStatus.API_FAIL,
+                                message = apiResponse.message
+                        )
+                    }
+                } else {
+                    Resource.Failure(
+                            failureStatus = FailureStatus.API_FAIL,
+                            message = apiResponse.message
+                    )
                 }
-            }else{
+            } else {
                 Resource.Success(apiResponse)
             }
 
@@ -165,7 +216,8 @@ open class BaseRemoteDataSource @Inject constructor(private val gson: Gson) {
                                 try {
                                     val jsonErrorObject =
                                             JSONObject(
-                                                    throwable.response()?.errorBody()?.string() ?: ""
+                                                    throwable.response()?.errorBody()?.string()
+                                                            ?: ""
                                             )
                                     val apiResponse = jsonErrorObject.toString()
 

@@ -22,17 +22,11 @@ import com.webkul.mobikul.odoo.core.extension.showDefaultWarningDialogWithDismis
 import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BaseActivity
 import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
-import com.webkul.mobikul.odoo.core.utils.ERROR_INTERNET_CONNECTION
-import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.data.entity.*
 import com.webkul.mobikul.odoo.databinding.FragmentSignUpV1Binding
 import com.webkul.mobikul.odoo.domain.enums.SignUpFieldsValidation
 import com.webkul.mobikul.odoo.helper.AppSharedPref
 import com.webkul.mobikul.odoo.helper.Helper
-import com.webkul.mobikul.odoo.model.customer.address.MyAddressesResponse
-import com.webkul.mobikul.odoo.model.customer.signup.SignUpResponse
-import com.webkul.mobikul.odoo.model.customer.signup.TermAndConditionResponse
-import com.webkul.mobikul.odoo.model.generic.CountryStateData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.*
@@ -40,7 +34,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignUpV1Binding>(),
-        IView<SignUpIntent, SignUpState> {
+        IView<SignUpIntent, SignUpState, SignUpEffect> {
 
     override val layoutId: Int = R.layout.fragment_sign_up_v1
     private val viewModel: SignUpViewModel by viewModels()
@@ -101,6 +95,12 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
     private fun setObservers() {
         lifecycleScope.launch {
             viewModel.state.collect {
+                render(it)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.effect.collect {
                 render(it)
             }
         }
@@ -169,6 +169,9 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
         }
     }
 
+    override fun render(effect: SignUpEffect) {
+        //TODO("Not yet implemented")
+    }
 
     private fun getCountryStateSpinnerData() {
         triggerIntent(SignUpIntent.GetCountryStateData)

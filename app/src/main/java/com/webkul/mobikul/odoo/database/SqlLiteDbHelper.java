@@ -7,9 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.google.gson.Gson;
-import com.webkul.mobikul.odoo.activity.SplashScreenActivity;
 import com.webkul.mobikul.odoo.constant.DataBaseConstant;
-import com.webkul.mobikul.odoo.helper.CatalogHelper;
+import com.webkul.mobikul.odoo.data.entity.SplashEntity;
 import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse;
 import com.webkul.mobikul.odoo.model.customer.account.SaveCustomerDetailResponse;
 import com.webkul.mobikul.odoo.model.extra.SplashScreenResponse;
@@ -18,10 +17,8 @@ import com.webkul.mobikul.odoo.model.home.HomePageResponse;
 import com.webkul.mobikul.odoo.model.notification.NotificationMessagesResponse;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
-import static com.webkul.mobikul.odoo.database.SearchHistoryContract.SearchHistoryEntry.TABLE_NAME;
+import javax.inject.Inject;
 
 /**
 
@@ -46,6 +43,7 @@ public class SqlLiteDbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "MobikulOdoo.db";
     private static final String TABLENAME = "";
 
+    @Inject
     public SqlLiteDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -402,12 +400,62 @@ public class SqlLiteDbHelper extends SQLiteOpenHelper {
         }
     }
 
+    public long insertSplashPageEntity(SplashEntity splashEntity) {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.query(DataBaseConstant.TABLE_NAME,
+                null,
+                DataBaseConstant.PAGETYPE + " = 'SplashPageEntity'",
+                null/*new String[]{"HomePage"}*/, null, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            if (cursor.getCount() > 0 && cursor.getString(cursor.getColumnIndex(DataBaseConstant.PAGETYPE)).equalsIgnoreCase("SplashPageEntity")) {
+
+                long id = upDateSplashPageEntity(cursor.getInt(cursor.getColumnIndex(DataBaseConstant.ID)), splashEntity);
+                cursor.close();
+                sqLiteDatabase.close();
+                return id;
+            } else {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(DataBaseConstant.PAGEID, 0);
+                contentValues.put(DataBaseConstant.PAGETYPE, "SplashPageEntity");
+                Gson gson = new Gson();
+                String jsonString = gson.toJson(splashEntity);
+                contentValues.put(DataBaseConstant.CONTENT, jsonString);
+                long id = sqLiteDatabase.insert(DataBaseConstant.TABLE_NAME, null, contentValues);
+                sqLiteDatabase.close();
+                return id;
+            }
+        } else {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(DataBaseConstant.PAGEID, 0);
+            contentValues.put(DataBaseConstant.PAGETYPE, "SplashPageEntity");
+            contentValues.put(DataBaseConstant.CONTENT, splashEntity.toString());
+            long id = sqLiteDatabase.insert(DataBaseConstant.TABLE_NAME, null, contentValues);
+            sqLiteDatabase.close();
+            return id;
+        }
+    }
+
     private long upDateSplashPageData(int Id, SplashScreenResponse splashScreenResponse) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         Gson gson = new Gson();
         String jsonString = gson.toJson(splashScreenResponse);
+        values.put(DataBaseConstant.CONTENT, jsonString);
+        long id = db.update(DataBaseConstant.TABLE_NAME, values, DataBaseConstant.ID + " = ?",
+                new String[]{Id + ""});
+        db.close();
+        // updating row
+        return id;
+    }
+
+    private long upDateSplashPageEntity(int Id, SplashEntity splashEntity) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(splashEntity);
         values.put(DataBaseConstant.CONTENT, jsonString);
         long id = db.update(DataBaseConstant.TABLE_NAME, values, DataBaseConstant.ID + " = ?",
                 new String[]{Id + ""});
@@ -427,6 +475,21 @@ public class SqlLiteDbHelper extends SQLiteOpenHelper {
             Gson gson = new Gson();
             SplashScreenResponse splashScreenResponse = gson.fromJson(cursor.getString(cursor.getColumnIndex(DataBaseConstant.CONTENT)), SplashScreenResponse.class);
             return splashScreenResponse;
+        }
+        return null;
+    }
+
+    public SplashEntity getSplashPageEntity() {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.query(DataBaseConstant.TABLE_NAME,
+                null,
+                DataBaseConstant.PAGETYPE + " = 'SplashPageEntity'",
+                null/*new String[]{"HomePage"}*/, null, null, null, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            Gson gson = new Gson();
+            SplashEntity splashEntity = gson.fromJson(cursor.getString(cursor.getColumnIndex(DataBaseConstant.CONTENT)), SplashEntity.class);
+            return splashEntity;
         }
         return null;
     }

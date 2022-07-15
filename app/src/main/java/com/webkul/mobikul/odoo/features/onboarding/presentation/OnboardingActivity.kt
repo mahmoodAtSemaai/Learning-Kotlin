@@ -15,16 +15,18 @@ import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BindingBaseActivity
 import com.webkul.mobikul.odoo.databinding.ActivityOnboardingBinding
 import com.webkul.mobikul.odoo.features.onboarding.data.models.OnboardingData
+import com.webkul.mobikul.odoo.features.onboarding.presentation.effect.OnBoardingEffect
 import com.webkul.mobikul.odoo.features.onboarding.presentation.intent.OnboardingIntent
 import com.webkul.mobikul.odoo.features.onboarding.presentation.state.OnboardingState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class OnboardingActivity @Inject constructor() :
-    BindingBaseActivity<ActivityOnboardingBinding>(),
-    IView<OnboardingIntent, OnboardingState> {
+        BindingBaseActivity<ActivityOnboardingBinding>(),
+        IView<OnboardingIntent, OnboardingState, OnBoardingEffect> {
 
     var isFirstTimeLaunched: Boolean = true
     private lateinit var viewModel: OnboardingViewModel
@@ -44,6 +46,12 @@ class OnboardingActivity @Inject constructor() :
     private fun setObservers() {
         lifecycleScope.launch {
             viewModel.state.collect {
+                render(it)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.effect.collect {
                 render(it)
             }
         }
@@ -78,6 +86,10 @@ class OnboardingActivity @Inject constructor() :
         }
     }
 
+    override fun render(effect: OnBoardingEffect) {
+        //TODO("Not yet implemented")
+    }
+
     private fun slidePager() {
         if (binding.vpOnboarding.currentItem == 4) {
             redirectToSignInSignUpActivity()
@@ -89,7 +101,7 @@ class OnboardingActivity @Inject constructor() :
 
     private fun setupViewPager(onboardingData: MutableList<OnboardingData>) {
         binding.vpOnboarding.adapter =
-            OnboardingPagerAdapter(this@OnboardingActivity, onboardingData)
+                OnboardingPagerAdapter(this@OnboardingActivity, onboardingData)
         binding.bannerDotsTabLayout.setupWithViewPager(binding.vpOnboarding, true)
         triggerIntent(OnboardingIntent.StartTimer(2 * ApplicationConstant.SECONDS_IN_A_MINUTE))
         binding.tvSkipSlides.text = applicationContext.getString(R.string.skip)

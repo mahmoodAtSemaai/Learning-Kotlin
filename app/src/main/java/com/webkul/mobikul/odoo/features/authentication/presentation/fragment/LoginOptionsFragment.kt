@@ -2,9 +2,6 @@ package com.webkul.mobikul.odoo.features.authentication.presentation.fragment
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.webkul.mobikul.odoo.R
@@ -12,19 +9,18 @@ import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
 import com.webkul.mobikul.odoo.databinding.FragmentLoginOptionsBinding
-import com.webkul.mobikul.odoo.features.authentication.presentation.AuthenticationActivity
+import com.webkul.mobikul.odoo.features.authentication.presentation.effect.LoginOptionsEffect
 import com.webkul.mobikul.odoo.features.authentication.presentation.intent.LoginOptionsIntent
 import com.webkul.mobikul.odoo.features.authentication.presentation.state.LoginOptionsState
 import com.webkul.mobikul.odoo.features.authentication.presentation.viewmodel.LoginOptionsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginOptionsFragment @Inject constructor() :
-    BindingBaseFragment<FragmentLoginOptionsBinding>(),
-    IView<LoginOptionsIntent, LoginOptionsState> {
+        BindingBaseFragment<FragmentLoginOptionsBinding>(),
+        IView<LoginOptionsIntent, LoginOptionsState, LoginOptionsEffect> {
 
     override val layoutId: Int = R.layout.fragment_login_options
     private val viewModel: LoginOptionsViewModel by viewModels()
@@ -58,6 +54,12 @@ class LoginOptionsFragment @Inject constructor() :
                 render(it)
             }
         }
+
+        lifecycleScope.launch {
+            viewModel.effect.collect {
+                render(it)
+            }
+        }
     }
 
     private fun setListeners() {
@@ -85,23 +87,27 @@ class LoginOptionsFragment @Inject constructor() :
         }
     }
 
+    override fun render(effect: LoginOptionsEffect) {
+        //TODO("Not yet implemented")
+    }
+
     private fun navigateToLoginOtpScreen() {
         requireActivity().supportFragmentManager.beginTransaction()
-            .add(
-                R.id.fragment_container_authentication,
-                LoginOtpFragment.newInstance(phoneNumber),
-                LoginOtpFragment::class.java.simpleName
-            ).addToBackStack(LoginOtpFragment::class.java.simpleName).commit()
+                .add(
+                        R.id.fragment_container_authentication,
+                        LoginOtpFragment.newInstance(phoneNumber),
+                        LoginOtpFragment::class.java.simpleName
+                ).addToBackStack(LoginOtpFragment::class.java.simpleName).commit()
         triggerIntent(LoginOptionsIntent.SetIdle)
     }
 
     private fun navigateToLoginPasswordScreen() {
         requireActivity().supportFragmentManager.beginTransaction()
-            .add(
-                R.id.fragment_container_authentication,
-                LoginPasswordFragment.newInstance(phoneNumber),
-                LoginPasswordFragment::class.java.simpleName
-            ).addToBackStack(LoginPasswordFragment::class.java.simpleName).commit()
+                .add(
+                        R.id.fragment_container_authentication,
+                        LoginPasswordFragment.newInstance(phoneNumber),
+                        LoginPasswordFragment::class.java.simpleName
+                ).addToBackStack(LoginPasswordFragment::class.java.simpleName).commit()
         triggerIntent(LoginOptionsIntent.SetIdle)
     }
 

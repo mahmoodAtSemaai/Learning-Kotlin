@@ -5,29 +5,26 @@ import com.webkul.mobikul.odoo.core.data.local.AppPreferences
 import com.webkul.mobikul.odoo.core.mvicore.IModel
 import com.webkul.mobikul.odoo.core.platform.BaseViewModel
 import com.webkul.mobikul.odoo.core.utils.FailureStatus
-import com.webkul.mobikul.odoo.core.utils.PRIVACY_POLICY_URL
+import com.webkul.mobikul.odoo.core.utils.PRIVACY_POLICY_URL_DEFAULT
 import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.features.authentication.domain.enums.VerifyPhoneNumberValidation
 import com.webkul.mobikul.odoo.features.authentication.domain.usecase.ContinuePhoneNumberUseCase
 import com.webkul.mobikul.odoo.features.authentication.domain.usecase.VerifyPhoneNumberUseCase
 import com.webkul.mobikul.odoo.features.authentication.presentation.intent.AuthenticationIntent
-import com.webkul.mobikul.odoo.features.authentication.presentation.intent.LoginPasswordIntent
+import com.webkul.mobikul.odoo.features.authentication.presentation.effect.AuthenticationEffect
 import com.webkul.mobikul.odoo.features.authentication.presentation.state.AuthenticationState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AuthenticationViewModel @Inject constructor(
-    private val verifyPhoneNumberUseCase: VerifyPhoneNumberUseCase,
-    private val continuePhoneNumberUseCase: ContinuePhoneNumberUseCase,
-    private val appPreferences: AppPreferences
-) : BaseViewModel(), IModel<AuthenticationState, AuthenticationIntent> {
+        private val verifyPhoneNumberUseCase: VerifyPhoneNumberUseCase,
+        private val continuePhoneNumberUseCase: ContinuePhoneNumberUseCase,
+        private val appPreferences: AppPreferences
+) : BaseViewModel(), IModel<AuthenticationState, AuthenticationIntent, AuthenticationEffect> {
 
     //        //TODO -> Handle preferences related stuff in data layer
     override val intents: Channel<AuthenticationIntent> = Channel(Channel.UNLIMITED)
@@ -35,6 +32,10 @@ class AuthenticationViewModel @Inject constructor(
     private val _state = MutableStateFlow<AuthenticationState>(AuthenticationState.Idle)
     override val state: StateFlow<AuthenticationState>
         get() = _state
+
+    private val _effect = Channel<AuthenticationEffect>()
+    override val effect: Flow<AuthenticationEffect>
+        get() = _effect.receiveAsFlow()
 
     init {
         handlerIntent()
@@ -48,7 +49,9 @@ class AuthenticationViewModel @Inject constructor(
                     is AuthenticationIntent.Verify -> validatePhoneNumber(it.phoneNumber)
                     is AuthenticationIntent.SignUp -> redirectToSignup()
                     is AuthenticationIntent.PrivacyPolicy -> showPrivacyPolicy()
-                    is AuthenticationIntent.SavePrivacyPolicy -> { setPrivacyPolicyUrl() }
+                    is AuthenticationIntent.SavePrivacyPolicy -> {
+                        setPrivacyPolicyUrl()
+                    }
                 }
             }
         }
@@ -57,7 +60,7 @@ class AuthenticationViewModel @Inject constructor(
 
     private fun setPrivacyPolicyUrl() {
         if (appPreferences.privacyUrl?.isEmpty() == true)
-            appPreferences.privacyUrl = PRIVACY_POLICY_URL
+            appPreferences.privacyUrl = PRIVACY_POLICY_URL_DEFAULT
     }
 
 
@@ -95,8 +98,8 @@ class AuthenticationViewModel @Inject constructor(
                         is Resource.Loading -> AuthenticationState.Loading
                         is Resource.Success -> AuthenticationState.ValidPhoneNumber
                         is Resource.Failure -> AuthenticationState.Error(
-                            it.message,
-                            FailureStatus.OTHER
+                                it.message,
+                                FailureStatus.OTHER
                         )
                     }
                 }
@@ -120,8 +123,8 @@ class AuthenticationViewModel @Inject constructor(
                         is Resource.Loading -> AuthenticationState.Loading
                         is Resource.Success -> AuthenticationState.VerifiedPhoneNumber
                         is Resource.Failure -> AuthenticationState.Error(
-                            it.message,
-                            FailureStatus.OTHER
+                                it.message,
+                                FailureStatus.OTHER
                         )
                     }
 

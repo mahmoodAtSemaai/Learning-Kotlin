@@ -13,6 +13,7 @@ object FirebaseRemoteConfigHelper {
     private const val KEY_APP_REMOTE_VERSION = "remoteAppVersion"
     private const val KEY_APP_REMOTE_CHAT = "feature_sellerChat_enabled"
     private const val KEY_AUTH_REVAMP_ENABLED = "feature_revamp_arch_auth_screen_enabled"
+    private const val KEY_SPLASH_REVAMP_ENABLED = "feature_revamp_arch_splash_screen_enabled"
 
     private const val currentAppVersion = BuildConfig.CURRENT_APP_VERSION
 
@@ -39,6 +40,9 @@ object FirebaseRemoteConfigHelper {
 
     @JvmStatic
     val authRevampEnabled = Firebase.remoteConfig[KEY_AUTH_REVAMP_ENABLED].asBoolean()
+
+    @JvmStatic
+    val splashRevampEnabled = Firebase.remoteConfig[KEY_SPLASH_REVAMP_ENABLED].asBoolean()
 
 
     @JvmStatic
