@@ -172,12 +172,19 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
             @Override
             public void onComplete() {
-                if (binding.refreshLayout.isEnabled() && binding.refreshLayout.isRefreshing())
+
+                if (binding.refreshLayout.isEnabled() && binding.refreshLayout.isRefreshing()) {
 
                     //stop loader animation once data loaded
                     stopShimmerAnimation();
 
-                binding.refreshLayout.setRefreshing(false);
+                    binding.refreshLayout.setRefreshing(false);
+                }
+
+                if(isShimmerVisible()){
+                    stopShimmerAnimation();
+                }
+
             }
         });
     }
