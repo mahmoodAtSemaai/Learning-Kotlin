@@ -66,7 +66,6 @@ android {
             versionNameSuffix '-DEBUG'
         }
     }
-
 }
 repositories {
     maven { url Url.maven }

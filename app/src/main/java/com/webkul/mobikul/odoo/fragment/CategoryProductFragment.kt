@@ -33,8 +33,10 @@ class CategoryProductFragment : Fragment() {
     lateinit var catalogResponse: CatalogProductResponse
     lateinit var binding: FragmentCategoryProductBinding
     private var mOffset = 0
+    private val limit = 10
     lateinit var id: String
     var pos: Int = 0
+    private var dataRequested = false
 
 
     override fun onCreateView(
@@ -54,11 +56,12 @@ class CategoryProductFragment : Fragment() {
         mOffset = 0
         callApi()
     }
-    
+
     fun callApi() {
+        dataRequested = true
         binding.shimmerProgressBar.visibility = View.VISIBLE
         binding.shimmerProgressBar.startShimmer()
-        ApiConnection.getCategoryProducts(requireContext(), id, mOffset, 10)
+        ApiConnection.getCategoryProducts(requireContext(), id, mOffset, limit)
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : CustomObserver<CatalogProductResponse?>(requireContext()) {
 
@@ -89,12 +92,13 @@ class CategoryProductFragment : Fragment() {
 
     private fun updateCatalogProductResponse(catalogProductResponse: CatalogProductResponse) {
         catalogProductResponse.setWishlistData()
-        catalogResponse.offset = catalogProductResponse.offset + 10
+        catalogResponse.offset = catalogProductResponse.offset + limit
         catalogResponse.limit = catalogProductResponse.limit
         val initialSize = catalogResponse.products.size
         catalogResponse.products.addAll(catalogProductResponse.products)
         val finalSize = catalogResponse.products.size
         binding.productRecyclerView.adapter?.notifyItemRangeChanged(initialSize, finalSize - 1)
+        dataRequested = false
     }
 
     private fun isFirstCall(catalogProductResponse: CatalogProductResponse) {
@@ -110,6 +114,7 @@ class CategoryProductFragment : Fragment() {
             } else {
                 initProductCatalogRv()
             }
+            dataRequested = false
         }
     }
 
@@ -136,9 +141,9 @@ class CategoryProductFragment : Fragment() {
                 val lastCompletelyVisibleItemPosition = (recyclerView.layoutManager as GridLayoutManager?)!!.findLastVisibleItemPosition()
                 if (!binding.data?.isLazyLoading!! &&
                     lastCompletelyVisibleItemPosition == binding.productRecyclerView.adapter?.itemCount!! - 1 &&
-                    binding.productRecyclerView.adapter?.itemCount!! < binding.data?.totalCount!!
+                    binding.productRecyclerView.adapter?.itemCount!! < binding.data?.totalCount!! && !dataRequested
                 ) {
-                    mOffset += 10
+                    mOffset += limit
                     callApi()
                 }
             }

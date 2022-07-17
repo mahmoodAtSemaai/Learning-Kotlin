@@ -20,23 +20,26 @@ import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.core.extension.getDefaultProgressDialog
 import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
+import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.databinding.FragmentLoginPasswordBinding
 import com.webkul.mobikul.odoo.dialog_frag.ForgotPasswordDialogFragment
 import com.webkul.mobikul.odoo.features.authentication.data.models.LoginOtpAuthenticationRequest
+import com.webkul.mobikul.odoo.features.authentication.presentation.effect.LoginPasswordEffect
 import com.webkul.mobikul.odoo.features.authentication.presentation.intent.LoginPasswordIntent
 import com.webkul.mobikul.odoo.features.authentication.presentation.state.LoginPasswordState
 import com.webkul.mobikul.odoo.features.authentication.presentation.viewmodel.LoginPasswordViewModel
 import com.webkul.mobikul.odoo.helper.AsteriskPasswordTransformationMethod
 import com.webkul.mobikul.odoo.model.home.HomePageResponse
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class LoginPasswordFragment @Inject constructor() :
-    BindingBaseFragment<FragmentLoginPasswordBinding>(),
-    IView<LoginPasswordIntent, LoginPasswordState> {
+        BindingBaseFragment<FragmentLoginPasswordBinding>(),
+        IView<LoginPasswordIntent, LoginPasswordState, LoginPasswordEffect> {
 
     override val layoutId: Int = R.layout.fragment_login_password
     private val viewModel: LoginPasswordViewModel by viewModels()
@@ -46,11 +49,11 @@ class LoginPasswordFragment @Inject constructor() :
 
     companion object {
         fun newInstance(phoneNumber: String) =
-            LoginPasswordFragment().also { loginPasswordFragment ->
-                val bundle = Bundle()
-                bundle.putString(BundleConstant.BUNDLE_KEY_PHONE_NUMBER, phoneNumber)
-                loginPasswordFragment.arguments = bundle
-            }
+                LoginPasswordFragment().also { loginPasswordFragment ->
+                    val bundle = Bundle()
+                    bundle.putString(BundleConstant.BUNDLE_KEY_PHONE_NUMBER, phoneNumber)
+                    loginPasswordFragment.arguments = bundle
+                }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -70,6 +73,12 @@ class LoginPasswordFragment @Inject constructor() :
     private fun setObservers() {
         lifecycleScope.launch {
             viewModel.state.collect {
+                render(it)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.effect.collect {
                 render(it)
             }
         }
@@ -108,7 +117,16 @@ class LoginPasswordFragment @Inject constructor() :
             }
             is LoginPasswordState.Error -> {
                 progressDialog.dismiss()
-                showError(getString(R.string.error_incorrect_password))
+                //TODO-> Handle elegantly in v2 login arch rvamp
+                when (state.failureStatus) {
+                    FailureStatus.NO_INTERNET -> showErrorState(state.failureStatus,
+                            state.message ?: getString(R.string.error_something_went_wrong))
+                    FailureStatus.ACCESS_DENIED -> showErrorState(state.failureStatus,
+                            state.message ?: getString(R.string.error_something_went_wrong))
+                    FailureStatus.USER_UNAPPROVED -> showErrorState(state.failureStatus,
+                            state.message ?: getString(R.string.error_something_went_wrong))
+                    else -> showError(getString(R.string.error_incorrect_password))
+                }
             }
             is LoginPasswordState.ForgotPassword -> {
                 showForgetPasswordFragment(phoneNumber)
@@ -144,16 +162,20 @@ class LoginPasswordFragment @Inject constructor() :
         }
     }
 
+    override fun render(effect: LoginPasswordEffect) {
+        //TODO("Not yet implemented")
+    }
+
     private fun redirectToUserApprovalActivity() {
         startActivity(Intent(requireActivity(), UserApprovalActivity::class.java)
-            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
         progressDialog.dismiss()
     }
 
     private fun redirectToHomeActivity(homePageResponse: HomePageResponse) {
         startActivity(Intent(requireActivity(), NewHomeActivity::class.java)
-            .putExtra(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE,homePageResponse)
-            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                .putExtra(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         )
         progressDialog.dismiss()
     }

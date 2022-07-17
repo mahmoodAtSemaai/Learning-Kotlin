@@ -53,16 +53,14 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_toolBar"
-                style="@style/large_bold_title_text"
+                style="@style/Semaai.TextAppearance.Headline6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/size_16"
-                android:layout_marginLeft="@dimen/size_16"
-                android:layout_marginEnd="@dimen/size_16"
-                android:layout_marginRight="@dimen/size_16"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                android:layout_marginStart="@dimen/margin_16"
+                android:layout_marginEnd="@dimen/margin_16"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textAllCaps="false"
                 android:textColor="@color/text_orange"
                 tools:text="Chat" />
 

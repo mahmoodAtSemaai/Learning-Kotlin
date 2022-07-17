@@ -39,11 +39,39 @@
         android:usesCleartextTraffic="true"
         android:vmSafeMode="true"
         tools:replace="icon,allowBackup">
+        <activity
+            android:name=".ui.routing.RoutingActivity"
+            android:configChanges="uiMode"
+            android:launchMode="singleTask"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:exported="true"
+            android:theme="@style/TransparentTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "https://www.semaai.com” -->
+                <data
+                    android:host="semaai.com"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.splash.SplashScreenActivityV1"
+            android:exported="false"
+            android:theme="@style/BaseTheme.AppTheme.NoActionBar.FullScreenTheme"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.auth.SignInSignUpActivityV1"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".features.authentication.presentation.AuthenticationActivity"
@@ -75,23 +103,8 @@
             android:launchMode="singleTask"
             android:noHistory="true"
             android:screenOrientation="portrait"
+            android:exported="false"
             android:theme="@style/BaseTheme.AppTheme.NoActionBar.FullScreenTheme">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Accepts URIs that begin with "https://www.semaai.com” -->
-                <data
-                    android:host="semaai.com"
-                    android:scheme="https" />
-            </intent-filter>
 
 
             <!-- DEEP LINKING FILTER's -->
@@ -126,13 +139,14 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.NewHomeActivity"
-            android:launchMode="singleTop"
-            android:exported="false" />
-        <activity android:name=".activity.SearchActivity"
-            android:screenOrientation="portrait"
-            android:exported="false">
-        </activity>
-        <activity android:name=".activity.NewDrawerActivity"
+            android:exported="false"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".activity.SearchActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.NewDrawerActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -180,30 +194,27 @@
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Base.Theme.AppCompat" />
-
         <activity
             android:name="com.webkul.mobikul.odoo.activity.ChatActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- Accepts URIs that begin with "app://com.seemaai.toko/chat” -->
                 <data
-                    android:scheme="app"
                     android:host="com.seemaai.toko"
-                    android:pathPrefix="/chat"/>
+                    android:pathPrefix="/chat"
+                    android:scheme="app" />
             </intent-filter>
-
         </activity>
-
         <activity
             android:name=".activity.ChatHistoryActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".firebase.FCMMessageReceiverService"

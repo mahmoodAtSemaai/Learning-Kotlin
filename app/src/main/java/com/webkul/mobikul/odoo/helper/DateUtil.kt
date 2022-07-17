@@ -15,3 +15,12 @@ fun getStringDateMonth(timeStamp: String?): String? {
         ""
     }
 }
+
+fun getDeliveryLeadTime(saleDelay: Int): String? {
+    var date = Date()
+    val c = Calendar.getInstance()
+    c.time = date
+    c.add(Calendar.DATE,saleDelay + 1)
+    date = c.time
+    return SimpleDateFormat("dd MMMM", Locale.getDefault()).format(date)
+}

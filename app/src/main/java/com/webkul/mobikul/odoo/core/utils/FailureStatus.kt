@@ -5,5 +5,6 @@ enum class FailureStatus {
   API_FAIL,
   NO_INTERNET,
   ACCESS_DENIED,
+  USER_UNAPPROVED,
   OTHER
 }

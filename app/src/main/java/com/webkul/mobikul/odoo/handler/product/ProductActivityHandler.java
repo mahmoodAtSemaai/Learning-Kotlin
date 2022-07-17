@@ -96,10 +96,10 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
     }
 
     private int isQuantityExceeding(int qty) {
-        if (data.isOutOfStock()) {
+        if (data.isOutOfStock() && !data.isService()) {
             ((ProductActivityV1) context).showWarning(true);
             return data.getAvailableQuantity();
-        } else if (!data.isNever() && qty > data.getAvailableQuantity()) {
+        } else if (!data.isNever() && !data.isPreOrder() && !data.isCustom() && !data.isService() && qty > data.getAvailableQuantity()) {
             ((ProductActivityV1) context).showWarning(false);
             return data.getAvailableQuantity();
         }
@@ -154,7 +154,7 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
             return;
         }
 
-        if (!data.isNever() && data.getQuantity() > data.getAvailableQuantity()) {
+        if (!data.isNever() && !data.isPreOrder() && !data.isCustom() && !data.isService() && data.getQuantity() > data.getAvailableQuantity()) {
             SnackbarHelper.getSnackbar((Activity) context, context.getString(R.string.product_not_available_in_this_quantity), Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show();
             return;
         }
@@ -203,6 +203,7 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
                                     ((ProductActivityV1) context).getBagItemsCount();
                                 } else {
                                     ((ProductActivityV1) context).showWarning(false);
+                                    ((ProductActivityV1) context).getBagItemsCount();
                                 }
                             }
                         }

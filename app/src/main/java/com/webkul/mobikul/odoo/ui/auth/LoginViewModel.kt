@@ -11,10 +11,7 @@ import com.webkul.mobikul.odoo.domain.usecase.auth.LogInUseCase
 import com.webkul.mobikul.odoo.domain.usecase.auth.ViewPrivacyPolicyUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,7 +19,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
         private val logInUseCase: LogInUseCase,
         private val viewPrivacyPolicyUseCase: ViewPrivacyPolicyUseCase
-) : BaseViewModel(), IModel<LoginState, LoginIntent> {
+) : BaseViewModel(), IModel<LoginState, LoginIntent, LoginEffect> {
 
 
     override val intents: Channel<LoginIntent> = Channel<LoginIntent>(Channel.UNLIMITED)
@@ -31,6 +28,9 @@ class LoginViewModel @Inject constructor(
     override val state: StateFlow<LoginState>
         get() = _state
 
+    private val _effect = Channel<LoginEffect>()
+    override val effect: Flow<LoginEffect>
+        get() = _effect.receiveAsFlow()
 
     init {
         handlerIntent()

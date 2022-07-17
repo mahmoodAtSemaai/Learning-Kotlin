@@ -130,12 +130,14 @@
                                 tools:ignore="ContentDescription" />
 
                             <FrameLayout
+                                android:id="@+id/fl_out_of_stock"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentBottom="true"
                                 android:visibility="@{data == null ? View.GONE : (data.isOutOfStock ? View.VISIBLE : View.GONE)}">
 
                                 <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/tv_out_of_stock"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginHorizontal="@dimen/margin_horizontal_button"
@@ -143,9 +145,26 @@
                                     android:layout_marginBottom="@dimen/spacing_tiny"
                                     android:background="@drawable/bg_out_of_stock"
                                     android:gravity="center"
+                                    android:visibility="@{data == null ? View.GONE : ((data.isNever() || data.isService || data.isPreOrder || data.isCustom) ? View.GONE : (data.inStock ? View.GONE : View.VISIBLE))}"
                                     android:text="@string/out_of_stock"
                                     android:textSize="@dimen/text_size_large"
                                     android:textColor="@color/white" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/tv_pre_order"
+                                    android:layout_width="@dimen/size_140"
+                                    android:layout_height="wrap_content"
+                                    android:padding="@dimen/spacing_tiny"
+                                    android:layout_marginStart="@dimen/spacing_generic"
+                                    android:layout_marginLeft="@dimen/spacing_generic"
+                                    android:layout_marginBottom="@dimen/spacing_tiny"
+                                    android:background="@drawable/bg_pre_order_new"
+                                    android:text="@string/pre_order"
+                                    android:visibility="@{data == null ? View.GONE : (data.isPreOrder ? View.VISIBLE : View.GONE)}"
+                                    android:textStyle="bold"
+                                    android:textSize="@dimen/text_size_small"
+                                    android:textColor="@color/white"
+                                    android:gravity="center" />
 
                             </FrameLayout>
 
@@ -257,13 +276,14 @@
                             </LinearLayout>
 
                             <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tv_stock"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="@dimen/spacing_normal"
                                 android:gravity="center"
                                 android:maxLines="1"
                                 android:text="@{data.inStock ? (data.isThreshold() ? (data.getAvailableQuantity() > data.getAvailableThreshold() ? @string/in_stock : @string/in_stock_quantity_x(data.getAvailableQuantity())) : @string/in_stock_quantity_x(data.getAvailableQuantity())) : @string/out_of_stock }"
-                                android:visibility="@{data == null ? View.GONE : (data.isNever() ? View.GONE : View.VISIBLE)}"
+                                android:visibility="@{data == null ? View.GONE : ((data.isNever() || data.isPreOrder() || data.isCustom || data.isService) ? View.GONE : View.VISIBLE)}"
                                 tools:text="In Stock" />
 
                             <androidx.appcompat.widget.AppCompatButton
@@ -276,19 +296,16 @@
                                 android:drawablePadding="@dimen/spacing_normal"
                                 android:gravity="center"
                                 android:minWidth="@dimen/min_qty_width"
-                                android:onClick="@{() -> data.isNever() ? handler.changeQty() : (data.inStock ? handler.changeQty() : void)}"
+                                android:onClick="@{() -> (data.isNever() || data.isPreOrder || data.isCustom || data.isService) ? handler.changeQty() : (data.inStock ? handler.changeQty() : void)}"
                                 android:paddingStart="@dimen/spacing_generic"
                                 android:paddingLeft="@dimen/spacing_generic"
                                 android:paddingEnd="@dimen/spacing_normal"
                                 android:paddingRight="@dimen/spacing_generic"
                                 android:layout_marginBottom="@dimen/spacing_normal"
                                 android:layout_marginTop="@dimen/spacing_tiny"
-                                android:text="@{data.isNever() ? @string/qty_x_int(data.quantity) : (data.inStock ? @string/qty_x_int(data.quantity) : @string/qty_x_int(0))}"
+                                android:text="@{(data.isNever() || data.isPreOrder || data.isCustom || data.isService()) ? @string/qty_x_int(data.quantity) : (data.inStock ? @string/qty_x_int(data.quantity) : @string/qty_x_int(0))}"
                                 android:textColor="@android:color/black"
-
                                 tools:text="Qty: 1" />
-
-                            <!--android:text="@{@string/qty_x_int(data.quantity)}"-->
 
                             <!-- PRODUCT ATTRIBUTES CONTAINER-->
 
@@ -371,15 +388,57 @@
                                     android:background="@color/colorAccent"
                                     android:padding="@dimen/spacing_generic"
                                     android:layout_marginTop="@dimen/spacing_generic"
+                                    android:layout_marginBottom="@dimen/spacing_generic"
                                     android:text="@{@string/average_rating_out_of_5(data.seller.averageRating)}"
                                     android:textColor="@color/tw__solid_white" />
 
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:layout_width="wrap_content"
+                                <androidx.appcompat.widget.LinearLayoutCompat
+                                    android:id="@+id/ll_feedback"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginBottom="@dimen/spacing_generic"
                                     android:layout_marginTop="@dimen/spacing_generic"
-                                    android:text="@{data.seller.message}" />
+                                    android:layout_gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:id="@+id/iv_star"
+                                        android:layout_width="@dimen/size_20"
+                                        android:layout_height="@dimen/size_20"
+                                        android:src="@drawable/ic_vector_star"/>
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:id="@+id/tv_feedback"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/spacing_generic"
+                                        android:text="@{data.seller.message}"/>
+
+                                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                                <androidx.appcompat.widget.LinearLayoutCompat
+                                    android:id="@+id/ll_sale_delay"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="@dimen/spacing_generic"
+                                    android:layout_marginTop="@dimen/spacing_tiny"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:id="@+id/iv_clock"
+                                        android:layout_width="@dimen/size_20"
+                                        android:layout_height="@dimen/size_20"
+                                        android:layout_gravity="center_vertical"
+                                        android:src="@drawable/ic_vector_clock"/>
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:id="@+id/tv_sale_delay"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/spacing_generic"
+                                        android:gravity="center_vertical"
+                                        android:text="@{data.saleDelay > 1.0 ? @string/x_days_delivery(data.saleDelay) : (data.saleDelay == 1.0 ? @string/next_day_delivery : @string/same_day_delivery)}" />
+                                </androidx.appcompat.widget.LinearLayoutCompat>
 
                             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -517,7 +576,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/button_height_generic"
                     android:layout_gravity="bottom"
-                    android:background="@{data.isNever() ? @color/colorAccent : (data.inStock ? @color/colorAccent : @color/colorDarkGrey)}"
+                    android:background="@{(data.isNever() || data.isCustom() || data.isService()) ? @color/colorAccent : (data.isPreOrder ? @color/colorAccent :(data.inStock ? @color/colorAccent : @color/colorDarkGrey))}"
                     android:orientation="horizontal"
                     android:visibility="@{data == null ? View.GONE : View.VISIBLE}">
 
@@ -536,18 +595,18 @@
                         android:id="@+id/add_to_cart_button"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_margin="1dp"
+                        android:layout_margin="@dimen/size_1"
                         android:layout_weight="1"
-                        android:background="@{data.isNever() ? @drawable/btn_rounded_corners_accent_bg :  (data.inStock ? @drawable/btn_rounded_corners_accent_bg : @drawable/bg_out_of_stock)}"
-                        android:drawableStart="@{data.isNever() ? @drawable/ic_vector_bag_wrapper : (data.inStock ? @drawable/ic_vector_bag_wrapper : @drawable/ic_vector_bag_disabled)}"
-                        android:drawableLeft="@{data.isNever() ? @drawable/ic_vector_bag_wrapper : (data.inStock ? @drawable/ic_vector_bag_wrapper : @drawable/ic_vector_bag_disabled)}"
+                        android:background="@{(data.isNever() || data.isCustom() || data.isService) ? @drawable/btn_rounded_corners_accent_bg : (data.isPreOrder ? @drawable/btn_rounded_corners_accent_bg : (data.inStock ? @drawable/btn_rounded_corners_accent_bg : @drawable/bg_out_of_stock))}"
+                        android:drawableStart="@{(data.isNever() || data.isCustom() || data.isService) ? @drawable/ic_vector_bag_wrapper : (data.isPreOrder ? @drawable/ic_vector_bag_wrapper : (data.inStock ? @drawable/ic_vector_bag_wrapper : @drawable/ic_vector_bag_disabled))}"
+                        android:drawableLeft="@{(data.isNever() || data.isCustom() || data.isService) ? @drawable/ic_vector_bag_wrapper : (data.isPreOrder ? @drawable/ic_vector_bag_wrapper : (data.inStock ? @drawable/ic_vector_bag_wrapper : @drawable/ic_vector_bag_disabled))}"
                         android:gravity="center"
                         android:onClick="@{() -> handler.addToCart(false)}"
                         android:text="@string/add_to_bag"
                         android:textSize="@dimen/text_size_medium"
                         android:textStyle="bold"
-                        android:textColor="#FFFFFF"
-                        android:enabled="@{data.isNever() ? true : (data.inStock? true : false)}"/>
+                        android:textColor="@color/white"
+                        android:enabled="@{(data.isNever() || data.isCustom() || data.isService) ? true : (data.isPreOrder ? true : (data.inStock? true : false))}"/>
 
                     <!--<androidx.appcompat.widget.AppCompatButton-->
                     <!--android:id="@+id/buy_now_button"-->

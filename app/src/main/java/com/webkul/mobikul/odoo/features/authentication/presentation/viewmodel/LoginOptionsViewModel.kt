@@ -1,16 +1,12 @@
 package com.webkul.mobikul.odoo.features.authentication.presentation.viewmodel
 
-import android.media.metrics.LogSessionId
 import androidx.lifecycle.viewModelScope
 import com.webkul.mobikul.odoo.core.mvicore.IModel
 import com.webkul.mobikul.odoo.core.platform.BaseViewModel
-import com.webkul.mobikul.odoo.core.utils.FailureStatus
-import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.features.authentication.domain.usecase.GenerateOtpUseCase
+import com.webkul.mobikul.odoo.features.authentication.presentation.effect.LoginOptionsEffect
 import com.webkul.mobikul.odoo.features.authentication.presentation.intent.LoginOptionsIntent
-import com.webkul.mobikul.odoo.features.authentication.presentation.state.AuthenticationState
 import com.webkul.mobikul.odoo.features.authentication.presentation.state.LoginOptionsState
-import com.webkul.mobikul.odoo.features.authentication.presentation.state.LoginPasswordState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
@@ -19,15 +15,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginOptionsViewModel @Inject constructor(
-    private val generateOtpUseCase: GenerateOtpUseCase
+        private val generateOtpUseCase: GenerateOtpUseCase
 ) : BaseViewModel(),
-    IModel<LoginOptionsState, LoginOptionsIntent> {
+        IModel<LoginOptionsState, LoginOptionsIntent, LoginOptionsEffect> {
     override val intents: Channel<LoginOptionsIntent> = Channel(Channel.UNLIMITED)
 
     private val _state = MutableStateFlow<LoginOptionsState>(LoginOptionsState.Idle)
     override val state: StateFlow<LoginOptionsState>
         get() = _state
 
+    private val _effect = Channel<LoginOptionsEffect>()
+    override val effect: Flow<LoginOptionsEffect>
+        get() = _effect.receiveAsFlow()
 
     init {
         handlerIntent()

@@ -10,31 +10,34 @@ import com.webkul.mobikul.odoo.features.authentication.domain.usecase.GenerateOt
 import com.webkul.mobikul.odoo.features.authentication.domain.usecase.HomePageDataUseCase
 import com.webkul.mobikul.odoo.features.authentication.domain.usecase.SplashPageUseCase
 import com.webkul.mobikul.odoo.features.authentication.domain.usecase.VerifyOtpUseCase
+import com.webkul.mobikul.odoo.features.authentication.presentation.effect.LoginOtpEffect
 import com.webkul.mobikul.odoo.features.authentication.presentation.intent.LoginOtpIntent
 import com.webkul.mobikul.odoo.features.authentication.presentation.state.LoginOtpState
 import com.webkul.mobikul.odoo.features.onboarding.domain.usecase.CountdownTimerUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginOtpViewModel @Inject constructor(
-    private val generateOtpUseCase: GenerateOtpUseCase,
-    private val verifyOtpUseCase: VerifyOtpUseCase,
-    private val splashPageUseCase: SplashPageUseCase,
-    private val homePageDataUseCase: HomePageDataUseCase,
-    private val countdownTimerUseCase: CountdownTimerUseCase
-) : BaseViewModel(), IModel<LoginOtpState, LoginOtpIntent> {
+        private val generateOtpUseCase: GenerateOtpUseCase,
+        private val verifyOtpUseCase: VerifyOtpUseCase,
+        private val splashPageUseCase: SplashPageUseCase,
+        private val homePageDataUseCase: HomePageDataUseCase,
+        private val countdownTimerUseCase: CountdownTimerUseCase
+) : BaseViewModel(), IModel<LoginOtpState, LoginOtpIntent, LoginOtpEffect> {
 
     override val intents: Channel<LoginOtpIntent> = Channel(Channel.UNLIMITED)
     private val _state = MutableStateFlow<LoginOtpState>(LoginOtpState.Idle)
     override val state: StateFlow<LoginOtpState>
         get() = _state
+
+    private val _effect = Channel<LoginOtpEffect>()
+    override val effect: Flow<LoginOtpEffect>
+        get() = _effect.receiveAsFlow()
 
     private var countDownTimer: Job = Job()
 
@@ -49,8 +52,8 @@ class LoginOtpViewModel @Inject constructor(
                 when (it) {
                     is LoginOtpIntent.GenerateOtp -> generateOTP(it.phoneNumber)
                     is LoginOtpIntent.Login -> loginViaOtpJWTToken(
-                        it.phoneNumber,
-                        it.otpAuthenticationRequest
+                            it.phoneNumber,
+                            it.otpAuthenticationRequest
                     )
                     is LoginOtpIntent.ResendOtp -> generateOTP(it.phoneNumber)
                     is LoginOtpIntent.GetOTPFromInput -> verifyOTP(it.phoneNumber, it.otp)
@@ -74,7 +77,7 @@ class LoginOtpViewModel @Inject constructor(
 
     private fun startTimer(time: Int) {
         countDownTimer = viewModelScope.launch {
-            val timerData = countdownTimerUseCase.invoke(time,1_000)
+            val timerData = countdownTimerUseCase.invoke(time, 1_000)
 
             timerData.collect {
                 _state.value = LoginOtpState.CountDownTimer(it)
@@ -85,7 +88,7 @@ class LoginOtpViewModel @Inject constructor(
         }
     }
 
-    private fun stopTimer(){
+    private fun stopTimer() {
         countDownTimer.cancel()
     }
 
@@ -103,7 +106,7 @@ class LoginOtpViewModel @Inject constructor(
 
                 _state.value = try {
                     val verifyOTP =
-                        verifyOtpUseCase.invoke(phoneNumber, OtpAuthenticationRequest(otp = otp))
+                            verifyOtpUseCase.invoke(phoneNumber, OtpAuthenticationRequest(otp = otp))
                     var verifyOTPState: LoginOtpState = LoginOtpState.Idle
 
                     verifyOTP.collect {
@@ -111,7 +114,7 @@ class LoginOtpViewModel @Inject constructor(
                             is Resource.Default -> LoginOtpState.Idle
                             is Resource.Loading -> LoginOtpState.Loading
                             is Resource.Success -> LoginOtpState.OTPVerified
-                            is Resource.Failure -> LoginOtpState.InvalidOTP
+                            is Resource.Failure -> LoginOtpState.InvalidOTP(it.message, it.failureStatus)
                         }
                     }
                     verifyOTPState
@@ -145,8 +148,8 @@ class LoginOtpViewModel @Inject constructor(
     }
 
     private fun loginViaOtpJWTToken(
-        phoneNumber: String,
-        otpAuthenticationRequest: OtpAuthenticationRequest
+            phoneNumber: String,
+            otpAuthenticationRequest: OtpAuthenticationRequest
     ) {
         viewModelScope.launch {
             _state.value = LoginOtpState.Loading
@@ -208,8 +211,8 @@ class LoginOtpViewModel @Inject constructor(
                         is Resource.Default -> LoginOtpState.Idle
                         is Resource.Loading -> LoginOtpState.Loading
                         is Resource.Failure -> LoginOtpState.Error(
-                            it.message,
-                            it.failureStatus
+                                it.message,
+                                it.failureStatus
                         )
                         is Resource.Success -> LoginOtpState.HomePage(it.value)
                     }

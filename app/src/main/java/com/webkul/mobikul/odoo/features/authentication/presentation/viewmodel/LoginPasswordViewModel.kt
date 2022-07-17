@@ -10,28 +10,31 @@ import com.webkul.mobikul.odoo.features.authentication.domain.usecase.HomePageDa
 import com.webkul.mobikul.odoo.features.authentication.domain.usecase.LoginPasswordUseCase
 import com.webkul.mobikul.odoo.features.authentication.domain.usecase.SplashPageUseCase
 import com.webkul.mobikul.odoo.features.authentication.domain.usecase.VerifyPasswordUseCase
+import com.webkul.mobikul.odoo.features.authentication.presentation.effect.LoginPasswordEffect
 import com.webkul.mobikul.odoo.features.authentication.presentation.intent.LoginPasswordIntent
 import com.webkul.mobikul.odoo.features.authentication.presentation.state.LoginPasswordState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginPasswordViewModel @Inject constructor(
-    private val loginPasswordUseCase: LoginPasswordUseCase,
-    private val verifyPasswordUseCase: VerifyPasswordUseCase,
-    private val splashPageUseCase: SplashPageUseCase,
-    private val homePageDataUseCase: HomePageDataUseCase
-) : BaseViewModel(), IModel<LoginPasswordState, LoginPasswordIntent> {
+        private val loginPasswordUseCase: LoginPasswordUseCase,
+        private val verifyPasswordUseCase: VerifyPasswordUseCase,
+        private val splashPageUseCase: SplashPageUseCase,
+        private val homePageDataUseCase: HomePageDataUseCase
+) : BaseViewModel(), IModel<LoginPasswordState, LoginPasswordIntent, LoginPasswordEffect> {
 
     override val intents: Channel<LoginPasswordIntent> = Channel(Channel.UNLIMITED)
     private val _state = MutableStateFlow<LoginPasswordState>(LoginPasswordState.Idle)
     override val state: StateFlow<LoginPasswordState>
         get() = _state
+
+    private val _effect = Channel<LoginPasswordEffect>()
+    override val effect: Flow<LoginPasswordEffect>
+        get() = _effect.receiveAsFlow()
 
     init {
         handlerIntent()
@@ -66,13 +69,13 @@ class LoginPasswordViewModel @Inject constructor(
 
     private fun setButtonState(password: String) {
         _state.value =
-            if (password.isEmpty()) LoginPasswordState.DisableButton
-            else LoginPasswordState.EnableButton
+                if (password.isEmpty()) LoginPasswordState.DisableButton
+                else LoginPasswordState.EnableButton
     }
 
 
     private fun loginViaJWTToken(
-        loginOtpAuthenticationRequest: LoginOtpAuthenticationRequest
+            loginOtpAuthenticationRequest: LoginOtpAuthenticationRequest
     ) {
         viewModelScope.launch {
             _state.value = LoginPasswordState.Loading
@@ -86,8 +89,8 @@ class LoginPasswordViewModel @Inject constructor(
                         is Resource.Default -> LoginPasswordState.Idle
                         is Resource.Loading -> LoginPasswordState.Loading
                         is Resource.Failure -> LoginPasswordState.Error(
-                            it.message,
-                            it.failureStatus
+                                it.message,
+                                it.failureStatus
                         )
                         is Resource.Success -> LoginPasswordState.LoggedIn(it.value)
                     }
@@ -111,8 +114,8 @@ class LoginPasswordViewModel @Inject constructor(
                         is Resource.Default -> LoginPasswordState.Idle
                         is Resource.Loading -> LoginPasswordState.Loading
                         is Resource.Failure -> LoginPasswordState.Error(
-                            it.message,
-                            it.failureStatus
+                                it.message,
+                                it.failureStatus
                         )
                         is Resource.Success -> {
                             if (it.value.isUserApproved) {
@@ -142,8 +145,8 @@ class LoginPasswordViewModel @Inject constructor(
                         is Resource.Default -> LoginPasswordState.Idle
                         is Resource.Loading -> LoginPasswordState.Loading
                         is Resource.Failure -> LoginPasswordState.Error(
-                            it.message,
-                            it.failureStatus
+                                it.message,
+                                it.failureStatus
                         )
                         is Resource.Success -> LoginPasswordState.HomePage(it.value)
                     }

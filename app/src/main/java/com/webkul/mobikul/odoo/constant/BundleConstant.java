@@ -26,8 +26,15 @@ public interface BundleConstant {
 
     String BUNDLE_KEY_LANGUAGE_LIST = "LANGUAGE_LIST";
 
+   /* SPLASH_SCREEN - DEEP_LINK_MANAGER */
+   String BUNDLE_KEY_TYPE_V2 = "type";
+   String BUNDLE_KEY_DOMAIN_V2 = "domain";
+   String BUNDLE_KEY_NAME_V2 = "name";
+   String BUNDLE_KEY_ID_V2 = "id";
 
-    /*SIGN IN SIGN UP*/
+
+
+   /*SIGN IN SIGN UP*/
     String BUNDLE_KEY_SELECT_PAGE = "SELECT_PAGE";
     String BUNDLE_KEY_USERNAME = "USERNAME";
     String BUNDLE_KEY_NAME = "NAME";

@@ -329,6 +329,10 @@
     <string name="buy_now">Beli Sekarang</string>
     <string name="qty">Qty:</string>
     <string name="qty_x_int">Qty: %d </string>
+    <string name="qty_x_float">Qty: %f </string>
+    <string name="x_days_delivery">%1$.0f Days Delivery </string>
+    <string name="next_day_delivery">Will be Delivered on Next Day</string>
+    <string name="same_day_delivery">Will be Delivered on Same Day</string>
 
 
     <!---->
@@ -409,6 +413,7 @@
     <!--Customization-->
     <string name="forecast_quantity_x">%1$d produk tersedia</string>
     <string name="out_of_stock">Stok Habis</string>
+    <string name="pre_order">Pre-Order</string>
     <string name="product_not_available_in_this_quantity">Stok tidak cukup</string>
     <string name="product_not_available_in_this_combination">Produk tidak tersedia</string>
     <string name="profile_url">URL Profil</string>
@@ -426,6 +431,10 @@
     <string name="quantity_exceeding">Jumlah pesanan Anda melebihi stok</string>
     <string name="product_already_added">produk sudah ditambahkan di tas</string>
     <string name="added_successfully">Berhasil ditambahkan</string>
+    <string name="ask_for">Anda meminta</string>
+    <string name="products_but">produk tetapi hanya</string>
+    <string name="are_available">yang tersedia</string>
+    <string name="is_available">yang tersedia</string>
 
     <!--Fingerprint-->
     <string name="fingerprint_login_header">Masuk dengan sidik jari</string>
@@ -536,7 +545,6 @@
     <string name="select_your_coupon">Pilih Kupon Anda >></string>
     <string name="bank_transfer_va">Transfer Bank Virtual Account</string>
     <string name="cod_text">Bayar di tempat</string>
-    <string name="cod_text_2">Cash On Delivery</string>
     <string name="confirmation">Konfirmasi</string>
     <string name="address">Alamat</string>
     <string name="shipping">Pengiriman</string>
@@ -650,6 +658,7 @@
     <string name="product_details_plus">+</string>
     <string name="product_details_minus">-</string>
     <string name="product_details_weight_zero">0.0</string>
+    <string name="estimated_arrival_x">Estimasi tiba %s</string>
 
     <!-- SplashScreen  -->
     <string name="welcome">Selamat Datang</string>

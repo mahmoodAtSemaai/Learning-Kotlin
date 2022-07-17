@@ -193,6 +193,7 @@ public class SplashScreenResponse extends LoginResponse {
         AppSharedPref.setEmailVerified(context, isEmailVerified());
         AppSharedPref.setMarketplaceAllowed(context, isMarketplaceAllowed());
         AppSharedPref.setAllowShipping(context, isAllowShipping());
+        AppSharedPref.setUserIsApproved(context,isUserApproved());
         if (AppSharedPref.getLanguageCode(context).isEmpty() && getDefaultLanguage().size() > 0) {
             AppSharedPref.setLanguageCode(context, getDefaultLanguage().get(0));
             BaseActivity.setLocale(context, true);

@@ -332,7 +332,9 @@
     <string name="qty">Qty:</string>
     <string name="qty_x_int">Qty: %d </string>
     <string name="qty_x_float">Qty: %f </string>
-
+    <string name="x_days_delivery">%1$.0f Days Delivery </string>
+    <string name="next_day_delivery">Will be Delivered on Next Day</string>
+    <string name="same_day_delivery">Will be Delivered on Same Day</string>
 
     <!---->
     <!---->
@@ -413,6 +415,7 @@
     <!--Customization-->
     <string name="forecast_quantity_x">%1$d products Available</string>
     <string name="out_of_stock">Out of Stock</string>
+    <string name="pre_order">Pre-Order</string>
     <string name="product_not_available_in_this_quantity">Product not available in this quantity.</string>
     <string name="product_not_available_in_this_combination">Product not available</string>
     <string name="profile_url">Profile URL</string>
@@ -430,6 +433,11 @@
     <string name="quantity_exceeding">Your order quantity exceeds the stock</string>
     <string name="product_already_added">products already added in bag</string>
     <string name="added_successfully">Added Successfully</string>
+    <string name="ask_for">You ask for</string>
+    <string name="products_but">products but only</string>
+    <string name="are_available">are available</string>
+    <string name="is_available">is available</string>
+
 
     <!--Fingerprint-->
     <string name="fingerprint_login_header">Fingerprint Login</string>
@@ -537,7 +545,6 @@
     <string name="select_your_coupon">Select Your Coupon >></string>
     <string name="bank_transfer_va">Bank Transfer Virtual Account</string>
     <string name="cod_text">Cash On Delivery</string>
-    <string name="cod_text_2">Cash On Delivery</string>
     <string name="confirmation">Confirmation</string>
     <string name="address">Address</string>
     <string name="shipping">Shipping</string>
@@ -655,6 +662,7 @@
 
     <string name="label_checked">checked</string>
     <string name="label_unchecked">not checked</string>
+    <string name="estimated_arrival_x">Estimated arrival %s</string>
 
     <!-- SplashScreen  -->
     <string name="welcome">Welcome</string>

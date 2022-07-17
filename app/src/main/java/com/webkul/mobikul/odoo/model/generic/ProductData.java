@@ -17,13 +17,15 @@ import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.adapter.product.MobikulCategoryDetails;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.constant.ApplicationConstant;
-import com.webkul.mobikul.odoo.helper.OdooApplication;
+import com.webkul.mobikul.odoo.helper.DateUtilKt;
 import com.webkul.mobikul.odoo.model.Seller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-
-import dagger.hilt.android.qualifiers.ApplicationContext;
+import java.util.Locale;
 
 /**
  * Created by shubham.agarwal on 2/5/17.
@@ -125,6 +127,14 @@ public class ProductData extends BaseObservable implements Parcelable {
     @Expose
     private int availableThreshold;
 
+    @SerializedName("sale_delay")
+    @Expose
+    private float saleDelay;
+
+    @SerializedName("product_type")
+    @Expose
+    private String productType;
+
     public String getAbsoluteUrl() {
         return absoluteUrl;
     }
@@ -162,6 +172,8 @@ public class ProductData extends BaseObservable implements Parcelable {
         inventoryAvailability = in.readString();
         availableQuantity = in.readInt();
         availableThreshold = in.readInt();
+        saleDelay = in.readFloat();
+        productType = in.readString();
     }
 
     @Override
@@ -189,6 +201,8 @@ public class ProductData extends BaseObservable implements Parcelable {
         dest.writeString(inventoryAvailability);
         dest.writeInt(availableQuantity);
         dest.writeInt(availableThreshold);
+        dest.writeFloat(saleDelay);
+        dest.writeString(productType);
     }
 
     @Override
@@ -379,6 +393,10 @@ public class ProductData extends BaseObservable implements Parcelable {
         notifyPropertyChanged(BR.quantity);
     }
 
+    public Boolean canSellRegardlessOfInventory(){
+        return (isNever() || isPreOrder() || isCustom() || isService() || ((isThreshold() || isAlways()) && isInStock()));
+    }
+
     public List<ProductCombination> getDefaultCombination() {
         for (ProductVariant eachProductVariant : getVariants()) {
             if (eachProductVariant.getProductId().equals(getProductId())) {
@@ -412,17 +430,24 @@ public class ProductData extends BaseObservable implements Parcelable {
         return getAvailableQuantity() > 0;
     }
 
-    public boolean isThreshold() {
-        return inventoryAvailability.equals(ApplicationConstant.THRESHOLD);
-    }
-
     public boolean isAlways() {
         return inventoryAvailability.equals(ApplicationConstant.ALWAYS);
     }
 
+    public boolean isThreshold() {
+        return inventoryAvailability.equals(ApplicationConstant.THRESHOLD);
+    }
 
     public boolean isNever() {
         return inventoryAvailability.equals(ApplicationConstant.NEVER);
+    }
+
+    public boolean isPreOrder() {
+        return inventoryAvailability.equals(ApplicationConstant.PRE_ORDER);
+    }
+
+    public boolean isCustom() {
+        return inventoryAvailability.equals(ApplicationConstant.CUSTOM);
     }
 
     public boolean isAccessDenied() {
@@ -432,7 +457,6 @@ public class ProductData extends BaseObservable implements Parcelable {
     public boolean isOutOfStock() {
         return ((isAlways() || isThreshold()) && (getAvailableQuantity() == 0));
     }
-
 
     public ArrayList<ProductData> getAlternativeProducts() {
         if (alternativeProducts == null)
@@ -462,6 +486,24 @@ public class ProductData extends BaseObservable implements Parcelable {
 
     public int getAvailableThreshold() {
         return availableThreshold;
+    }
+
+    public float getSaleDelay() {
+        return saleDelay;
+    }
+
+    public String getDeliveryLeadTime(){
+        return DateUtilKt.getDeliveryLeadTime((int)saleDelay);
+    }
+
+    public String getProductType() {
+        if (productType == null) {
+            return "";
+        }
+        return productType;
+    }
+    public boolean isService(){
+        return (getProductType().equals(ApplicationConstant.TYPE_SERVICE));
     }
 
     public String calculateProductDetailDiscount() {

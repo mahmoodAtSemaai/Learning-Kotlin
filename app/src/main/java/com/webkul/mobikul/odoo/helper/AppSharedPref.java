@@ -31,7 +31,6 @@ public class AppSharedPref {
     private static final String KEY_CUSTOMER_PROFILE_IMAGE = "CUSTOMER_PROFILE_IMAGE";
     private static final String KEY_CUSTOMER_BANNER_IMAGE = "CUSTOMER_BANNER_IMAGE";
     private static final String KEY_CUSTOMER_IS_SOCIAL_LOGGED_IN = "CUSTOMER_IS_SOCIAL_LOGGED_IN";
-    private static final String KEY_CUSTOMER_SEMAAI_POINTS = "CUSTOMER_SEMAAI_POINTS";
     private static final String KEY_IS_CUSTOMER_REDEEM_POINTS = "IS_CUSTOMER_REDEEM_POINTS";
     private static final String KEY_CUSTOMER_JWT_AUTH_TOKEN = "CUSTOMER_JWT_AUTH_TOKEN";
     private static final String KEY_REFERRAL_CODE = "REFERRAL_CODE";

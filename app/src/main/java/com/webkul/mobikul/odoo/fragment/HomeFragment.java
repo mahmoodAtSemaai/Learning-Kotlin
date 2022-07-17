@@ -155,6 +155,9 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     private void hitApiForFetchingData() {
 
         //start loader animation while fetching feature categories and banners
+        if(isShimmerVisible()) {
+            stopShimmerAnimation();
+        }
         showShimmerAnimation();
 
         ApiConnection.getHomePageData(getContext()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<HomePageResponse>(getContext()) {
@@ -169,12 +172,19 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
 
             @Override
             public void onComplete() {
-                if (binding.refreshLayout.isEnabled() && binding.refreshLayout.isRefreshing())
+
+                if (binding.refreshLayout.isEnabled() && binding.refreshLayout.isRefreshing()) {
 
                     //stop loader animation once data loaded
                     stopShimmerAnimation();
 
-                binding.refreshLayout.setRefreshing(false);
+                    binding.refreshLayout.setRefreshing(false);
+                }
+
+                if(isShimmerVisible()){
+                    stopShimmerAnimation();
+                }
+
             }
         });
     }
@@ -221,7 +231,10 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
                 break;
             }
         }
-        if (!isImageVisible) binding.appBarLayout.setVisibility(View.GONE);
+        if (!isImageVisible) {
+            binding.appBarLayout.setVisibility(View.GONE);
+            stopShimmerAnimation();
+        }
 
         binding.bannerDotsTabLayout.setupWithViewPager(binding.bannerViewPager, true);
         binding.bannerViewPager.setAdapter(new HomeBannerAdapter(getContext(), homePageResponse.getBannerImages(), binding.bannerViewPager));
@@ -492,5 +505,13 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
         //set visibility to {View.GONE}
         binding.shimmerFeaturedCategories.setVisibility(View.GONE);
         binding.shimmerBanner.setVisibility(View.GONE);
+    }
+
+    /**
+     * Check Shimmer on UI if visible
+     * @Return Boolean
+     */
+    private boolean isShimmerVisible(){
+        return binding.shimmerBanner.isShimmerVisible() || binding.shimmerFeaturedCategories.isShimmerVisible();
     }
 }

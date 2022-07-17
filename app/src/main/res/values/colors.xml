@@ -54,6 +54,7 @@
 
     <!--BACK GROUND COLORS-->
     <color name="badge_background_color">@color/red_500</color>
+    <color name="background_pre_order">#2A4332</color>
 
     <!--Social login-->
     <color name="social_login_fb">#1659ac</color>

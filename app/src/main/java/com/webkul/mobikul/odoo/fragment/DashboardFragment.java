@@ -57,7 +57,7 @@ public class DashboardFragment extends BaseFragment {
         binding.setCustomerName(Helper.initCap(AppSharedPref.getCustomerName(getContext())));
         binding.setCustomerEmail(AppSharedPref.getCustomerEmail(getContext()));
         binding.setCustomerPhoneNumber(AppSharedPref.getCustomerPhoneNumber(getContext()));
-        Observable<MyOrderReponse> myOrderReponseObservable = ApiConnection.getOrders(getContext(), new BaseLazyRequest(0, 5)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+        Observable<MyOrderReponse> myOrderReponseObservable = ApiConnection.getSaleOrders(getContext(), new BaseLazyRequest(0, 5)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
         Observable<MyAddressesResponse> myAddressesResponseDataObservable = ApiConnection.getAddressBookData(getContext(), new BaseLazyRequest(0, 1)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
 
         Observable.zip(myOrderReponseObservable, myAddressesResponseDataObservable, (myOrderReponse, myAddressesResponseData) -> {
