@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import androidx.webkit.WebSettingsCompat;
 import androidx.webkit.WebViewFeature;
@@ -42,6 +43,11 @@ import java.util.regex.Pattern;
 public class Helper {
 
     private static final String TAG = "Helper";
+    private static final String IMAGE_RESOLUTION_128 = "image_128";
+    private static final String IMAGE_RESOLUTION_256 = "image_256";
+    private static final String IMAGE_RESOLUTION_512 = "image_512";
+    private static final String IMAGE_RESOLUTION_1024 = "image_1024";
+    private static final String IMAGE_RESOLUTION_1920 = "image_1920";
 
     private static final class Delimitter {
         private static final String DOT = "\\.";
@@ -59,6 +65,32 @@ public class Helper {
         return metrics.heightPixels;
     }
 
+    public static int getScreenDensityDpi(Context context) {
+        return context.getResources().getDisplayMetrics().densityDpi;
+    }
+
+    public static String getUpdateImageUrlForScreen(Context context, String imageUrl) {
+        int screenDensityDpi = getScreenDensityDpi(context);
+        String oldReplacingChar = IMAGE_RESOLUTION_1920;
+        switch (screenDensityDpi) {
+            case DisplayMetrics.DENSITY_LOW:
+                imageUrl = imageUrl.replace(oldReplacingChar, IMAGE_RESOLUTION_128);
+                break;
+            case DisplayMetrics.DENSITY_MEDIUM:
+                imageUrl = imageUrl.replace(oldReplacingChar, IMAGE_RESOLUTION_256);
+                break;
+            case DisplayMetrics.DENSITY_HIGH:
+                imageUrl = imageUrl.replace(oldReplacingChar, IMAGE_RESOLUTION_512);
+                break;
+            case DisplayMetrics.DENSITY_XHIGH:
+                imageUrl = imageUrl.replace(oldReplacingChar, IMAGE_RESOLUTION_1024);
+                break;
+            case DisplayMetrics.DENSITY_XXHIGH:
+            case DisplayMetrics.DENSITY_XXXHIGH:
+                break;
+        }
+        return imageUrl;
+    }
 
     @SuppressWarnings("unused")
     public static void hideKeyboard(Context context) {
@@ -99,7 +131,7 @@ public class Helper {
         if (reuse != null && reuse instanceof BadgeDrawable) {
             badge = (BadgeDrawable) reuse;
         } else {
-            badge = new BadgeDrawable(context,badgeColor);
+            badge = new BadgeDrawable(context, badgeColor);
         }
         badge.setCount(String.valueOf(cartCount));
         icon.mutate();

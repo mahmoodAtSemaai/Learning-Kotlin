@@ -41,7 +41,8 @@ public class ImageHelper {
 
     @SuppressWarnings("unused")
     private static final String TAG = "ImageHelper";
-//    public Context mContext;
+
+    //    public Context mContext;
 //    public ImageHelper(Context context){
 //        mContext = context;
 //    }
@@ -58,57 +59,52 @@ public class ImageHelper {
         if (imageType != null) {
             switch (imageType) {
                 case BANNER_SIZE_SMALL:
-                    imageUrl += "/" + Helper.getScreenWidth() + "x" + ((int) view.getContext().getResources().getDimension(R.dimen.banner_size_small));
                     width = Helper.getScreenWidth();
                     height = ((int) view.getContext().getResources().getDimension(R.dimen.banner_size_small));
                     break;
 
                 case BANNER_SIZE_GENERIC:
-                    imageUrl += "/" + Helper.getScreenWidth() + "x" + ((int) view.getContext().getResources().getDimension(R.dimen.banner_size_generic));
                     width = Helper.getScreenWidth();
                     height = ((int) view.getContext().getResources().getDimension(R.dimen.banner_size_generic));
                     break;
 
                 case BANNER_SIZE_LARGE:
-                    imageUrl += "/" + Helper.getScreenWidth() + "x" + ((int) view.getContext().getResources().getDimension(R.dimen.banner_size_large));
                     width = Helper.getScreenWidth();
                     height = ((int) view.getContext().getResources().getDimension(R.dimen.banner_size_large));
                     break;
 
 
                 case PRODUCT_TINY:
-                    imageUrl += "/" + ((int) view.getContext().getResources().getDimension(R.dimen.product_image_tiny)) + "x" + ((int) view.getContext().getResources().getDimension(R.dimen.product_image_tiny));
+                    imageUrl = Helper.getUpdateImageUrlForScreen(view.getContext(), imageUrl);
                     width = ((int) view.getContext().getResources().getDimension(R.dimen.product_image_tiny));
                     height = ((int) view.getContext().getResources().getDimension(R.dimen.product_image_tiny));
                     break;
 
                 case PRODUCT_SMALL:
-                    imageUrl += "/" + ((int) view.getContext().getResources().getDimension(R.dimen.product_image_small)) + "x" + ((int) view.getContext().getResources().getDimension(R.dimen.product_image_small));
+                    imageUrl = Helper.getUpdateImageUrlForScreen(view.getContext(), imageUrl);
                     width = ((int) view.getContext().getResources().getDimension(R.dimen.product_image_small));
                     height = ((int) view.getContext().getResources().getDimension(R.dimen.product_image_small));
                     break;
 
                 case PRODUCT_GENERIC:
-                    imageUrl += "/" + ((int) view.getContext().getResources().getDimension(R.dimen.product_image_generic)) + "x" + ((int) view.getContext().getResources().getDimension(R.dimen.product_image_generic));
-                    Log.i(TAG, "load: "+imageUrl + ((int) view.getContext().getResources().getDimension(R.dimen.product_image_generic)));
+                    imageUrl = Helper.getUpdateImageUrlForScreen(view.getContext(), imageUrl);
+                    Log.i(TAG, "load: " + imageUrl + ((int) view.getContext().getResources().getDimension(R.dimen.product_image_generic)));
                     width = ((int) view.getContext().getResources().getDimension(R.dimen.product_image_generic));
                     height = ((int) view.getContext().getResources().getDimension(R.dimen.product_image_generic));
                     break;
 
                 case PRODUCT_LARGE:
-                    imageUrl += "/" + ((int) view.getContext().getResources().getDimension(R.dimen.product_image_large)) + "x" + ((int) view.getContext().getResources().getDimension(R.dimen.product_image_large));
+                    imageUrl = Helper.getUpdateImageUrlForScreen(view.getContext(), imageUrl);
                     width = ((int) view.getContext().getResources().getDimension(R.dimen.product_image_large));
                     height = ((int) view.getContext().getResources().getDimension(R.dimen.product_image_large));
                     break;
 
                 case PROFILE_PIC_SMALL:
-                    imageUrl += "/" + ((int) view.getContext().getResources().getDimension(R.dimen.product_image_small)) + "x" + ((int) view.getContext().getResources().getDimension(R.dimen.product_image_small));
                     width = ((int) view.getContext().getResources().getDimension(R.dimen.product_image_small));
                     height = ((int) view.getContext().getResources().getDimension(R.dimen.product_image_small));
                     break;
 
                 case PROFILE_PIC_GENERIC:
-                    imageUrl += "/" + ((int) view.getContext().getResources().getDimension(R.dimen.profile_pic_generic)) + "x" + ((int) view.getContext().getResources().getDimension(R.dimen.profile_pic_generic));
                     width = ((int) view.getContext().getResources().getDimension(R.dimen.profile_pic_generic));
                     height = ((int) view.getContext().getResources().getDimension(R.dimen.profile_pic_generic));
                     break;
@@ -119,7 +115,7 @@ public class ImageHelper {
         Glide.with(view.getContext())
                 .load(imageUrl)
                 .placeholder(placeHolder)
-                .override(height)
+                .override(width, height)
                 .diskCacheStrategy(strategy)
                 .skipMemoryCache(skipMemoryCache)
                 .dontAnimate()
