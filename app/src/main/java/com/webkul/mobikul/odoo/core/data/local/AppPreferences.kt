@@ -55,6 +55,8 @@ class AppPreferences @Inject constructor(private val context: Context) {
         private const val KEY_IS_RECENT_ENABLE = "KEY_IS_RECENT_ENABLE"
         private const val KEY_IS_SEARCH_ENABLE = "KEY_IS_SEARCH_ENABLE"
 
+        private const val KEY_IS_FCM_TOKEN_SYNCED = "KEY_IS_FCM_TOKEN_SYNCED"
+
         /*Customer Details*/
         private const val KEY_CUSTOMER_NAME = "CUSTOMER_NAME"
         private const val KEY_CUSTOMER_ID = "CUSTOMER_ID"
@@ -321,6 +323,14 @@ class AppPreferences @Inject constructor(private val context: Context) {
         }
         set(value) = customerPreferences.edit {
             it.putBoolean(KEY_IS_USER_APPROVED, value)
+        }
+
+    var isFCMTokenSynced: Boolean
+        get() {
+            return customerPreferences.getBoolean(KEY_IS_FCM_TOKEN_SYNCED, false)
+        }
+        set(value) = customerPreferences.edit {
+            it.putBoolean(KEY_IS_FCM_TOKEN_SYNCED, value)
         }
 
     fun clearCustomerData() {

@@ -5,6 +5,7 @@ import com.webkul.mobikul.odoo.core.mvicore.IModel
 import com.webkul.mobikul.odoo.core.platform.BaseViewModel
 import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.core.utils.Resource
+import com.webkul.mobikul.odoo.domain.usecase.fcmToken.RegisterFCMTokenUseCase
 import com.webkul.mobikul.odoo.features.authentication.data.models.OtpAuthenticationRequest
 import com.webkul.mobikul.odoo.features.authentication.domain.usecase.GenerateOtpUseCase
 import com.webkul.mobikul.odoo.features.authentication.domain.usecase.HomePageDataUseCase
@@ -27,7 +28,8 @@ class LoginOtpViewModel @Inject constructor(
         private val verifyOtpUseCase: VerifyOtpUseCase,
         private val splashPageUseCase: SplashPageUseCase,
         private val homePageDataUseCase: HomePageDataUseCase,
-        private val countdownTimerUseCase: CountdownTimerUseCase
+        private val countdownTimerUseCase: CountdownTimerUseCase,
+        private val registerFCMTokenUseCase: RegisterFCMTokenUseCase
 ) : BaseViewModel(), IModel<LoginOtpState, LoginOtpIntent, LoginOtpEffect> {
 
     override val intents: Channel<LoginOtpIntent> = Channel(Channel.UNLIMITED)
@@ -63,6 +65,7 @@ class LoginOtpViewModel @Inject constructor(
                     is LoginOtpIntent.StartTimer -> startTimer(it.time)
                     is LoginOtpIntent.StopTimer -> stopTimer()
                     is LoginOtpIntent.ClearOTP -> clearOTP(it.firstTimeLaunched)
+                    is LoginOtpIntent.RegisterFCMToken -> registerFCMToken()
                 }
             }
         }
@@ -225,5 +228,20 @@ class LoginOtpViewModel @Inject constructor(
         }
     }
 
+    private fun registerFCMToken() {
+        viewModelScope.launch {
+            _state.value = LoginOtpState.Loading
+            _state.value = try {
+                val registerFCMToken = registerFCMTokenUseCase()
+                var registerFCMTokenState : LoginOtpState = LoginOtpState.Loading
+                registerFCMToken.collect{
+                    registerFCMTokenState = LoginOtpState.RegisterFCMTokenState
+                }
+                registerFCMTokenState
+            } catch (e: Exception) {
+                LoginOtpState.Error(e.localizedMessage, FailureStatus.OTHER)
+            }
+        }
+    }
 
 }

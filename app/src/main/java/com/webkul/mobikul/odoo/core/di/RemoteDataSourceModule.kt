@@ -107,4 +107,13 @@ object RemoteDataSourceModule {
             gson: Gson,
             appPreferences: AppPreferences
     ): ChatChannelRemoteDataSource = ChatChannelRemoteDataSource(chatServices, gson, appPreferences)
+
+    @Provides
+    @Singleton
+    fun fcmTokenRemoteDataSource(
+            fcmTokenServices: FCMTokenServices,
+            @ApplicationContext context: Context,
+            gson: Gson,
+            appPreferences: AppPreferences
+    ): FCMTokenRemoteDataSource = FCMTokenRemoteDataSource(fcmTokenServices, context, gson, appPreferences)
 }

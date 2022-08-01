@@ -42,12 +42,14 @@ import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
 import com.webkul.mobikul.odoo.activity.ChatActivity;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
+import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.constant.ApplicationConstant;
 import com.webkul.mobikul.odoo.constant.BundleConstant;
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.CatalogHelper;
 import com.webkul.mobikul.odoo.helper.OdooApplication;
+import com.webkul.mobikul.odoo.model.BaseResponse;
 import com.webkul.mobikul.odoo.model.home.HomePageResponse;
 import com.webkul.mobikul.odoo.model.notification.FcmAdvanceData;
 
@@ -185,7 +187,9 @@ public class FCMMessageReceiverService extends FirebaseMessagingService {
         super.onNewToken(s);
         printToken();
         // Get updated InstanceID token.
-        sendRegistrationToServer();
+        if(AppSharedPref.isLoggedIn(this)) {
+            sendRegistrationToServer(this);
+        }
         subscribeTopics();
 
     }
@@ -194,8 +198,20 @@ public class FCMMessageReceiverService extends FirebaseMessagingService {
         Log.d(TAG, "printToken: " + (FirebaseInstanceId.getInstance().getToken() == null ? "NO TOKEN" : FirebaseInstanceId.getInstance().getToken()));
     }
 
-    private void sendRegistrationToServer() {
-        ApiConnection.registerDeviceToken(this.getApplicationContext()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe();
+    private void sendRegistrationToServer(Context context) {
+        ApiConnection.registerDeviceToken(this.getApplicationContext()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<BaseResponse>(context) {
+            @Override
+            public void onNext(BaseResponse baseResponse) {
+                super.onNext(baseResponse);
+                AppSharedPref.setFcmTokenSynced(context, baseResponse.isSuccess());
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                super.onError(t);
+                AppSharedPref.setFcmTokenSynced(context,false);
+            }
+        });
     }
 
     private void subscribeTopics() {

@@ -9,6 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
+import retrofit2.create
 import javax.inject.Singleton
 
 @Module
@@ -65,5 +66,10 @@ object NetworkServiceModule {
     @Singleton
     fun provideChatServices(retrofit: Retrofit): ChatServices =
             retrofit.create(ChatServices::class.java)
+
+    @Provides
+    @Singleton
+    fun provideFCMTokenServices(retrofit: Retrofit): FCMTokenServices =
+            retrofit.create(FCMTokenServices::class.java)
 
 }

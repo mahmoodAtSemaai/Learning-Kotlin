@@ -27,6 +27,7 @@ import com.webkul.mobikul.odoo.helper.ErrorConstants;
 import com.webkul.mobikul.odoo.helper.FingerPrintLoginHelper;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.SnackbarHelper;
+import com.webkul.mobikul.odoo.model.BaseResponse;
 import com.webkul.mobikul.odoo.model.ReferralResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatCreateChannelResponse;
@@ -150,7 +151,7 @@ public class SignUpHandler {
                 super.onNext(signUpResponse);
                 setIsFirstTime();
                 if (signUpResponse.isSuccess()) {
-                    AppSharedPref.setUserIsApproved(context,signUpResponse.isUserApproved());
+                    AppSharedPref.setUserIsApproved(context, signUpResponse.isUserApproved());
                     AnalyticsImpl.INSTANCE.trackSignupSuccessfull(AnalyticsSourceConstants.EVENT_SOURCE_SIGNUP,
                             AnalyticsSourceConstants.EVENT_SOURCE_PROPERTY_MOBILE,
                             data.getName(),
@@ -164,7 +165,8 @@ public class SignUpHandler {
                                 subscribe(new CustomObserver<ChatBaseResponse<ChatCreateChannelResponse>>(context) {
                                 });
                     }
-                    fetchBillingAddress(context, signUpResponse);
+                    AppSharedPref.setCustomerId(context, signUpResponse.getCustomerId());
+                    sendRegistrationToServer(signUpResponse);
                 } else {
                     AnalyticsImpl.INSTANCE.trackSignupFailed(
                             (long) signUpResponse.getResponseCode(), ErrorConstants.SignupError.INSTANCE.getErrorType(), signUpResponse.getMessage()
@@ -196,6 +198,27 @@ public class SignUpHandler {
         AppSharedPref.setIsAppRunFirstTime(context, false);
     }
 
+    private void sendRegistrationToServer(SignUpResponse signUpResponse) {
+        ApiConnection.registerDeviceToken(context).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<BaseResponse>(context) {
+            @Override
+            public void onNext(BaseResponse baseResponse) {
+                super.onNext(baseResponse);
+                AppSharedPref.setFcmTokenSynced(context, baseResponse.isSuccess());
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                super.onError(t);
+                AppSharedPref.setFcmTokenSynced(context, false);
+            }
+
+            @Override
+            public void onComplete() {
+                super.onComplete();
+                fetchBillingAddress(context, signUpResponse);
+            }
+        });
+    }
 
     private void fetchBillingAddress(Context context, SignUpResponse signUpResponse) {
         ApiConnection.getAddressBookData(context, new BaseLazyRequest(0, 1)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(getAddressResponseObserver(context, signUpResponse));

@@ -18,4 +18,5 @@ sealed class LoginOtpIntent : IIntent {
     object StopTimer : LoginOtpIntent()
     data class StartTimer(val time: Int) : LoginOtpIntent()
     data class ClearOTP(val firstTimeLaunched: Boolean) : LoginOtpIntent()
+    object RegisterFCMToken : LoginOtpIntent()
 }

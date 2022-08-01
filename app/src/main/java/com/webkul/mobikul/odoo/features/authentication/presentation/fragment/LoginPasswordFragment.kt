@@ -139,7 +139,7 @@ class LoginPasswordFragment @Inject constructor() :
             }
             is LoginPasswordState.LoggedIn -> {
                 binding.tvError.visibility = View.INVISIBLE
-                triggerIntent(LoginPasswordIntent.SplashPage)
+                triggerIntent(LoginPasswordIntent.RegisterFCMToken)
             }
             is LoginPasswordState.EnableButton -> {
                 binding.btnContinue.isEnabled = true
@@ -148,6 +148,9 @@ class LoginPasswordFragment @Inject constructor() :
             is LoginPasswordState.DisableButton -> {
                 binding.btnContinue.isEnabled = false
                 binding.btnContinue.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorDarkGrey))
+            }
+            is LoginPasswordState.RegisterFCMTokenState -> {
+                triggerIntent(LoginPasswordIntent.SplashPage)
             }
             is LoginPasswordState.Splash -> {
                 state.splashScreenResponse.updateSharedPref(requireActivity())
