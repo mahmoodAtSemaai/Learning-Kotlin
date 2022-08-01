@@ -10,4 +10,5 @@ sealed class LoginPasswordIntent : IIntent {
     object SplashPage : LoginPasswordIntent()
     object HomePage : LoginPasswordIntent()
     object Default : LoginPasswordIntent()
+    object RegisterFCMToken : LoginPasswordIntent()
 }

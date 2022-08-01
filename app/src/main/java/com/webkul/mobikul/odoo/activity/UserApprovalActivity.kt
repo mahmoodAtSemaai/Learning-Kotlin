@@ -29,50 +29,51 @@ class UserApprovalActivity : BaseActivity() {
         binding.lifecycleOwner = this
         binding.btnLogout.setOnClickListener { signOut() }
         binding.llWhatsapp.setOnClickListener { IntentHelper.goToWhatsApp(this) }
+        registerFCMToken()
     }
 
     private fun signOut() {
         ApiConnection.signOut(this).subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : CustomObserver<BaseResponse?>(this) {
-                override fun onSubscribe(d: Disposable) {
-                    super.onSubscribe(d)
-                    AlertDialogHelper.showDefaultProgressDialog(this@UserApprovalActivity)
-                }
-
-                override fun onNext(baseResponse: BaseResponse) {
-                    super.onNext(baseResponse)
-                    if (baseResponse.isSuccess) {
-                        StyleableToast.makeText(
-                            this@UserApprovalActivity,
-                            baseResponse.message,
-                            Toast.LENGTH_SHORT,
-                            R.style.GenericStyleableToast
-                        ).show()
-                        AppSharedPref.clearCustomerData(this@UserApprovalActivity)
-                        val intent = Intent(
-                            this@UserApprovalActivity,
-                            SplashScreenActivity::class.java
-                        )
-                        intent.flags =
-                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        this@UserApprovalActivity.startActivity(intent)
-                    } else {
-                        SnackbarHelper.getSnackbar(
-                            (this@UserApprovalActivity as Activity),
-                            baseResponse.message,
-                            Snackbar.LENGTH_LONG,
-                            SnackbarHelper.SnackbarType.TYPE_WARNING
-                        ).show()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : CustomObserver<BaseResponse?>(this) {
+                    override fun onSubscribe(d: Disposable) {
+                        super.onSubscribe(d)
+                        AlertDialogHelper.showDefaultProgressDialog(this@UserApprovalActivity)
                     }
-                }
 
-                override fun onError(t: Throwable) {
-                    super.onError(t)
-                }
+                    override fun onNext(baseResponse: BaseResponse) {
+                        super.onNext(baseResponse)
+                        if (baseResponse.isSuccess) {
+                            StyleableToast.makeText(
+                                    this@UserApprovalActivity,
+                                    baseResponse.message,
+                                    Toast.LENGTH_SHORT,
+                                    R.style.GenericStyleableToast
+                            ).show()
+                            AppSharedPref.clearCustomerData(this@UserApprovalActivity)
+                            val intent = Intent(
+                                    this@UserApprovalActivity,
+                                    SplashScreenActivity::class.java
+                            )
+                            intent.flags =
+                                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            this@UserApprovalActivity.startActivity(intent)
+                        } else {
+                            SnackbarHelper.getSnackbar(
+                                    (this@UserApprovalActivity as Activity),
+                                    baseResponse.message,
+                                    Snackbar.LENGTH_LONG,
+                                    SnackbarHelper.SnackbarType.TYPE_WARNING
+                            ).show()
+                        }
+                    }
 
-                override fun onComplete() {}
-            })
+                    override fun onError(t: Throwable) {
+                        super.onError(t)
+                    }
+
+                    override fun onComplete() {}
+                })
     }
 
     override fun onStop() {
@@ -82,5 +83,21 @@ class UserApprovalActivity : BaseActivity() {
 
     override fun getScreenTitle(): String {
         return TAG
+    }
+
+    private fun registerFCMToken() {
+        if (AppSharedPref.getCustomerId(this).isNotBlank() and AppSharedPref.isFCMTokenSynced(this).not()) {
+            ApiConnection.registerDeviceToken(this).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(object : CustomObserver<BaseResponse>(this) {
+                override fun onNext(baseResponse: BaseResponse) {
+                    super.onNext(baseResponse)
+                    AppSharedPref.setFcmTokenSynced(this@UserApprovalActivity, baseResponse.isSuccess)
+                }
+
+                override fun onError(t: Throwable) {
+                    super.onError(t)
+                    AppSharedPref.setFcmTokenSynced(this@UserApprovalActivity, false)
+                }
+            })
+        }
     }
 }

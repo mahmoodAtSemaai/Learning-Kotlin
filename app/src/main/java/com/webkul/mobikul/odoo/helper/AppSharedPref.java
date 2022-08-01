@@ -73,6 +73,7 @@ public class AppSharedPref {
     private static final String PRIVACY_POLICY_URL = "PRIVACY_POLICY_URL";
     private static final String ANALYTICS_ID = "ANALYTICS_ID";
     private static final String KEY_IS_USER_APPROVED = "KEY_IS_USER_APPROVED";
+    private static final String KEY_IS_FCM_TOKEN_SYNCED = "KEY_IS_FCM_TOKEN_SYNCED";
 
 
     /*SHARED PREF AND EDITOR*/
@@ -502,5 +503,13 @@ public class AppSharedPref {
 
     public static String getAuthToken(Context context) {
         return getSharedPreference(context, CUSTOMER_PREF).getString(KEY_CUSTOMER_JWT_AUTH_TOKEN, "");
+    }
+
+    public static boolean isFCMTokenSynced(Context context) {
+        return getSharedPreference(context, CUSTOMER_PREF).getBoolean(KEY_IS_FCM_TOKEN_SYNCED,false);
+    }
+
+    public static void setFcmTokenSynced(Context context, boolean isFcmTokenSynced){
+        getSharedPreferenceEditor(context, CUSTOMER_PREF).putBoolean(KEY_IS_FCM_TOKEN_SYNCED, isFcmTokenSynced);
     }
 }

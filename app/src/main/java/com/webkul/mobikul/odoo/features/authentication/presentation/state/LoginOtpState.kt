@@ -23,4 +23,5 @@ sealed class LoginOtpState : IState {
     object UnauthorisedUser : LoginOtpState()
     data class InvalidOTP(val message: String?, val failureStatus: FailureStatus) : LoginOtpState()
     data class OTPCleared(val isFirstTimeLaunched: Boolean) : LoginOtpState()
+    object RegisterFCMTokenState : LoginOtpState()
 }

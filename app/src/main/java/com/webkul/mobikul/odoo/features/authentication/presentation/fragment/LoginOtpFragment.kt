@@ -1,7 +1,6 @@
 package com.webkul.mobikul.odoo.features.authentication.presentation.fragment
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -30,7 +29,6 @@ import com.webkul.mobikul.odoo.helper.GenericKeyEvent
 import com.webkul.mobikul.odoo.helper.GenericTextWatcher
 import com.webkul.mobikul.odoo.model.home.HomePageResponse
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -181,6 +179,9 @@ class LoginOtpFragment @Inject constructor() : BindingBaseFragment<FragmentLogin
             }
             is LoginOtpState.OTPVerified -> {
                 triggerIntent(LoginOtpIntent.StopTimer)
+                triggerIntent(LoginOtpIntent.RegisterFCMToken)
+            }
+            is LoginOtpState.RegisterFCMTokenState -> {
                 triggerIntent(LoginOtpIntent.GetSplashData)
             }
             is LoginOtpState.Splash -> {

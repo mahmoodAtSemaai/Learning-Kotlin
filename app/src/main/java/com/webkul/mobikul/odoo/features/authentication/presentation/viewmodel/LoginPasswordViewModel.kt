@@ -5,6 +5,7 @@ import com.webkul.mobikul.odoo.core.mvicore.IModel
 import com.webkul.mobikul.odoo.core.platform.BaseViewModel
 import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.core.utils.Resource
+import com.webkul.mobikul.odoo.domain.usecase.fcmToken.RegisterFCMTokenUseCase
 import com.webkul.mobikul.odoo.features.authentication.data.models.LoginOtpAuthenticationRequest
 import com.webkul.mobikul.odoo.features.authentication.domain.usecase.HomePageDataUseCase
 import com.webkul.mobikul.odoo.features.authentication.domain.usecase.LoginPasswordUseCase
@@ -24,7 +25,8 @@ class LoginPasswordViewModel @Inject constructor(
         private val loginPasswordUseCase: LoginPasswordUseCase,
         private val verifyPasswordUseCase: VerifyPasswordUseCase,
         private val splashPageUseCase: SplashPageUseCase,
-        private val homePageDataUseCase: HomePageDataUseCase
+        private val homePageDataUseCase: HomePageDataUseCase,
+        private val registerFCMTokenUseCase: RegisterFCMTokenUseCase
 ) : BaseViewModel(), IModel<LoginPasswordState, LoginPasswordIntent, LoginPasswordEffect> {
 
     override val intents: Channel<LoginPasswordIntent> = Channel(Channel.UNLIMITED)
@@ -50,6 +52,7 @@ class LoginPasswordViewModel @Inject constructor(
                     is LoginPasswordIntent.SplashPage -> getSplashData()
                     is LoginPasswordIntent.HomePage -> getHomePageData()
                     is LoginPasswordIntent.Default -> setIdleState()
+                    is LoginPasswordIntent.RegisterFCMToken -> registerFCMToken()
                 }
             }
         }
@@ -156,6 +159,23 @@ class LoginPasswordViewModel @Inject constructor(
                 LoginPasswordState.Error(e.localizedMessage, FailureStatus.OTHER)
             }
 
+        }
+    }
+
+
+    private fun registerFCMToken() {
+        viewModelScope.launch {
+            _state.value = LoginPasswordState.Loading
+            _state.value = try {
+                val registerFCMToken = registerFCMTokenUseCase()
+                var registerFCMTokenState : LoginPasswordState = LoginPasswordState.Loading
+                registerFCMToken.collect{
+                    registerFCMTokenState = LoginPasswordState.RegisterFCMTokenState
+                }
+                registerFCMTokenState
+            } catch (e: Exception) {
+                LoginPasswordState.Error(e.localizedMessage, FailureStatus.OTHER)
+            }
         }
     }
 

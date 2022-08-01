@@ -9,6 +9,7 @@ import com.webkul.mobikul.odoo.database.SqlLiteDbHelper
 import com.webkul.mobikul.odoo.domain.repository.*
 import com.webkul.mobikul.odoo.domain.usecase.auth.*
 import com.webkul.mobikul.odoo.domain.usecase.chat.CreateChatChannelUseCase
+import com.webkul.mobikul.odoo.domain.usecase.fcmToken.RegisterFCMTokenUseCase
 import com.webkul.mobikul.odoo.domain.usecase.home.HomeLocalDataUseCase
 import com.webkul.mobikul.odoo.domain.usecase.home.HomeUseCase
 import com.webkul.mobikul.odoo.domain.usecase.network.IsNetworkUseCase
@@ -190,4 +191,10 @@ class UseCaseModule {
             isUserAuthorisedUseCase: IsUserAuthorisedUseCase,
             isUserApprovedUseCase: IsUserApprovedUseCase
     ): IsValidSessionUseCase = IsValidSessionUseCase(isUserAuthorisedUseCase, isUserApprovedUseCase)
+
+    @Provides
+    @Singleton
+    fun provideRegisterFCMTokenUseCase(
+            fcmTokenRepository: FCMTokenRepository
+    ): RegisterFCMTokenUseCase = RegisterFCMTokenUseCase(fcmTokenRepository)
 }

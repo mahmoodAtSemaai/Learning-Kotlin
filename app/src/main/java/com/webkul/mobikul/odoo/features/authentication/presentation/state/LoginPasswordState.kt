@@ -23,4 +23,6 @@ sealed class LoginPasswordState : IState {
     data class Error(val message: String?, val failureStatus: FailureStatus) : LoginPasswordState()
     object ForgotPassword : LoginPasswordState()
     object UnauthorisedUser : LoginPasswordState()
+
+    object RegisterFCMTokenState : LoginPasswordState()
 }

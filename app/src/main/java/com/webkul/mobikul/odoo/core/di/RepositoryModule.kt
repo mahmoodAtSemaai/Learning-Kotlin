@@ -99,4 +99,11 @@ class RepositoryModule {
             remoteDataSource: ChatChannelRemoteDataSource
     ): ChatChannelRepository = ChatChannelRepositoryImpl(remoteDataSource)
 
+    @Provides
+    @Singleton
+    fun providesFCMTokenRepository(
+            remoteDataSource: FCMTokenRemoteDataSource,
+            appPreferences: AppPreferences
+    ): FCMTokenRepository = FCMTokenRepositoryImpl(remoteDataSource, appPreferences)
+
 }

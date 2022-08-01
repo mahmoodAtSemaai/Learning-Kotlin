@@ -35,6 +35,7 @@ import com.webkul.mobikul.odoo.handler.home.FragmentNotifier.HomeActivityFragmen
 import com.webkul.mobikul.odoo.helper.AppSharedPref
 import com.webkul.mobikul.odoo.helper.CartUpdateListener
 import com.webkul.mobikul.odoo.helper.SnackbarHelper
+import com.webkul.mobikul.odoo.model.BaseResponse
 import com.webkul.mobikul.odoo.model.ReferralResponse
 import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse
 import com.webkul.mobikul.odoo.model.home.HomePageResponse
@@ -78,6 +79,9 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
         openDrawer()
         getBagItemsCount()
         getLoyaltyPoints()
+
+        //RegisterFCMToken
+        registerFCMToken()
 
         binding.searchView.setOnClickListener {
             binding.materialSearchView.visibility = View.VISIBLE
@@ -182,7 +186,7 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
     private fun getBagItemsCount() {
         val count = AppSharedPref.getCartCount(this@NewHomeActivity, ApplicationConstant.MIN_ITEM_TO_BE_SHOWN_IN_CART)
         binding.apply {
-        if (count != ApplicationConstant.MIN_ITEM_TO_BE_SHOWN_IN_CART) {
+            if (count != ApplicationConstant.MIN_ITEM_TO_BE_SHOWN_IN_CART) {
                 badgeInfo.makeVisible()
                 if (count < ApplicationConstant.MAX_ITEM_TO_BE_SHOWN_IN_CART)
                     badgeInfo.text = count.toString()
@@ -309,5 +313,21 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
 
     override fun updateCart() {
         getBagItemsCount()
+    }
+
+    private fun registerFCMToken() {
+        if (AppSharedPref.getCustomerId(this).isNotBlank() and AppSharedPref.isFCMTokenSynced(this).not()) {
+            ApiConnection.registerDeviceToken(this).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(object : CustomObserver<BaseResponse>(this) {
+                override fun onNext(baseResponse: BaseResponse) {
+                    super.onNext(baseResponse)
+                    AppSharedPref.setFcmTokenSynced(this@NewHomeActivity, baseResponse.isSuccess)
+                }
+
+                override fun onError(t: Throwable) {
+                    super.onError(t)
+                    AppSharedPref.setFcmTokenSynced(this@NewHomeActivity, false)
+                }
+            })
+        }
     }
 }
