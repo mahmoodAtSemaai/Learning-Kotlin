@@ -37,6 +37,9 @@ public interface BundleConstant {
    /*SIGN IN SIGN UP*/
     String BUNDLE_KEY_SELECT_PAGE = "SELECT_PAGE";
     String BUNDLE_KEY_USERNAME = "USERNAME";
+    String BUNDLE_KEY_USERID = "USER_ID";
+    String BUNDLE_KEY_PARTNERID = "PARTNER_ID";
+    String BUNDLE_KEY_CUSTOMER_GROUP_ID = "CUSTOMER_GROUP_ID";
     String BUNDLE_KEY_NAME = "NAME";
     String BUNDLE_KEY_PHONE_NUMBER = "PHONE_NUMBER";
     String BUNDLE_KEY_PHONE_NUMBER_SCREEN = "PHONE_NUMBER_SCREEN";
@@ -44,6 +47,7 @@ public interface BundleConstant {
     String BUNDLE_KEY_LOGIN_SCREEN = "LOGIN_SCREEN";
     String BUNDLE_KEY_SIGNUP_SCREEN = "SIGNUP_SCREEN";
     String BUNDLE_KEY_PASSWORD_SCREEN = "PASSWORD_SCREEN";
+    String BUNDLE_KEY_ENABLE_PASSWORD = "ENABLE_PASSWORD";
 
     /*CATALOG PRODUCT*/
     String BUNDLE_KEY_CATEGORY_ID = "CATEGORY_ID";
@@ -195,4 +199,8 @@ public interface BundleConstant {
     String QUERY_KEY_CHAT_UUID = "uuid";
     String QUERY_KEY_CHAT_TITLE = "title";
     String QUERY_KEY_CHAT_PROFILE_PICTURE_URL = "image";
+
+    String BUNDLE_KEY_IS_USER_NAME_EDIT = "userNameEdit";
+    String BUNDLE_KEY_IS_ADDRESS_PENDING = "isAddressStagePending";
+    String BUNDLE_KEY_ACCOUNT_INFO_DATA = "account_info_data";
 }

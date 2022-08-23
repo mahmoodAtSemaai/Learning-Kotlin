@@ -18,6 +18,7 @@ import com.webkul.mobikul.odoo.fragment.SignUpFragment;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.FingerPrintLoginHelper;
 import com.webkul.mobikul.odoo.helper.FragmentHelper;
+import com.webkul.mobikul.odoo.ui.signUpAuth.SignUpAuthActivity;
 
 import java.security.KeyStore;
 
@@ -52,7 +53,7 @@ public class SignInSignUpActivityHandler {
     }
 
     public void signUp() {
-        FragmentHelper.addFragment(R.id.fragment_container, context, SignUpFragment.newInstance(), SignUpFragment.class.getSimpleName(), true, false);
+        context.startActivity(new Intent(context, SignUpAuthActivity.class));
     }
 
     @TargetApi(Build.VERSION_CODES.M)

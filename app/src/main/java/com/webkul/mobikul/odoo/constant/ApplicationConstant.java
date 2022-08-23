@@ -87,4 +87,21 @@ public interface ApplicationConstant {
     int MAX_ITEM_TO_BE_SHOWN_IN_CART = 10;
     int MIN_ITEM_TO_BE_SHOWN_IN_CART = 0;
 
+    //Address
+    int COMPANY_ID = 1;
+    int COUNTY_ID = 100;
+
+    //Referral Code length
+    int REFERRAL_CODE_LENGTH = 6;
+
+    //Max Address List Size
+    int MAX_ADDRESS_LIST_SIZE = 5;
+
+    //Home
+    int MAX_UNREAD_CHAT_COUNT = 9;
+    int MIN_UNREAD_CHAT_COUNT = 0;
+
+    //T&C
+    String MIME = "text/html";
+    String ENCODING = "utf-8";
 }

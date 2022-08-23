@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_approval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_user_approval" />
+
+        <TextView
+            android:id="@+id/tv_approval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_32"
+            android:layout_marginTop="@dimen/margin_16"
+            android:text="@string/authorization_is_under_process"
+            android:textAlignment="center"
+            android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_approval" />
+
+        <TextView
+            android:id="@+id/tv_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_32"
+            android:layout_marginTop="@dimen/margin_16"
+            android:text="@string/contact_chat_our_admin"
+            android:textAlignment="center"
+            android:textAppearance="@style/Semaai.TextAppearance.Caption"
+            app:layout_constraintEnd_toEndOf="@+id/tv_approval"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/tv_approval"
+            app:layout_constraintTop_toBottomOf="@+id/tv_approval" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_whatsapp_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_16"
+            app:layout_constraintEnd_toEndOf="@+id/tv_contact"
+            app:layout_constraintStart_toStartOf="@+id/tv_contact"
+            app:layout_constraintTop_toBottomOf="@+id/tv_contact">
+
+            <ImageView
+                android:id="@+id/iv_whatsapp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_8"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tv_whatsapp_no"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_logo_whatsapp" />
+
+            <TextView
+                android:id="@+id/tv_whatsapp_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/whatsapp_contant_wo_cc"
+                android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+                android:textColor="@color/background_orange"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/btn_sign_out"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_32"
+            android:layout_marginVertical="@dimen/margin_16"
+            android:layout_marginBottom="@dimen/margin_1"
+            android:background="@drawable/bg_btn_category"
+            android:text="@string/sign_out"
+            android:textAlignment="center"
+            android:textColor="@color/background_orange"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/cl_whatsapp_no"
+            app:layout_constraintStart_toStartOf="@+id/cl_whatsapp_no"
+            app:layout_constraintTop_toBottomOf="@+id/cl_whatsapp_no" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

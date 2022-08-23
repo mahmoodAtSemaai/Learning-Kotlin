@@ -2,4 +2,6 @@ package com.webkul.mobikul.odoo.features.authentication.presentation.effect
 
 import com.webkul.mobikul.odoo.core.mvicore.IEffect
 
-sealed class AuthenticationEffect : IEffect
+sealed class AuthenticationEffect : IEffect {
+    data class NavigateToLoginOptions(val enablePassword : Boolean) : AuthenticationEffect()
+}

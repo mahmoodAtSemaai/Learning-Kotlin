@@ -9,10 +9,10 @@ import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.domain.usecase.analytics.UserAnalyticsUseCase
 import com.webkul.mobikul.odoo.domain.usecase.auth.IsFirstTimeUseCase
+import com.webkul.mobikul.odoo.domain.usecase.auth.IsUserAuthorisedUseCase
 import com.webkul.mobikul.odoo.domain.usecase.auth.IsUserLoggedInUseCase
 import com.webkul.mobikul.odoo.domain.usecase.chat.CreateChatChannelUseCase
 import com.webkul.mobikul.odoo.domain.usecase.home.HomeUseCase
-import com.webkul.mobikul.odoo.domain.usecase.session.IsValidSessionUseCase
 import com.webkul.mobikul.odoo.domain.usecase.splash.SplashUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -27,8 +27,8 @@ class SplashViewModel @Inject constructor(
         private val homeUseCase: HomeUseCase,
         private val isUserLoggedInUseCase: IsUserLoggedInUseCase,
         private val isFirstTimeUseCase: IsFirstTimeUseCase,
-        private val isValidSessionUseCase: IsValidSessionUseCase,
         private val createChatChannelUseCase: CreateChatChannelUseCase,
+        private val isUserAuthorisedUseCase: IsUserAuthorisedUseCase
 ) :
         BaseViewModel(), IModel<SplashState, SplashIntent, SplashEffect> {
 
@@ -150,8 +150,8 @@ class SplashViewModel @Inject constructor(
     }
 
     private fun initSplash() {
-        val isValidSessionUseCase = isValidSessionUseCase()
-        if (isValidSessionUseCase is Resource.Success) {
+        val isUserAuthorisedUseCase = isUserAuthorisedUseCase()
+        if (isUserAuthorisedUseCase) {
             viewModelScope.launch {
                 _state.value = SplashState.Loading
                 try {
@@ -176,13 +176,13 @@ class SplashViewModel @Inject constructor(
                 }
             }
         } else {
-            _state.value = SplashState.Error("", (isValidSessionUseCase as Resource.Failure).failureStatus)
+            _state.value = SplashState.Error("",FailureStatus.ACCESS_DENIED)
         }
     }
 
     private fun executeDeepLink() {
-        val isValidSessionUseCase = isValidSessionUseCase()
-        if (isValidSessionUseCase is Resource.Success) {
+        val isUserAuthorisedUseCase = isUserAuthorisedUseCase()
+        if (isUserAuthorisedUseCase) {
             viewModelScope.launch {
                 _state.value = SplashState.Loading
                 try {
@@ -199,7 +199,7 @@ class SplashViewModel @Inject constructor(
                 }
             }
         } else {
-            _state.value = SplashState.Error("", (isValidSessionUseCase as Resource.Failure).failureStatus)
+            _state.value = SplashState.Error("",FailureStatus.ACCESS_DENIED)
         }
     }
 

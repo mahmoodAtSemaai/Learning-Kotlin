@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:clickable="true"
+        android:focusable="true"
+        tools:context=".ui.signUpAuth.fragment.SignUpAuthFragment">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_header"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            android:adjustViewBounds="true"
+            android:alpha="0.6"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toTopOf="@id/gl_horizontal_40"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_color_primary_light_bg" />
+
+        <TextView
+            android:id="@+id/tv_welcome"
+            style="@style/Semaai.TextAppearance.Headline5.Orange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_12"
+            android:layout_marginTop="@dimen/margin_32"
+            android:text="@string/welcome_to_semaai"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="RtlSymmetry" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_phone_number_container"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:cardCornerRadius="@dimen/size_16"
+            app:cardElevation="@dimen/size_8"
+            app:layout_constraintEnd_toStartOf="@+id/gl_vertical_95"
+            app:layout_constraintStart_toStartOf="@+id/gl_vertical_05"
+            app:layout_constraintTop_toTopOf="@+id/gl_horizontal_22">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="@dimen/padding_20"
+                android:paddingTop="@dimen/padding_20"
+                android:paddingBottom="@dimen/padding_32">
+
+                <TextView
+                    android:id="@+id/tv_enter_phone_number"
+                    style="@style/Semaai.TextAppearance.Body2.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:text="@string/please_enter_your_mobile_number"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_20"
+                    android:inputType="numberDecimal"
+                    android:maxLength="13"
+                    android:textSize="@dimen/font_size_16"
+                    app:hintEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_enter_phone_number">
+
+                    <EditText
+                        android:id="@+id/et_phone_number"
+                        style="@style/medium_bold_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_24"
+                        android:background="@drawable/shape_rectangular_white_bg_dark_gray_border_1dp_corner_4dp"
+                        android:hint="@string/number_hint"
+                        android:inputType="numberDecimal"
+                        android:maxLength="13"
+                        android:paddingHorizontal="@dimen/padding_16"
+                        android:paddingVertical="@dimen/padding_12"
+                        android:textColorHint="@color/grey_bg"
+                        android:textSize="@dimen/font_size_16"
+                        tools:ignore="TextFields"
+                        tools:layout_editor_absoluteX="20dp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_terms_and_conditions"
+                    style="@style/Base.Semaai.TextAppearance.Body"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_20"
+                    android:text="@string/terms_and_conditions_of_semaai"
+                    app:layout_constraintEnd_toEndOf="@+id/til_phone_number"
+                    app:layout_constraintStart_toStartOf="@+id/til_phone_number"
+                    app:layout_constraintTop_toBottomOf="@+id/til_phone_number" />
+
+                <Button
+                    android:id="@+id/btn_continue"
+                    android:layout_width="@dimen/size_270"
+                    android:layout_height="@dimen/size_40"
+                    android:layout_marginHorizontal="@dimen/margin_32"
+                    android:layout_marginTop="@dimen/margin_20"
+                    android:background="@drawable/btn_continue_bg"
+                    android:enabled="false"
+                    android:text="@string/continue_"
+                    android:textAlignment="center"
+                    android:textColor="@color/btn_continue_text_color"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_terms_and_conditions"
+                    app:layout_constraintStart_toStartOf="@+id/tv_terms_and_conditions"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_terms_and_conditions" />
+
+                <TextView
+                    android:id="@+id/tv_error"
+                    style="@style/medium_bold_text_no_caps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_24"
+                    android:gravity="center_horizontal"
+                    android:text=""
+                    android:textAlignment="center"
+                    android:textColor="@color/red_alert"
+                    android:textSize="@dimen/font_size_14"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_continue"
+                    tools:text="@string/incorrect_mobile_number_format" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tv_already_have_an_account"
+            style="@style/medium_normal_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_20"
+            android:paddingVertical="@dimen/padding_12"
+            android:text="@string/already_have_an_account"
+            android:textSize="@dimen/font_size_14"
+            app:layout_constraintEnd_toStartOf="@id/tv_login"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="@id/gl_vertical_05"
+            app:layout_constraintTop_toBottomOf="@id/cv_phone_number_container" />
+
+        <TextView
+            android:id="@+id/tv_login"
+            style="@style/medium_bold_text_accent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_4"
+            android:layout_marginLeft="@dimen/margin_4"
+            android:layout_marginTop="@dimen/margin_20"
+            android:paddingVertical="@dimen/padding_12"
+            android:text="@string/login"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/font_size_14"
+            app:layout_constraintEnd_toStartOf="@id/gl_vertical_95"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/tv_already_have_an_account"
+            app:layout_constraintTop_toBottomOf="@id/cv_phone_number_container" />
+
+
+        <ImageView
+            android:id="@+id/iv_people"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_12"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toTopOf="@+id/gl_horizontal_23"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ic_welcome_signup" />
+
+        <ImageView
+            android:id="@+id/iv_footer"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            android:layout_marginStart="@dimen/size__32"
+            android:layout_marginEnd="@dimen/size__32"
+            android:layout_marginBottom="@dimen/size__4"
+            android:background="@drawable/ic_background_bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/gl_horizontal_90" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_horizontal_23"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.23" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_horizontal_22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.22" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_horizontal_40"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="471dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_horizontal_90"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.9" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_vertical_05"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_vertical_95"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

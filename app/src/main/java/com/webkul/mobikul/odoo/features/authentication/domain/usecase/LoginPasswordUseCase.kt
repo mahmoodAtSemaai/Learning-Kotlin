@@ -38,7 +38,7 @@ class LoginPasswordUseCase @Inject constructor(
         when (result) {
             is Resource.Default -> {}
             is Resource.Failure -> {
-                setCustomerData("","")
+                setCustomerData("","", -1)
                 appPreferences.customerLoginToken = null
                 emit(Resource.Failure(failureStatus = FailureStatus.API_FAIL, message = result.message))
             }
@@ -47,9 +47,10 @@ class LoginPasswordUseCase @Inject constructor(
                 if (result.value.statusCode.toInt() == HTTP_RESPONSE_OK) {
                     appPreferences.authToken = result.value.result.auth
                     appPreferences.customerId = result.value.result.customerId
+                    appPreferences.userId = result.value.result.userId.toInt()
                     emit(result)
                 } else {
-                    setCustomerData("","")
+                    setCustomerData("","", -1)
                     appPreferences.customerLoginToken = null
                     emit(Resource.Failure( failureStatus = FailureStatus.API_FAIL,  message = result.value.message ))
                 }
@@ -58,9 +59,10 @@ class LoginPasswordUseCase @Inject constructor(
 
     }.flowOn(Dispatchers.IO)
 
-    private fun setCustomerData(authToken: String, customerId: String) {
+    private fun setCustomerData(authToken: String, customerId: String, userId : Int) {
         appPreferences.authToken = authToken
         appPreferences.customerId = customerId
+        appPreferences.userId = userId
     }
 
 }

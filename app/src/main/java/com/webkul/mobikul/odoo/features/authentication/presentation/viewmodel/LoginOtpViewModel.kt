@@ -188,10 +188,7 @@ class LoginOtpViewModel @Inject constructor(
                         is Resource.Loading -> LoginOtpState.Loading
                         is Resource.Failure -> LoginOtpState.Error(it.message, it.failureStatus)
                         is Resource.Success -> {
-                            if (it.value.isUserApproved)
-                                LoginOtpState.Splash(it.value)
-                            else
-                                LoginOtpState.UnauthorisedUser
+                            LoginOtpState.Splash(it.value)
                         }
                     }
                 }

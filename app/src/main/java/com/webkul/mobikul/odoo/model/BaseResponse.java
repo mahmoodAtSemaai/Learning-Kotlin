@@ -82,6 +82,10 @@ public class BaseResponse extends BaseObservable implements Parcelable {
     @Expose
     private boolean accessDenied;
 
+    @SerializedName("isOnboarded")
+    @Expose
+    private boolean isOnboarded;
+
 
     protected BaseResponse(Parcel in) {
         if (in == null) {
@@ -255,5 +259,9 @@ public class BaseResponse extends BaseObservable implements Parcelable {
 
     public void setAccessDenied(boolean accessDenied) {
         this.accessDenied = accessDenied;
+    }
+
+    public boolean isUserOnboarded() {
+        return isOnboarded;
     }
 }

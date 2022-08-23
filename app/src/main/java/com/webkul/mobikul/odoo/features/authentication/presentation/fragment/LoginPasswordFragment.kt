@@ -13,7 +13,6 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.firebase.iid.FirebaseInstanceId
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.activity.NewHomeActivity
-import com.webkul.mobikul.odoo.activity.UserApprovalActivity
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl
 import com.webkul.mobikul.odoo.analytics.AnalyticsSourceConstants
 import com.webkul.mobikul.odoo.constant.BundleConstant
@@ -30,8 +29,8 @@ import com.webkul.mobikul.odoo.features.authentication.presentation.state.LoginP
 import com.webkul.mobikul.odoo.features.authentication.presentation.viewmodel.LoginPasswordViewModel
 import com.webkul.mobikul.odoo.helper.AsteriskPasswordTransformationMethod
 import com.webkul.mobikul.odoo.model.home.HomePageResponse
+import com.webkul.mobikul.odoo.ui.signUpOnboarding.UserOnboardingActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -119,6 +118,9 @@ class LoginPasswordFragment @Inject constructor() :
                 progressDialog.dismiss()
                 //TODO-> Handle elegantly in v2 login arch rvamp
                 when (state.failureStatus) {
+                    FailureStatus.INCOMPLETE_ONBOARDING -> showErrorState(
+                        state.failureStatus, state.message ?: getString(R.string.error_something_went_wrong)
+                    )
                     FailureStatus.NO_INTERNET -> showErrorState(state.failureStatus,
                             state.message ?: getString(R.string.error_something_went_wrong))
                     FailureStatus.ACCESS_DENIED -> showErrorState(state.failureStatus,
@@ -157,7 +159,7 @@ class LoginPasswordFragment @Inject constructor() :
                 triggerIntent(LoginPasswordIntent.HomePage)
             }
             is LoginPasswordState.UnauthorisedUser -> {
-                redirectToUserApprovalActivity()
+                redirectToUserOnboardingActivity()
             }
             is LoginPasswordState.HomePage -> {
                 redirectToHomeActivity(state.homePageResponse)
@@ -169,9 +171,9 @@ class LoginPasswordFragment @Inject constructor() :
         //TODO("Not yet implemented")
     }
 
-    private fun redirectToUserApprovalActivity() {
-        startActivity(Intent(requireActivity(), UserApprovalActivity::class.java)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
+    private fun redirectToUserOnboardingActivity() {
+        startActivity(Intent(requireActivity(), UserOnboardingActivity::class.java)
+            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
         progressDialog.dismiss()
     }
 

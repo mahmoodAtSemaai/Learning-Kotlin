@@ -3,10 +3,7 @@ package com.webkul.mobikul.odoo.ui.routing
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.activity.SplashScreenActivity
-import com.webkul.mobikul.odoo.core.platform.BindingBaseActivity
-import com.webkul.mobikul.odoo.databinding.ActivityRoutingBinding
 import com.webkul.mobikul.odoo.ui.splash.SplashScreenActivityV1
 import com.webkul.mobikul.odoo.updates.FirebaseRemoteConfigHelper
 

@@ -22,8 +22,8 @@ import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
 import com.webkul.mobikul.odoo.core.utils.INTENT_SPLASH_SCREEN
 import com.webkul.mobikul.odoo.databinding.FragmentAuthenticationBinding
 import com.webkul.mobikul.odoo.features.authentication.domain.enums.VerifyPhoneNumberValidation
-import com.webkul.mobikul.odoo.features.authentication.presentation.intent.AuthenticationIntent
 import com.webkul.mobikul.odoo.features.authentication.presentation.effect.AuthenticationEffect
+import com.webkul.mobikul.odoo.features.authentication.presentation.intent.AuthenticationIntent
 import com.webkul.mobikul.odoo.features.authentication.presentation.state.AuthenticationState
 import com.webkul.mobikul.odoo.features.authentication.presentation.viewmodel.AuthenticationViewModel
 import com.webkul.mobikul.odoo.helper.AppSharedPref
@@ -118,7 +118,7 @@ class AuthenticationFragment @Inject constructor() :
             }
 
             is AuthenticationState.VerifiedPhoneNumber -> {
-                navigateToLoginOptionsScreen(binding.etPhoneNumber.text.toString())
+                navigateToLoginOptionsScreen(binding.etPhoneNumber.text.toString(),state.isPasswordEnabled)
                 progressDialog.dismiss()
             }
 
@@ -140,18 +140,25 @@ class AuthenticationFragment @Inject constructor() :
     }
 
     override fun render(effect: AuthenticationEffect) {
-        //TODO("Not yet implemented")
+        when (effect) {
+            is AuthenticationEffect.NavigateToLoginOptions -> navigateToLoginOptionsScreen(
+                binding.etPhoneNumber.text.toString(),
+                effect.enablePassword
+            )
+        }
     }
 
     private fun showPrivacyPolicy() {
         val pm: PackageManager = requireContext().packageManager
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(AppSharedPref.getPrivacyURL(requireContext())))
+        val intent =
+            Intent(Intent.ACTION_VIEW, Uri.parse(AppSharedPref.getPrivacyURL(requireContext())))
         val intents: MutableList<Intent> = ArrayList()
         val list = pm.queryIntentActivities(intent, 0)
 
         for (info in list) {
             val viewIntent = Intent(intent)
-            viewIntent.component = ComponentName(info.activityInfo.packageName, info.activityInfo.name)
+            viewIntent.component =
+                ComponentName(info.activityInfo.packageName, info.activityInfo.name)
             viewIntent.setPackage(info.activityInfo.packageName)
             intents.add(viewIntent)
         }
@@ -169,16 +176,19 @@ class AuthenticationFragment @Inject constructor() :
     private fun redirectToSignInSignUpFragment() {
         startActivity(
             Intent(requireContext(), SignInSignUpActivity::class.java)
-                .putExtra(BundleConstant.BUNDLE_KEY_SIGNUP_SCREEN, BundleConstant.BUNDLE_KEY_SIGNUP_SCREEN)
+                .putExtra(
+                    BundleConstant.BUNDLE_KEY_SIGNUP_SCREEN,
+                    BundleConstant.BUNDLE_KEY_SIGNUP_SCREEN
+                )
         )
         requireActivity().finish()
     }
 
-    private fun navigateToLoginOptionsScreen(phoneNumber: String) {
+    private fun navigateToLoginOptionsScreen(phoneNumber: String, enablePassword: Boolean) {
         requireActivity().supportFragmentManager.beginTransaction()
             .add(
                 R.id.fragment_container_authentication,
-                LoginOptionsFragment.newInstance(phoneNumber),
+                LoginOptionsFragment.newInstance(phoneNumber,enablePassword),
                 LoginOptionsFragment::class.java.simpleName
             ).addToBackStack(LoginOptionsFragment::class.java.simpleName).commit()
         Helper.hideKeyboard(requireActivity())
@@ -193,7 +203,12 @@ class AuthenticationFragment @Inject constructor() :
         }
         binding.tvError.visibility = View.VISIBLE
         binding.btnConfirmNumber.isEnabled = false
-        binding.btnConfirmNumber.setTextColor(ContextCompat.getColor(requireContext(),R.color.colorDarkGrey))
+        binding.btnConfirmNumber.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.colorDarkGrey
+            )
+        )
     }
 
     private fun setResponseError(error: String) {
@@ -203,7 +218,12 @@ class AuthenticationFragment @Inject constructor() :
 
     private fun setEmptyPhoneNumber() {
         binding.tvError.text = ""
-        binding.btnConfirmNumber.setTextColor(ContextCompat.getColor(requireContext(),R.color.colorDarkGrey))
+        binding.btnConfirmNumber.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.colorDarkGrey
+            )
+        )
         binding.btnConfirmNumber.isEnabled = false
         binding.tvError.visibility = View.GONE
     }
@@ -211,7 +231,12 @@ class AuthenticationFragment @Inject constructor() :
     private fun validatedNumber() {
         binding.tvError.text = ""
         binding.btnConfirmNumber.isEnabled = true
-        binding.btnConfirmNumber.setTextColor(ContextCompat.getColor(requireContext(),R.color.colorPrimary))
+        binding.btnConfirmNumber.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.colorPrimary
+            )
+        )
         binding.tvError.visibility = View.GONE
     }
 
@@ -231,7 +256,7 @@ class AuthenticationFragment @Inject constructor() :
         setCursorVisibility(binding.etPhoneNumber, false)
     }
 
-    private fun setCursorVisibility(editText: EditText, isCursorVisible: Boolean){
+    private fun setCursorVisibility(editText: EditText, isCursorVisible: Boolean) {
         editText.isCursorVisible = isCursorVisible
     }
 

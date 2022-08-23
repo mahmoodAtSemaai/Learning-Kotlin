@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".ui.account.fragment.EditAccountInfoFragment">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_app_layout"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:navigationIcon="@drawable/ic_arrow_color_primary"
+                app:titleTextColor="@android:color/white">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_toolBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/change_phone_number"
+                    android:textAllCaps="false"
+                    android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+                    android:textColor="@color/background_orange" />
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <EditText
+            android:id="@+id/et_change_feild"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_16"
+            android:background="@drawable/shape_rectangular_white_bg_gray_border_1dp_corner_4dp"
+            android:inputType="text"
+            android:paddingHorizontal="@dimen/padding_16"
+            android:paddingVertical="@dimen/padding_12"
+            android:text="@string/whatsapp_contant_wo_cc"
+            android:textAppearance="@style/Semaai.TextAppearance.Body2.Bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
+            tools:ignore="TextFields" />
+
+        <include
+            android:id="@+id/div_horizontal_1"
+            layout="@layout/divider_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_2"
+            android:layout_marginTop="@dimen/margin_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_change_feild" />
+
+        <Button
+            android:id="@+id/btn_continue"
+            android:layout_width="@dimen/size_270"
+            android:layout_height="@dimen/size_40"
+            android:layout_marginHorizontal="@dimen/margin_32"
+            android:layout_marginBottom="@dimen/margin_24"
+            android:background="@drawable/btn_continue_bg"
+            android:enabled="false"
+            android:text="@string/save"
+            android:textColor="@color/btn_continue_text_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

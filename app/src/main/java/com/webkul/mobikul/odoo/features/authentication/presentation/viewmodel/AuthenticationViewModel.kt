@@ -10,8 +10,8 @@ import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.features.authentication.domain.enums.VerifyPhoneNumberValidation
 import com.webkul.mobikul.odoo.features.authentication.domain.usecase.ContinuePhoneNumberUseCase
 import com.webkul.mobikul.odoo.features.authentication.domain.usecase.VerifyPhoneNumberUseCase
-import com.webkul.mobikul.odoo.features.authentication.presentation.intent.AuthenticationIntent
 import com.webkul.mobikul.odoo.features.authentication.presentation.effect.AuthenticationEffect
+import com.webkul.mobikul.odoo.features.authentication.presentation.intent.AuthenticationIntent
 import com.webkul.mobikul.odoo.features.authentication.presentation.state.AuthenticationState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -121,7 +121,9 @@ class AuthenticationViewModel @Inject constructor(
                     authenticationState = when (it) {
                         is Resource.Default -> AuthenticationState.Idle
                         is Resource.Loading -> AuthenticationState.Loading
-                        is Resource.Success -> AuthenticationState.VerifiedPhoneNumber
+                        is Resource.Success -> {
+                            AuthenticationState.VerifiedPhoneNumber(it.value.result.passwordEnabled)
+                        }
                         is Resource.Failure -> AuthenticationState.Error(
                                 it.message,
                                 FailureStatus.OTHER

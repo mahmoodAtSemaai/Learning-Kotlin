@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.constant.BundleConstant
+import com.webkul.mobikul.odoo.core.extension.makeGone
 import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
 import com.webkul.mobikul.odoo.databinding.FragmentLoginOptionsBinding
@@ -25,12 +26,14 @@ class LoginOptionsFragment @Inject constructor() :
     override val layoutId: Int = R.layout.fragment_login_options
     private val viewModel: LoginOptionsViewModel by viewModels()
     private var phoneNumber: String = ""
+    private var enablePassword = true
 
 
     companion object {
-        fun newInstance(phoneNumber: String) = LoginOptionsFragment().also { loginOptionsFragment ->
+        fun newInstance(phoneNumber: String,enablePassword:Boolean) = LoginOptionsFragment().also { loginOptionsFragment ->
             val bundle = Bundle()
             bundle.putString(BundleConstant.BUNDLE_KEY_PHONE_NUMBER, phoneNumber)
+            bundle.putBoolean(BundleConstant.BUNDLE_KEY_ENABLE_PASSWORD,enablePassword)
             loginOptionsFragment.arguments = bundle
         }
     }
@@ -45,7 +48,11 @@ class LoginOptionsFragment @Inject constructor() :
 
     private fun getArgs() {
         phoneNumber = arguments?.getString(BundleConstant.BUNDLE_KEY_PHONE_NUMBER) ?: ""
+        enablePassword = arguments?.getBoolean(BundleConstant.BUNDLE_KEY_ENABLE_PASSWORD) ?: false
         binding.number = phoneNumber
+        if(enablePassword.not()){
+            binding.llEnterPassword.makeGone()
+        }
     }
 
     private fun setObservers() {

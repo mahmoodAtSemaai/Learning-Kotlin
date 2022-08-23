@@ -10,7 +10,6 @@ import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatConfigResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatCreateChannelResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatHistoryResponse;
-import com.webkul.mobikul.odoo.model.chat.ChatUnreadMessageCount;
 import com.webkul.mobikul.odoo.model.checkout.OrderPlaceResponse;
 import com.webkul.mobikul.odoo.model.checkout.OrderReviewResponse;
 import com.webkul.mobikul.odoo.model.checkout.PaymentAcquirerResponse;
@@ -157,6 +156,19 @@ public interface ApiInterface {
     String GENERATE_OTP = "v1/user/{" + PHONE_NUMBER + "}/authenticate";
     String LOGIN_WITH_OTP_JWT_TOKEN = "v1/user/{" + PHONE_NUMBER + "}/authenticate/otp";
     String LOGIN_WITH_JWT_TOKEN = "v1/user/{" + PHONE_NUMBER + "}/login";
+
+    /*OTP BASED SIGNUP*/
+    String GENERATE_SIGN_UP_OTP = "otp";
+    String SIGN_UP_WITH_OTP = "users/validate-and-register";
+    String USER_ID = "user_id";
+    String USER_ONBOARDING_STAGE = "stages";
+    String ONBOARDING_STAGES = "onboardings";
+    String CUSTOMER_GROUPS = "customer-groups";
+    String USER_CUSTOMER_GROUP = "users/{"+ USER_ID +"}";
+    String REFERRAL = "referral_code";
+    String PARTNER_ID = "partner_id";
+    String USER_DETAILS = "users/{" + USER_ID + "}/partners/{" + PARTNER_ID + "}";
+    String USER_ADDRESS = "/addresses/{"+PARTNER_ID+"}";
 
      /*-----------------------------------------------------------------------------------------------------------------------------------------------------------
         CATALOG API's
@@ -370,7 +382,6 @@ public interface ApiInterface {
 
     @GET(MOBIKUL_CHECKOUT_SHIPPING_METHODS)
     Observable<ShippingMethodResponse> getActiveShippings();
-
 
     /*-----------------------------------------------------------------------------------------------------------------------------------------------------------
         EXTRAS API's

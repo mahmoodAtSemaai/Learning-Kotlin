@@ -3,6 +3,7 @@ package com.webkul.mobikul.odoo.features.authentication.domain.usecase
 import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.core.utils.HTTP_RESPONSE_OK
 import com.webkul.mobikul.odoo.core.utils.Resource
+import com.webkul.mobikul.odoo.data.entity.UserCreateDateEntity
 import com.webkul.mobikul.odoo.features.authentication.data.models.BaseOtpLoginResponse
 import com.webkul.mobikul.odoo.features.authentication.domain.repo.AuthenticationRepository
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +16,7 @@ class ContinuePhoneNumberUseCase @Inject constructor(
     private val authenticationRepository: AuthenticationRepository
 ) {
 
-    operator fun invoke(phoneNumber: String): Flow<Resource<BaseOtpLoginResponse<Any>>> = flow {
+    operator fun invoke(phoneNumber: String): Flow<Resource<BaseOtpLoginResponse<UserCreateDateEntity>>> = flow {
         emit(Resource.Loading)
         val result = authenticationRepository.validatePhoneNumber(phoneNumber)
         when (result) {

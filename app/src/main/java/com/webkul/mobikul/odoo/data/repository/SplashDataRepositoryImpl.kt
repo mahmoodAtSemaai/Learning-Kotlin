@@ -1,11 +1,13 @@
 package com.webkul.mobikul.odoo.data.repository
 
 import com.webkul.mobikul.odoo.BuildConfig
+import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.connection.ApplicationSingleton
 import com.webkul.mobikul.odoo.core.data.local.AppPreferences
 import com.webkul.mobikul.odoo.core.data.local.SaveData
 import com.webkul.mobikul.odoo.core.utils.LocaleManager
 import com.webkul.mobikul.odoo.core.utils.Resource
+import com.webkul.mobikul.odoo.core.utils.ResourcesProvider
 import com.webkul.mobikul.odoo.data.entity.SplashEntity
 import com.webkul.mobikul.odoo.data.remoteSource.remoteDataSource.SplashPageRemoteDataSource
 import com.webkul.mobikul.odoo.domain.repository.SplashDataRepository
@@ -15,7 +17,8 @@ class SplashDataRepositoryImpl @Inject constructor(
         private val remoteDataSource: SplashPageRemoteDataSource,
         private val saveData: SaveData,
         private val appPreferences: AppPreferences,
-        private val localeManager: LocaleManager
+        private val localeManager: LocaleManager,
+        private val resourcesProvider: ResourcesProvider
 ) : SplashDataRepository {
 
     override suspend fun getSplashPageData(): Resource<SplashEntity> {
@@ -39,6 +42,16 @@ class SplashDataRepositoryImpl @Inject constructor(
         appPreferences.isMarketplaceAllowed = splashEntity.isMarketplaceAllowed()
         appPreferences.isAllowShipping = splashEntity.isAllowShipping
         appPreferences.isUserApproved = splashEntity.isUserApproved
+        appPreferences.isUserOnboarded = splashEntity.isUserOnboarded
+        appPreferences.customerGroupName = splashEntity.customerGroupName
+        appPreferences.groupName = splashEntity.groupName
+        if(splashEntity.customerGroupId == null){
+            appPreferences.customerGroupId = -1
+        }else{
+            appPreferences.customerGroupId = splashEntity.customerGroupId!!
+        }
+        appPreferences.userName = splashEntity.userName
+
         if (appPreferences.languageCode.isNullOrBlank() and splashEntity.defaultLanguage.isNotEmpty()) {
             appPreferences.languageCode = splashEntity.defaultLanguage[0]
             localeManager.setLocale(false)
@@ -51,7 +64,13 @@ class SplashDataRepositoryImpl @Inject constructor(
         ApplicationSingleton.getInstance().ratingStatus = splashEntity.ratingStatus
 
         if (!splashEntity.customerName.isNullOrBlank()) {
-            appPreferences.customerName = splashEntity.customerName
+            //TODO optimize changes
+            if(appPreferences.groupName == resourcesProvider.getString(R.string.toko_tani) || appPreferences.groupName == resourcesProvider.getString(
+                    R.string.kelompok_tani)){
+                appPreferences.customerName = splashEntity.userName
+            }else{
+                appPreferences.customerName = splashEntity.customerName
+            }
         }
         if (!splashEntity.customerEmail.isNullOrBlank()) {
             appPreferences.customerEmail = splashEntity.customerEmail

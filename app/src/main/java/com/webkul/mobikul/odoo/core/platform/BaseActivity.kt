@@ -1,26 +1,30 @@
 package com.webkul.mobikul.odoo.core.platform
 
 import android.content.Intent
+import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.snackbar.Snackbar
 import com.webkul.mobikul.odoo.R
+import com.webkul.mobikul.odoo.activity.NewHomeActivity
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity
-import com.webkul.mobikul.odoo.activity.SplashScreenActivity
-import com.webkul.mobikul.odoo.activity.UserApprovalActivity
 import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.constant.PageConstants.Companion.DEFAULT_PAGE
+import com.webkul.mobikul.odoo.core.extension.getDefaultProgressDialog
 import com.webkul.mobikul.odoo.core.extension.inTransaction
 import com.webkul.mobikul.odoo.core.extension.showDefaultWarningDialog
 import com.webkul.mobikul.odoo.core.utils.ERROR_INTERNET_CONNECTION
 import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.core.utils.LocaleManager
 import com.webkul.mobikul.odoo.helper.SnackbarHelper
+import com.webkul.mobikul.odoo.ui.signUpOnboarding.UserOnboardingActivity
 import javax.inject.Inject
 
 abstract class BaseActivity : AppCompatActivity() {
     @Inject
     lateinit var localeManager: LocaleManager
     abstract val contentViewId: Int
+    private lateinit var progressDialog: SweetAlertDialog
 
     open fun setupViews() {}
 
@@ -28,11 +32,24 @@ abstract class BaseActivity : AppCompatActivity() {
         return DEFAULT_PAGE
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        progressDialog = this.getDefaultProgressDialog()
+    }
+
+    fun showProgressDialog() {
+        progressDialog.show()
+    }
+
+    fun dismissProgressDialog() {
+        progressDialog.dismiss()
+    }
+
     fun showSnackbarMessage(message: String) {
         SnackbarHelper.getSnackbar(
-                this,
-                message,
-                Snackbar.LENGTH_LONG
+            this,
+            message,
+            Snackbar.LENGTH_LONG
         ).show()
     }
 
@@ -56,8 +73,8 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun showErrorDialog(title: String?, message: String?) {
         showDefaultWarningDialog(
-                title,
-                message
+            title,
+            message
         )
     }
 
@@ -69,23 +86,40 @@ abstract class BaseActivity : AppCompatActivity() {
             FailureStatus.NO_INTERNET -> showSnackbarMessage(ERROR_INTERNET_CONNECTION)
             FailureStatus.OTHER -> showSnackbarMessage(showMessage)
             FailureStatus.ACCESS_DENIED -> navigateToSignInSignUpActivity()
-            FailureStatus.USER_UNAPPROVED -> navigateToUserUnApprovedScreen()
+            FailureStatus.USER_UNAPPROVED -> navigateToHomeScreen()
+            FailureStatus.INCOMPLETE_ONBOARDING -> navigateToUserOnboardingScreen()
         }
     }
 
     private fun navigateToSignInSignUpActivity() {
-        startActivity(Intent(this, SignInSignUpActivity::class.java)
+        startActivity(
+            Intent(this, SignInSignUpActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 .putExtra(
-                        BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY,
-                        this::class.java.simpleName
-                ))
+                    BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY,
+                    this::class.java.simpleName
+                )
+        )
         finish()
     }
 
-    private fun navigateToUserUnApprovedScreen() {
-        startActivity(Intent(this, UserApprovalActivity::class.java)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+    private fun navigateToUserOnboardingScreen() {
+        startActivity(
+            Intent(
+                this,
+                UserOnboardingActivity::class.java
+            ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        )
+        finish()
+    }
+
+    private fun navigateToHomeScreen() {
+        startActivity(
+            Intent(
+                this,
+                NewHomeActivity::class.java
+            ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        )
         finish()
     }
 

@@ -1,5 +1,6 @@
 package com.webkul.mobikul.odoo.data.repository
 
+import com.webkul.mobikul.odoo.core.data.local.AppPreferences
 import com.webkul.mobikul.odoo.core.data.local.SaveData
 import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.data.remoteSource.remoteDataSource.HomeRemoteDataSource
@@ -9,7 +10,8 @@ import javax.inject.Inject
 
 class HomeDataRepositoryImpl @Inject constructor(
     private val remoteDataSource: HomeRemoteDataSource,
-    private val saveData: SaveData
+    private val saveData: SaveData,
+    private val appPreferences: AppPreferences
 ) : HomeDataRepository {
 
     override suspend fun getHomePageData(): Resource<HomePageResponse> {
@@ -17,7 +19,11 @@ class HomeDataRepositoryImpl @Inject constructor(
         val result = remoteDataSource.getHomePageData()
         when (result) {
             is Resource.Success -> {
-                if (result.value.isSuccess) saveData.saveHomepageResponse(result.value)
+                appPreferences.isUserOnboarded = result.value.isUserOnboarded
+                appPreferences.isUserApproved = result.value.isUserApproved
+                if (result.value.isSuccess) {
+                    saveData.saveHomepageResponse(result.value)
+                }
             }
         }
 

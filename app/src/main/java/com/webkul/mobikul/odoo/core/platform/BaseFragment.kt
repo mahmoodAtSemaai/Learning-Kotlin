@@ -7,9 +7,8 @@ import androidx.fragment.app.Fragment
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.snackbar.Snackbar
 import com.webkul.mobikul.odoo.R
+import com.webkul.mobikul.odoo.activity.NewHomeActivity
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity
-import com.webkul.mobikul.odoo.activity.SplashScreenActivity
-import com.webkul.mobikul.odoo.activity.UserApprovalActivity
 import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.constant.PageConstants.Companion.DEFAULT_PAGE
 import com.webkul.mobikul.odoo.core.extension.getDefaultProgressDialog
@@ -17,6 +16,7 @@ import com.webkul.mobikul.odoo.core.extension.showDefaultWarningDialog
 import com.webkul.mobikul.odoo.core.utils.ERROR_INTERNET_CONNECTION
 import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.helper.SnackbarHelper
+import com.webkul.mobikul.odoo.ui.signUpOnboarding.UserOnboardingActivity
 
 abstract class BaseFragment : Fragment() {
     abstract val layoutId: Int
@@ -44,16 +44,16 @@ abstract class BaseFragment : Fragment() {
 
     fun showSnackbarMessage(message: String) {
         SnackbarHelper.getSnackbar(
-                requireActivity(),
-                message,
-                Snackbar.LENGTH_LONG
+            requireActivity(),
+            message,
+            Snackbar.LENGTH_LONG
         ).show()
     }
 
     private fun showErrorDialog(title: String?, message: String?) {
         requireContext().showDefaultWarningDialog(
-                title,
-                message
+            title,
+            message
         )
     }
 
@@ -64,8 +64,9 @@ abstract class BaseFragment : Fragment() {
             FailureStatus.EMPTY -> showSnackbarMessage(getString(R.string.error_something_went_wrong))
             FailureStatus.NO_INTERNET -> showSnackbarMessage(ERROR_INTERNET_CONNECTION)
             FailureStatus.OTHER -> showSnackbarMessage(showMessage)
-            FailureStatus.ACCESS_DENIED -> {}
-            FailureStatus.USER_UNAPPROVED -> navigateToUserUnApprovedScreen()
+            FailureStatus.ACCESS_DENIED -> navigateToSignInSignUpActivity()
+            FailureStatus.USER_UNAPPROVED -> navigateToHomeScreen()
+            FailureStatus.INCOMPLETE_ONBOARDING -> navigateToUserOnboardingScreen()
         }
     }
 
@@ -74,19 +75,34 @@ abstract class BaseFragment : Fragment() {
     }
 
     private fun navigateToSignInSignUpActivity() {
-        startActivity(Intent(requireActivity(), SignInSignUpActivity::class.java)
+        startActivity(
+            Intent(requireActivity(), SignInSignUpActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 .putExtra(
-                BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY,
-                requireActivity()::class.java.simpleName
-        ))
+                    BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY,
+                    requireActivity()::class.java.simpleName
+                )
+        )
         requireActivity().finish()
     }
 
+    private fun navigateToUserOnboardingScreen() {
+        startActivity(
+            Intent(
+                requireActivity(),
+                UserOnboardingActivity::class.java
+            ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        )
+        requireActivity().finish()
+    }
 
-    private fun navigateToUserUnApprovedScreen() {
-        startActivity(Intent(requireActivity(), UserApprovalActivity::class.java)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+    private fun navigateToHomeScreen() {
+        startActivity(
+            Intent(
+                requireActivity(),
+                NewHomeActivity::class.java
+            ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        )
         requireActivity().finish()
     }
 

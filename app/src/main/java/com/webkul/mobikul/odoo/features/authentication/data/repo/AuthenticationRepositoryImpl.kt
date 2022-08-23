@@ -1,6 +1,7 @@
 package com.webkul.mobikul.odoo.features.authentication.data.repo
 
 import com.webkul.mobikul.odoo.core.utils.Resource
+import com.webkul.mobikul.odoo.data.entity.UserCreateDateEntity
 import com.webkul.mobikul.odoo.features.authentication.data.models.BaseOtpLoginResponse
 import com.webkul.mobikul.odoo.features.authentication.data.models.LoginOtpAuthenticationRequest
 import com.webkul.mobikul.odoo.features.authentication.data.models.OtpAuthenticationRequest
@@ -12,7 +13,7 @@ import javax.inject.Inject
 class AuthenticationRepositoryImpl @Inject constructor(
     private val remoteDataSource: AuthenticationRemoteDataSource
 ) : AuthenticationRepository {
-    override suspend fun validatePhoneNumber(phoneNumber: String): Resource<BaseOtpLoginResponse<Any>> {
+    override suspend fun validatePhoneNumber(phoneNumber: String): Resource<BaseOtpLoginResponse<UserCreateDateEntity>> {
         return remoteDataSource.validatePhoneNumber(phoneNumber)
     }
 

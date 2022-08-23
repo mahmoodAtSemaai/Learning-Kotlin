@@ -6,7 +6,7 @@ import com.webkul.mobikul.odoo.core.utils.FailureStatus
 sealed class AuthenticationState : IState {
     object Idle : AuthenticationState()
     object Loading : AuthenticationState()
-    object VerifiedPhoneNumber : AuthenticationState()
+    data class VerifiedPhoneNumber(val isPasswordEnabled : Boolean) : AuthenticationState()
     object ContinuePhoneNumber : AuthenticationState()
     object EmptyPhoneNumber : AuthenticationState()
     object IncorrectPhoneNumberFormat : AuthenticationState()

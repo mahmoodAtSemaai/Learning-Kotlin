@@ -3,6 +3,7 @@ package com.webkul.mobikul.odoo.core.di
 import com.webkul.mobikul.odoo.core.data.local.AppPreferences
 import com.webkul.mobikul.odoo.core.data.local.SaveData
 import com.webkul.mobikul.odoo.core.utils.LocaleManager
+import com.webkul.mobikul.odoo.core.utils.ResourcesProvider
 import com.webkul.mobikul.odoo.data.remoteSource.remoteDataSource.*
 import com.webkul.mobikul.odoo.data.repository.*
 import com.webkul.mobikul.odoo.domain.repository.*
@@ -29,76 +30,133 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun providesAuthRepository(
-            remoteDataSource: AuthRemoteDataSource,
-            appPreferences: AppPreferences
+        remoteDataSource: AuthRemoteDataSource,
+        appPreferences: AppPreferences
     ): AuthRepository = AuthRepositoryImpl(remoteDataSource, appPreferences)
 
     @Provides
     @Singleton
     fun providesAddressRepository(
-            remoteDataSource: AddressRemoteDataSource
+        remoteDataSource: AddressRemoteDataSource
     ): AddressRepository = AddressRepositoryImpl(remoteDataSource)
 
     @Provides
     @Singleton
     fun providesCountryStateRepository(
-            remoteDataSource: CountryStateRemoteDataSource
+        remoteDataSource: CountryStateRemoteDataSource
     ): CountryStateRepository = CountryStateRepositoryImpl(remoteDataSource)
 
     @Provides
     @Singleton
     fun providesTermsConditionRepository(
-            remoteDataSource: TermsConditionRemoteDataSource
+        remoteDataSource: TermsConditionRemoteDataSource
     ): TermsConditionRepository = TermsConditionRepositoryImpl(remoteDataSource)
 
     @Provides
     @Singleton
     fun provideAuthenticationRepository(
-            remoteDataSource: AuthenticationRemoteDataSource
+        remoteDataSource: AuthenticationRemoteDataSource
     ): AuthenticationRepository = AuthenticationRepositoryImpl(remoteDataSource)
 
     @Provides
     @Singleton
     fun provideSplashPageRepository(
-            remoteDataSource: SplashRemoteDataSource
+        remoteDataSource: SplashRemoteDataSource
     ): SplashPageRepository = SplashPageRepositoryImpl(remoteDataSource)
 
     @Provides
     @Singleton
     fun provideHomePageRepository(
-            remoteDataSource: HomePageRemoteDataSource
+        remoteDataSource: HomePageRemoteDataSource
     ): HomePageRepository = HomePageRepositoryImpl(remoteDataSource)
 
 
     @Provides
     @Singleton
     fun providesHomeDataRepository(
-            remoteDataSource: HomeRemoteDataSource,
-            saveData: SaveData
-    ): HomeDataRepository = HomeDataRepositoryImpl(remoteDataSource, saveData)
+        remoteDataSource: HomeRemoteDataSource,
+        saveData: SaveData,
+        appPreferences: AppPreferences
+    ): HomeDataRepository = HomeDataRepositoryImpl(remoteDataSource, saveData, appPreferences)
 
     @Provides
     @Singleton
     fun providesSplashDataRepository(
-            remoteDataSource: SplashPageRemoteDataSource,
-            saveData: SaveData,
-            appPreferences: AppPreferences,
-            localeManager: LocaleManager
+        remoteDataSource: SplashPageRemoteDataSource,
+        saveData: SaveData,
+        appPreferences: AppPreferences,
+        localeManager: LocaleManager,
+        resourcesProvider: ResourcesProvider
     ): SplashDataRepository =
-            SplashDataRepositoryImpl(remoteDataSource, saveData, appPreferences, localeManager)
+        SplashDataRepositoryImpl(remoteDataSource, saveData, appPreferences, localeManager,resourcesProvider)
 
     @Provides
     @Singleton
     fun providesUserAnalyticsDataRepository(
-            remoteDataSource: UserAnalyticsRemoteDataSource
+        remoteDataSource: UserAnalyticsRemoteDataSource
     ): UserAnalyticsRepository = UserAnalyticsRepositoryImpl(remoteDataSource)
 
     @Provides
     @Singleton
     fun providesChatChannelRepository(
-            remoteDataSource: ChatChannelRemoteDataSource
+        remoteDataSource: ChatChannelRemoteDataSource
     ): ChatChannelRepository = ChatChannelRepositoryImpl(remoteDataSource)
 
+    @Provides
+    @Singleton
+    fun providesSignUpAuthRepository(appPreferences: AppPreferences,remoteDataSource: SignUpAuthRemoteDataSource): SignUpAuthRepository =
+        SignUpAuthRepositoryImpl(appPreferences,remoteDataSource)
+
+    @Provides
+    @Singleton
+    fun providesOnboardingStageRepository(remoteDataSource: OnboardingStageRemoteDataSource): OnboardingStageRepository =
+        OnboardingStageRepositoryImpl(remoteDataSource)
+
+    @Provides
+    @Singleton
+    fun providesCustomerGroupRepository(appPreferences: AppPreferences,remoteDataSource: CustomerGroupRemoteDataSource): CustomerGroupRepository =
+        CustomerGroupRepositoryImpl(remoteDataSource,appPreferences)
+
+    @Provides
+    @Singleton
+    fun providesUserDetailsRepository(appPreferences: AppPreferences,remoteDataSource: UserDetailsRemoteDataSource,resourcesProvider: ResourcesProvider): UserDetailsRepository =
+        UserDetailsRepositoryImpl(remoteDataSource,appPreferences,resourcesProvider)
+
+    @Provides
+    @Singleton
+    fun providesReferralCodeRepository(remoteDataSource: ReferralCodeRemoteDataSource): ReferralCodeRepository =
+        ReferralCodeRepositoryImpl(remoteDataSource)
+
+    @Provides
+    @Singleton
+    fun providesUserAddressRepository(
+        remoteDataSource: UserAddressRemoteDataSource
+    ): UserAddressRepository = UserAddressRepositoryImpl(remoteDataSource)
+
+    @Provides
+    @Singleton
+    fun providesUserLocationRepository(remoteDataSource: UserLocationRemoteDataSource,appPreferences: AppPreferences): UserLocationRepository =
+        UserLocationRepositoryImpl(remoteDataSource,appPreferences)
+
+    @Provides
+    @Singleton
+    fun providesProvinceRepository(remoteDataSource: ProvinceRemoteDataSource): ProvinceRepository =
+        ProvinceRepositoryImpl(remoteDataSource)
+
+    @Provides
+    @Singleton
+    fun providesDistrictRepository(remoteDataSource: DistrictRemoteDataSource): DistrictRepository =
+        DistrictRepositoryImpl(remoteDataSource)
+
+    @Provides
+    @Singleton
+    fun providesSubDistrictRepository(remoteDataSource: SubDistrictRemoteDataSource): SubDistrictRepository =
+        SubDistrictRepositoryImpl(remoteDataSource)
+
+    @Provides
+    @Singleton
+    fun providesVillageRepository(remoteDataSource: VillageRemoteDataSource): VillageRepository =
+        VillageRepositoryImpl(remoteDataSource)
     @Provides
     @Singleton
     fun providesFCMTokenRepository(

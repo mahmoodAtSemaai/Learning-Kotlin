@@ -13,21 +13,20 @@ import androidx.fragment.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
 
 import com.webkul.mobikul.odoo.R;
-import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.custom.MaterialSearchView;
 import com.webkul.mobikul.odoo.databinding.ActivityCustomerBaseBinding;
-import com.webkul.mobikul.odoo.fragment.AccountInfoFragment;
+import com.webkul.mobikul.odoo.ui.account.fragment.AccountInfoV1Fragment;
 import com.webkul.mobikul.odoo.fragment.AddressBookFragment;
 import com.webkul.mobikul.odoo.fragment.DashboardFragment;
+import com.webkul.mobikul.odoo.ui.account.fragment.EditAccountInfoFragment;
 import com.webkul.mobikul.odoo.fragment.NewAddressFragment;
 import com.webkul.mobikul.odoo.fragment.OrderFragment;
 import com.webkul.mobikul.odoo.fragment.OrderListFragment;
 import com.webkul.mobikul.odoo.fragment.WishlistFragment;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
-import com.webkul.mobikul.odoo.helper.CustomerHelper;
 import com.webkul.mobikul.odoo.helper.CustomerHelper.CustomerFragType;
 import com.webkul.mobikul.odoo.helper.FragmentHelper;
 import com.webkul.mobikul.odoo.helper.IntentHelper;
@@ -35,6 +34,8 @@ import com.webkul.mobikul.odoo.helper.IntentHelper;
 import java.util.ArrayList;
 
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CUSTOMER_FRAG_TYPE;
+
+import dagger.hilt.android.AndroidEntryPoint;
 
 /**
  * Webkul Software.
@@ -47,6 +48,7 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CUSTOME
  * @link https://store.webkul.com/license.html
  */
 
+@AndroidEntryPoint
 public class CustomerBaseActivity extends BaseLocationActivity implements FragmentManager.OnBackStackChangedListener {
 
     @SuppressWarnings("unused")
@@ -72,7 +74,7 @@ public class CustomerBaseActivity extends BaseLocationActivity implements Fragme
                 break;
 
             case TYPE_ACCOUNT_INFO:
-                FragmentHelper.replaceFragment(R.id.container, this, AccountInfoFragment.newInstance(), AccountInfoFragment.class.getSimpleName(), true, true);
+                FragmentHelper.replaceFragment(R.id.container, this, AccountInfoV1Fragment.Companion.newInstance(), AccountInfoV1Fragment.class.getSimpleName(), true, true);
                 break;
 
             case TYPE_ADDRESS_BOOK:
@@ -124,8 +126,11 @@ public class CustomerBaseActivity extends BaseLocationActivity implements Fragme
         } else //noinspection StatementWithEmptyBody
             if (fragment instanceof NewAddressFragment) {
                 // do nothing
-            } else if (fragment instanceof AccountInfoFragment) {
+            } else if (fragment instanceof AccountInfoV1Fragment) {
                 setTitle(getString(R.string.account_info));
+                mBinding.toolbar.setVisibility(View.GONE);
+            } else if (fragment instanceof EditAccountInfoFragment) {
+                mBinding.toolbar.setVisibility(View.GONE);
             }
     }
 
