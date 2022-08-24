@@ -341,11 +341,11 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     }
 
     private Observer<? super StateListResponse> getStateListResponse(AddressFormResponse addressFormResponse, AddressData addressData) {
-        return new CustomObserver<BaseResponse>(getContext()) {
+        return new CustomObserver<StateListResponse>(getContext()) {
             @Override
-            public void onNext(@androidx.annotation.NonNull BaseResponse baseResponse) {
+            public void onNext(@androidx.annotation.NonNull StateListResponse baseResponse) {
                 super.onNext(baseResponse);
-                StateListResponse stateListResponse = (StateListResponse) baseResponse;
+                StateListResponse stateListResponse =  baseResponse;
                 checkForStateAvailablity(stateListResponse, addressFormResponse, addressData);
             }
         };

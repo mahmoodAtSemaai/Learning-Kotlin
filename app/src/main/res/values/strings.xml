@@ -133,7 +133,7 @@
     <string name="please_enter_your_phone_number_below_you_will_receive_a_link_to_reset_your_password_">Please enter your phone number below. You will receive a link to reset your password.</string>
     <string name="link_to_resend_login_password_send">Link Send</string>
     <string name="your_email">Your Email</string>
-    <string name="your_name">Your Name <font color='#FF0000'>*</font></string>
+    <string name="your_name">Your Name</string>
     <string name="e_g_john_doe">e.g. John Doe</string>
     <string name="login_successful_message">Login Successful</string>
     <string name="skip">Skip</string>
@@ -282,11 +282,17 @@
     <string name="select_default_shipping_address">Select Default Shipping Address</string>
     <string name="set_default">Set Default</string>
     <string name="province">Province</string>
+    <string name="select_province">Select Province</string>
     <string name="district">District</string>
     <string name="district_city">District / City</string>
+    <string name="select_district_city">Select District / City</string>
     <string name="sub_district">Sub-District</string>
+    <string name="select_sub_district">Select Sub-District</string>
     <string name="village">Village</string>
-    <string name="postal_code">Postal Code <font color='#FF0000'>*</font></string>
+    <string name="select_village">Select Village</string>
+    <string name="additional_address_info">Additional Information (Optional)</string>
+    <string name="additional_address_info_hint">Contoh: Rumah kedua dibelakang masjid</string>
+    <string name="postal_code">Postal Code</string>
     <string name="enter_your_village_code">Enter Your Postal Code</string>
     <string name="missing_postal_code_text">Missing Postal code for </string>
     <string name="missing_feilds_in_address_form">Missing Feilds in Address Form</string>
@@ -685,6 +691,8 @@
     <string name="account_does_not_exists">Don\'t have a Semaai account yet?</string>
     <string name="sign_up_now">Sign up now</string>
     <string name="number_hint">08123456789</string>
+    <string name="postal_hint">23451</string>
+    <string name="street_hint">Sudirman st.</string>
     <string name="incorrect_mobile_number_format">*Sorry, your mobile number format is incorrect. Please use “08”</string>
     <string name="incorrect_mobile_number">*Sorry, your mobile number is incorrect.</string>
     <string name="welcome_back">Welcome back!</string>
@@ -714,4 +722,65 @@
 
     <string name="sorry_product_not_available">Sorry, the product is not available</string>
     <string name="search_another_product">You can search another product you want</string>
+
+    <!--Sign-up-->
+    <string name="welcome_to_semaai">Welcome to Semaai!</string>
+    <string name="please_enter_your_mobile_number">Please enter your mobile number</string>
+    <string name="terms_and_conditions_of_semaai">By clicking “Continue”, you agree to the Terms and Conditions of Semaai</string>
+
+    <!--User Onboarding-->
+    <string name="information_is_needed">This information is needed to ensure your shipment is delivered according to your location</string>
+    <string name="select_one">Select One</string>
+    <string name="thank_you_for_joining_semaai">Thank you for joining Semaai</string>
+    <string name="thank_you_for_joining_semaai_toko_tani">Thank you for joining Semaai, help us identify your toko tani so we can give you the best assist for your needs.</string>
+    <string name="thank_you_for_joining_semaai_kelompok_tani">Thank you for joining Semaai, help us identify your kelompok tani so we can provide the best assist for you.</string>
+    <string name="thank_you_for_joining_semaai_farmers_others">Thank you for joining Semaai, help us identify you.</string>
+    <string name="help_us_to_know_you">Help us know you so we can better assist your needs.</string>
+    <string name="toko_tani_name">Toko tani name</string>
+    <string name="kelompok_tani_name">Kelompok tani Name</string>
+    <string name="toko_tani_photo">Your Toko Tani photo (optional)</string>
+    <string name="kelompok_tani_photo">Your Farmers group photo (optional)</string>
+    <string name="farmers_others_photo">Your photo (optional)</string>
+    <string name="address_unavailable">Sorry we don’t service your area right now. Please sign up and we will inform you when Semaai is available</string>
+    <string name="address_location">Enable location access will create a better shipping experience for you</string>
+    <string name="next">Next</string>
+    <string name="permission_while_using_app">While using the app</string>
+    <string name="permission_only_this_time">Only this time</string>
+    <string name="permission_deny">Deny</string>
+    <string name="add_address">Add Address</string>
+    <string name="name">Name</string>
+    <string name="user_category_name">User’s Category</string>
+    <string name="user_category_group_name">Store Name</string>
+    <string name="discard_changes">Do you want to discard changes?</string>
+    <string name="keep_editing">Keep Editing</string>
+    <string name="discard">Discard</string>
+    <string name="change_name">Change Name</string>
+    <string name="change_group_name">Change Group Name</string>
+    <string name="no_result_found">No Results Found</string>
+    <string name="name_hint">Example: Andi Baso</string>
+    <string name="group_name_hint">Example: Toko tani jaya makmur</string>
+    <string name="referral_code_hint">AMLJHK</string>
+    <string name="toko_tani">Toko Tani</string>
+    <string name="kelompok_tani">Kelompok Tani</string>
+    <string name="farmers">Farmers</string>
+    <string name="others">Others</string>
+    <string name="otp_stage">OTP Validation Stage</string>
+    <string name="group_selection_stage">Customer Group Selection Stage</string>
+    <string name="details_stage">Customer Group Details Stage</string>
+    <string name="address_stage">Address Details Stage</string>
+    <string name="location_stage">Location Details Stage</string>
+    <string name="home_page_stage">Home Page</string>
+    <string name="existing_user_please_login">Existing User, Please Login to continue</string>
+    <string name="enter_onboarding_referral_code">Enter referral code</string>
+    <string name="click_to_refresh">Click to Refresh</string>
+    <string name="no_internet">No Internet</string>
+    <string name="enable_gps">Enable GPS</string>
+    <string name="required_for_this_app">Required for this app</string>
+    <string name="location_while_using_the_app">While using the app</string>
+    <string name="location_deny">Deny</string>
+    <string name="exit_the_app">Do you want to exit the app?</string>
+    <string name="select_photo">Take Photo</string>
+    <string name="select_from_camera">Capture photo from camera</string>
+    <string name="select_from_gallery">Select photo from gallery</string>
+    <string name="close">Cancel</string>
 </resources>

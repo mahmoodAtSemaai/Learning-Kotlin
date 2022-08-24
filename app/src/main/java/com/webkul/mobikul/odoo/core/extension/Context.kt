@@ -144,3 +144,11 @@ fun Context.showDefaultWarningDialog(title: String?, message: String?) {
         .setContentText(message)
         .setConfirmClickListener { obj: SweetAlertDialog -> obj.dismiss() }.show()
 }
+
+fun Context.pxToDp(px: Int): Int {
+    return (px / resources.displayMetrics.density).toInt()
+}
+
+fun Context.dpToPx(dp: Int): Int {
+    return (dp * resources.displayMetrics.density).toInt()
+}

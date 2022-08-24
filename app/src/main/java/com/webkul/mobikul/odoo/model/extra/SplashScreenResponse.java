@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.BaseActivity;
 import com.webkul.mobikul.odoo.connection.ApplicationSingleton;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
@@ -153,7 +154,6 @@ public class SplashScreenResponse extends LoginResponse {
     public boolean isAllowWishlistModule() {
         return super.isAllowWishlistModule() && allowModuleWebsiteWishlist;
     }
-
 //    public List<List<String>> getAllLanguages() {
 //        return allLanguages;
 //    }
@@ -174,6 +174,41 @@ public class SplashScreenResponse extends LoginResponse {
             return new ArrayList<>();
         }
         return defaultLanguage;
+    }
+
+    @SerializedName("customerGroupId")
+    @Expose
+    private Integer customerGroupId;
+
+    @SerializedName("groupName")
+    @Expose
+    private String groupName;
+
+    @SerializedName("customerGroupName")
+    @Expose
+    private String customerGroupName;
+
+    @SerializedName("user_name")
+    @Expose
+    private String userName;
+
+    public String getCustomerGroupName(){
+        return customerGroupName;
+    }
+
+    public String getGroupName(){
+        return groupName;
+    }
+
+    public Integer getCustomerGroupId(){
+        if(customerGroupId == null){
+            customerGroupId = -1;
+        }
+        return customerGroupId;
+    }
+
+    public String getUserName(){
+        return userName;
     }
 
     @Override
@@ -208,6 +243,21 @@ public class SplashScreenResponse extends LoginResponse {
         ApplicationSingleton.getInstance().setSortData(getSortData());
         ApplicationSingleton.getInstance().setRatingStatus(getRatingStatus());
 
+        //TODO optimize comparisions
+        if(AppSharedPref.getGroupName(context) == context.getString(R.string.toko_tani) || AppSharedPref.getGroupName(context) == context.getString(R.string.kelompok_tani)){
+            AppSharedPref.setCustomerName(context,getUserName());
+        }else{
+            AppSharedPref.setCustomerName(context,getCustomerName());
+        }
+        AppSharedPref.setCustomerPhoneNumber(context,getCustomerPhoneNumber());
+
+        AppSharedPref.setCustomerGroupName(context,getCustomerGroupName());
+        AppSharedPref.setGroupName(context,getGroupName());
+        AppSharedPref.setUserIsOnboarded(context,isUserOnboarded());
+        AppSharedPref.setCustomerGroupId(context,getCustomerGroupId());
+        AppSharedPref.setUserName(context,getUserName());
+        AppSharedPref.setUserId(context,Integer.parseInt(getUserId()));
+        AppSharedPref.setCustomerId(context,getCustomerId());
     }
 }
 

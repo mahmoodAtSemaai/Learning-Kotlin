@@ -11,12 +11,11 @@ import com.webkul.mobikul.odoo.model.ReferralResponse;
 import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
 import com.webkul.mobikul.odoo.model.cart.BagResponse;
 import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse;
-import com.webkul.mobikul.odoo.model.checkout.OrderDataResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatConfigResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatCreateChannelResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatHistoryResponse;
-import com.webkul.mobikul.odoo.model.chat.ChatUnreadMessageCount;
+import com.webkul.mobikul.odoo.model.checkout.OrderDataResponse;
 import com.webkul.mobikul.odoo.model.checkout.OrderPlaceResponse;
 import com.webkul.mobikul.odoo.model.checkout.OrderReviewResponse;
 import com.webkul.mobikul.odoo.model.checkout.PaymentAcquirerResponse;
@@ -212,7 +211,6 @@ public class ApiConnection {
     public static Observable<ReferralResponse> getLoyaltyPoints(Context context, String userId) {
         return RetrofitClient.getClient(context).create(ApiInterface.class).getLoyaltyPoints(userId);
     }
-
 
 //    public static void getAddressFormData(String url, AuthenticationRequest authenticationRequest, RetrofitCallback<AddressFormResponse> callback) {
 //        RetrofitClient.getClient(context).create(ApiInterface.class).getAddressFormData(url, authenticationRequest.toString()).enqueue(callback);
@@ -417,7 +415,7 @@ public class ApiConnection {
     /*-----------------------------------------------------------------------------------------------------------------------------------------------------------
             Chat API's
          ------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-    public static Observable<ChatBaseResponse> getUnreadChatCount(Context context){
+    public static Observable<ChatBaseResponse> getUnreadChatCount(Context context) {
         return RetrofitClient.getClient(context).create(ApiInterface.class).getUnreadChatCount();
     }
 
@@ -426,7 +424,7 @@ public class ApiConnection {
         return RetrofitClient.getClient(context).create(ApiInterface.class).createChannel();
     }
 
-    public static Observable<ChatBaseResponse<ChatConfigResponse>> getChatUrl(Context context, String channelUuid,String sellerId ,String userId) {
+    public static Observable<ChatBaseResponse<ChatConfigResponse>> getChatUrl(Context context, String channelUuid, String sellerId, String userId) {
         return RetrofitClient.getClient(context).create(ApiInterface.class).getChatUrl(channelUuid, sellerId, userId);
     }
 

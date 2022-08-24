@@ -15,6 +15,7 @@ data class SplashEntity(
         @SerializedName("RatingStatus") val ratingStatus: List<List<String>> = arrayListOf(),
         @SerializedName("allowShipping") var isAllowShipping: Boolean = false,
         @SerializedName("is_approved") var isUserApproved: Boolean = false,
+        @SerializedName("isOnboarded") var isUserOnboarded: Boolean = false,
         @SerializedName("defaultLanguage") var defaultLanguage: List<String> = arrayListOf(),
         @SerializedName("customerName") var customerName: String? = null,
         @SerializedName("customerEmail") val customerEmail: String? = null,
@@ -24,7 +25,11 @@ data class SplashEntity(
         @SerializedName("customerBannerImage") var customerBannerImage: String? = null,
         @SerializedName("customerProfileImage") var customerProfileImage: String? = null,
         @SerializedName("addons") var addons: AddOns? = null,
-        @SerializedName("customerId") var customerId: String = ""
+        @SerializedName("customerId") var customerId: String = "",
+        @SerializedName("customerGroupId") var customerGroupId: Int? = null,
+        @SerializedName("groupName") var groupName: String = "",
+        @SerializedName("customerGroupName") var customerGroupName: String = "",
+        @SerializedName("user_name") var userName: String = ""
 ) {
     fun isAllowWishlistModule(): Boolean {
         return allowModuleWebsiteWishlist && addons?.isWishlistModuleInstalled ?: false

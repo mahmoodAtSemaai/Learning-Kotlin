@@ -7,6 +7,7 @@ import com.webkul.mobikul.odoo.core.utils.NetworkManager
 import com.webkul.mobikul.odoo.core.utils.ResourcesProvider
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper
 import com.webkul.mobikul.odoo.domain.repository.*
+import com.webkul.mobikul.odoo.domain.usecase.account.GetAccountInfoDataUseCase
 import com.webkul.mobikul.odoo.domain.usecase.auth.*
 import com.webkul.mobikul.odoo.domain.usecase.chat.CreateChatChannelUseCase
 import com.webkul.mobikul.odoo.domain.usecase.fcmToken.RegisterFCMTokenUseCase
@@ -14,6 +15,7 @@ import com.webkul.mobikul.odoo.domain.usecase.home.HomeLocalDataUseCase
 import com.webkul.mobikul.odoo.domain.usecase.home.HomeUseCase
 import com.webkul.mobikul.odoo.domain.usecase.network.IsNetworkUseCase
 import com.webkul.mobikul.odoo.domain.usecase.session.IsValidSessionUseCase
+import com.webkul.mobikul.odoo.domain.usecase.signUpOnboarding.*
 import com.webkul.mobikul.odoo.domain.usecase.splash.SplashLocalDataUseCase
 import com.webkul.mobikul.odoo.domain.usecase.splash.SplashUseCase
 import com.webkul.mobikul.odoo.features.authentication.domain.repo.AuthenticationRepository
@@ -188,9 +190,165 @@ class UseCaseModule {
     @Provides
     @Singleton
     fun provideIsValidSessionUseCase(
-            isUserAuthorisedUseCase: IsUserAuthorisedUseCase,
-            isUserApprovedUseCase: IsUserApprovedUseCase
-    ): IsValidSessionUseCase = IsValidSessionUseCase(isUserAuthorisedUseCase, isUserApprovedUseCase)
+            isUserAuthorisedUseCase: IsUserAuthorisedUseCase
+    ): IsValidSessionUseCase = IsValidSessionUseCase(isUserAuthorisedUseCase)
+
+    @Provides
+    @Singleton
+    fun provideGenerateSignUpOtpUseCase(signUpAuthRepository: SignUpAuthRepository): GenerateSignUpOtpUseCase =
+        GenerateSignUpOtpUseCase(signUpAuthRepository)
+
+    @Provides
+    @Singleton
+    fun provideVerifySignUpOtpUseCase(
+        signUpAuthRepository: SignUpAuthRepository
+    ): VerifySignUpOtpUseCase =
+        VerifySignUpOtpUseCase(signUpAuthRepository)
+
+    @Provides
+    @Singleton
+    fun provideOnboardingStageUseCase(
+        onboardingStageRepository: OnboardingStageRepository
+    ): OnboardingStageUseCase =
+        OnboardingStageUseCase(onboardingStageRepository)
+
+    @Provides
+    @Singleton
+    fun provideUserOnboardingStageUseCase(
+        onboardingStageRepository: OnboardingStageRepository
+    ): UserOnboardingStageUseCase =
+        UserOnboardingStageUseCase(onboardingStageRepository)
+
+    @Provides
+    @Singleton
+    fun provideContinueCustomerGroupUseCase(
+        customerGroupRepository: CustomerGroupRepository
+    ): ContinueCustomerGroupUseCase =
+        ContinueCustomerGroupUseCase(customerGroupRepository)
+
+    @Provides
+    @Singleton
+    fun provideCustomerGroupUseCase(
+        customerGroupRepository: CustomerGroupRepository,
+        resourcesProvider: ResourcesProvider,
+        appPreferences: AppPreferences
+    ): CustomerGroupUseCase =
+        CustomerGroupUseCase(customerGroupRepository,resourcesProvider,appPreferences)
+
+    @Provides
+    @Singleton
+    fun provideContinueUserDetailsUseCase(
+        userDetailsRepository: UserDetailsRepository
+    ): ContinueUserDetailsUseCase =
+        ContinueUserDetailsUseCase(userDetailsRepository)
+
+    @Provides
+    @Singleton
+    fun provideValidateReferralCodeUseCase(
+        referralCodeRepository: ReferralCodeRepository
+    ): ValidateReferralCodeUseCase =
+        ValidateReferralCodeUseCase(referralCodeRepository)
+
+    @Provides
+    @Singleton
+    fun provideContinueUserAddressUseCase(
+        userAddressRepository: UserAddressRepository
+    ): ContinueUserAddressUseCase =
+        ContinueUserAddressUseCase(userAddressRepository)
+
+    @Provides
+    @Singleton
+    fun provideContinueUserLocationUseCase(
+        userLocationRepository: UserLocationRepository
+    ): ContinueUserLocationUseCase =
+        ContinueUserLocationUseCase(userLocationRepository)
+
+    @Provides
+    @Singleton
+    fun provideProvinceDataUseCase(
+        provinceRepository: ProvinceRepository
+    ): ProvinceDataUseCase =
+        ProvinceDataUseCase(provinceRepository)
+
+    @Provides
+    @Singleton
+    fun provideDistrictDataUseCase(
+        districtRepository: DistrictRepository
+    ): DistrictDataUseCase =
+        DistrictDataUseCase(districtRepository)
+
+    @Provides
+    @Singleton
+    fun provideSubDistrictDataUseCase(
+        subDistrictRepository: SubDistrictRepository
+    ): SubDistrictDataUseCase =
+        SubDistrictDataUseCase(subDistrictRepository)
+
+    @Provides
+    @Singleton
+    fun provideVillageDataUseCase(
+        villageRepository: VillageRepository
+    ): VillageDataUseCase =
+        VillageDataUseCase(villageRepository)
+
+    @Provides
+    @Singleton
+    fun provideVerifyUserDetailsUseCase(appPreferences: AppPreferences,resourcesProvider: ResourcesProvider): VerifyUserDetailsUseCase =
+        VerifyUserDetailsUseCase(appPreferences, resourcesProvider)
+
+    @Provides
+    @Singleton
+    fun provideGetOnboardingDataUseCase(appPreferences: AppPreferences,resourcesProvider: ResourcesProvider): GetOnboardingDataUseCase =
+        GetOnboardingDataUseCase(appPreferences,resourcesProvider)
+
+    @Provides
+    @Singleton
+    fun provideIncompleteStageUseCase(): IncompleteStagesUseCase = IncompleteStagesUseCase()
+
+    @Provides
+    @Singleton
+    fun provideNextOnboardingStageUseCase(resourcesProvider: ResourcesProvider): NextOnboardingStageUseCase = NextOnboardingStageUseCase(resourcesProvider)
+
+    @Provides
+    @Singleton
+    fun provideGetUserDetailsViewsUseCase(appPreferences: AppPreferences,resourcesProvider: ResourcesProvider): GetUserDetailsViewsUseCase =
+        GetUserDetailsViewsUseCase(appPreferences,resourcesProvider)
+
+    @Provides
+    @Singleton
+    fun provideGetAccountInfoDataUseCase(appPreferences: AppPreferences): GetAccountInfoDataUseCase =
+        GetAccountInfoDataUseCase(appPreferences)
+
+    @Provides
+    @Singleton
+    fun provideIsProvinceAvailableUseCase(): IsProvinceAvailableUseCase =
+        IsProvinceAvailableUseCase()
+
+    @Provides
+    @Singleton
+    fun provideProvinceSearchUseCase(): ProvinceSearchUseCase =
+        ProvinceSearchUseCase()
+
+    @Provides
+    @Singleton
+    fun provideDistrictSearchUseCase(): DistrictSearchUseCase =
+        DistrictSearchUseCase()
+
+    @Provides
+    @Singleton
+    fun provideSubDistrictSearchUseCase(): SubDistrictSearchUseCase =
+        SubDistrictSearchUseCase()
+
+    @Provides
+    @Singleton
+    fun provideVillageSearchUseCase(): VillageSearchUseCase =
+        VillageSearchUseCase()
+
+    @Provides
+    @Singleton
+    fun provideIsUserOnboardedUseCase(
+        appPreferences: AppPreferences
+    ): IsUserOnboardedUseCase = IsUserOnboardedUseCase(appPreferences)
 
     @Provides
     @Singleton

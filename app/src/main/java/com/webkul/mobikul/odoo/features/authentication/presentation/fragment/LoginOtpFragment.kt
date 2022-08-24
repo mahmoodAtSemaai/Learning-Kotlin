@@ -12,7 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.activity.NewHomeActivity
-import com.webkul.mobikul.odoo.activity.UserApprovalActivity
 import com.webkul.mobikul.odoo.constant.ApplicationConstant.SECONDS_IN_A_MINUTE
 import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.core.extension.getProgressDialogWithText
@@ -28,6 +27,7 @@ import com.webkul.mobikul.odoo.features.authentication.presentation.viewmodel.Lo
 import com.webkul.mobikul.odoo.helper.GenericKeyEvent
 import com.webkul.mobikul.odoo.helper.GenericTextWatcher
 import com.webkul.mobikul.odoo.model.home.HomePageResponse
+import com.webkul.mobikul.odoo.ui.signUpOnboarding.UserOnboardingActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -35,7 +35,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginOtpFragment @Inject constructor() : BindingBaseFragment<FragmentLoginOtpBinding>(),
-        IView<LoginOtpIntent, LoginOtpState, LoginOtpEffect> {
+    IView<LoginOtpIntent, LoginOtpState, LoginOtpEffect> {
 
     override val layoutId: Int = R.layout.fragment_login_otp
     private val viewModel: LoginOtpViewModel by viewModels()
@@ -53,7 +53,10 @@ class LoginOtpFragment @Inject constructor() : BindingBaseFragment<FragmentLogin
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        progressDialog = requireActivity().getProgressDialogWithText(getString(R.string.please_wait_a_moment), "")
+        progressDialog = requireActivity().getProgressDialogWithText(
+            getString(R.string.please_wait_a_moment),
+            ""
+        )
 
         getArgs()
 
@@ -115,14 +118,26 @@ class LoginOtpFragment @Inject constructor() : BindingBaseFragment<FragmentLogin
             etOtp2.addTextChangedListener(GenericTextWatcher(etOtp3, etOtp1))
             etOtp3.addTextChangedListener(GenericTextWatcher(etOtp4, etOtp2))
             etOtp4.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
                 override fun afterTextChanged(text: Editable?) {
                     if (text?.length == 0)
                         etOtp3.requestFocus()
                     else {
-                        triggerIntent(LoginOtpIntent.GetOTPFromInput(phoneNumber, etOtp1.text.toString() + etOtp2.text.toString() + etOtp3.text.toString() + text.toString()))
+                        triggerIntent(
+                            LoginOtpIntent.GetOTPFromInput(
+                                phoneNumber,
+                                etOtp1.text.toString() + etOtp2.text.toString() + etOtp3.text.toString() + text.toString()
+                            )
+                        )
                     }
                 }
             })
@@ -148,12 +163,21 @@ class LoginOtpFragment @Inject constructor() : BindingBaseFragment<FragmentLogin
             is LoginOtpState.Error -> {
                 //TODO-> Handle elegantly in v2 login arch rvamp
                 when (state.failureStatus) {
-                    FailureStatus.NO_INTERNET -> showErrorState(state.failureStatus,
-                            state.message ?: getString(R.string.error_something_went_wrong))
-                    FailureStatus.ACCESS_DENIED -> showErrorState(state.failureStatus,
-                            state.message ?: getString(R.string.error_something_went_wrong))
-                    FailureStatus.USER_UNAPPROVED -> showErrorState(state.failureStatus,
-                            state.message ?: getString(R.string.error_something_went_wrong))
+                    FailureStatus.INCOMPLETE_ONBOARDING -> showErrorState(
+                        state.failureStatus, state.message ?: getString(R.string.error_something_went_wrong)
+                    )
+                    FailureStatus.NO_INTERNET -> showErrorState(
+                        state.failureStatus,
+                        state.message ?: getString(R.string.error_something_went_wrong)
+                    )
+                    FailureStatus.ACCESS_DENIED -> showErrorState(
+                        state.failureStatus,
+                        state.message ?: getString(R.string.error_something_went_wrong)
+                    )
+                    FailureStatus.USER_UNAPPROVED -> showErrorState(
+                        state.failureStatus,
+                        state.message ?: getString(R.string.error_something_went_wrong)
+                    )
                 }
                 clearOTP(false)
                 progressDialog.dismiss()
@@ -200,12 +224,18 @@ class LoginOtpFragment @Inject constructor() : BindingBaseFragment<FragmentLogin
             is LoginOtpState.InvalidOTP -> {
                 //TODO-> Handle elegantly in v2 login arch rvamp
                 when (state.failureStatus) {
-                    FailureStatus.NO_INTERNET -> showErrorState(state.failureStatus,
-                            state.message ?: getString(R.string.error_something_went_wrong))
-                    FailureStatus.ACCESS_DENIED -> showErrorState(state.failureStatus,
-                            state.message ?: getString(R.string.error_something_went_wrong))
-                    FailureStatus.USER_UNAPPROVED -> showErrorState(state.failureStatus,
-                            state.message ?: getString(R.string.error_something_went_wrong))
+                    FailureStatus.NO_INTERNET -> showErrorState(
+                        state.failureStatus,
+                        state.message ?: getString(R.string.error_something_went_wrong)
+                    )
+                    FailureStatus.ACCESS_DENIED -> showErrorState(
+                        state.failureStatus,
+                        state.message ?: getString(R.string.error_something_went_wrong)
+                    )
+                    FailureStatus.USER_UNAPPROVED -> showErrorState(
+                        state.failureStatus,
+                        state.message ?: getString(R.string.error_something_went_wrong)
+                    )
                     else -> binding.tvInvalidOtp.visibility = View.VISIBLE
                 }
                 clearOTP(false)
@@ -238,12 +268,16 @@ class LoginOtpFragment @Inject constructor() : BindingBaseFragment<FragmentLogin
 
     private fun redirectToUserApprovalActivity() {
         startActivity(
-                Intent(requireActivity(), UserApprovalActivity::class.java)
-                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
+            Intent(
+                requireActivity(),
+                UserOnboardingActivity::class.java
+            ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        )
     }
 
     private fun redirectToHomeActivity(homePageResponse: HomePageResponse) {
-        startActivity(Intent(requireActivity(), NewHomeActivity::class.java)
+        startActivity(
+            Intent(requireActivity(), NewHomeActivity::class.java)
                 .putExtra(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         )
@@ -253,14 +287,20 @@ class LoginOtpFragment @Inject constructor() : BindingBaseFragment<FragmentLogin
     private fun setResendText(enable: Boolean) {
         binding.tvResend.apply {
             isEnabled = enable
-            setTextColor(ContextCompat.getColor(requireContext(), if (enable) R.color.colorPrimary else R.color.colorDarkGrey))
+            setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    if (enable) R.color.colorPrimary else R.color.colorDarkGrey
+                )
+            )
         }
     }
 
     private fun updateTimerText(seconds: Int) {
         val minutesRemaining = (seconds / (SECONDS_IN_A_MINUTE))
         val secondsRemaining = (seconds % (SECONDS_IN_A_MINUTE))
-        var timeRemaining = if (minutesRemaining >= 10) "$minutesRemaining:" else "0$minutesRemaining:"
+        var timeRemaining =
+            if (minutesRemaining >= 10) "$minutesRemaining:" else "0$minutesRemaining:"
         timeRemaining += (if (secondsRemaining >= 10) "$secondsRemaining" else "0$secondsRemaining")
         binding.tvTimer.text = timeRemaining
     }

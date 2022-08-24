@@ -132,7 +132,7 @@
     <string name="please_enter_your_phone_number_below_you_will_receive_a_link_to_reset_your_password_">Masukkan alamat phone anda dibawah. Anda akan menerima link untuk melakukan reset password</string>
     <string name="link_to_resend_login_password_send">Kirim link</string>
     <string name="your_email">Email Anda</string>
-    <string name="your_name">Nama Anda <font color='#FF0000'>*</font></string>
+    <string name="your_name">Nama Anda</string>
     <string name="e_g_john_doe">misal: Tarjo Sutarjo</string>
     <string name="login_successful_message">Berhasil masuk</string>
     <string name="skip">Lewati</string>
@@ -282,11 +282,17 @@
     <string name="select_default_shipping_address">Pilih alamat pengiriman default</string>
     <string name="set_default">Tentukan default</string>
     <string name="province">Provinsi</string>
+    <string name="select_province">Pilih Provinsi</string>
     <string name="district">Kabupaten</string>
     <string name="district_city">Daerah / Kota</string>
+    <string name="select_district_city">Pilih Daerah / Kota</string>
     <string name="sub_district">Kecamatan</string>
+    <string name="select_sub_district">Pilih Kecamatan</string>
     <string name="village">Desa</string>
-    <string name="postal_code">Kode Pos <font color='#FF0000'>*</font></string>
+    <string name="select_village">Pilih Desa</string>
+    <string name="additional_address_info">Informasi tambahan (opsional)</string>
+    <string name="additional_address_info_hint">Contoh: Rumah kedua dibelakang masjid</string>
+    <string name="postal_code">Kode Pos</string>
     <string name="enter_your_village_code">Masukkan Kode Pos Anda</string>
     <string name="missing_postal_code_text">Kode pos tidak ada untuk</string>
     <string name="missing_feilds_in_address_form">Bidang yang Hilang dalam Formulir Alamat</string>
@@ -681,6 +687,8 @@
     <string name="account_does_not_exists">Belum punya akun Semaai?</string>
     <string name="sign_up_now">Daftar sekarang</string>
     <string name="number_hint">08123456789</string>
+    <string name="postal_hint">23451</string>
+    <string name="street_hint">Sudirman st.</string>
     <string name="incorrect_mobile_number_format">Maaf, format nomor salah. Harap mulai dengan \'08\'</string>
     <string name="incorrect_mobile_number">*Maaf, nomor telepon salah</string>
     <string name="welcome_back">Selamat datang kembali!</string>
@@ -711,4 +719,55 @@
     <string name="sorry_product_not_available">Maaf, produk ini tidak tersedia</string>
     <string name="search_another_product">Anda bisa mencari produk lain yang anda butuhkan disini</string>
 
+    <!--Sign-up-->
+    <string name="welcome_to_semaai">Selamat Datang di Semaai</string>
+    <string name="please_enter_your_mobile_number">Silahkan masukkan nomor handphone Anda</string>
+    <string name="terms_and_conditions_of_semaai">Dengan menekan “Lanjutkan”, kamu setuju dengan Syarat dan Ketentuan Semaai</string>
+
+    <!--User Onboarding-->
+    <string name="information_is_needed">Informasi ini diperlukan untuk memastikan kiriman Anda terkirim sesuai dengan lokasi Anda</string>
+    <string name="select_one">Pilih salah satu</string>
+    <string name="thank_you_for_joining_semaai">Terima kasih sudah bergabung dengan Semaai</string>
+    <string name="thank_you_for_joining_semaai_toko_tani">Terima kasih telah bergabung dengan Semaai, bantu kami mengidentifikasi toko tani Anda.</string>
+    <string name="thank_you_for_joining_semaai_kelompok_tani">Bantu kami mengidentifikasi kelompok tani Anda sehingga kami dapat membantu kebutuhan Anda dengan lebih baik.</string>
+    <string name="thank_you_for_joining_semaai_farmers_others">Terima kasih telah bergabung dengan Semaai, bantu kami mengidentifikasi Anda</string>
+    <string name="help_us_to_know_you">Bantu kami mengenal Anda sehingga kami dapat membantu kebutuhan Anda dengan lebih baik.</string>
+    <string name="toko_tani_name">Nama toko tani </string>
+    <string name="kelompok_tani_name">Nama Kelompok tani</string>
+    <string name="toko_tani_photo">Foto toko tani Anda (opsional)</string>
+    <string name="kelompok_tani_photo">Foto Kelompok tani Anda (optional)</string>
+    <string name="farmers_others_photo">Foto Anda (optional)</string>
+    <string name="address_unavailable">Maaf kami tidak melayani area Anda sekarang. Silakan mendaftar dan kami akan memberi tahu Anda setelah Semaai tersedia</string>
+    <string name="address_location">Aktifkan akses lokasi akan menciptakan pengalaman pengiriman yang lebih baik untuk Anda</string>
+    <string name="next">Lanjutkan</string>
+    <string name="add_address">Tambahkan Alamat</string>
+    <string name="name">Nama</string>
+    <string name="user_category_name">Kategori Pengguna</string>
+    <string name="user_category_group_name">Nama Toko</string>
+    <string name="discard_changes">Apakah anda yakin ingin membuang perubahan?</string>
+    <string name="keep_editing">Lanjutkan</string>
+    <string name="discard">Buang</string>
+    <string name="change_name">Ganti Nama</string>
+    <string name="change_group_name">Ganti Nama Toko</string>
+    <string name="no_result_found">Hasil tidak ditemukan</string>
+    <string name="name_hint">Example: Andi Baso</string>
+    <string name="group_name_hint">Example: Toko tani jaya makmur</string>
+    <string name="referral_code_hint">Example: AMLJHK</string>
+    <string name="toko_tani">Toko Tani</string>
+    <string name="kelompok_tani">Kelompok Tani</string>
+    <string name="farmers">Petani</string>
+    <string name="others">Lainnya</string>
+    <string name="otp_stage">OTP Validation Stage</string>
+    <string name="group_selection_stage">Customer Group Selection Stage</string>
+    <string name="details_stage">Customer Group Details Stage</string>
+    <string name="address_stage">Address Details Stage</string>
+    <string name="location_stage">Location Details Stage</string>
+    <string name="home_page_stage">Home Page</string>
+    <string name="existing_user_please_login">Pengguna telah terdaftar, silakan login untuk melanjutkan</string>
+    <string name="enter_onboarding_referral_code">Masukkan kode referral</string>
+    <string name="exit_the_app">Apakah Anda ingin keluar?</string>
+    <string name="select_photo">Ambil Gambar</string>
+    <string name="select_from_camera">Ambil gambar dari kamera</string>
+    <string name="select_from_gallery">Pilih gambar dari galeri</string>
+    <string name="close">batalkan</string>
 </resources>

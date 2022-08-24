@@ -65,6 +65,13 @@ class AppPreferences @Inject constructor(private val context: Context) {
         private const val KEY_CUSTOMER_PROFILE_IMAGE = "CUSTOMER_PROFILE_IMAGE"
         private const val KEY_CUSTOMER_BANNER_IMAGE = "CUSTOMER_BANNER_IMAGE"
 
+        private const val KEY_USER_ID = "USER_ID"
+        private const val KEY_CUSTOMER_GROUP_NAME = "CUSTOMER_GROUP_NAME"
+        private const val KEY_GROUP_NAME = "GROUP_NAME"
+        private const val KEY_CUSTOMER_GROUP_ID = "CUSTOMER_GROUP_ID"
+        private const val KEY_IS_USER_ONBOARDED = "KEY_IS_USER_ONBOARDED"
+        private const val KEY_USER_NAME = "USER_NAME"
+
     }
 
     private val customerPreferences: SharedPreferences =
@@ -95,7 +102,7 @@ class AppPreferences @Inject constructor(private val context: Context) {
 
     var languageCode: String?
         get() {
-            return splashPreferences.getString(KEY_LANGUAGE_CODE, "")
+            return splashPreferences.getString(KEY_LANGUAGE_CODE, "id_ID")
         }
         set(value) = splashPreferences.edit {
             it.putString(KEY_LANGUAGE_CODE, value)
@@ -139,6 +146,54 @@ class AppPreferences @Inject constructor(private val context: Context) {
         }
         set(value) = customerPreferences.edit {
             it.putString(KEY_CUSTOMER_ID, value)
+        }
+
+    var userId: Int
+        get() {
+            return customerPreferences.getInt(KEY_USER_ID, -1)
+        }
+        set(value) = customerPreferences.edit {
+            it.putInt(KEY_USER_ID, value)
+        }
+
+    var customerGroupName: String
+        get() {
+            return customerPreferences.getString(KEY_CUSTOMER_GROUP_NAME, "").toString()
+        }
+        set(value) = customerPreferences.edit {
+            it.putString(KEY_CUSTOMER_GROUP_NAME, value)
+        }
+
+    var customerGroupId: Int
+        get() {
+            return customerPreferences.getInt(KEY_CUSTOMER_GROUP_ID, -1)
+        }
+        set(value) = customerPreferences.edit {
+            it.putInt(KEY_CUSTOMER_GROUP_ID, value)
+        }
+
+    var groupName: String
+        get() {
+            return customerPreferences.getString(KEY_GROUP_NAME, "").toString()
+        }
+        set(value) = customerPreferences.edit {
+            it.putString(KEY_GROUP_NAME, value)
+        }
+
+    var userName: String
+        get() {
+            return customerPreferences.getString(KEY_USER_NAME, "").toString()
+        }
+        set(value) = customerPreferences.edit {
+            it.putString(KEY_USER_NAME, value)
+        }
+
+    var isUserOnboarded: Boolean
+        get() {
+            return customerPreferences.getBoolean(KEY_IS_USER_ONBOARDED, true)
+        }
+        set(value) = customerPreferences.edit {
+            it.putBoolean(KEY_IS_USER_ONBOARDED, value)
         }
 
     var isFirstTime: Boolean
@@ -273,7 +328,7 @@ class AppPreferences @Inject constructor(private val context: Context) {
         get() {
             return customerPreferences.getString(KEY_CUSTOMER_NAME, "")
         }
-        set(value) = splashPreferences.edit {
+        set(value) = customerPreferences.edit {
             it.putString(KEY_CUSTOMER_NAME, value)
         }
 
@@ -281,7 +336,7 @@ class AppPreferences @Inject constructor(private val context: Context) {
         get() {
             return customerPreferences.getString(KEY_CUSTOMER_EMAIL, "")
         }
-        set(value) = splashPreferences.edit {
+        set(value) = customerPreferences.edit {
             it.putString(KEY_CUSTOMER_EMAIL, value)
         }
 
@@ -289,7 +344,7 @@ class AppPreferences @Inject constructor(private val context: Context) {
         get() {
             return customerPreferences.getString(KEY_CUSTOMER_PHONE_NUMBER, "")
         }
-        set(value) = splashPreferences.edit {
+        set(value) = customerPreferences.edit {
             it.putString(KEY_CUSTOMER_PHONE_NUMBER, value)
         }
 

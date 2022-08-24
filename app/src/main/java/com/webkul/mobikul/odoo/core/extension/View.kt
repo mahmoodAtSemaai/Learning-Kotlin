@@ -3,6 +3,8 @@ package com.webkul.mobikul.odoo.core.extension
 import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
+import android.widget.TextView
 import com.webkul.mobikul.odoo.constant.ApplicationConstant
 
 /**
@@ -42,4 +44,16 @@ fun View.hideKeyboard() {
     val inputMethodManager =
         context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
+}
+
+fun View.setBackground(drawableId : Int) {
+    this.setBackgroundResource(drawableId)
+}
+
+fun TextView.setfontColor(colorId : Int) {
+    this.setTextColor(resources.getColor(colorId))
+}
+
+fun ImageView.setColor(colorId : Int) {
+    this.setColorFilter(resources.getColor(colorId))
 }

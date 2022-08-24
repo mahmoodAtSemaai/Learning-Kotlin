@@ -26,8 +26,13 @@ public class AppSharedPref {
     private static final String KEY_CUSTOMER_LOGIN_BASE_64_STR_FOR_FINGERPRINT = "CUSTOMER_LOGIN_BASE_64_STR_FOR_FINGERPRINT";
     private static final String KEY_CUSTOMER_NAME = "CUSTOMER_NAME";
     private static final String KEY_CUSTOMER_ID = "CUSTOMER_ID";
+    private static final String KEY_USER_ID = "USER_ID";
     private static final String KEY_CUSTOMER_EMAIL = "CUSTOMER_EMAIL";
     private static final String KEY_CUSTOMER_PHONE_NUMBER = "CUSTOMER_PHONE_NUMBER";
+    private static final String KEY_CUSTOMER_GROUP_NAME = "CUSTOMER_GROUP_NAME";
+    private static final String KEY_GROUP_NAME = "GROUP_NAME";
+    private static final String KEY_CUSTOMER_GROUP_ID = "CUSTOMER_GROUP_ID";
+    private static final String KEY_USER_NAME = "USER_NAME";
     private static final String KEY_CUSTOMER_PROFILE_IMAGE = "CUSTOMER_PROFILE_IMAGE";
     private static final String KEY_CUSTOMER_BANNER_IMAGE = "CUSTOMER_BANNER_IMAGE";
     private static final String KEY_CUSTOMER_IS_SOCIAL_LOGGED_IN = "CUSTOMER_IS_SOCIAL_LOGGED_IN";
@@ -73,6 +78,7 @@ public class AppSharedPref {
     private static final String PRIVACY_POLICY_URL = "PRIVACY_POLICY_URL";
     private static final String ANALYTICS_ID = "ANALYTICS_ID";
     private static final String KEY_IS_USER_APPROVED = "KEY_IS_USER_APPROVED";
+    private static final String KEY_IS_USER_ONBOARDED = "KEY_IS_USER_ONBOARDED";
     private static final String KEY_IS_FCM_TOKEN_SYNCED = "KEY_IS_FCM_TOKEN_SYNCED";
 
 
@@ -166,6 +172,60 @@ public class AppSharedPref {
 
     public static void setCustomerId(Context context, String customerId) {
         getSharedPreferenceEditor(context, CUSTOMER_PREF).putString(KEY_CUSTOMER_ID, customerId).apply();
+    }
+
+    /*User Id*/
+    public static int getUserId(Context context) {
+        return getSharedPreference(context, CUSTOMER_PREF).getInt(KEY_USER_ID, -1);
+    }
+
+    public static void setUserId(Context context, int userId) {
+        getSharedPreferenceEditor(context, CUSTOMER_PREF).putInt(KEY_USER_ID, userId).apply();
+    }
+
+    /*Customer Group Name*/
+    public static String getCustomerGroupName(Context context) {
+        return getSharedPreference(context, CUSTOMER_PREF).getString(KEY_CUSTOMER_GROUP_NAME, "");
+    }
+
+    public static void setCustomerGroupName(Context context, String customerGroupName) {
+        getSharedPreferenceEditor(context, CUSTOMER_PREF).putString(KEY_CUSTOMER_GROUP_NAME, customerGroupName).apply();
+    }
+
+    /*Group Name*/
+    public static String getGroupName(Context context) {
+        return getSharedPreference(context, CUSTOMER_PREF).getString(KEY_GROUP_NAME, "");
+    }
+
+    public static void setGroupName(Context context, String customerCategoryName) {
+        getSharedPreferenceEditor(context, CUSTOMER_PREF).putString(KEY_GROUP_NAME, customerCategoryName).apply();
+    }
+
+    /*User Name*/
+    public static String getUserName(Context context) {
+        return getSharedPreference(context, CUSTOMER_PREF).getString(KEY_USER_NAME, "");
+    }
+
+    public static void setUserName(Context context, String userName) {
+        getSharedPreferenceEditor(context, CUSTOMER_PREF).putString(KEY_USER_NAME, userName).apply();
+    }
+
+    /*Customer Group Id*/
+    public static int getCustomerGroupId(Context context) {
+        return getSharedPreference(context, CUSTOMER_PREF).getInt(KEY_CUSTOMER_GROUP_ID, -1);
+    }
+
+    public static void setCustomerGroupId(Context context, int customerCategoryid) {
+        getSharedPreferenceEditor(context, CUSTOMER_PREF).putInt(KEY_CUSTOMER_GROUP_ID, customerCategoryid).apply();
+    }
+
+    /* User ONBOARDED */
+    public static boolean getUserIsOnboarded(Context context) {
+        return getSharedPreference(context, CUSTOMER_PREF).getBoolean(KEY_IS_USER_ONBOARDED, true);
+    }
+
+    public static void setUserIsOnboarded(Context context, Boolean onboarded) {
+        getSharedPreferenceEditor(context, CUSTOMER_PREF).putBoolean(KEY_IS_USER_ONBOARDED, onboarded).apply();
     }
 
     /*CUSTOMER PROFILE IMAGE*/
@@ -385,7 +445,7 @@ public class AppSharedPref {
     }
 
     public static String getLanguageCode(Context context) {
-        return getSharedPreference(context, SPLASH_PREF).getString(KEY_LANGUAGE_CODE, "");
+        return getSharedPreference(context, SPLASH_PREF).getString(KEY_LANGUAGE_CODE, "id_ID");
     }
 
     public static void setLanguageCode(Context context, String code) {

@@ -121,11 +121,7 @@ class LoginPasswordViewModel @Inject constructor(
                                 it.failureStatus
                         )
                         is Resource.Success -> {
-                            if (it.value.isUserApproved) {
-                                LoginPasswordState.Splash(it.value)
-                            } else {
-                                LoginPasswordState.UnauthorisedUser
-                            }
+                            LoginPasswordState.Splash(it.value)
                         }
                     }
                 }

@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".ui.userSignUp.fragment.UserAddressFragment">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_app_layout"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:navigationIcon="@drawable/ic_arrow_color_primary"
+                app:titleTextColor="@android:color/white">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_toolBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_address"
+                    android:textAllCaps="false"
+                    android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+                    android:textColor="@color/background_orange" />
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nsv_container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            app:layout_constraintBottom_toTopOf="@id/btn_continue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/app_bar_layout">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_main_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_information_is_needed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:layout_marginVertical="@dimen/margin_16"
+                    android:text="@string/information_is_needed"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_province"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_12"
+                    android:text="@string/province"
+                    app:layout_constraintStart_toStartOf="@+id/tv_information_is_needed"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_information_is_needed" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_province"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_48"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:background="@drawable/shape_rectangular_white_bg_dark_gray_border_1dp_corner_4dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/tv_province"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_province">
+
+                    <TextView
+                        android:id="@+id/tv_province_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_12"
+                        android:layout_marginVertical="@dimen/margin_12"
+                        android:text="@string/select_province"
+                        android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/iv_province_dropdown_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/margin_16"
+                        android:layout_marginRight="@dimen/margin_16"
+                        android:src="@drawable/ic_down_arrow_color_primary"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_province_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:background="@drawable/shape_rectangular_white_bg_gray_border_1dp_corner_4dp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/cl_province"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_province">
+
+                    <EditText
+                        android:id="@+id/et_province_search"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_30"
+                        android:layout_marginHorizontal="@dimen/margin_6"
+                        android:layout_marginVertical="@dimen/margin_6"
+                        android:background="@drawable/shape_rectangular_white_bg_gray_border_1dp_corner_4dp"
+                        android:drawableStart="@drawable/search"
+                        android:drawableLeft="@drawable/search"
+                        android:drawablePadding="@dimen/padding_6"
+                        android:hint="@string/search"
+                        android:paddingStart="@dimen/padding_6"
+                        android:paddingLeft="@dimen/padding_6"
+                        android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+                        android:textColor="@color/text_color_primary"
+                        android:textColorHint="@color/colorDarkGrey"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_province_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_12"
+                        android:maxHeight="@dimen/size_150"
+                        android:scrollbars="vertical"
+                        app:layout_constraintEnd_toEndOf="@+id/et_province_search"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/et_province_search" />
+
+                    <TextView
+                        android:id="@+id/tv_no_result_found"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_8"
+                        android:layout_marginBottom="@dimen/margin_8"
+                        android:text="@string/no_result_found"
+                        android:textAppearance="@style/Semaai.TextAppearance.Body2.Bold"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/et_province_search"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/et_province_search"
+                        app:layout_constraintTop_toBottomOf="@+id/et_province_search" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_address_continer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_12"
+                    android:layout_marginBottom="@dimen/margin_12"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toTopOf="@+id/btn_continue"
+                    app:layout_constraintEnd_toEndOf="@+id/cl_province_spinner"
+                    app:layout_constraintStart_toStartOf="@+id/cl_province_spinner"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_province_spinner"
+                    app:layout_constraintVertical_bias="0.0">
+
+                    <TextView
+                        android:id="@+id/tv_district_city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_16"
+                        android:layout_marginTop="@dimen/margin_12"
+                        android:text="@string/district_city"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cl_province_spinner" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_district_city"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_48"
+                        android:layout_marginHorizontal="@dimen/margin_16"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:background="@drawable/shape_rectangular_white_bg_dark_gray_border_1dp_corner_4dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/tv_district_city"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_district_city">
+
+                        <TextView
+                            android:id="@+id/tv_district_city_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/margin_12"
+                            android:layout_marginVertical="@dimen/margin_12"
+                            android:text="@string/select_district_city"
+                            android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/iv_district_city_dropdown_arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_16"
+                            android:layout_marginRight="@dimen/margin_16"
+                            android:src="@drawable/ic_down_arrow_color_primary"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_district_city_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_16"
+                        android:layout_marginTop="@dimen/margin_8"
+                        android:background="@drawable/shape_rectangular_white_bg_gray_border_1dp_corner_4dp"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/cl_district_city"
+                        app:layout_constraintTop_toBottomOf="@+id/cl_district_city">
+
+                        <EditText
+                            android:id="@+id/et_district_city_search"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/size_30"
+                            android:layout_marginHorizontal="@dimen/margin_6"
+                            android:layout_marginVertical="@dimen/margin_6"
+                            android:background="@drawable/shape_rectangular_white_bg_gray_border_1dp_corner_4dp"
+                            android:drawableStart="@drawable/search"
+                            android:drawableLeft="@drawable/search"
+                            android:drawablePadding="@dimen/padding_6"
+                            android:hint="@string/search"
+                            android:paddingStart="@dimen/padding_6"
+                            android:paddingLeft="@dimen/padding_6"
+                            android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+                            android:textColor="@color/text_color_primary"
+                            android:textColorHint="@color/colorDarkGrey"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_district_city_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/margin_12"
+                            android:maxHeight="@dimen/size_150"
+                            android:scrollbars="vertical"
+                            app:layout_constraintEnd_toEndOf="@+id/et_district_city_search"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/et_district_city_search" />
+
+                        <TextView
+                            android:id="@+id/tv_district_no_result_found"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_8"
+                            android:layout_marginBottom="@dimen/margin_8"
+                            android:text="@string/no_result_found"
+                            android:textAppearance="@style/Semaai.TextAppearance.Body2.Bold"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/et_district_city_search"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="@+id/et_district_city_search"
+                            app:layout_constraintTop_toBottomOf="@+id/et_district_city_search" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/tv_sub_district"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_16"
+                        android:layout_marginTop="@dimen/margin_12"
+                        android:text="@string/sub_district"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cl_district_city_spinner" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_sub_district"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_48"
+                        android:layout_marginHorizontal="@dimen/margin_16"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:background="@drawable/shape_rectangular_white_bg_dark_gray_border_1dp_corner_4dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/tv_sub_district"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_sub_district">
+
+                        <TextView
+                            android:id="@+id/tv_sub_district_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/margin_12"
+                            android:layout_marginVertical="@dimen/margin_12"
+                            android:text="@string/select_sub_district"
+                            android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/iv_sub_district_dropdown_arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_16"
+                            android:layout_marginRight="@dimen/margin_16"
+                            android:src="@drawable/ic_down_arrow_color_primary"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_sub_district_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_16"
+                        android:layout_marginTop="@dimen/margin_8"
+                        android:background="@drawable/shape_rectangular_white_bg_gray_border_1dp_corner_4dp"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/cl_sub_district"
+                        app:layout_constraintTop_toBottomOf="@+id/cl_sub_district">
+
+                        <EditText
+                            android:id="@+id/et_sub_district_search"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/size_30"
+                            android:layout_marginHorizontal="@dimen/margin_6"
+                            android:layout_marginVertical="@dimen/margin_6"
+                            android:background="@drawable/shape_rectangular_white_bg_gray_border_1dp_corner_4dp"
+                            android:drawableStart="@drawable/search"
+                            android:drawableLeft="@drawable/search"
+                            android:drawablePadding="@dimen/padding_6"
+                            android:hint="@string/search"
+                            android:paddingStart="@dimen/padding_6"
+                            android:paddingLeft="@dimen/padding_6"
+                            android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+                            android:textColor="@color/text_color_primary"
+                            android:textColorHint="@color/colorDarkGrey"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_sub_district_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/margin_12"
+                            android:maxHeight="@dimen/size_150"
+                            android:scrollbars="vertical"
+                            app:layout_constraintEnd_toEndOf="@+id/et_sub_district_search"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/et_sub_district_search" />
+
+                        <TextView
+                            android:id="@+id/tv_sub_district_no_result_found"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_8"
+                            android:layout_marginBottom="@dimen/margin_8"
+                            android:text="@string/no_result_found"
+                            android:textAppearance="@style/Semaai.TextAppearance.Body2.Bold"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/et_sub_district_search"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="@+id/et_sub_district_search"
+                            app:layout_constraintTop_toBottomOf="@+id/et_sub_district_search" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/tv_village"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_16"
+                        android:layout_marginTop="@dimen/margin_12"
+                        android:text="@string/village"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cl_sub_district_spinner" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_village"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_48"
+                        android:layout_marginHorizontal="@dimen/margin_16"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:background="@drawable/shape_rectangular_white_bg_dark_gray_border_1dp_corner_4dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/tv_village"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_village">
+
+                        <TextView
+                            android:id="@+id/tv_village_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/margin_12"
+                            android:layout_marginVertical="@dimen/margin_12"
+                            android:text="@string/select_village"
+                            android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/iv_village_dropdown_arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_16"
+                            android:layout_marginRight="@dimen/margin_16"
+                            android:src="@drawable/ic_down_arrow_color_primary"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_village_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_16"
+                        android:layout_marginTop="@dimen/margin_8"
+                        android:background="@drawable/shape_rectangular_white_bg_gray_border_1dp_corner_4dp"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/cl_village"
+                        app:layout_constraintTop_toBottomOf="@+id/cl_village">
+
+                        <EditText
+                            android:id="@+id/et_village_search"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/size_30"
+                            android:layout_marginHorizontal="@dimen/margin_6"
+                            android:layout_marginVertical="@dimen/margin_6"
+                            android:background="@drawable/shape_rectangular_white_bg_gray_border_1dp_corner_4dp"
+                            android:drawableStart="@drawable/search"
+                            android:drawableLeft="@drawable/search"
+                            android:drawablePadding="@dimen/padding_6"
+                            android:hint="@string/search"
+                            android:paddingStart="@dimen/padding_6"
+                            android:paddingLeft="@dimen/padding_6"
+                            android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+                            android:textColor="@color/text_color_primary"
+                            android:textColorHint="@color/colorDarkGrey"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_village_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/margin_12"
+                            android:maxHeight="@dimen/size_150"
+                            android:scrollbars="vertical"
+                            app:layout_constraintEnd_toEndOf="@+id/et_village_search"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/et_village_search" />
+
+                        <TextView
+                            android:id="@+id/tv_village_no_result_found"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_8"
+                            android:layout_marginBottom="@dimen/margin_8"
+                            android:text="@string/no_result_found"
+                            android:textAppearance="@style/Semaai.TextAppearance.Body2.Bold"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/et_village_search"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="@+id/et_village_search"
+                            app:layout_constraintTop_toBottomOf="@+id/et_village_search" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/tv_postal_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_16"
+                        android:layout_marginTop="@dimen/margin_12"
+                        android:text="@string/postal_code"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cl_village_spinner" />
+
+                    <TextView
+                        android:id="@+id/tv_postal_code_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_16"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:background="@drawable/shape_rectangular_dark_gray_bg_corner_4dp"
+                        android:paddingHorizontal="@dimen/size_16"
+                        android:paddingVertical="@dimen/size_12"
+                        android:textAppearance="@style/Semaai.TextAppearance.Body2.Bold"
+                        android:textColorHint="@color/grey_bg"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_postal_code" />
+
+                    <TextView
+                        android:id="@+id/tv_street"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_16"
+                        android:layout_marginTop="@dimen/margin_12"
+                        android:text="@string/street"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_postal_code_value" />
+
+                    <EditText
+                        android:id="@+id/et_street"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_16"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:background="@drawable/shape_rectangular_white_bg_dark_gray_border_1dp_corner_4dp"
+                        android:hint="@string/street_hint"
+                        android:inputType="text"
+                        android:paddingHorizontal="@dimen/size_16"
+                        android:paddingVertical="@dimen/size_12"
+                        android:textAppearance="@style/Semaai.TextAppearance.Body2.Bold"
+                        android:textColorHint="@color/grey_bg"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_street" />
+
+                    <TextView
+                        android:id="@+id/tv_address_additional_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_16"
+                        android:layout_marginTop="@dimen/margin_12"
+                        android:text="@string/additional_address_info"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/et_street" />
+
+                    <EditText
+                        android:id="@+id/et_address_additional_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_64"
+                        android:layout_marginHorizontal="@dimen/margin_16"
+                        android:layout_marginVertical="@dimen/margin_4"
+                        android:background="@drawable/shape_rectangular_white_bg_dark_gray_border_1dp_corner_4dp"
+                        android:hint="@string/additional_address_info_hint"
+                        android:inputType="text"
+                        android:paddingHorizontal="@dimen/size_16"
+                        android:paddingVertical="@dimen/size_12"
+                        android:textAppearance="@style/Semaai.TextAppearance.Body2.Bold"
+                        android:textColorHint="@color/grey_bg"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_address_additional_info" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <Button
+            android:id="@+id/btn_continue"
+            android:layout_width="@dimen/size_270"
+            android:layout_height="@dimen/size_40"
+            android:layout_marginVertical="@dimen/margin_16"
+            android:background="@drawable/btn_continue_bg"
+            android:enabled="false"
+            android:text="@string/continue_"
+            android:textColor="@color/btn_continue_text_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

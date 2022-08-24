@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".ui.signUpOnboarding.fragment.UserDetailsFragment">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_app_layout"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:navigationIcon="@drawable/ic_arrow_color_primary"
+                app:titleTextColor="@android:color/white">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_toolBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account_info"
+                    android:textAllCaps="false"
+                    android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+                    android:textColor="@color/background_orange" />
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <TextView
+            android:id="@+id/tv_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16"
+            android:layout_marginHorizontal="@dimen/margin_12"
+            android:text="@string/thank_you_for_joining_semaai_toko_tani"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/app_bar_layout" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16"
+            android:layout_marginLeft="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_16"
+            android:text="@string/your_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_details" />
+
+
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginEnd="@dimen/margin_16"
+            android:layout_marginRight="@dimen/margin_16"
+            android:background="@drawable/shape_rectangular_white_bg_dark_gray_border_1dp_corner_4dp"
+            android:hint="@string/name_hint"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:minHeight="@dimen/size_48"
+            android:paddingHorizontal="@dimen/padding_16"
+            android:paddingVertical="@dimen/padding_12"
+            android:textColorHint="@color/colorDarkGrey"
+            android:textAppearance="@style/Semaai.TextAppearance.Body1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_name"
+            tools:ignore="TextFields" />
+
+        <TextView
+            android:id="@+id/tv_group_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16"
+            android:text="@string/toko_tani_name"
+            app:layout_constraintStart_toStartOf="@+id/et_name"
+            app:layout_constraintTop_toBottomOf="@+id/et_name" />
+
+        <EditText
+            android:id="@+id/et_group_name"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginEnd="@dimen/margin_16"
+            android:layout_marginRight="@dimen/margin_16"
+            android:background="@drawable/shape_rectangular_white_bg_dark_gray_border_1dp_corner_4dp"
+            android:hint="@string/group_name_hint"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:minHeight="@dimen/size_48"
+            android:paddingHorizontal="@dimen/padding_16"
+            android:paddingVertical="@dimen/padding_12"
+            android:textColorHint="@color/colorDarkGrey"
+            android:textAppearance="@style/Semaai.TextAppearance.Body1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_group_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_group_name"
+            tools:ignore="TextFields" />
+
+        <TextView
+            android:id="@+id/tv_referral_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16"
+            android:layout_marginLeft="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_16"
+            android:text="@string/enter_onboarding_referral_code"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_group_name" />
+
+        <EditText
+            android:id="@+id/et_referral_code"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginEnd="@dimen/margin_16"
+            android:layout_marginRight="@dimen/margin_16"
+            android:background="@drawable/shape_rectangular_white_bg_dark_gray_border_1dp_corner_4dp"
+            android:hint="@string/referral_code_hint"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLength="6"
+            android:minHeight="@dimen/size_48"
+            android:paddingHorizontal="@dimen/padding_16"
+            android:paddingVertical="@dimen/padding_12"
+            android:textColorHint="@color/colorDarkGrey"
+            android:textAppearance="@style/Semaai.TextAppearance.Body1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_referral_code"
+            app:layout_constraintTop_toBottomOf="@+id/tv_referral_code"
+            tools:ignore="TextFields" />
+
+        <TextView
+            android:id="@+id/tv_invalid_referral"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_6"
+            android:text="@string/invalid_referral_code"
+            android:textColor="@color/red_alert"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/et_referral_code"
+            app:layout_constraintTop_toBottomOf="@+id/et_referral_code" />
+
+        <TextView
+            android:id="@+id/tv_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16"
+            android:text="@string/toko_tani_photo"
+            app:layout_constraintStart_toStartOf="@+id/tv_invalid_referral"
+            app:layout_constraintTop_toBottomOf="@+id/tv_invalid_referral" />
+
+        <ImageView
+            android:id="@+id/iv_picture"
+            android:layout_width="@dimen/size_150"
+            android:layout_height="@dimen/size_150"
+            android:layout_marginTop="@dimen/margin_8"
+            android:background="@drawable/ic_user_details_picture_bg"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_photo" />
+
+        <ImageView
+            android:id="@+id/iv_gallary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_new_camera"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_picture"
+            app:layout_constraintEnd_toEndOf="@+id/iv_picture"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/iv_picture"
+            app:layout_constraintTop_toTopOf="@+id/iv_picture" />
+
+        <ImageView
+            android:id="@+id/iv_edit_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:src="@drawable/ic_edit_white_bg"
+            app:layout_constraintBottom_toTopOf="@+id/iv_picture"
+            app:layout_constraintEnd_toEndOf="@+id/iv_picture"
+            app:layout_constraintStart_toEndOf="@+id/iv_picture"
+            app:layout_constraintTop_toTopOf="@+id/iv_picture" />
+
+        <Button
+            android:id="@+id/btn_continue"
+            android:layout_width="@dimen/size_270"
+            android:layout_height="@dimen/size_48"
+            android:layout_marginBottom="@dimen/margin_24"
+            android:background="@drawable/btn_continue_bg"
+            android:enabled="false"
+            android:text="@string/continue_"
+            android:textAlignment="center"
+            android:textColor="@color/btn_continue_text_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/iv_picture"
+            app:layout_constraintStart_toStartOf="@+id/iv_picture" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

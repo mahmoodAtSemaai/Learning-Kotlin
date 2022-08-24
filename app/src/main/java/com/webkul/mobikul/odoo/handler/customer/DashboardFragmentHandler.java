@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.BaseActivity;
 import com.webkul.mobikul.odoo.dialog_frag.ChangeDefaultShippingDialogFrag;
-import com.webkul.mobikul.odoo.fragment.AccountInfoFragment;
+import com.webkul.mobikul.odoo.ui.account.fragment.AccountInfoV1Fragment;
 import com.webkul.mobikul.odoo.fragment.AddressBookFragment;
 import com.webkul.mobikul.odoo.fragment.NewAddressFragment;
 import com.webkul.mobikul.odoo.fragment.OrderListFragment;
@@ -41,7 +41,7 @@ public class DashboardFragmentHandler {
 
 
     public void editAccountInfo() {
-        FragmentHelper.replaceFragment(R.id.container, mContext, AccountInfoFragment.newInstance(), AccountInfoFragment.class.getSimpleName(), true, true);
+        FragmentHelper.replaceFragment(R.id.container, mContext, AccountInfoV1Fragment.Companion.newInstance(), AccountInfoV1Fragment.class.getSimpleName(), true, true);
     }
 
     public void editBillingAddress() {

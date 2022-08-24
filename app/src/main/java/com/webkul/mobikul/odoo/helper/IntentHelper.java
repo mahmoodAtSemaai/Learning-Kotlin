@@ -13,9 +13,11 @@ import com.webkul.mobikul.odoo.activity.HomeActivity;
 import com.webkul.mobikul.odoo.activity.NewHomeActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.activity.UserApprovalActivity;
+import com.webkul.mobikul.odoo.constant.BundleConstant;
 import com.webkul.mobikul.odoo.dialog_frag.ProductAddedToBagDialogFrag;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.model.home.HomePageResponse;
+import com.webkul.mobikul.odoo.ui.signUpOnboarding.UserOnboardingActivity;
 
 import java.util.Arrays;
 
@@ -39,7 +41,11 @@ public class IntentHelper {
     }
 
     public static void goToUserUnapprovedScreen(Context context) {
-        context.startActivity(new Intent(context, UserApprovalActivity.class));
+        context.startActivity(new Intent(context, UserOnboardingActivity.class));
+    }
+
+    public static void goToUserOnboardingScreen(Context context) {
+        context.startActivity(new Intent(context, UserOnboardingActivity.class));
     }
 
     public static void continueShopping(Context context, HomePageResponse homePageResponse) {
@@ -129,7 +135,7 @@ public class IntentHelper {
     }
 
 
-    public static void redirectToSignUpActivity(Context context){
+    public static void redirectToSignUpActivity(Context context) {
         AlertDialogHelper.showDefaultWarningDialogWithDismissListener(context, context.getString(R.string.error_login_failure),
                 context.getString(R.string.access_denied_message), sweetAlertDialog -> {
                     sweetAlertDialog.dismiss();

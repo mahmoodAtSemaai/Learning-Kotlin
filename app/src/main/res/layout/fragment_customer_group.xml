@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".ui.signUpOnboarding.fragment.CustomerGroupFragment">
+
+        <ImageView
+            android:id="@+id/iv_header"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="@dimen/size_0"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_user_category_bg"
+            app:layout_constraintBottom_toTopOf="@+id/gl_horizontal_25"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/thank_you_for_joining_semaai"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            android:textAppearance="@style/Semaai.TextAppearance.Headline6"
+            android:textAlignment="center"
+            android:textColor="@color/background_orange"
+            app:layout_constraintBottom_toTopOf="@+id/gl_horizontal_25"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_horizontal_25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.25" />
+
+        <TextView
+            android:id="@+id/tv_user_group_info"
+            style="@style/Semaai.TextAppearance.Body2"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_12"
+            android:layout_marginLeft="@dimen/margin_12"
+            android:layout_marginTop="@dimen/margin_16"
+            android:layout_marginEnd="@dimen/margin_20"
+            android:layout_marginRight="@dimen/margin_20"
+            android:text="@string/help_us_to_know_you"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_header" />
+
+        <TextView
+            android:id="@+id/tv_select_one"
+            style="@style/Semaai.TextAppearance.Caption"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_12"
+            android:text="@string/select_one"
+            android:textColor="@color/colorDarkGrey"
+            app:layout_constraintStart_toStartOf="@+id/tv_user_group_info"
+            app:layout_constraintTop_toBottomOf="@+id/tv_user_group_info" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_customer_groups"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_12"
+            android:layout_marginTop="@dimen/margin_16"
+            app:layout_constraintBottom_toTopOf="@+id/btn_continue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_select_one"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/btn_continue"
+            android:layout_width="@dimen/size_270"
+            android:layout_height="@dimen/size_40"
+            android:layout_marginBottom="@dimen/margin_24"
+            android:background="@drawable/btn_continue_bg"
+            android:enabled="false"
+            android:text="@string/continue_"
+            android:textAlignment="center"
+            android:textColor="@color/btn_continue_text_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/rv_customer_groups"
+            app:layout_constraintStart_toStartOf="@+id/rv_customer_groups" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

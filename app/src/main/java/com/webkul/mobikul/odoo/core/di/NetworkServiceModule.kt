@@ -72,4 +72,60 @@ object NetworkServiceModule {
     fun provideFCMTokenServices(retrofit: Retrofit): FCMTokenServices =
             retrofit.create(FCMTokenServices::class.java)
 
+
+    @Provides
+    @Singleton
+    fun provideSignUpAuthServices(retrofit: Retrofit) : SignUpAuthServices =
+        retrofit.create(SignUpAuthServices::class.java)
+
+    @Provides
+    @Singleton
+    fun provideOnboardingStageServices(retrofit: Retrofit) : OnboardingStageServices =
+        retrofit.create(OnboardingStageServices::class.java)
+
+    @Provides
+    @Singleton
+    fun provideCustomerGroupServices(retrofit: Retrofit) :  UserCategoryServices =
+        retrofit.create(UserCategoryServices::class.java)
+
+    @Provides
+    @Singleton
+    fun provideReferralCodeServices(retrofit: Retrofit) : ReferralCodeServices =
+        retrofit.create(ReferralCodeServices::class.java)
+
+    @Provides
+    @Singleton
+    fun provideUserDetailsServices(retrofit: Retrofit) :  UserDetailsServices =
+        retrofit.create(UserDetailsServices::class.java)
+
+    @Provides
+    @Singleton
+    fun provideUserAddressServices(retrofit: Retrofit): UserAddressServices =
+        retrofit.create(UserAddressServices::class.java)
+
+
+    @Provides
+    @Singleton
+    fun provideUserLocationServices(retrofit: Retrofit) : UserLocationServices =
+        retrofit.create(UserLocationServices::class.java)
+
+    @Provides
+    @Singleton
+    fun provideProvinceServices(retrofit: Retrofit) : ProvinceServices =
+        retrofit.create(ProvinceServices::class.java)
+
+    @Provides
+    @Singleton
+    fun provideDistrictServices(retrofit: Retrofit) :  DistrictServices =
+        retrofit.create(DistrictServices::class.java)
+
+    @Provides
+    @Singleton
+    fun provideSubDistrictServices(retrofit: Retrofit) : SubDistrictServices =
+        retrofit.create(SubDistrictServices::class.java)
+
+    @Provides
+    @Singleton
+    fun provideVillageServices(retrofit: Retrofit) :  VillageServices =
+        retrofit.create(VillageServices::class.java)
 }

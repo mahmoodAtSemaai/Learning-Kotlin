@@ -5,11 +5,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.webkul.mobikul.odoo.*
+import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.activity.NewHomeActivity
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity
 import com.webkul.mobikul.odoo.activity.SplashScreenActivity
-import com.webkul.mobikul.odoo.activity.UserApprovalActivity
 import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.core.extension.isGone
 import com.webkul.mobikul.odoo.core.mvicore.IView
@@ -18,6 +17,7 @@ import com.webkul.mobikul.odoo.core.utils.DeeplinkManager
 import com.webkul.mobikul.odoo.databinding.ActivitySplashScreenV1Binding
 import com.webkul.mobikul.odoo.features.onboarding.presentation.OnboardingActivity
 import com.webkul.mobikul.odoo.model.home.HomePageResponse
+import com.webkul.mobikul.odoo.ui.signUpOnboarding.UserOnboardingActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_splash_screen_v1.*
 import kotlinx.coroutines.launch
@@ -79,7 +79,6 @@ class SplashScreenActivityV1() :
             is SplashEffect.NavigateToHomeScreen -> navigateToHomeScreen(effect.homePageResponse)
             is SplashEffect.NavigateToOnBoardingActivity -> navigateToOnBoardingActivity()
             is SplashEffect.NavigateToSignInSignUpActivity -> navigateToSignInSignUpActivity()
-            is SplashEffect.NavigateToUserApprovalActivity -> navigateToUserUnApprovedScreen()
         }
     }
 
@@ -115,8 +114,8 @@ class SplashScreenActivityV1() :
         finish()
     }
 
-    private fun navigateToUserUnApprovedScreen() {
-        startActivity(Intent(this, UserApprovalActivity::class.java))
+    private fun navigateToUserOnboardingScreen() {
+        startActivity(Intent(this, UserOnboardingActivity::class.java))
         finish()
     }
 

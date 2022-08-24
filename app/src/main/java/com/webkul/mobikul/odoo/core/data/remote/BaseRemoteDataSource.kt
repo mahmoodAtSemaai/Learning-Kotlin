@@ -2,12 +2,17 @@ package com.webkul.mobikul.odoo.core.data.remote
 
 import com.google.gson.Gson
 import com.webkul.mobikul.odoo.core.data.local.AppPreferences
-import com.webkul.mobikul.odoo.core.utils.FailureStatus
-import com.webkul.mobikul.odoo.core.utils.HTTP_ERROR_UNABLE_TO_PROCESS_REQUEST
-import com.webkul.mobikul.odoo.core.utils.HTTP_ERROR_UNAUTHORIZED_REQUEST
-import com.webkul.mobikul.odoo.core.utils.Resource
+import com.webkul.mobikul.odoo.core.utils.*
+import com.webkul.mobikul.odoo.data.response.BaseOtpSignUpResponse
+import com.webkul.mobikul.odoo.data.response.BaseUserOnboardingResponse
+import com.webkul.mobikul.odoo.data.response.TermsAndConditionsResponse
 import com.webkul.mobikul.odoo.model.BaseResponse
+import com.webkul.mobikul.odoo.model.ReferralResponse
 import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse
+import com.webkul.mobikul.odoo.model.customer.address.addressResponse.DistrictListResponse
+import com.webkul.mobikul.odoo.model.customer.address.addressResponse.StateListResponse
+import com.webkul.mobikul.odoo.model.customer.address.addressResponse.SubDistrictListResponse
+import com.webkul.mobikul.odoo.model.customer.address.addressResponse.VillageListResponse
 import org.json.JSONObject
 import retrofit2.HttpException
 import java.io.IOException
@@ -16,8 +21,8 @@ import java.net.UnknownHostException
 import javax.inject.Inject
 
 open class BaseRemoteDataSource @Inject constructor(
-        private val gson: Gson,
-        private val appPreferences: AppPreferences
+    private val gson: Gson,
+    private val appPreferences: AppPreferences
 ) {
 
 
@@ -30,14 +35,26 @@ open class BaseRemoteDataSource @Inject constructor(
                     if (apiResponse.isAccessDenied) {
                         appPreferences.clearCustomerData()
                         Resource.Failure(
-                                failureStatus = FailureStatus.ACCESS_DENIED,
-                                message = apiResponse.message
+                            failureStatus = FailureStatus.ACCESS_DENIED,
+                            message = apiResponse.message
+                        )
+                    } else if (apiResponse.isUserOnboarded.not()){
+                        appPreferences.isUserOnboarded = false
+                        if(apiResponse.userId.isNotEmpty()){
+                            appPreferences.userId = apiResponse.userId.toInt()
+                            appPreferences.customerId = apiResponse.customerId
+                        }
+                        Resource.Failure(
+                            failureStatus = FailureStatus.INCOMPLETE_ONBOARDING,
+                            code = HTTP_ERROR_UNAUTHORIZED_REQUEST,
+                            message = apiResponse.message
                         )
                     } else if (apiResponse.isUserApproved.not()) {
                         appPreferences.isUserApproved = false
                         Resource.Failure(
-                                failureStatus = FailureStatus.USER_UNAPPROVED,
-                                message = apiResponse.message
+                            failureStatus = FailureStatus.USER_UNAPPROVED,
+                            code = HTTP_ERROR_UNAUTHORIZED_REQUEST,
+                            message = apiResponse.message
                         )
                     } else {
                         val parsedResponse = gson.fromJson(gson.toJson(apiResponse), domainType)
@@ -45,8 +62,8 @@ open class BaseRemoteDataSource @Inject constructor(
                     }
                 } else {
                     Resource.Failure(
-                            failureStatus = FailureStatus.API_FAIL,
-                            message = apiResponse.message
+                        failureStatus = FailureStatus.API_FAIL,
+                        message = apiResponse.message
                     )
                 }
             } else if (apiResponse is ChatBaseResponse<*>) {
@@ -55,8 +72,96 @@ open class BaseRemoteDataSource @Inject constructor(
                     Resource.Success(parsedResponse)
                 } else {
                     Resource.Failure(
-                            failureStatus = FailureStatus.API_FAIL,
-                            message = apiResponse.message
+                        failureStatus = FailureStatus.API_FAIL,
+                        message = apiResponse.message
+                    )
+                }
+            } else if(apiResponse is BaseUserOnboardingResponse<*>){
+                val isSuccess = when (val extractedStatusCode = apiResponse.statusCode) {
+                    is String -> {
+                        extractedStatusCode.toInt() == HTTP_RESPONSE_OK ||
+                                extractedStatusCode.toInt() == HTTP_RESPONSE_RESOURCE_CREATED
+                    }
+                    else -> {
+                        false
+                    }
+                }
+                if (apiResponse.statusCode == HTTP_RESPONSE_RESOURCE_CREATED.toString() ||
+                    apiResponse.statusCode == HTTP_RESPONSE_OK.toString() || isSuccess
+                ) {
+                    val parsedResponse = gson.fromJson(gson.toJson(apiResponse.result), domainType)
+                    Resource.Success(parsedResponse)
+                } else if(apiResponse.statusCode == HTTP_RESOURCE_NOT_FOUND.toString()){
+                    Resource.Failure(
+                        failureStatus = FailureStatus.OTHER,
+                        code = HTTP_RESOURCE_NOT_FOUND,
+                        message = apiResponse.message
+                    )
+                } else {
+                    Resource.Failure(
+                        failureStatus = FailureStatus.API_FAIL,
+                        code = HTTP_ERROR_UNAUTHORIZED_REQUEST,
+                        message = apiResponse.message
+                    )
+                }
+            }else if ((apiResponse is StateListResponse)) {
+                if (apiResponse.status == HTTP_RESPONSE_OK) {
+                    val parsedResponse = gson.fromJson(gson.toJson(apiResponse), domainType)
+                    Resource.Success(parsedResponse)
+                } else {
+                    Resource.Failure(
+                        failureStatus = FailureStatus.API_FAIL,
+                        message = apiResponse.message
+                    )
+                }
+            }else if ((apiResponse is DistrictListResponse)) {
+                if (apiResponse.status == HTTP_RESPONSE_OK.toString()) {
+                    val parsedResponse = gson.fromJson(gson.toJson(apiResponse), domainType)
+                    Resource.Success(parsedResponse)
+                } else {
+                    Resource.Failure(
+                        failureStatus = FailureStatus.API_FAIL,
+                        message = apiResponse.message
+                    )
+                }
+            }else if ((apiResponse is SubDistrictListResponse)) {
+                if (apiResponse.status == HTTP_RESPONSE_OK.toString()) {
+                    val parsedResponse = gson.fromJson(gson.toJson(apiResponse), domainType)
+                    Resource.Success(parsedResponse)
+                } else {
+                    Resource.Failure(
+                        failureStatus = FailureStatus.API_FAIL,
+                        message = apiResponse.message
+                    )
+                }
+            }else if ((apiResponse is VillageListResponse)) {
+                if (apiResponse.status == HTTP_RESPONSE_OK.toString()) {
+                    val parsedResponse = gson.fromJson(gson.toJson(apiResponse), domainType)
+                    Resource.Success(parsedResponse)
+                } else {
+                    Resource.Failure(
+                        failureStatus = FailureStatus.API_FAIL,
+                        message = apiResponse.message
+                    )
+                }
+            } else if ((apiResponse is ReferralResponse)) {
+                if (apiResponse.status == HTTP_RESPONSE_OK) {
+                    val parsedResponse = gson.fromJson(gson.toJson(apiResponse), domainType)
+                    Resource.Success(parsedResponse)
+                } else {
+                    Resource.Failure(
+                        failureStatus = FailureStatus.OTHER,
+                        message = apiResponse.message
+                    )
+                }
+            } else if(apiResponse is TermsAndConditionsResponse){
+                if (apiResponse.success) {
+                    val parsedResponse = gson.fromJson(gson.toJson(apiResponse), domainType)
+                    Resource.Success(parsedResponse)
+                } else {
+                    Resource.Failure(
+                        failureStatus = FailureStatus.API_FAIL,
+                        message = apiResponse.message
                     )
                 }
             } else {
@@ -70,44 +175,44 @@ open class BaseRemoteDataSource @Inject constructor(
                     when {
                         throwable.code() == HTTP_ERROR_UNABLE_TO_PROCESS_REQUEST -> {
                             val jsonErrorObject =
-                                    JSONObject(throwable.response()?.errorBody()?.string() ?: "")
+                                JSONObject(throwable.response()?.errorBody()?.string() ?: "")
                             val apiResponse = jsonErrorObject.toString()
 
                             return Resource.Failure(
-                                    FailureStatus.API_FAIL,
-                                    throwable.code(),
-                                    apiResponse
+                                FailureStatus.API_FAIL,
+                                throwable.code(),
+                                apiResponse
                             )
                         }
                         throwable.code() == HTTP_ERROR_UNAUTHORIZED_REQUEST -> {
                             val jsonErrorObject =
-                                    JSONObject(throwable.response()?.errorBody()?.string() ?: "")
+                                JSONObject(throwable.response()?.errorBody()?.string() ?: "")
                             val apiResponse = jsonErrorObject.toString()
 
                             return Resource.Failure(
-                                    FailureStatus.API_FAIL,
-                                    throwable.code(),
-                                    apiResponse
+                                FailureStatus.API_FAIL,
+                                throwable.code(),
+                                apiResponse
                             )
                         }
                         else -> {
                             return if (throwable.response()?.errorBody()!!.charStream().readText()
-                                            .isEmpty()
+                                    .isEmpty()
                             ) {
                                 Resource.Failure(FailureStatus.API_FAIL, throwable.code())
                             } else {
                                 try {
                                     val jsonErrorObject =
-                                            JSONObject(
-                                                    throwable.response()?.errorBody()?.string()
-                                                            ?: ""
-                                            )
+                                        JSONObject(
+                                            throwable.response()?.errorBody()?.string()
+                                                ?: ""
+                                        )
                                     val apiResponse = jsonErrorObject.toString()
 
                                     Resource.Failure(
-                                            FailureStatus.API_FAIL,
-                                            throwable.code(),
-                                            apiResponse
+                                        FailureStatus.API_FAIL,
+                                        throwable.code(),
+                                        apiResponse
                                     )
                                 } catch (ex: Throwable) {
                                     Resource.Failure(FailureStatus.API_FAIL, throwable.code())
@@ -127,9 +232,9 @@ open class BaseRemoteDataSource @Inject constructor(
 
                 is IOException -> {
                     return Resource.Failure(
-                            FailureStatus.API_FAIL,
-                            HTTP_ERROR_UNABLE_TO_PROCESS_REQUEST,
-                            throwable.message
+                        FailureStatus.API_FAIL,
+                        HTTP_ERROR_UNABLE_TO_PROCESS_REQUEST,
+                        throwable.message
                     )
                 }
 
@@ -150,34 +255,101 @@ open class BaseRemoteDataSource @Inject constructor(
                 if (apiResponse.isSuccess) {
                     if (apiResponse.isAccessDenied) {
                         Resource.Failure(
-                                failureStatus = FailureStatus.ACCESS_DENIED,
-                                message = apiResponse.message
+                            failureStatus = FailureStatus.ACCESS_DENIED,
+                            message = apiResponse.message
+                        )
+                    } else if (apiResponse.isUserOnboarded.not()){
+                        appPreferences.isUserOnboarded = false
+                        if(apiResponse.userId.isNotEmpty()){
+                            appPreferences.userId = apiResponse.userId.toInt()
+                            appPreferences.customerId = apiResponse.customerId
+                        }
+                        Resource.Failure(
+                            failureStatus = FailureStatus.INCOMPLETE_ONBOARDING,
+                            code = HTTP_ERROR_UNAUTHORIZED_REQUEST,
+                            message = apiResponse.message
                         )
                     } else if (apiResponse.isUserApproved.not()) {
                         appPreferences.isUserApproved = false
                         Resource.Failure(
-                                failureStatus = FailureStatus.USER_UNAPPROVED,
-                                message = apiResponse.message
+                            failureStatus = FailureStatus.USER_UNAPPROVED,
+                            code = HTTP_ERROR_UNAUTHORIZED_REQUEST,
+                            message = apiResponse.message
                         )
                     } else {
                         Resource.Success(apiResponse)
+                    }
+                } else if ((apiResponse is StateListResponse)) {
+                    if (apiResponse.status == HTTP_RESPONSE_OK) {
+                        Resource.Success(apiResponse)
+                    } else {
+                        Resource.Failure(
+                            failureStatus = FailureStatus.API_FAIL,
+                            message = apiResponse.message
+                        )
+                    }
+                } else if ((apiResponse is DistrictListResponse)) {
+                    if (apiResponse.status == HTTP_RESPONSE_OK.toString()) {
+                        Resource.Success(apiResponse)
+                    } else {
+                        Resource.Failure(
+                            failureStatus = FailureStatus.API_FAIL,
+                            message = apiResponse.message
+                        )
+                    }
+                } else if ((apiResponse is SubDistrictListResponse)) {
+                    if (apiResponse.status == HTTP_RESPONSE_OK.toString()) {
+                        Resource.Success(apiResponse)
+                    } else {
+                        Resource.Failure(
+                            failureStatus = FailureStatus.API_FAIL,
+                            message = apiResponse.message
+                        )
+                    }
+                } else if ((apiResponse is VillageListResponse)) {
+                    if (apiResponse.status == HTTP_RESPONSE_OK.toString()) {
+                        Resource.Success(apiResponse)
+                    } else {
+                        Resource.Failure(
+                            failureStatus = FailureStatus.API_FAIL,
+                            message = apiResponse.message
+                        )
                     }
                 } else if (apiResponse is ChatBaseResponse<*>) {
                     if (apiResponse.success) {
                         Resource.Success(apiResponse)
                     } else {
                         Resource.Failure(
-                                failureStatus = FailureStatus.API_FAIL,
-                                message = apiResponse.message
+                            failureStatus = FailureStatus.API_FAIL,
+                            message = apiResponse.message
                         )
                     }
                 } else {
                     Resource.Failure(
-                            failureStatus = FailureStatus.API_FAIL,
-                            message = apiResponse.message
+                        failureStatus = FailureStatus.API_FAIL,
+                        message = apiResponse.message
                     )
                 }
-            } else {
+            } else if (apiResponse is BaseOtpSignUpResponse<*>) {
+                if (apiResponse.statusCode == HTTP_RESPONSE_OK.toString()) {
+                    Resource.Success(apiResponse)
+                } else {
+                    Resource.Failure(
+                        failureStatus = FailureStatus.API_FAIL,
+                        message = apiResponse.message,
+                        code = apiResponse.statusCode.toInt()
+                    )
+                }
+            } else if(apiResponse is TermsAndConditionsResponse){
+                if (apiResponse.success) {
+                    Resource.Success(apiResponse)
+                } else {
+                    Resource.Failure(
+                        failureStatus = FailureStatus.API_FAIL,
+                        message = apiResponse.message
+                    )
+                }
+            }  else {
                 Resource.Success(apiResponse)
             }
 
@@ -187,44 +359,44 @@ open class BaseRemoteDataSource @Inject constructor(
                     when {
                         throwable.code() == HTTP_ERROR_UNABLE_TO_PROCESS_REQUEST -> {
                             val jsonErrorObject =
-                                    JSONObject(throwable.response()?.errorBody()?.string() ?: "")
+                                JSONObject(throwable.response()?.errorBody()?.string() ?: "")
                             val apiResponse = jsonErrorObject.toString()
 
                             return Resource.Failure(
-                                    FailureStatus.API_FAIL,
-                                    throwable.code(),
-                                    apiResponse
+                                FailureStatus.API_FAIL,
+                                throwable.code(),
+                                apiResponse
                             )
                         }
                         throwable.code() == HTTP_ERROR_UNAUTHORIZED_REQUEST -> {
                             val jsonErrorObject =
-                                    JSONObject(throwable.response()?.errorBody()?.string() ?: "")
+                                JSONObject(throwable.response()?.errorBody()?.string() ?: "")
                             val apiResponse = jsonErrorObject.toString()
 
                             return Resource.Failure(
-                                    FailureStatus.API_FAIL,
-                                    throwable.code(),
-                                    apiResponse
+                                FailureStatus.API_FAIL,
+                                throwable.code(),
+                                apiResponse
                             )
                         }
                         else -> {
                             return if (throwable.response()?.errorBody()!!.charStream().readText()
-                                            .isEmpty()
+                                    .isEmpty()
                             ) {
                                 Resource.Failure(FailureStatus.API_FAIL, throwable.code())
                             } else {
                                 try {
                                     val jsonErrorObject =
-                                            JSONObject(
-                                                    throwable.response()?.errorBody()?.string()
-                                                            ?: ""
-                                            )
+                                        JSONObject(
+                                            throwable.response()?.errorBody()?.string()
+                                                ?: ""
+                                        )
                                     val apiResponse = jsonErrorObject.toString()
 
                                     Resource.Failure(
-                                            FailureStatus.API_FAIL,
-                                            throwable.code(),
-                                            apiResponse
+                                        FailureStatus.API_FAIL,
+                                        throwable.code(),
+                                        apiResponse
                                     )
                                 } catch (ex: Throwable) {
                                     Resource.Failure(FailureStatus.API_FAIL, throwable.code())
@@ -244,9 +416,9 @@ open class BaseRemoteDataSource @Inject constructor(
 
                 is IOException -> {
                     return Resource.Failure(
-                            FailureStatus.API_FAIL,
-                            HTTP_ERROR_UNABLE_TO_PROCESS_REQUEST,
-                            throwable.message
+                        FailureStatus.API_FAIL,
+                        HTTP_ERROR_UNABLE_TO_PROCESS_REQUEST,
+                        throwable.message
                     )
                 }
 

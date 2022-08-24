@@ -10,22 +10,21 @@ import com.webkul.mobikul.odoo.model.generic.StateData;
 
 import java.util.ArrayList;
 
-public class StateListResponse extends BaseResponse{
+public class StateListResponse{
 
     private static final String TAG = "StateListResponse";
 
     @SerializedName(AddressAPIConstants.STATUS)
     @Expose
-    public String status;
+    public Integer status;
 
     @SerializedName(AddressAPIConstants.DATA)
     @Expose
     public ArrayList<StateData> data;
 
-    public StateListResponse(Parcel in, ArrayList<StateData> data) {
-        super(in);
-        this.data = data;
-    }
+    @SerializedName("message")
+    @Expose
+    public String message;
 
     public static String getTAG() {
         return TAG;
@@ -37,9 +36,5 @@ public class StateListResponse extends BaseResponse{
 
     public void setResult(ArrayList<StateData> result) {
         this.data = result;
-    }
-
-    protected StateListResponse(Parcel in) {
-        super(in);
     }
 }

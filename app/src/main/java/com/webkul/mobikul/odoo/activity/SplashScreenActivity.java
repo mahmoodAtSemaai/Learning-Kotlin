@@ -339,14 +339,11 @@ public class SplashScreenActivity extends BaseActivity {
                     @Override
                     public void onNext(@androidx.annotation.NonNull SplashScreenResponse splashScreenResponse) {
                         super.onNext(splashScreenResponse);
-                        if (!splashScreenResponse.isUserApproved()) {
-                            AppSharedPref.setUserIsApproved(SplashScreenActivity.this,splashScreenResponse.isUserApproved());
-                            // user not approved => redirect to user unapproved screen
-                            IntentHelper.goToUserUnapprovedScreen(SplashScreenActivity.this);
-                            finish();
-                        } else {
-                            // approved => continue as usual
+                        splashScreenResponse.updateSharedPref(SplashScreenActivity.this);
+                        if(splashScreenResponse.isUserOnboarded()){
                             initHomeScreenAPI(splashScreenResponse);
+                        }else{
+                            IntentHelper.goToUserOnboardingScreen(SplashScreenActivity.this);
                         }
                     }
 

@@ -14,7 +14,7 @@ import com.webkul.mobikul.odoo.model.generic.VillageData;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VillageListResponse extends BaseResponse{
+public class VillageListResponse {
 
     private static final String TAG = "SubDistrictListResponse";
 
@@ -26,15 +26,9 @@ public class VillageListResponse extends BaseResponse{
     @Expose
     public ArrayList<VillageData> data;
 
-    protected VillageListResponse(Parcel in) {
-        super(in);
-    }
-
-    public VillageListResponse(Parcel in, String status, ArrayList<VillageData> data) {
-        super(in);
-        this.status = status;
-        this.data = data;
-    }
+    @SerializedName(AddressAPIConstants.MESSAGE)
+    @Expose
+    public String message;
 
     public static String getTAG() {
         return TAG;
