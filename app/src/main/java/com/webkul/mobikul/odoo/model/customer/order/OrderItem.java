@@ -45,6 +45,9 @@ public class OrderItem {
     @SerializedName("templateId")
     @Expose
     private String templateId;
+    @SerializedName("lineId")
+    @Expose
+    private String lineId;
     @SerializedName("qty")
     @Expose
     private Double qty;

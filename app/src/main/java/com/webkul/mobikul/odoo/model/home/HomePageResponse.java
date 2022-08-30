@@ -49,6 +49,10 @@ public class HomePageResponse extends LoginResponse implements Parcelable {
     @SerializedName("allLanguages")
     @Expose
     private List<List<String>> allLanguages = new ArrayList<>();
+    @SerializedName("cart_count")
+    @Expose
+    private int newCartCount = 0;
+
 
     private HashMap<String, String> languageMap = null;
 
@@ -121,5 +125,13 @@ public class HomePageResponse extends LoginResponse implements Parcelable {
             languageMap.put(list.get(0), list.get(1));
         }
         return languageMap;
+    }
+
+    public int getNewCartCount() {
+        return newCartCount;
+    }
+
+    public void setNewCartCount(int newCartCount) {
+        this.newCartCount = newCartCount;
     }
 }

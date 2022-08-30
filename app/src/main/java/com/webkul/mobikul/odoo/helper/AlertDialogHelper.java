@@ -111,6 +111,13 @@ public class AlertDialogHelper {
                 .setConfirmClickListener(Dialog::dismiss).show();
     }
 
+    public static void showDefaultSuccessOneLinerDialog(Context context,String title, String message) {
+        new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
+                .setTitleText(title)
+                .setContentText(message)
+                .setConfirmClickListener(Dialog::dismiss).show();
+    }
+
     public static void showDefaultErrorOneLinerDialog(Context context, String message) {
         new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
                 .setTitleText(message)

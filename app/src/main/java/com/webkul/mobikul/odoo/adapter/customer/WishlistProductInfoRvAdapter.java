@@ -1,48 +1,30 @@
 package com.webkul.mobikul.odoo.adapter.customer;
 
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.text.method.CharacterPickerDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.webkul.mobikul.odoo.R;
+import com.webkul.mobikul.odoo.data.response.models.WishListData;
 import com.webkul.mobikul.odoo.databinding.ItemWishlistProductInfoBinding;
 import com.webkul.mobikul.odoo.handler.customer.WishlistProductInfoItemHandler;
-import com.webkul.mobikul.odoo.model.customer.wishlist.WishListData;
 
 import java.util.List;
 
-/**
-
- * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
- * @author Webkul <support@webkul.com>
-
- * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
- * @license https://store.webkul.com/license.html ASL Licence
-
- * @link https://store.webkul.com/license.html
-
- */
 public class WishlistProductInfoRvAdapter extends RecyclerView.Adapter<WishlistProductInfoRvAdapter.Holder> {
 
     private Context mContext;
     private List<WishListData> mWishLists;
-    public  WishListInterface wishListInterface;
+    public WishListInterface wishListInterface;
 
-    public WishlistProductInfoRvAdapter(Context context, List<WishListData> wishLists , WishListInterface wishListInterface) {
+    public WishlistProductInfoRvAdapter(Context context, List<WishListData> wishLists, WishListInterface wishListInterface) {
         mContext = context;
         mWishLists = wishLists;
-        this.wishListInterface=wishListInterface;
+        this.wishListInterface = wishListInterface;
     }
 
     @Override
@@ -54,32 +36,23 @@ public class WishlistProductInfoRvAdapter extends RecyclerView.Adapter<WishlistP
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        holder.mBinding.setData(mWishLists.get(position));
-        WishlistProductInfoItemHandler handler = new  WishlistProductInfoItemHandler(mContext, mWishLists.get(position));
-        holder.mBinding.setHandler(handler);
-
-        holder.mBinding.deleteIcon.setOnClickListener(new View.OnClickListener() {
+        holder.binding.setData(mWishLists.get(position));
+        WishlistProductInfoItemHandler handler = new WishlistProductInfoItemHandler(mContext, mWishLists.get(position));
+        holder.binding.setHandler(handler);
+        holder.binding.deleteIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 wishListInterface.onDeleteProduct(holder.getAdapterPosition());
             }
         });
 
-        holder.mBinding.addProductToBagBtn.setOnClickListener(new View.OnClickListener() {
+        holder.binding.addProductToBagBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                wishListInterface.addProductToBag(holder.getAdapterPosition());
+                wishListInterface.addProductToCart(holder.getAdapterPosition());
             }
         });
-
-
-        holder.mBinding.addProductToBagBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                wishListInterface.addProductToBag(holder.getAdapterPosition());
-            }
-        });
-        holder.mBinding.executePendingBindings();
+        holder.binding.executePendingBindings();
     }
 
     @Override
@@ -89,17 +62,17 @@ public class WishlistProductInfoRvAdapter extends RecyclerView.Adapter<WishlistP
 
 
     class Holder extends RecyclerView.ViewHolder {
-        private final ItemWishlistProductInfoBinding mBinding;
+        private final ItemWishlistProductInfoBinding binding;
 
         Holder(View v) {
             super(v);
-            mBinding = DataBindingUtil.bind(itemView);
+            binding = DataBindingUtil.bind(itemView);
         }
     }
 
-   public interface WishListInterface {
-       void onDeleteProduct(Integer pos);
+    public interface WishListInterface {
+        void onDeleteProduct(Integer pos);
 
-       void addProductToBag(Integer pos);
+        void addProductToCart(Integer pos);
     }
 }

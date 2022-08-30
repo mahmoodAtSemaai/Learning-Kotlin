@@ -65,6 +65,8 @@ class AppPreferences @Inject constructor(private val context: Context) {
         private const val KEY_CUSTOMER_PROFILE_IMAGE = "CUSTOMER_PROFILE_IMAGE"
         private const val KEY_CUSTOMER_BANNER_IMAGE = "CUSTOMER_BANNER_IMAGE"
 
+        private const val KEY_NEW_CART = "NEW_CART_COUNT"
+
         private const val KEY_USER_ID = "USER_ID"
         private const val KEY_CUSTOMER_GROUP_NAME = "CUSTOMER_GROUP_NAME"
         private const val KEY_GROUP_NAME = "GROUP_NAME"
@@ -386,6 +388,14 @@ class AppPreferences @Inject constructor(private val context: Context) {
         }
         set(value) = customerPreferences.edit {
             it.putBoolean(KEY_IS_FCM_TOKEN_SYNCED, value)
+        }
+
+    var newCartCount : Int
+        get(){
+            return customerPreferences.getInt(KEY_NEW_CART, 0)
+        }
+        set(value) = customerPreferences.edit{
+            it.putInt(KEY_NEW_CART, value)
         }
 
     fun clearCustomerData() {

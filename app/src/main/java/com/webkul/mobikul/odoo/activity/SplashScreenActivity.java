@@ -373,6 +373,7 @@ public class SplashScreenActivity extends BaseActivity {
                         }
                         if (homePageResponse.isSuccess()) {
                             new SaveData(SplashScreenActivity.this, homePageResponse);
+                            AppSharedPref.setNewCartCount(SplashScreenActivity.this, homePageResponse.getNewCartCount());
                             Intent intent = new Intent(SplashScreenActivity.this, NewHomeActivity.class);
                             intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
                             startActivity(intent);

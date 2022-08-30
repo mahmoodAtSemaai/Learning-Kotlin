@@ -132,7 +132,9 @@
 
                 </androidx.viewpager2.widget.ViewPager2>
 
+
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

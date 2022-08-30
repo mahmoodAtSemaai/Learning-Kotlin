@@ -12,7 +12,7 @@ interface UserDetailsServices {
     @PUT(ApiInterface.USER_DETAILS)
     suspend fun setUserDetails(
         @Path(ApiInterface.USER_ID) userId: String,
-        @Path(ApiInterface.PARTNER_ID) partnerId: String,
+        @Path(ApiInterface.CUSTOMER_ID) customerId: String,
         @Body userDetailsRequest: String
     ): BaseUserOnboardingResponse<UserDetailsEntity>
 

@@ -45,6 +45,7 @@
     <string name="please_wait">Please wait…</string>
     <string name="press_back_to_exit">Press Back again to Exit</string>
     <string name="cart_ninety_nine_plus">99+</string>
+    <string name="cart_nine_plus" translatable="false">9+</string>
     <!---->
     <!--DRAWER-->
     <string name="drawer_open">Open navigation drawer</string>
@@ -194,7 +195,7 @@
     <string name="try_different_category_or_search_keyword_maybe">Try different category or search keyword maybe … ?</string>
     <string name="empty_notification">You don\'t have any notification !</string>
     <string name="visit_later_to_check_your_notification">Visit later to check your notifications</string>
-    <string name="empty_bag">Your bag is empty !!!</string>
+    <string name="empty_bag">Your bag is empty</string>
     <string name="add_item_to_your_bag_now">Add item to your bag now</string>
     <string name="start_shopping">Start Shopping</string>
     <string name="congrats">Congrats…</string>
@@ -220,7 +221,7 @@
     <string name="orders_order_details">ORDER DETAILS</string>
     <string name="tax">Tax</string>
     <string name="taxes">Taxes</string>
-    <string name="subtotal">Subtotal</string>
+    <string name="subtotal">Sub-total</string>
     <string name="grand_total">Grand Total</string>
     <string name="placed_on_Xdate">Placed on %s</string>
     <string name="state_x">State: %s</string>
@@ -231,6 +232,7 @@
     <string name="price_total_x">Total Price: \n%s</string>
     <string name="order_noX">Order #%s</string>
     <string name="rp_x">Rp%s</string>
+    <string name="rp">Rp</string>
     <string name="placing_your_order">Placing your order</string>
     <!---->
     <!---->
@@ -352,6 +354,18 @@
     <string name="proceed_to_checkout">Proceed To Checkout</string>
     <string name="unit_price">Unit Price</string>
     <string name="updating_bag">Updating bag…</string>
+    <string name="plus_favorite">+ Favorite</string>
+    <string name="already_favorite">Already Favorite</string>
+    <string name="select_all">Select All</string>
+    <string name="remove_product">Remove product?</string>
+    <string name="remove_product_description">The product you selected will be removed from the cart</string>
+    <string name="please_choose_product">Please choose products</string>
+    <string name="removing_cart_items">Removing cart items</string>
+    <string name="adding_item_to_wish_list">Adding item to wishlist</string>
+    <string name="quantity_zero" translatable="false">0</string>
+    <string name="fetching_cart_items">Fetching cart items</string>
+    <string name="price_zero">0.00</string>
+    <string name="start_shopping_2">Start Shopping</string>
     <!---->
     <!---->
     <!--CHECKOUT PAGE-->

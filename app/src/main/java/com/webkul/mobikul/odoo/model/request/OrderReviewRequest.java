@@ -3,6 +3,8 @@ package com.webkul.mobikul.odoo.model.request;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * Created by shubham.agarwal on 26/5/17.
  */
@@ -19,17 +21,20 @@ public class OrderReviewRequest {
     private final String KEY_SHIPPING_ID = "shippingId";
     @SuppressWarnings("FieldCanBeLocal")
     private final String KEY_USE_POINTS = "use_points";
+    private final String KEY_LINE_IDS = "lineIds";
     private final String shippingAddressId;
     private final String paymentAcquirerId;
     private String shippingMethodId;
     private Boolean usePoints;
+    private ArrayList<Integer> lineIds;
 
 
-    public OrderReviewRequest(String shippingAddressId, String shippingMethodId, String acquirerId, Boolean usePoints) {
+    public OrderReviewRequest(String shippingAddressId, String shippingMethodId, String acquirerId, Boolean usePoints, ArrayList<Integer> lineIds) {
         this.shippingAddressId = shippingAddressId;
         this.shippingMethodId = shippingMethodId;
         this.paymentAcquirerId = acquirerId;
         this.usePoints = usePoints;
+        this.lineIds = lineIds;
     }
 
     @Override
@@ -42,6 +47,7 @@ public class OrderReviewRequest {
                 jsonObject.put(KEY_SHIPPING_ID, shippingMethodId);
             }
             jsonObject.put(KEY_USE_POINTS, usePoints);
+            jsonObject.put(KEY_LINE_IDS, lineIds.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import
+            alias="View"
+            type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.data.entity.SellerEntity" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_seller_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_12"
+        android:background="@color/white"
+        app:cardCornerRadius="@dimen/size_8"
+        app:cardElevation="@dimen/size_8">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_seller_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/cb_seller_selection"
+                android:layout_width="@dimen/size_20"
+                android:layout_height="@dimen/size_20"
+                android:layout_marginStart="@dimen/margin_12"
+                android:layout_marginLeft="@dimen/margin_12"
+                android:background="@drawable/bg_custom_checkbox"
+                android:buttonTint="@color/transparent"
+                android:checked="false"
+                android:clickable="true"
+                android:focusable="true"
+                app:checkedIfTrue="@{data.isSellerChecked}"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_seller_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_seller_name"
+                tools:ignore="UnusedAttribute" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_seller_name"
+                style="@style/Semaai.TextAppearance.Subtitle2.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_8"
+                android:layout_marginTop="@dimen/margin_12"
+                android:text="@{data.sellerName}"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintEnd_toStartOf="@+id/iv_go_to_seller_page"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/cb_seller_selection"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Kharisma Eka Putra - Agri Pintar " />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_go_to_seller_page"
+                android:layout_width="@dimen/size_20"
+                android:layout_height="@dimen/size_20"
+                android:layout_marginEnd="@dimen/margin_12"
+                android:layout_marginRight="@dimen/margin_12"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/cb_seller_selection"
+                app:srcCompat="@drawable/ic_arrow_right_primary" />
+
+            <View
+                android:id="@+id/div_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_1"
+                android:layout_marginTop="@dimen/margin_12"
+                android:alpha="0.5"
+                android:background="@color/colorDarkGrey"
+                app:layout_constraintTop_toBottomOf="@id/tv_seller_name" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_products"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@+id/div_horizontal"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_cart" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

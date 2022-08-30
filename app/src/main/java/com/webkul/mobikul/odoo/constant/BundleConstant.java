@@ -121,6 +121,7 @@ public interface BundleConstant {
     String BUNDLE_KEY_ORDER_AMOUNT = "ORDER_AMOUNT";
     String BUNDLE_PAYMENT_VIRTUAL_ACCOUNT_TRANSACTION_INFO_1 = "PAYMENT_VIRTUAL_ACCOUNT_1";
     String BUNDLE_PAYMENT_VIRTUAL_ACCOUNT_TRANSACTION_INFO_2 = "PAYMENT_VIRTUAL_ACCOUNT_2";
+    String BUNDLE_KEY_LINE_IDS = "LINE_IDS";
 
     String BUNDLE_KEY_INCREMENT_ID = "incrementId";
     String BUNDLE_KEY_CAN_REORDER = "canReorder";
@@ -179,6 +180,8 @@ public interface BundleConstant {
 
     //For YOUTUBE VIDEO
     String BUNDLE_VIDEO_URL = "video_url";
+
+    String BUNDLE_KEY_IS_POINTS_USED = "USE_POINTS";
 
 
     //For Marketplace

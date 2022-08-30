@@ -10,7 +10,7 @@ import retrofit2.http.Path
 interface UserLocationServices {
     @PUT(ApiInterface.USER_ADDRESS)
     suspend fun setUserLocation(
-        @Path(ApiInterface.PARTNER_ID) partnerId: String,
+        @Path(ApiInterface.CUSTOMER_ID) customerId: String,
         @Body userLocationRequest: String
     ): BaseUserOnboardingResponse<UserLocationEntity>
 }

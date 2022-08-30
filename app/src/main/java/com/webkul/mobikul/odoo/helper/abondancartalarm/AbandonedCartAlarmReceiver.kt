@@ -24,12 +24,11 @@ import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.webkul.mobikul.odoo.R
-import com.webkul.mobikul.odoo.activity.BagActivity
-import com.webkul.mobikul.odoo.activity.BaseActivity
-import com.webkul.mobikul.odoo.activity.HomeActivity
+import com.webkul.mobikul.odoo.activity.NewHomeActivity
 import com.webkul.mobikul.odoo.constant.ApplicationConstant
 import com.webkul.mobikul.odoo.constant.ApplicationConstant.NOTIFICATION_CHANNEL_ABANDONED_CART
-import com.webkul.mobikul.odoo.helper.LocaleHelper.updateConfig
+import com.webkul.mobikul.odoo.helper.AppSharedPref
+import com.webkul.mobikul.odoo.ui.cart.NewCartActivity
 
 
 class AbandonedCartAlarmReceiver : BroadcastReceiver() {
@@ -41,9 +40,11 @@ class AbandonedCartAlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         try {
 //            BaseActivity.setLocale(context,false)
-            val cartIntent = Intent(context, BagActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            cartIntent.putExtra(ApplicationConstant.BUNDLE_KEY_OPEN_CART, true)
+            val cartId = AppSharedPref.getCartId(context);
+            //TODO: @Mahmood look into it. Unsure about cartIntent redirecting to NewHomeActivity
+            val cartIntent: Intent = Intent(context, NewHomeActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
 
             val pendingIntent = PendingIntent.getActivity(context, 0 /* Request code */, cartIntent, PendingIntent.FLAG_ONE_SHOT)
 

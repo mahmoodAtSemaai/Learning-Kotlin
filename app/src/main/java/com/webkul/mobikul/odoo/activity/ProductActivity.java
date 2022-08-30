@@ -541,21 +541,9 @@ public class ProductActivity extends BaseActivity {
         returnedWithResult = true;
         switch (requestCode) {
             case RC_ADD_TO_CART:
-
-                switch (resultCode) {
-                    case RESULT_OK:
-                        mBinding.getHandler().addToCart(false);
-                        break;
-                }
                 break;
 
             case RC_BUY_NOW:
-
-                switch (resultCode) {
-                    case RESULT_OK:
-                        mBinding.getHandler().addToCart(true);
-                        break;
-                }
                 break;
             case MaterialSearchView.RC_CAMERA_SEARCH:
                 switch (resultCode) {

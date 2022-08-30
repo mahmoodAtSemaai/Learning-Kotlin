@@ -88,7 +88,8 @@
     <color name="background_orange">#E16E03</color>
     <color name="black">#000</color>
     <color name="background_appbar_color">#FFD8B8</color>
-    
+    <color name="background_appbar_color_alpha_50">#90FFD8B8</color>
+
     <color name="green_2A4332">#2A4332</color>
 
     <color name="text_orange">#E16E03</color>

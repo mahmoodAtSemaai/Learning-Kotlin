@@ -1,17 +1,19 @@
 package com.webkul.mobikul.odoo.connection;
 
+import com.webkul.mobikul.odoo.data.response.models.CartProductsResponse;
 import com.webkul.mobikul.odoo.model.BaseResponse;
 import com.webkul.mobikul.odoo.model.ReferralResponse;
 import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
 import com.webkul.mobikul.odoo.model.cart.BagResponse;
 import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse;
+import com.webkul.mobikul.odoo.model.checkout.ActiveShippingMethod;
 import com.webkul.mobikul.odoo.model.checkout.OrderDataResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatConfigResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatCreateChannelResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatHistoryResponse;
 import com.webkul.mobikul.odoo.model.checkout.OrderPlaceResponse;
-import com.webkul.mobikul.odoo.model.checkout.OrderReviewResponse;
+import com.webkul.mobikul.odoo.data.response.models.OrderReviewResponse;
 import com.webkul.mobikul.odoo.model.checkout.PaymentAcquirerResponse;
 import com.webkul.mobikul.odoo.model.checkout.ShippingMethodResponse;
 import com.webkul.mobikul.odoo.model.customer.ResetPasswordResponse;
@@ -43,13 +45,26 @@ import com.webkul.mobikul.odoo.model.payments.PaymentsAPIConstants;
 import com.webkul.mobikul.odoo.model.payments.TransferInstructionResponse;
 import com.webkul.mobikul.odoo.model.product.AddToCartResponse;
 import com.webkul.mobikul.odoo.model.product.ProductReviewResponse;
+import com.webkul.mobikul.odoo.data.response.models.CartBaseResponse;
+import com.webkul.mobikul.odoo.data.response.models.DeleteAllCartItemResponse;
+import com.webkul.mobikul.odoo.data.response.models.DeleteCartItemResponse;
+import com.webkul.mobikul.odoo.data.response.models.GetCartId;
+import com.webkul.mobikul.odoo.data.response.models.GetCartResponse;
+import com.webkul.mobikul.odoo.data.response.models.GetDiscountPriceResponse;
+import com.webkul.mobikul.odoo.data.response.models.GetSelectedItemsPriceResponse;
+import com.webkul.mobikul.odoo.data.response.models.GetWishListResponse;
+import com.webkul.mobikul.odoo.data.response.models.UpdateCartItemResponse;
+import com.webkul.mobikul.odoo.data.response.models.WishListUpdatedResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -78,6 +93,51 @@ public interface ApiInterface {
     String LOYALTY_CHECKOUT_PLACE_ORDER = "v1/sale-orders/place";
     String MOBIKUL_CHECKOUT_SALE_ORDERS = "sale-orders";
     String MOBIKUL_CHECKOUT_SHIPPING_METHODS = "/mobikul/ShippingMethods";
+
+    //Cart APIs
+    String CART_API_VERSION = "v1";
+    String WISHLIST_API_VERSION = "v1";
+    String SEMAAI_POINTS_API_VERSION = "v1";
+    String CHECKOUT_API_VERSION = "v2";
+    String ORDER_REVIEW_DATA_API_VERSION = "v3";
+    String SHIPPING_METHODS_API_VERSION = "v1";
+
+
+    String CART_APIS_PREFIX = CART_API_VERSION + "/carts";
+    String PARTNER_ID = "partnerId";
+    String CART_ID = "cart_id";
+    String ORDER_LINES = "order-lines";
+    String LINE_ID = "lineId";
+    String ORDER_ID = "orderId";
+    String LINE_IDS = "line_ids";
+    String LINEIDS = "lineIds";
+    String SALE_ORDERS = "sale-orders";
+    String REVIEW = "review";
+    String DELIVERY_CARRIERS = "delivery-carriers";
+    String PRODUCT_WISHLIST = WISHLIST_API_VERSION + "/product-wishlists";
+
+
+    String CHECK_IF_CART_EXISTS = CART_APIS_PREFIX;
+    String CREATE_CART = CART_APIS_PREFIX;
+    String GET_CART_API = CART_APIS_PREFIX + "/{" + CART_ID + "}";
+    String ADD_TO_CART_API = CART_APIS_PREFIX + "/{" + CART_ID + "}";
+    String UPDATE_BULK_ITEM_CART_API = CART_APIS_PREFIX + "/{" + CART_ID + "}";
+    String UPDATE_CART_API = CART_APIS_PREFIX + "/{" + CART_ID + "}/" + ORDER_LINES + "/{" + LINE_ID + "}";
+    String DELETE_CART_ITEM = CART_APIS_PREFIX + "/{" + CART_ID + "}" + "/" + ORDER_LINES + "/{" + LINE_ID + "}";
+    String DELETE_ALL_CART_ITEM = CART_APIS_PREFIX + "/{" + CART_ID + "}" + "/" + ORDER_LINES;
+    String REDEEM_SEMAAI_POINTS = SEMAAI_POINTS_API_VERSION + "/redeem-history/apply";
+    String SELECTED_PRODUCTS_PRICE = CART_APIS_PREFIX + "/{" + CART_ID + "}/calculate";
+
+
+    String GET_WISHLIST_API = PRODUCT_WISHLIST;
+    String ADD_TO_WISHLIST_API = PRODUCT_WISHLIST;
+    String REMOVE_FROM_WISHLIST_API = PRODUCT_WISHLIST;
+
+
+    String GET_CHECKOUT_ITEMS_API = CHECKOUT_API_VERSION + "/" + SALE_ORDERS + "/" + "{" + ORDER_ID + "}";
+    String GET_ORDER_REVIEW_DATA_API = ORDER_REVIEW_DATA_API_VERSION + "/" + SALE_ORDERS + "/" + REVIEW;
+    String GET_SHIPPING_METHODS_API = SHIPPING_METHODS_API_VERSION + "/" + DELIVERY_CARRIERS;
+
 
     /*Customer*/
     String MOBIKUL_CUSTOMER_SIGN_IN = "mobikul/customer/login";
@@ -157,6 +217,9 @@ public interface ApiInterface {
     String LOGIN_WITH_OTP_JWT_TOKEN = "v1/user/{" + PHONE_NUMBER + "}/authenticate/otp";
     String LOGIN_WITH_JWT_TOKEN = "v1/user/{" + PHONE_NUMBER + "}/login";
 
+    //HTTP Methods
+    String DELETE = "DELETE";
+
     /*OTP BASED SIGNUP*/
     String GENERATE_SIGN_UP_OTP = "otp";
     String SIGN_UP_WITH_OTP = "users/validate-and-register";
@@ -166,9 +229,9 @@ public interface ApiInterface {
     String CUSTOMER_GROUPS = "customer-groups";
     String USER_CUSTOMER_GROUP = "users/{"+ USER_ID +"}";
     String REFERRAL = "referral_code";
-    String PARTNER_ID = "partner_id";
-    String USER_DETAILS = "users/{" + USER_ID + "}/partners/{" + PARTNER_ID + "}";
-    String USER_ADDRESS = "/addresses/{"+PARTNER_ID+"}";
+    String CUSTOMER_ID = "partner_id";
+    String USER_DETAILS = "users/{" + USER_ID + "}/partners/{" + CUSTOMER_ID + "}";
+    String USER_ADDRESS = "/addresses/{"+CUSTOMER_ID+"}";
 
      /*-----------------------------------------------------------------------------------------------------------------------------------------------------------
         CATALOG API's
@@ -320,8 +383,9 @@ public interface ApiInterface {
     @GET(LOYALTY_CHECKOUT_MY_CART)
     Observable<BagResponse> getCartData(@Query(POINTS_REDEEM) Boolean pointsRedeem);
 
+    @Deprecated
     @PUT(MOBIKUL_CHECKOUT_UPDATE_MY_CART)
-    Observable<BaseResponse> updateCart(
+    Observable<BaseResponse> updateCartV1(
             @Path("sale_order_id") int saleOrderId,
             @Path("line_id") String lineId,
             @Body String updateCartReqStr
@@ -519,4 +583,54 @@ public interface ApiInterface {
     Observable<TransferInstructionResponse> getTransferInstruction(@Path(MOBIKUL_BANK_ID) int bankId);
 
 
+    @GET(CHECK_IF_CART_EXISTS)
+    Observable<CartBaseResponse<GetCartId>> checkIfCartExists(@Query(PARTNER_ID) int partnerId);
+
+    @POST(CREATE_CART)
+    Observable<CartBaseResponse<GetCartId>> createCart(@Query(PARTNER_ID) int partnerId);
+
+    @GET(GET_CART_API)
+    Observable<CartBaseResponse<GetCartResponse>> getCartDataV1(@Path(CART_ID) int cartId);
+
+    @PUT(ADD_TO_CART_API)
+    Observable<CartBaseResponse<CartProductsResponse>> addProductToCartV1(@Path(CART_ID) int cartId, @Body String products);
+
+    @PUT(UPDATE_CART_API)
+    Observable<CartBaseResponse<UpdateCartItemResponse>> updateCartItem(@Path(CART_ID) int cartId, @Path(LINE_ID) int lineId, @Body String quantity);
+
+    @PUT(UPDATE_BULK_ITEM_CART_API)
+    Observable<CartBaseResponse<CartProductsResponse>> updateBulkCartItems(@Path(CART_ID) int cartId, @Body String products);
+
+    @PUT(DELETE_CART_ITEM)
+    Observable<CartBaseResponse<DeleteCartItemResponse>> deleteCartItem(@Path(CART_ID) int cartId, @Path(LINE_ID) int lineId, @Body String quantity);
+
+    @DELETE(DELETE_ALL_CART_ITEM)
+    Observable<CartBaseResponse<DeleteAllCartItemResponse>> deleteAllCartItem(@Path(CART_ID) int cartId);
+
+
+    @POST(ADD_TO_WISHLIST_API)
+    Observable<WishListUpdatedResponse> addItemToWishListV1(@Body String wishlistRequestBody);
+
+    @HTTP(method = DELETE, path = REMOVE_FROM_WISHLIST_API, hasBody = true)
+    Observable<WishListUpdatedResponse> removeItemFromWishListV1(@Body String wishlistRequestBody);
+
+    @GET(GET_WISHLIST_API)
+    Observable<GetWishListResponse> getWishlistV1();
+
+
+    @GET(REDEEM_SEMAAI_POINTS)
+    Observable<CartBaseResponse<GetDiscountPriceResponse>> getDiscountPrice(@Query(ORDER_ID) int orderId, @Query(value = LINEIDS, encoded = true) String list);
+
+    @GET(SELECTED_PRODUCTS_PRICE)
+    Observable<CartBaseResponse<GetSelectedItemsPriceResponse>> getSelectedItemsPrice(@Path(CART_ID) int cartId, @Query(value = LINEIDS, encoded = true) String list);
+
+
+    @GET(GET_CHECKOUT_ITEMS_API)
+    Observable<CartBaseResponse<OrderDataResponse>> getSaleOrderDataV2(@Path(ORDER_ID) int orderId, @Query(value = LINEIDS, encoded = true) String lineIds);
+
+    @POST(GET_ORDER_REVIEW_DATA_API)
+    Observable <Response<CartBaseResponse<OrderReviewResponse>>> getOrderReviewDataV3(@Body String orderReviewRequest);
+
+    @GET(GET_SHIPPING_METHODS_API)
+    Observable <CartBaseResponse<ArrayList<ActiveShippingMethod>>> getActiveShippingMethodsV2(@Query(PARTNER_ID) String partnerID);
 }

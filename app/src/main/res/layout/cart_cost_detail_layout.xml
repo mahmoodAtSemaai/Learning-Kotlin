@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_total_cost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_bottom_layout"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/cb_select_all"
+            android:layout_width="@dimen/size_24"
+            android:layout_height="@dimen/size_24"
+            android:layout_marginStart="@dimen/margin_12"
+            android:layout_marginLeft="@dimen/margin_12"
+            android:layout_marginTop="@dimen/margin_16"
+            android:background="@drawable/bg_custom_checkbox"
+            android:buttonTint="@color/transparent"
+            android:checked="false"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_select_all_product"
+            style="@style/Semaai.TextAppearance.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_12"
+            android:layout_marginLeft="@dimen/margin_12"
+            android:text="@string/select_all"
+            app:layout_constraintBottom_toBottomOf="@+id/cb_select_all"
+            app:layout_constraintStart_toEndOf="@+id/cb_select_all"
+            app:layout_constraintTop_toTopOf="@+id/cb_select_all" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_selected_product_count"
+            style="@style/Semaai.TextAppearance.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_12"
+            android:layout_marginRight="@dimen/margin_12"
+            android:text="@{`0 `.concat(@string/product)}"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_select_all_product"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_select_all_product"
+            tools:text="0 Product" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_semaai_points_logo"
+            android:layout_width="@dimen/size_24"
+            android:layout_height="@dimen/size_24"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_semaai_points_text"
+            app:layout_constraintStart_toStartOf="@+id/cb_select_all"
+            app:layout_constraintTop_toTopOf="@+id/tv_semaai_points_text"
+            app:srcCompat="@drawable/ic_semaai" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_semaai_points_text"
+            style="@style/Semaai.TextAppearance.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/semaai_points"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_semaai_points"
+            app:layout_constraintStart_toStartOf="@+id/tv_select_all_product"
+            app:layout_constraintTop_toTopOf="@+id/tv_semaai_points" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_semaai_points"
+            style="@style/Semaai.TextAppearance.Body1"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_12"
+            android:textAlignment="viewEnd"
+            app:layout_constraintBottom_toBottomOf="@+id/sc_semaai_points"
+            app:layout_constraintEnd_toStartOf="@+id/sc_semaai_points"
+            app:layout_constraintStart_toEndOf="@+id/tv_semaai_points_text"
+            app:layout_constraintTop_toTopOf="@+id/sc_semaai_points"
+            tools:text="999.999.999" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_1"
+            android:layout_marginTop="@dimen/margin_20"
+            android:background="@color/grey_bg"
+            app:layout_constraintTop_toBottomOf="@+id/tv_semaai_points" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_no_product_selected"
+            style="@style/Semaai.TextAppearance.Body1.Bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingVertical="@dimen/padding_4"
+            android:text="@string/please_choose_product"
+            android:textAlignment="center"
+            android:textColor="@color/red_alert"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/divider" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/sc_semaai_points"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16"
+            android:checked="false"
+            android:thumb="@drawable/switch_custom_thumb"
+            app:layout_constraintEnd_toEndOf="@+id/tv_selected_product_count"
+            app:layout_constraintTop_toBottomOf="@+id/tv_selected_product_count"
+            app:track="@drawable/switch_custom_track" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_vertical_50"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btn_redirect_to_checkout"
+            style="@style/custom_button_2"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_dark_gray_left_rounded_corner_8dp"
+            android:paddingHorizontal="@dimen/padding_32"
+            android:paddingVertical="@dimen/padding_12"
+            android:text="@string/checkout"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/gl_vertical_50"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_cart_total_text"
+            style="@style/Semaai.TextAppearance.Body1.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/total"
+            app:layout_constraintBottom_toTopOf="@+id/tv_cart_total"
+            app:layout_constraintStart_toStartOf="@+id/iv_semaai_points_logo"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_cart_total"
+            style="@style/Semaai.TextAppearance.Subtitle2.Bold"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_6"
+            android:text="@{@string/rp_x(@string/price_zero)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/gl_vertical_50"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/tv_cart_total_text"
+            app:layout_constraintTop_toBottomOf="@+id/tv_cart_total_text"
+            tools:text="Rp0,00" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/cpi_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_0"
+            android:indeterminate="true"
+            android:visibility="visible"
+            app:indicatorColor="@color/grey_400"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_redirect_to_checkout"
+            app:layout_constraintEnd_toEndOf="@+id/btn_redirect_to_checkout"
+            app:layout_constraintStart_toStartOf="@+id/gl_vertical_50"
+            app:layout_constraintTop_toTopOf="@+id/btn_redirect_to_checkout"
+            app:trackColor="@color/colorPrimaryDark"
+            app:trackThickness="@dimen/size_4" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,13 +1,11 @@
 package com.webkul.mobikul.odoo.fragment
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -20,6 +18,9 @@ import com.webkul.mobikul.odoo.adapter.checkout.ShippingMethodAdapter.ShippingMe
 import com.webkul.mobikul.odoo.connection.ApiConnection
 import com.webkul.mobikul.odoo.connection.CustomObserver
 import com.webkul.mobikul.odoo.constant.BundleConstant
+import com.webkul.mobikul.odoo.core.utils.HTTP_ERROR_UNAUTHORIZED_REQUEST
+import com.webkul.mobikul.odoo.core.utils.HTTP_RESPONSE_OK
+import com.webkul.mobikul.odoo.data.response.models.CartBaseResponse
 import com.webkul.mobikul.odoo.databinding.FragmentNewShippingMethodBinding
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper
 import com.webkul.mobikul.odoo.helper.AppSharedPref
@@ -75,25 +76,35 @@ class ShippingMethodFragment : Fragment(), ShippingMethodSelectionListener {
     }
 
     private fun fetchShippingMethods() {
-        ApiConnection.getActiveShippings(requireContext()).subscribeOn(Schedulers.io())
+        val userId = AppSharedPref.getCustomerId(requireContext())
+        ApiConnection.getActiveShippingMethodV2(requireContext(), userId).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(getShippingMethodResponseObserver())
     }
 
-    private fun getShippingMethodResponseObserver(): Observer<in ShippingMethodResponse?> {
-        return object : CustomObserver<ShippingMethodResponse?>(requireContext()) {
+    private fun getShippingMethodResponseObserver(): Observer<in CartBaseResponse<ArrayList<ActiveShippingMethod>>> {
+        return object : CustomObserver<CartBaseResponse<ArrayList<ActiveShippingMethod>>>(requireContext()) {
             override fun onSubscribe(d: Disposable) {
                 super.onSubscribe(d)
                 dialog.show()
             }
 
-            override fun onNext(shippingMethodResponse: ShippingMethodResponse) {
-                super.onNext(shippingMethodResponse)
-                if (shippingMethodResponse.isAccessDenied) {
+            override fun onNext(shippingMethods: CartBaseResponse<ArrayList<ActiveShippingMethod>>) {
+                super.onNext(shippingMethods)
+                if (shippingMethods.statusCode == HTTP_ERROR_UNAUTHORIZED_REQUEST) {
                     redirectToSignInSignUp()
-                } else {
-                    handleShippingMethodResponse(shippingMethodResponse)
+                } else if(shippingMethods.statusCode == HTTP_RESPONSE_OK){
+                    handleShippingMethodResponse(shippingMethods.result)
+                }else {
+                    SnackbarHelper.getSnackbar(requireActivity(), shippingMethods.message,
+                        Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show()
                 }
+            }
+
+            override fun onError(t: Throwable) {
+                super.onError(t)
+                SnackbarHelper.getSnackbar(requireActivity(), t.message,
+                    Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show()
             }
 
             override fun onComplete() {
@@ -175,10 +186,10 @@ class ShippingMethodFragment : Fragment(), ShippingMethodSelectionListener {
         }
     }
 
-    private fun handleShippingMethodResponse(shippingMethodResponse: ShippingMethodResponse) {
+    private fun handleShippingMethodResponse(shippingMethods: ArrayList<ActiveShippingMethod>) {
         binding.rvShippingMethod.adapter = ShippingMethodAdapter(
             requireContext(),
-            shippingMethodResponse.shippingMethods,
+            shippingMethods,
             shippingMethodSelectionListener!!
         )
     }
