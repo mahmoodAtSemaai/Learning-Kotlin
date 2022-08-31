@@ -78,7 +78,7 @@ class SignUpAuthViewModel @Inject constructor(
                         is Resource.Success -> SignUpAuthState.ExistingUser
                         is Resource.Failure -> SignUpAuthState.Error(
                             it.message,
-                            FailureStatus.OTHER
+                            it.failureStatus
                         )
                     }
 
