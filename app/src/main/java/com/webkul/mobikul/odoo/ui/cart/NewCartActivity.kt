@@ -12,7 +12,6 @@ import androidx.databinding.DataBindingUtil
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.activity.NewDrawerActivity
 import com.webkul.mobikul.odoo.constant.BundleConstant
-import com.webkul.mobikul.odoo.core.extension.getCompatDrawable
 import com.webkul.mobikul.odoo.core.extension.inTransaction
 import com.webkul.mobikul.odoo.databinding.ActivityNewCartBinding
 import com.webkul.mobikul.odoo.fragment.WishlistFragment
@@ -38,17 +37,18 @@ class NewCartActivity : AppCompatActivity() {
 
             if(currentFragment is WishlistFragment){
                 setToolbarTitle(getString(R.string.wishlist))
-                setIcon(this.getCompatDrawable(R.drawable.ic_cart_new))
+                //setIcon(this.getCompatDrawable(R.drawable.ic_cart_new)) //TODO: uncomment after withListIcon is fixed
                 return@addOnBackStackChangedListener
             }
             //Else for CartFragment and EmptyCart Fragment
             else {
                 setToolbarTitle(getString(R.string.bag))
-                setIcon(this.getCompatDrawable(R.drawable.ic_wishlist))
+                //setIcon(this.getCompatDrawable(R.drawable.ic_wishlist)) //TODO: uncomment after withListIcon is fixed
             }
         }
     }
 
+    //TODO: Need it after withListIcon is fixed
     private fun setIcon(compatDrawable: Drawable?) {
         binding.ivWishList.setImageDrawable(compatDrawable)
     }
@@ -56,12 +56,16 @@ class NewCartActivity : AppCompatActivity() {
 
     private fun setClickListeners() {
         binding.apply {
+            //TODO: handle click on wishlist icon later
+            /**
             ivWishList.setOnClickListener {
                 if(isWishListFragmentVisible())
                     supportFragmentManager.popBackStack()
                 else
                     setUpWishListFragment()
             }
+            **/
+
             ivDrawerCart.setOnClickListener {
                 startActivity(Intent(this@NewCartActivity, NewDrawerActivity::class.java)
                     .putExtra(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE, getHomePageResponse()))
@@ -77,7 +81,9 @@ class NewCartActivity : AppCompatActivity() {
     }
 
     private fun setUpWishListFragment() {
-        setIcon(this.getCompatDrawable(R.drawable.ic_cart_new))
+
+        //TODO: uncomment after withListIcon is fixed
+        //setIcon(this.getCompatDrawable(R.drawable.ic_cart_new))
         setToolbarTitle(getString(R.string.wishlist))
         supportFragmentManager.beginTransaction()
             .add(
@@ -88,7 +94,7 @@ class NewCartActivity : AppCompatActivity() {
     }
 
     private fun setUpCartFragment() {
-        setIcon(this.getCompatDrawable(R.drawable.ic_wishlist))
+        //setIcon(this.getCompatDrawable(R.drawable.ic_wishlist)) //TODO: uncomment after withListIcon is fixed
         setToolbarTitle(getString(R.string.bag))
         supportFragmentManager.inTransaction {
             add(R.id.fl_fragment_container_cart,
