@@ -12,13 +12,16 @@ import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import cn.pedant.SweetAlert.SweetAlertDialog
+import com.google.android.material.snackbar.Snackbar
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.adapter.product.ProductDetailsAdapterV1
 import com.webkul.mobikul.odoo.adapter.product.ProductImageAdapter
+import com.webkul.mobikul.odoo.analytics.AnalyticsImpl
 import com.webkul.mobikul.odoo.connection.ApiConnection
 import com.webkul.mobikul.odoo.connection.CustomObserver
 import com.webkul.mobikul.odoo.constant.ApplicationConstant
@@ -26,23 +29,32 @@ import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.constant.BundleConstant.*
 import com.webkul.mobikul.odoo.core.extension.makeGone
 import com.webkul.mobikul.odoo.core.extension.makeVisible
+import com.webkul.mobikul.odoo.core.utils.HTTP_ERROR_BAD_REQUEST
+import com.webkul.mobikul.odoo.core.utils.HTTP_RESOURCE_CREATED
+import com.webkul.mobikul.odoo.core.utils.HTTP_RESOURCE_NOT_FOUND
+import com.webkul.mobikul.odoo.core.utils.HTTP_RESPONSE_OK
+import com.webkul.mobikul.odoo.data.request.CartProductItemRequest
+import com.webkul.mobikul.odoo.data.request.CartProductsRequest
+import com.webkul.mobikul.odoo.data.response.models.CartProductsResponse
+import com.webkul.mobikul.odoo.data.response.models.CartBaseResponse
+import com.webkul.mobikul.odoo.data.response.models.GetCartId
 import com.webkul.mobikul.odoo.database.SaveData
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper
 import com.webkul.mobikul.odoo.databinding.ActivityProductV1Binding
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl
 import com.webkul.mobikul.odoo.handler.product.ProductActivityHandler
-import com.webkul.mobikul.odoo.helper.AlertDialogHelper
-import com.webkul.mobikul.odoo.helper.AppSharedPref
-import com.webkul.mobikul.odoo.helper.Helper
-import com.webkul.mobikul.odoo.helper.NetworkHelper
+import com.webkul.mobikul.odoo.helper.*
 import com.webkul.mobikul.odoo.model.generic.ProductData
 import com.webkul.mobikul.odoo.model.home.HomePageResponse
+import com.webkul.mobikul.odoo.ui.cart.NewCartActivity
 import com.webkul.mobikul.odoo.updates.FirebaseRemoteConfigHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_product_v1.*
 
 class ProductActivityV1 : BaseActivity() {
+    private val QTY_ZERO = 0
+    private val MAX_QUANTITY_COUNT = 9999999
     private val TAG = "ProductActivityV1"
     private val RC_ADD_TO_CART = 1001
     private val RC_BUY_NOW = 1002
@@ -51,28 +63,26 @@ class ProductActivityV1 : BaseActivity() {
     private var expandable = false
     private val DESCRIPTION_TEXTVIEW_LIMIT = 4
     var lineCount = 0
+    private lateinit var sweetAlertDialog : SweetAlertDialog
+
+    private lateinit var productData: ProductData
+
     private var categoryId : String = ""
     private val productDataCustomObserver: CustomObserver<ProductData?> =
         object : CustomObserver<ProductData?>(this) {
             override fun onNext(productData: ProductData) {
                 super.onNext(productData)
                 if (productData.isAccessDenied) {
-                    AlertDialogHelper.showDefaultWarningDialogWithDismissListener(
-                        this@ProductActivityV1,
+                    sweetAlertDialog = AlertDialogHelper.getAlertDialog(
+                        this@ProductActivityV1, SweetAlertDialog.WARNING_TYPE,
                         getString(R.string.error_login_failure),
-                        getString(R.string.access_denied_message)
-                    ) { sweetAlertDialog ->
+                        getString(R.string.access_denied_message), false, false)
+
+                    sweetAlertDialog.setConfirmClickListener {
                         sweetAlertDialog.dismiss()
                         AppSharedPref.clearCustomerData(this@ProductActivityV1)
-                        val intent =
-                            Intent(this@ProductActivityV1, SignInSignUpActivity::class.java)
-                        intent.apply {
-                            putExtra(
-                                BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY,
-                                ProductActivityV1::class.java.simpleName
-                            )
-                            startActivity(this)
-                        }
+                        startActivity(Intent(this@ProductActivityV1, SignInSignUpActivity::class.java)
+                            .putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ProductActivityV1::class.java.simpleName))
                     }
                 } else {
                     setDataAfterFetchData(productData)
@@ -81,6 +91,15 @@ class ProductActivityV1 : BaseActivity() {
 
             override fun onError(t: Throwable) {
                 super.onError(t)
+                sweetAlertDialog = AlertDialogHelper.getAlertDialog(
+                    this@ProductActivityV1, SweetAlertDialog.WARNING_TYPE,
+                    getString(R.string.error_something_went_wrong),
+                    getString(R.string.try_again_later_text), false, false)
+
+                sweetAlertDialog.setConfirmClickListener {
+                    sweetAlertDialog.dismiss()
+                    finish()
+                }
             }
 
             override fun onComplete() {
@@ -90,6 +109,7 @@ class ProductActivityV1 : BaseActivity() {
     private var returnedWithResult = false
 
     private fun setDataAfterFetchData(productData: ProductData) {
+        this.productData = productData
         binding.apply {
             data = productData
             if (TextUtils.isEmpty(productData.name)) {
@@ -104,14 +124,40 @@ class ProductActivityV1 : BaseActivity() {
         binding.apply {
             handler = ProductActivityHandler(this@ProductActivityV1, productData)
             executePendingBindings()
-            vpProductSlider.adapter =
-                ProductImageAdapter(this@ProductActivityV1, productData.images)
+            vpProductSlider.adapter = ProductImageAdapter(this@ProductActivityV1, productData.images)
             tlProductSlider.setupWithViewPager(vpProductSlider, true)
         }
         quantityEditTextOnChange()
         setProductDetails(productData)
         getDescriptionLineCount()
     }
+
+    private fun quantityEditTextOnChange() {
+        binding.tvQuantity.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(qty: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun afterTextChanged(qty: Editable?) {}
+
+            override fun onTextChanged(quantity: CharSequence?, start: Int, before: Int, count: Int) {
+                if (quantity != null) {
+                    if (quantity.isNotEmpty()) {
+                        val qty = quantity.toString().toInt()
+                        onQuantityChanged(qty)
+                    }
+                }
+            }
+        })
+
+        binding.tvQuantity.setOnEditorActionListener { _, actionId, _ ->
+            checkQuantityActionDone(actionId)
+            false
+        }
+    }
+
+    private fun onQuantityChanged(qty: Int) {
+        val finalQuantity = isQuantityExceeding(qty)
+        productData.quantity = finalQuantity
+    }
+
 
     private fun getDescriptionLineCount(){
         if(binding.tvProductDesciption.visibility != View.GONE) {
@@ -195,12 +241,11 @@ class ProductActivityV1 : BaseActivity() {
         return detailsUpdated
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_product_v1)
-
+        initDialog()
         FirebaseAnalyticsImpl.logViewItem(
             this,
             intent.extras?.getString(BUNDLE_KEY_PRODUCT_ID),
@@ -209,19 +254,26 @@ class ProductActivityV1 : BaseActivity() {
         showBackButton(true)
         onNewIntent(intent)
         setChatButton()
-        setAllListners()
+        setAllListeners()
         launchNewDrawerActivity()
         getBagItemsCount()
         setStatusBarColor()
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun setStatusBarColor() {
         val window: Window = this.window
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.statusBarColor = ContextCompat.getColor(this, R.color.background_appbar_color)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.statusBarColor = ContextCompat.getColor(this, R.color.background_appbar_color)
+        }
     }
+
+    private fun initDialog() {
+        sweetAlertDialog = AlertDialogHelper.getAlertDialog(this,
+            SweetAlertDialog.PROGRESS_TYPE, getString(R.string.please_wait),"", false,false);
+    }
+
 
     fun getHomePageResponse(): HomePageResponse? =
         intent.getParcelableExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE)
@@ -281,7 +333,7 @@ class ProductActivityV1 : BaseActivity() {
     }
 
     fun getBagItemsCount() {
-        val count = AppSharedPref.getCartCount(this, ApplicationConstant.MIN_ITEM_TO_BE_SHOWN_IN_CART)
+        val count = AppSharedPref.getNewCartCount(this)
         binding.apply {
             if (count != ApplicationConstant.MIN_ITEM_TO_BE_SHOWN_IN_CART) {
                 tvBadge.makeVisible()
@@ -347,64 +399,38 @@ class ProductActivityV1 : BaseActivity() {
         }
     }
 
-    private fun quantityEditTextOnChange() {
-        binding.tvQuantity.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(qty: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(
-                quantity: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int
-            ) {
-                if (quantity != null) {
-                    if (quantity.isNotEmpty()) {
-                        val qty = quantity.toString().toInt()
-                        binding.handler?.onClickEditext(qty)
-                    }
-                }
-            }
-
-            override fun afterTextChanged(qty: Editable?) {
-
-            }
-
-        })
-
-        binding.tvQuantity.setOnEditorActionListener { _, actionId, _ ->
-            checkQuantityActionDone(actionId)
-            false
-        }
-    }
 
     private fun checkQuantityActionDone(actionId: Int) {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             if (binding.tvQuantity.text.isNullOrEmpty()) {
-                binding.handler?.onClickEditext(1)
+                onQuantityChanged(1)
             } else {
                 val qty = binding.tvQuantity.text.toString().toInt()
-                binding.handler?.onClickEditext(qty)
+                onQuantityChanged(qty)
             }
         }
     }
 
-    private fun setAllListners() {
-        binding.tbProductDetails.setNavigationOnClickListener {
-            onBackPressed()
-        }
-
-        binding.ivCart.setOnClickListener {
-            startActivity(Intent(this, BagActivity::class.java))
-        }
-
-        binding.tvSearch.setOnClickListener {
-            binding.etMaterialSearchView.visibility = View.VISIBLE
-            binding.etMaterialSearchView.openSearch()
-        }
-
+    private fun setAllListeners() {
         binding.apply {
+
+            tbProductDetails.setNavigationOnClickListener {
+                onBackPressed()
+            }
+
+            ivCart.setOnClickListener {
+                navigateToBagScreen()
+            }
+
+            tvSearch.setOnClickListener {
+                etMaterialSearchView.visibility = View.VISIBLE
+                etMaterialSearchView.openSearch()
+            }
+
+            btnAddToCart.setOnClickListener {
+                addProductToCart()
+            }
+
             tvReadMore.setOnClickListener {
                 if(expandable){
                     tvProductDesciption.maxLines = lineCount
@@ -415,8 +441,282 @@ class ProductActivityV1 : BaseActivity() {
                 }
                 expandable = !expandable
             }
+
+            btnMinus.setOnClickListener {
+                onClickMinus(productData.quantity)
+            }
+
+            btnPlus.setOnClickListener {
+                onClickPlus(productData.quantity)
+            }
         }
     }
+
+    private fun addProductToCart() {
+        val cartId = AppSharedPref.getCartId(this);
+        if(cartId == ApplicationConstant.CART_ID_NOT_AVAILABLE)
+            getCartIdToAddProduct()
+        else {
+            addToCart(false)
+        }
+    }
+
+    private fun navigateToBagScreen() {
+        val cartId = AppSharedPref.getCartId(this);
+        if(cartId == ApplicationConstant.CART_ID_NOT_AVAILABLE)
+            getCartId()
+        else {
+            startActivity(Intent(this, NewCartActivity::class.java))
+        }
+    }
+
+    //TODO: need to optimize later
+    private fun createCartToAddProduct(customerId: Int) {
+        ApiConnection.createCart(this, customerId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : CustomObserver<CartBaseResponse<GetCartId>>(this){
+
+                    override fun onNext(response: CartBaseResponse<GetCartId>) {
+                        super.onNext(response)
+                        AppSharedPref.setCartId(this@ProductActivityV1, response.result.cartId)
+                        sweetAlertDialog.dismiss()
+                        addToCart(false)    //adding item to cart
+                    }
+
+                    override fun onError(t: Throwable) {
+                        super.onError(t)
+                        sweetAlertDialog.dismiss() //can't add item to cart
+                    }
+
+                    override fun onComplete() {
+                        super.onComplete()
+                        sweetAlertDialog.dismiss()
+                    }
+                })
+    }
+
+    private fun createCart(customerId: Int) {
+        ApiConnection.createCart(this, customerId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : CustomObserver<CartBaseResponse<GetCartId>>(this){
+
+                override fun onNext(response: CartBaseResponse<GetCartId>) {
+                    super.onNext(response)
+                    AppSharedPref.setCartId(this@ProductActivityV1, response.result.cartId)
+                    sweetAlertDialog.dismiss()
+                    addToCart(false)
+                    startActivity(Intent(this@ProductActivityV1, NewCartActivity::class.java))
+                }
+
+                override fun onError(t: Throwable) {
+                    super.onError(t)
+                    sweetAlertDialog.dismiss()
+                }
+
+                override fun onComplete() {
+                    super.onComplete()
+                    sweetAlertDialog.dismiss()
+                }
+            })
+    }
+
+    private fun addToCart(isBuyNow: Boolean) {
+        if (!AppSharedPref.isLoggedIn(this)) {
+            val builder = AlertDialog.Builder(this, R.style.AlertDialogTheme)
+            builder.setTitle(R.string.guest_user)
+                .setMessage(R.string.error_please_login_to_continue)
+                .setPositiveButton(R.string.ok) { dialog, _ ->
+                    val intent = Intent(this, SignInSignUpActivity::class.java)
+                    intent.putExtra(BUNDLE_KEY_REQ_CODE, if (isBuyNow) ProductActivity.RC_BUY_NOW else ProductActivity.RC_ADD_TO_CART)
+                    intent.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ProductActivityV1::class.java.simpleName)
+                    startActivityForResult(intent, if (isBuyNow) ProductActivity.RC_BUY_NOW else ProductActivity.RC_ADD_TO_CART)
+                    dialog.dismiss()
+                }
+                .setCancelable(false)
+                .show()
+            return
+        }
+        var productId = ""
+        if (productData.variants.isEmpty()) {
+            productId = productData.productId
+        }
+        if (checkQuantity(productData.quantity)) {
+            showWarning(true)
+            return
+        }
+        if (productId.isEmpty()) {
+            SnackbarHelper.getSnackbar(this, getString(R.string.error_could_not_add_to_bag_pls_try_again),
+                Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show()
+            return
+        }
+        if (!productData.isNever && productData.quantity > productData.availableQuantity) {
+            SnackbarHelper.getSnackbar(this, getString(R.string.product_not_available_in_this_quantity),
+                Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show()
+            return
+        }
+        val cartId = AppSharedPref.getCartId(this)
+        if(cartId == ApplicationConstant.CART_ID_NOT_AVAILABLE) {
+            SnackbarHelper.getSnackbar(this, getString(R.string.error_could_not_add_to_bag_pls_try_again),
+                Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show()
+            return
+        }
+
+        val req = CartProductItemRequest(productData.productId.toInt(), binding.tvQuantity.text.toString().toInt(), 0)
+        ApiConnection.addProductToCartV1(this, cartId, CartProductsRequest(arrayListOf(req)))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : CustomObserver<CartBaseResponse<CartProductsResponse>>(this){
+                override fun onSubscribe(d: Disposable) {
+                    super.onSubscribe(d)
+                    AlertDialogHelper.showDefaultProgressDialog(this@ProductActivityV1)
+                }
+
+                override fun onNext(response: CartBaseResponse<CartProductsResponse>) {
+                    super.onNext(response)
+                    if (response.statusCode >= HTTP_ERROR_BAD_REQUEST) {
+                        AlertDialogHelper.showDefaultWarningDialogWithDismissListener(this@ProductActivityV1, getString(R.string.error_login_failure), getString(R.string.access_denied_message)) { sweetAlertDialog ->
+                            sweetAlertDialog.dismiss()
+                            AppSharedPref.clearCustomerData(this@ProductActivityV1)
+                            
+                            Intent(this@ProductActivityV1, SignInSignUpActivity::class.java).apply {
+                                putExtra(BUNDLE_KEY_CALLING_ACTIVITY, this@ProductActivityV1.javaClass.simpleName)
+                                startActivity(this)
+                            }
+                        }
+                    } else {
+                        AnalyticsImpl.trackAddItemToBagSuccessful(productData.quantity, productData.productId, productData.seller.marketplaceSellerId, productData.name)
+                        //TODO optimise this
+                        AppSharedPref.setNewCartCount(this@ProductActivityV1, response.result.cartCount)
+                        getBagItemsCount()
+                        if (isBuyNow) {
+                            if (response.statusCode == HTTP_RESPONSE_OK ||
+                                response.statusCode == HTTP_RESOURCE_CREATED) {
+                                IntentHelper.beginCheckout(this@ProductActivityV1)
+                            } else {
+                                showQuantityWarning(response.message)
+                            }
+                        } else {
+                            if (response.statusCode == HTTP_RESPONSE_OK ||
+                                response.statusCode == HTTP_RESOURCE_CREATED) {
+                                    showSuccessfullDialog()
+                            } else {
+                                showWarning(false)
+                            }
+                        }
+                    }
+                }
+
+                override fun onComplete() {}
+            })
+
+    }
+
+
+    private fun checkQuantity(qty: Int): Boolean {
+        return qty == QTY_ZERO
+    }
+
+    private fun showQuantityWarning(message: String) {
+        SweetAlertDialog(this, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+            .setCustomImage(R.drawable.ic_warning)
+            .setTitleText("")
+            .setContentText(message)
+            .setConfirmText(getString(R.string.continue_))
+            .setConfirmClickListener { sweetAlertDialog: SweetAlertDialog -> sweetAlertDialog.dismiss() }
+            .show()
+    }
+
+    private fun onClickMinus(qty: Int) {
+        var qty = qty
+        if (qty <= QTY_ZERO) {
+            productData.quantity = QTY_ZERO
+        } else {
+            qty--
+            productData.quantity = qty
+        }
+    }
+
+    private fun onClickPlus(qty: Int) {
+        var qty = qty
+        qty++
+        if (qty > MAX_QUANTITY_COUNT) {
+            qty--
+        }
+        qty = isQuantityExceeding(qty)
+        productData.quantity = qty
+    }
+
+    private fun isQuantityExceeding(qty: Int): Int {
+        if (productData.isOutOfStock) {
+            showWarning(true)
+            return productData.availableQuantity
+        } else if (!productData.isNever && qty > productData.availableQuantity) {
+            showWarning(false)
+            return productData.availableQuantity
+        }
+        return qty
+    }
+
+    //TODO:Need to optimize later
+    private fun getCartIdToAddProduct() {
+        val customerId = AppSharedPref.getCustomerId(this).toInt()
+        ApiConnection.checkIfCartExists(this, customerId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : CustomObserver<CartBaseResponse<GetCartId>>(this){
+                    override fun onSubscribe(d: Disposable) {
+                        super.onSubscribe(d)
+                        sweetAlertDialog.show()
+                    }
+
+                    override fun onNext(response: CartBaseResponse<GetCartId>) {
+                        super.onNext(response)
+                        if(response.statusCode == HTTP_RESOURCE_NOT_FOUND)
+                            createCartToAddProduct(customerId)
+                        else {
+                            AppSharedPref.setCartId(this@ProductActivityV1, response.result.cartId)
+                            sweetAlertDialog.dismiss()
+                            addToCart(false)
+                        }
+                    }
+
+                    override fun onError(t: Throwable) {
+                        createCartToAddProduct(customerId)
+                    }
+                })
+    }
+
+    private fun getCartId() {
+        val customerId = AppSharedPref.getCustomerId(this).toInt()
+        ApiConnection.checkIfCartExists(this, customerId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : CustomObserver<CartBaseResponse<GetCartId>>(this){
+                override fun onSubscribe(d: Disposable) {
+                    super.onSubscribe(d)
+                    sweetAlertDialog.show()
+                }
+
+                override fun onNext(response: CartBaseResponse<GetCartId>) {
+                    super.onNext(response)
+                    if(response.statusCode == HTTP_RESOURCE_NOT_FOUND)
+                        createCart(customerId)
+                    else {
+                        AppSharedPref.setCartId(this@ProductActivityV1, response.result.cartId)
+                        sweetAlertDialog.dismiss()
+                        startActivity(Intent(this@ProductActivityV1, NewCartActivity::class.java))
+                    }
+                }
+
+                override fun onError(t: Throwable) {
+                    createCart(customerId)
+                }
+            })
+    }
+
+
 
     private fun launchNewDrawerActivity() {
         binding.ivDrawer.setOnClickListener {

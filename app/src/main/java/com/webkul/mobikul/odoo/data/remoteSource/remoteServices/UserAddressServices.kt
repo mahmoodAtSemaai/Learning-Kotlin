@@ -10,7 +10,7 @@ import retrofit2.http.Path
 interface UserAddressServices {
     @PUT(ApiInterface.USER_ADDRESS)
     suspend fun setUserAddress(
-        @Path(ApiInterface.PARTNER_ID) partnerId: String,
+        @Path(ApiInterface.CUSTOMER_ID) customerId: String,
         @Body userAddressRequest: String
     ): BaseUserOnboardingResponse<UserAddressEntity>
 }

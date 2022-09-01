@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/cl_cart_sub_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.cart.CartFragment">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/nsv_cart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/cart_cost"
+                app:layout_constraintBottom_toTopOf="@id/cart_cost"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:id="@+id/ll_cart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_free_delivery"
+                        style="@style/Semaai.TextAppearance.Body1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_app_bar_color"
+                        android:drawableStart="@drawable/ic_transport"
+                        android:drawableLeft="@drawable/ic_transport"
+                        android:drawablePadding="@dimen/padding_8"
+                        android:paddingHorizontal="@dimen/padding_16"
+                        android:paddingVertical="@dimen/padding_8"
+                        android:text="@string/free_delivery" />
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_cart"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:nestedScrollingEnabled="true"
+                        android:orientation="vertical"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/item_seller"
+                        tools:targetApi="lollipop" />
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_continue_shopping_text"
+                        style="@style/Semaai.TextAppearance.Body1.Bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_12"
+                        android:layout_marginTop="@dimen/margin_6"
+                        android:background="@drawable/btn_white_bg_primary_border_2dp_corner_6dp"
+                        android:drawableEnd="@drawable/ic_arrow_right_primary"
+                        android:drawableRight="@drawable/ic_arrow_right_primary"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:gravity="start"
+                        android:paddingHorizontal="@dimen/padding_12"
+                        android:paddingVertical="@dimen/padding_10"
+                        android:text="@string/continue_shopping"
+                        android:textAlignment="viewStart"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorPrimary" />
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_empty_cart_text"
+                        style="@style/Semaai.TextAppearance.Body1.Bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/margin_12"
+                        android:layout_marginTop="@dimen/margin_12"
+                        android:layout_marginBottom="@dimen/margin_16"
+                        android:background="@drawable/btn_white_bg_grey_1dp_corner_6dp"
+                        android:drawableEnd="@drawable/ic_delete_cart_item"
+                        android:drawableRight="@drawable/ic_delete_cart_item"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:paddingHorizontal="@dimen/padding_12"
+                        android:paddingVertical="@dimen/padding_10"
+                        android:text="@string/empty_shopping_bag"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorDarkGrey" />
+
+
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+
+            <include
+                android:id="@+id/cart_cost"
+                layout="@layout/cart_cost_detail_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/cl_dialog_box"
+                android:layout_width="@dimen/warning_vector_width"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/ic_warning_bg"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_warning"
+                    android:layout_width="@dimen/size_32"
+                    android:layout_height="@dimen/size_32"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/margin_32"
+                    android:src="@drawable/ic_new_warning_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.40" />
+
+                <TextView
+                    android:id="@+id/tv_warning_msg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_8"
+                    android:layout_marginBottom="@dimen/margin_8"
+                    android:padding="@dimen/padding_6"
+                    android:text="@string/quantity_exceeding"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_warning" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

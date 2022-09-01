@@ -3,6 +3,7 @@ package com.webkul.mobikul.odoo.fragment;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_URL;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.LayerDrawable;
@@ -32,6 +33,7 @@ import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
 import com.webkul.mobikul.odoo.activity.NewHomeActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
+import com.webkul.mobikul.odoo.activity.SplashScreenActivity;
 import com.webkul.mobikul.odoo.activity.UpdateAddressActivity;
 import com.webkul.mobikul.odoo.adapter.home.CategoryProductAdapter;
 import com.webkul.mobikul.odoo.adapter.home.FeaturedCategoriesAdapter;
@@ -166,6 +168,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
             public void onNext(@NonNull HomePageResponse homePageResponse) {
                 super.onNext(homePageResponse);
                 new SaveData(getActivity(), homePageResponse);
+                AppSharedPref.setNewCartCount(requireContext(), homePageResponse.getNewCartCount());
                 Log.i("HIT DATA === ", homePageResponse.toString());
                 loadHomePage(homePageResponse, true);
             }

@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <data>
+
+        <import type="com.webkul.mobikul.odoo.helper.ImageHelper.ImageType" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.data.entity.CartProductEntity" />
+
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_product_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_2"
+        android:background="@color/white"
+        android:elevation="@dimen/size_4"
+        android:paddingHorizontal="@dimen/padding_12"
+        android:paddingVertical="@dimen/padding_8"
+        tools:targetApi="lollipop">
+
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/cb_product_selection"
+            android:layout_width="@dimen/size_20"
+            android:layout_height="@dimen/size_20"
+            android:background="@drawable/bg_custom_checkbox"
+            android:buttonTint="@color/transparent"
+            android:checked="false"
+            android:clickable="true"
+            android:enabled="@{!data.outOfStock}"
+            android:focusable="true"
+            app:checkedIfTrue="@{data.isChecked}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/cv_product_image" />
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_product_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_10"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginTop="@dimen/margin_16"
+            android:elevation="@dimen/size_0"
+            app:cardCornerRadius="@dimen/size_4"
+            app:cardElevation="@dimen/size_0"
+            app:layout_constraintStart_toEndOf="@+id/cb_product_selection"
+            app:layout_constraintTop_toBottomOf="@+id/tv_delivery_date">
+
+            <RelativeLayout
+                android:id="@+id/rl_product_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_product"
+                    android:layout_width="@dimen/product_image_small"
+                    android:layout_height="@dimen/product_image_small"
+                    app:imageUrl="@{data.thumbNail}"
+                    app:layout_constraintStart_toEndOf="@+id/cb_product_selection"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_delivery_date"
+                    app:placeholder="@{@drawable/ic_vector_odoo_placeholder_grey400_48dp}"
+                    app:srcCompat="@drawable/ic_vector_odoo_placeholder_grey400_48dp"
+                    tools:ignore="ContentDescription"
+                    tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
+
+                <View
+                    android:id="@+id/bg_out_of_stock"
+                    android:layout_width="@dimen/size_100"
+                    android:layout_height="@dimen/size_100"
+                    android:alpha="0.4"
+                    android:background="@color/black"
+                    android:visibility="@{data.outOfStock == true ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_product"
+                    app:layout_constraintEnd_toEndOf="@id/iv_product"
+                    app:layout_constraintStart_toStartOf="@+id/iv_product"
+                    app:layout_constraintTop_toTopOf="@+id/iv_product"
+                    tools:visibility="visible" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_out_of_stock"
+                    style="@style/medium_bold_text_no_caps"
+                    android:layout_width="@dimen/size_100"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/iv_product"
+                    android:background="@color/colorDarkGrey"
+                    android:paddingVertical="@dimen/padding_2"
+                    android:text="@string/out_of_stock"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:visibility="@{data.outOfStock == true ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_product"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_product"
+                    app:layout_constraintStart_toStartOf="@+id/iv_product"
+                    tools:visibility="visible" />
+
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_delete"
+            android:layout_width="@dimen/size_40"
+            android:layout_height="@dimen/size_40"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:padding="@dimen/padding_8"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_sub_total_value"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_sub_total_heading"
+            app:srcCompat="@drawable/ic_delete_cart_item"
+            tools:ignore="ContentDescription" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_delivery_date"
+            style="@style/medium_normal_text"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:text="@{data.leadTime}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cb_product_selection"
+            app:layout_constraintStart_toStartOf="@+id/cv_product_image"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Estimasi tiba tanggal 20 Mei" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_product_name"
+            style="@style/medium_normal_text"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_12"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@{data.name}"
+            app:layout_constraintEnd_toEndOf="@+id/iv_delete"
+            app:layout_constraintStart_toEndOf="@+id/cv_product_image"
+            app:layout_constraintTop_toTopOf="@+id/cv_product_image"
+            tools:text="Pupuk bio konversi Hasana Bio Konversi zafafaf" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_move_to_wishlist"
+            style="@style/medium_normal_text"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_12"
+            android:enabled="@{!data.wishListed}"
+            android:padding="@dimen/padding_8"
+            android:text="@{data.wishListed ? @string/already_favorite : @string/plus_favorite}"
+            android:textAlignment="center"
+            android:textColor="@{data.wishListed ? @color/colorDarkGrey : @color/colorPrimary}"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/cv_product_image"
+            app:layout_constraintStart_toStartOf="@+id/cv_product_image"
+            app:layout_constraintTop_toBottomOf="@+id/cv_product_image" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_reduced_price"
+            style="@style/medium_bold_text"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:text="@{data.priceReduce.empty == true ? data.priceUnit : data.priceReduce}"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="@+id/tv_product_name"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="@+id/tv_product_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_product_name"
+            tools:text="Rp34,000" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_discount"
+            style="@style/Semaai.TextAppearance.Body2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:background="@drawable/background_discount_price"
+            android:padding="@dimen/padding_4"
+            android:text="@{data.discountPercent}"
+            android:textColor="@color/white"
+            android:visibility="@{data.discountPercent.empty == true ? View.GONE : View.VISIBLE}"
+            app:layout_constraintStart_toStartOf="@+id/tv_reduced_price"
+            app:layout_constraintTop_toBottomOf="@+id/tv_reduced_price"
+            tools:text="-50%"
+            tools:visibility="gone" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_price_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_tiny"
+            android:background="@drawable/bg_strikethrough"
+            android:text="@{data.priceReduce.empty == true ? data.priceReduce : data.priceUnit}"
+            android:textColor="@color/colorDarkGrey"
+            android:visibility="@{data.priceReduce.empty == true ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_discount"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@+id/tv_discount"
+            app:layout_constraintTop_toTopOf="@+id/tv_discount"
+            tools:text="Rp34,000" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_sub_total_heading"
+            style="@style/medium_normal_text"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_6"
+            android:text="@string/subtotal"
+            android:textAlignment="textStart"
+            app:layout_constraintEnd_toStartOf="@+id/iv_delete"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/btn_minus"
+            app:layout_constraintTop_toBottomOf="@+id/btn_minus" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_sub_total_value"
+            style="@style/medium_bold_text_no_caps"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_4"
+            android:text="@{data.total}"
+            app:layout_constraintEnd_toStartOf="@+id/iv_delete"
+            app:layout_constraintStart_toStartOf="@+id/tv_sub_total_heading"
+            app:layout_constraintTop_toBottomOf="@+id/tv_sub_total_heading"
+            tools:text="Rp360.00" />
+
+        <Button
+            android:id="@+id/btn_minus"
+            android:layout_width="@dimen/size_32"
+            android:layout_height="@dimen/size_40"
+            android:layout_marginTop="@dimen/margin_12"
+            android:background="@drawable/bg_cart_product_minus_state"
+            android:enabled="@{!data.outOfStock}"
+            android:text="@string/product_details_minus"
+            android:textColor="@{data.outOfStock == true ? @color/colorDarkGrey : @color/colorPrimary}"
+            android:textSize="@dimen/font_size_20"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="@+id/tv_discount"
+            app:layout_constraintTop_toBottomOf="@+id/tv_price_unit" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_quantity"
+            style="@style/Semaai.TextAppearance.Body1.Bold"
+            android:layout_width="@dimen/size_56"
+            android:layout_height="@dimen/size_40"
+            android:background="@drawable/bg_cart_product_edittext_state"
+            android:enabled="@{!data.outOfStock}"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:maxLength="7"
+            android:text="@{Integer.toString(data.bindingQuantity)}"
+            android:textAlignment="center"
+            android:textColor="@{data.outOfStock == true? @color/colorDarkGrey : @color/colorPrimary}"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_minus"
+            app:layout_constraintStart_toEndOf="@+id/btn_minus"
+            app:layout_constraintTop_toTopOf="@+id/btn_minus"
+            tools:text="1" />
+
+        <Button
+            android:id="@+id/btn_plus"
+            android:layout_width="@dimen/size_32"
+            android:layout_height="@dimen/size_40"
+            android:background="@drawable/bg_cart_product_plus_state"
+            android:enabled="@{!data.outOfStock}"
+            android:text="@string/product_details_plus"
+            android:textAlignment="center"
+            android:textColor="@{data.outOfStock == true ? @color/colorDarkGrey : @color/colorPrimary}"
+            android:textSize="@dimen/font_size_20"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/et_quantity"
+            app:layout_constraintTop_toTopOf="@+id/et_quantity" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
+

@@ -30,6 +30,10 @@ import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
+import com.webkul.mobikul.odoo.core.utils.AppConstantsKt;
+import com.webkul.mobikul.odoo.data.request.AddToWishListRequest;
+import com.webkul.mobikul.odoo.data.request.DeleteFromWishListRequest;
+import com.webkul.mobikul.odoo.data.response.models.WishListUpdatedResponse;
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.databinding.ItemCatalogProductListBinding;
 import com.webkul.mobikul.odoo.databinding.ItemProductGridBinding;
@@ -39,13 +43,11 @@ import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.helper.SnackbarHelper;
-import com.webkul.mobikul.odoo.model.BaseResponse;
 import com.webkul.mobikul.odoo.model.generic.AttributeData;
 import com.webkul.mobikul.odoo.model.generic.ProductCombination;
 import com.webkul.mobikul.odoo.model.generic.ProductData;
 import com.webkul.mobikul.odoo.model.generic.ProductVariant;
 import com.webkul.mobikul.odoo.model.home.HomePageResponse;
-import com.webkul.mobikul.odoo.model.request.AddToWishlistRequest;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,10 +59,9 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 
-
 public class ProductHandler {
 
-    private Context mContext;
+    private Context context;
     private ProductData mData;
     private long mLastClickTime = 0;
     private ItemProductGridBinding mProductDefaultBinding;
@@ -70,33 +71,33 @@ public class ProductHandler {
 
 
     public ProductHandler(Context context, ProductData productData) {
-        mContext = context;
+        this.context = context;
         mData = productData;
     }
 
     public void viewProduct() {
-        AnalyticsImpl.INSTANCE.trackProductItemSelected(Helper.getScreenName(mContext),
+        AnalyticsImpl.INSTANCE.trackProductItemSelected(Helper.getScreenName(context),
                 mData.getProductId(), mData.getName());
-        Intent intent = new Intent(mContext, ((OdooApplication) mContext.getApplicationContext()).getProductActivity());
+        Intent intent = new Intent(context, ((OdooApplication) context.getApplicationContext()).getProductActivity());
         intent.putExtra(BUNDLE_KEY_PRODUCT_ID, mData.getProductId());
         intent.putExtra(BUNDLE_KEY_PRODUCT_TEMPLATE_ID, mData.getTemplateId());
         intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, mData.getName());
-        SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(mContext);
+        SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(context);
         HomePageResponse homePageResponse = sqlLiteDbHelper.getHomeScreenData();
-        if(homePageResponse != null){
+        if (homePageResponse != null) {
             intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
         }
 //        Pair<View, String> p1 = Pair.create((View)mProductDefaultBinding.productImage, "product_image");
 
-        String transitionName = mContext.getString(R.string.transition);
-        if(mProductDefaultBinding !=null) {
+        String transitionName = context.getString(R.string.transition);
+        if (mProductDefaultBinding != null) {
             imageView = mProductDefaultBinding.productImage;
-        }else
+        } else
             imageView = mProductListtBinding.ivProduct;
         ActivityOptionsCompat options = ActivityOptionsCompat.
-                makeSceneTransitionAnimation((Activity)mContext, imageView,transitionName);
+                makeSceneTransitionAnimation((Activity) context, imageView, transitionName);
 //        mContext.startActivity(intent, options.toBundle());
-        mContext.startActivity(intent);
+        context.startActivity(intent);
     }
 
     public void onClickWishlistIcon(View v) {
@@ -112,99 +113,93 @@ public class ProductHandler {
         }
 
         if (productId == null) {
-            SnackbarHelper.getSnackbar((Activity) mContext, mContext.getString(R.string
+            SnackbarHelper.getSnackbar((Activity) context, context.getString(R.string
                     .error_could_not_add_to_wishlist_pls_try_again), Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType
                     .TYPE_WARNING).show();
             return;
         }
 
         if (mData.isAddedToWishlist()) {
-            ApiConnection.removeFromWishlist(mContext, productId).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new CustomObserver<BaseResponse>(mContext) {
-                        @Override
-                        public void onSubscribe(@NonNull Disposable d) {
-                            super.onSubscribe(d);
-                            AlertDialogHelper.showDefaultProgressDialog(mContext);
-                        }
-
-                        @Override
-                        public void onNext(@NonNull BaseResponse response) {
-                            super.onNext(response);
-                            if (response.isAccessDenied()){
-                                AlertDialogHelper.showDefaultWarningDialogWithDismissListener(mContext, mContext.getString(R.string.error_login_failure), mContext.getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                        sweetAlertDialog.dismiss();
-                                        AppSharedPref.clearCustomerData(mContext);
-                                        Intent i = new Intent(mContext, SignInSignUpActivity.class);
-                                        i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ((BaseActivity)mContext).getClass().getSimpleName());
-                                        mContext.startActivity(i);
-                                    }
-                                });
-                            }else {
-                                if (response.isSuccess()) {
-                                    mData.setAddedToWishlist(false);
-                                    ((ImageButton) v).setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(),
-                                            R.drawable.ic_vector_wishlist_grey_24dp, null));
-                                } else {
-                                    mData.setAddedToWishlist(false);
-                                    ((ImageButton) v).setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(),
-                                            R.drawable.ic_vector_wishlist_grey_24dp, null));
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-
+            removeFromWishList(productId, v);
         } else {
-            ApiConnection.addToWishlist(mContext, new AddToWishlistRequest(productId)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new CustomObserver<BaseResponse>(mContext) {
-                        @Override
-                        public void onSubscribe(@NonNull Disposable d) {
-                            super.onSubscribe(d);
-                            AlertDialogHelper.showDefaultProgressDialog(mContext);
-                        }
-
-                        @Override
-                        public void onNext(@NonNull BaseResponse response) {
-                            super.onNext(response);
-                            if (response.isAccessDenied()){
-                                AlertDialogHelper.showDefaultWarningDialogWithDismissListener(mContext, mContext.getString(R.string.error_login_failure), mContext.getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                        sweetAlertDialog.dismiss();
-                                        AppSharedPref.clearCustomerData(mContext);
-                                        Intent i = new Intent(mContext, SignInSignUpActivity.class);
-                                        i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ((BaseActivity)mContext).getClass().getSimpleName());
-                                        mContext.startActivity(i);
-                                    }
-                                });
-
-                            }else {
-                                if (response.isSuccess()) {
-                                    mData.setAddedToWishlist(true);
-                                    FirebaseAnalyticsImpl.logAddToWishlistEvent(mContext,productId,mData.getName());
-                                    ((ImageButton) v).setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(),
-                                            R.drawable.ic_vector_wishlist_red_24dp, null));
-                                } else {
-                                    mData.setAddedToWishlist(true);
-                                    ((ImageButton) v).setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(),
-                                            R.drawable.ic_vector_wishlist_red_24dp, null));
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
+            addToWishList(productId, v);
         }
+    }
+
+    private void addToWishList(String productId, View v) {
+        ApiConnection.addItemToWishListV1(context, new AddToWishListRequest(Integer.parseInt(productId)))
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CustomObserver<WishListUpdatedResponse>(context) {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        super.onSubscribe(d);
+                        AlertDialogHelper.showDefaultProgressDialog(context);
+                    }
+
+                    @Override
+                    public void onNext(@NonNull WishListUpdatedResponse response) {
+                        super.onNext(response);
+                        if (response.statusCode > AppConstantsKt.HTTP_RESPONSE_OK) {
+                            redirectToSignInSignupActivity();
+                        } else {
+                            setWishListIcon(response, true, context, productId, mData, v);
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    private void removeFromWishList(String productId, View v) {
+        ApiConnection.removeItemFromWishListV1(context, new DeleteFromWishListRequest(Integer.parseInt(productId))).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CustomObserver<WishListUpdatedResponse>(context) {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        super.onSubscribe(d);
+                        AlertDialogHelper.showDefaultProgressDialog(context);
+                    }
+
+                    @Override
+                    public void onNext(@NonNull WishListUpdatedResponse response) {
+                        super.onNext(response);
+                        if (response.statusCode > AppConstantsKt.HTTP_RESPONSE_OK) {
+                            redirectToSignInSignupActivity();
+                        } else {
+                            setWishListIcon(response, false, context, productId, mData, v);
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    private void redirectToSignInSignupActivity() {
+        AlertDialogHelper.showDefaultWarningDialogWithDismissListener(context, context.getString(R.string.error_login_failure), context.getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                sweetAlertDialog.dismiss();
+                AppSharedPref.clearCustomerData(context);
+                Intent i = new Intent(context, SignInSignUpActivity.class);
+                i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ((BaseActivity) context).getClass().getSimpleName());
+                context.startActivity(i);
+            }
+        });
+    }
+
+    private void setWishListIcon(WishListUpdatedResponse response, boolean isAddedToWishList, Context mContext, String productId, ProductData name, View v) {
+        if (response.statusCode == AppConstantsKt.HTTP_RESPONSE_OK) {
+            FirebaseAnalyticsImpl.logAddToWishlistEvent(mContext, productId, mData.getName());
+        }
+        mData.setAddedToWishlist(isAddedToWishList);
+        ((ImageButton) v).setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(),
+                isAddedToWishList ? R.drawable.ic_vector_wishlist_red_24dp : R.drawable.ic_vector_wishlist_grey_24dp, null));
     }
 
     private String getProductIdForVariant() {
@@ -212,18 +207,18 @@ public class ProductHandler {
         for (AttributeData eachAttributeData : mData.getAttributes()) {
             switch (eachAttributeData.getType()) {
                 case ATTR_TYPE_COLOR:
-                    RadioGroup colorTypeRg = ((ProductActivity) mContext).mBinding.attributesContainer.findViewWithTag(eachAttributeData.getType() + eachAttributeData.getAttributeId());
+                    RadioGroup colorTypeRg = ((ProductActivity) context).mBinding.attributesContainer.findViewWithTag(eachAttributeData.getType() + eachAttributeData.getAttributeId());
                     attrValueIdMap.put(eachAttributeData.getAttributeId(), colorTypeRg.findViewById(colorTypeRg.getCheckedRadioButtonId()).getTag().toString());
                     break;
 
                 case ATTR_TYPE_RADIO:
-                    RadioGroup radioTypeRg = ((ProductActivity) mContext).mBinding.attributesContainer.findViewWithTag(eachAttributeData.getType() + eachAttributeData.getAttributeId());
+                    RadioGroup radioTypeRg = ((ProductActivity) context).mBinding.attributesContainer.findViewWithTag(eachAttributeData.getType() + eachAttributeData.getAttributeId());
                     attrValueIdMap.put(eachAttributeData.getAttributeId(), radioTypeRg.findViewById(radioTypeRg.getCheckedRadioButtonId()).getTag().toString());
                     break;
 
                 case ATTR_TYPE_SELECT:
                 case ATTR_TYPE_HIDDEN:
-                    AppCompatSpinner selectTypeSpinner = ((ProductActivity) mContext).mBinding.attributesContainer.findViewWithTag(eachAttributeData.getType() + eachAttributeData.getAttributeId());
+                    AppCompatSpinner selectTypeSpinner = ((ProductActivity) context).mBinding.attributesContainer.findViewWithTag(eachAttributeData.getType() + eachAttributeData.getAttributeId());
                     attrValueIdMap.put(eachAttributeData.getAttributeId(), eachAttributeData.getAttributeOptionDatas().get(selectTypeSpinner.getSelectedItemPosition()).getValueId());
                     break;
             }
@@ -245,6 +240,7 @@ public class ProductHandler {
     public void setProductDefaultBinding(ItemProductGridBinding mBinding) {
         mProductDefaultBinding = mBinding;
     }
+
     public void setProductListBinding(ItemCatalogProductListBinding mBinding) {
         mProductListtBinding = mBinding;
     }

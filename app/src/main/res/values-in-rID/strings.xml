@@ -65,7 +65,7 @@
     <string name="error_cant_perform_operation">Tidak bisa menjalankan operasi ini sekarang!</string>
     <string name="error_fill_req_field">Mohon isi field yang wajib!</string>
     <string name="error_this_is_a_required_field">Wajib diisi</string>
-    <string name="error_network_unavailble">TIdak ada koneksi</string>
+    <string name="error_network_unavailble">Tidak ada koneksi</string>
     <string name="error_please_provide_permission_to_pick_location">Mohon berikan izin untuk melihat lokasi pengambilan barang</string>
     <string name="error_enable_location_of_device">Mohon aktifkan lokasi perangkat anda</string>
     <string name="error_could_get_location_at_this_point">Tidak bisa mendeteksi lokasi anda saat ini</string>
@@ -193,8 +193,8 @@
     <string name="try_different_category_or_search_keyword_maybe">Cobalah kategori atau keyword lainnya … ?</string>
     <string name="empty_notification">Tidak ada notifikasi !</string>
     <string name="visit_later_to_check_your_notification">Kembalilah beberapa saat lagi untuk mengecek notifikasi anda</string>
-    <string name="empty_bag">Keranjang anda kosong!!!</string>
-    <string name="add_item_to_your_bag_now">Tambahkan barang ke keranjang ada sekarang</string>
+    <string name="empty_bag">Keranjang anda kosong</string>
+    <string name="add_item_to_your_bag_now">Tambahkan barang ke keranjang anda sekarang</string>
     <string name="start_shopping">Mulai belanja</string>
     <string name="congrats">Selamat…</string>
 
@@ -219,7 +219,7 @@
     <string name="orders_order_details">Detail Order</string>
     <string name="tax">Pajak</string>
     <string name="taxes">Pajak</string>
-    <string name="subtotal">Subtotal</string>
+    <string name="subtotal">Sub-total</string>
     <string name="grand_total">Grand Total</string>
     <string name="placed_on_Xdate">Order terkirim tanggal %s</string>
     <string name="state_x">Provinsi: %s</string>
@@ -230,6 +230,7 @@
     <string name="price_total_x">Harga Total: \n%s</string>
     <string name="order_noX">Order #%s</string>
     <string name="rp_x">Rp%s</string>
+    <string name="rp">Rp</string>
     <string name="placing_your_order">Menempatkan pesanan</string>
     <!---->
     <!---->
@@ -346,11 +347,25 @@
     <!--BAG PAGE-->
     <string name="items">barang</string>
     <string name="total">Total</string>
-    <string name="continue_shopping">Lanjut Belanja</string>
-    <string name="empty_shopping_bag">Kosongkan Keranjang</string>
+    <string name="continue_shopping">Lanjutkan belanja</string>
+    <string name="empty_shopping_bag">Kosongkan keranjang</string>
     <string name="proceed_to_checkout">Lanjut ke Pembayaran</string>
     <string name="unit_price">Harga Satuan</string>
     <string name="updating_bag">Memperbarui Keranjang…</string>
+    <string name="plus_favorite">+ Favorit</string>
+    <string name="already_favorite">Sudah favorit</string>
+    <string name="select_all">Pilih semua</string>
+    <string name="remove_product">Hapus produk?</string>
+    <string name="remove_product_description">Produk yang anda pilih akan dihapus dari keranjang</string>
+    <string name="please_choose_product">Silahkan pilih produk</string>
+    <string name="removing_cart_items">Menghapus item keranjang</string>
+    <string name="adding_item_to_wish_list">Menambahkan item ke daftar keinginan</string>
+
+    <string name="fetching_cart_items">Mengambil barang keranjang</string>
+    <string name="price_zero">0,00</string>
+    <string name="start_shopping_2">Mulai Belanja</string>
+
+
     <!---->
     <!---->
     <!--CHECKOUT PAGE-->
@@ -514,7 +529,7 @@
 
 
 
-    <string name="semaai_points">Poin semaai</string>
+    <string name="semaai_points">Poin Semaai</string>
     <string name="semaai_points_redeemed">Poin Semaai Ditukar</string>
     <string name="new_member_discount">Diskon anggota baru</string>
     <string name="semaai_coupons">Kupon Semaai</string>

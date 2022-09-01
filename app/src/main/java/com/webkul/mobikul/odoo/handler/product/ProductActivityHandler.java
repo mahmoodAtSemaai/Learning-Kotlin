@@ -36,6 +36,7 @@ import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
+import com.webkul.mobikul.odoo.core.utils.AppConstantsKt;
 import com.webkul.mobikul.odoo.custom.CustomToast;
 import com.webkul.mobikul.odoo.dialog_frag.ChangeQtyDialogFragment;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
@@ -47,14 +48,15 @@ import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.IntentHelper;
 import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.helper.SnackbarHelper;
-import com.webkul.mobikul.odoo.model.BaseResponse;
 import com.webkul.mobikul.odoo.model.generic.AttributeData;
 import com.webkul.mobikul.odoo.model.generic.ProductCombination;
 import com.webkul.mobikul.odoo.model.generic.ProductData;
 import com.webkul.mobikul.odoo.model.generic.ProductVariant;
 import com.webkul.mobikul.odoo.model.product.AddToCartResponse;
 import com.webkul.mobikul.odoo.model.request.AddToBagRequest;
-import com.webkul.mobikul.odoo.model.request.AddToWishlistRequest;
+import com.webkul.mobikul.odoo.data.request.AddToWishListRequest;
+import com.webkul.mobikul.odoo.data.request.DeleteFromWishListRequest;
+import com.webkul.mobikul.odoo.data.response.models.WishListUpdatedResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -285,9 +287,10 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
         }
 
         if (data.isAddedToWishlist()) {
-            ApiConnection.removeFromWishlist(context, productId).subscribeOn(Schedulers.io())
+            ApiConnection.removeItemFromWishListV1(context, new DeleteFromWishListRequest(Integer.parseInt(productId)))
+                    .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new CustomObserver<BaseResponse>(context) {
+                    .subscribe(new CustomObserver<WishListUpdatedResponse>(context) {
                         @Override
                         public void onSubscribe(@NonNull Disposable d) {
                             super.onSubscribe(d);
@@ -295,9 +298,9 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
                         }
 
                         @Override
-                        public void onNext(@NonNull BaseResponse response) {
+                        public void onNext(@NonNull WishListUpdatedResponse response) {
                             super.onNext(response);
-                            if (response.isAccessDenied()) {
+                            if (response.statusCode == AppConstantsKt.HTTP_ERROR_UNAUTHORIZED_REQUEST) {
                                 AlertDialogHelper.showDefaultWarningDialogWithDismissListener(context, context.getString(R.string.error_login_failure), context.getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
                                     @Override
                                     public void onClick(SweetAlertDialog sweetAlertDialog) {
@@ -309,14 +312,15 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
                                     }
                                 });
                             } else {
-                                if (response.isSuccess()) {
+                                if (response.statusCode == AppConstantsKt.HTTP_RESPONSE_OK ||
+                                        response.statusCode == AppConstantsKt.HTTP_RESOURCE_CREATED) {
                                     data.setAddedToWishlist(false);
-                                    CustomToast.makeText(context, response.getMessage(), Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
+                                    CustomToast.makeText(context, response.message, Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
                                     ((ImageButton) v).setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),
                                             R.drawable.ic_vector_wishlist_grey_24dp, null));
                                 } else {
                                     AlertDialogHelper.showDefaultErrorDialog(context, context.getString(
-                                            R.string.move_to_wishlist), response.getMessage());
+                                            R.string.move_to_wishlist), response.message);
                                 }
                             }
                         }
@@ -328,8 +332,9 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
                     });
 
         } else {
-            ApiConnection.addToWishlist(context, new AddToWishlistRequest(productId)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new CustomObserver<BaseResponse>(context) {
+            ApiConnection.addItemToWishListV1(context, new AddToWishListRequest(Integer.parseInt(productId)))
+                    .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new CustomObserver<WishListUpdatedResponse>(context) {
                         @Override
                         public void onSubscribe(@NonNull Disposable d) {
                             super.onSubscribe(d);
@@ -337,9 +342,9 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
                         }
 
                         @Override
-                        public void onNext(@NonNull BaseResponse response) {
+                        public void onNext(@NonNull WishListUpdatedResponse response) {
                             super.onNext(response);
-                            if (response.isAccessDenied()) {
+                            if (response.statusCode == AppConstantsKt.HTTP_ERROR_UNAUTHORIZED_REQUEST) {
                                 AlertDialogHelper.showDefaultWarningDialogWithDismissListener(context, context.getString(R.string.error_login_failure), context.getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
                                     @Override
                                     public void onClick(SweetAlertDialog sweetAlertDialog) {
@@ -353,15 +358,16 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
 
 
                             } else {
-                                if (response.isSuccess()) {
+                                if (response.statusCode == AppConstantsKt.HTTP_RESPONSE_OK ||
+                                        response.statusCode == AppConstantsKt.HTTP_RESOURCE_CREATED) {
                                     data.setAddedToWishlist(true);
                                     FirebaseAnalyticsImpl.logAddToWishlistEvent(context, productId, data.getName());
-                                    CustomToast.makeText(context, response.getMessage(), Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
+                                    CustomToast.makeText(context, response.message, Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
                                     ((ImageButton) v).setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),
                                             R.drawable.ic_vector_wishlist_red_24dp, null));
                                 } else {
                                     AlertDialogHelper.showDefaultErrorDialog(context, context.getString(
-                                            R.string.move_to_wishlist), response.getMessage());
+                                            R.string.move_to_wishlist), response.message);
                                 }
                             }
                         }

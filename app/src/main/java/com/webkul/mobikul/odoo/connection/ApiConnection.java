@@ -4,6 +4,24 @@ package com.webkul.mobikul.odoo.connection;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
+import com.webkul.mobikul.odoo.data.request.AddToWishListRequest;
+import com.webkul.mobikul.odoo.data.request.CartProductsRequest;
+import com.webkul.mobikul.odoo.data.request.DeleteFromWishListRequest;
+import com.webkul.mobikul.odoo.data.request.GetDiscountPriceRequest;
+import com.webkul.mobikul.odoo.data.request.SetQuantityRequest;
+import com.webkul.mobikul.odoo.data.request.UpdateCartRequest;
+import com.webkul.mobikul.odoo.data.response.models.CartProductsResponse;
+import com.webkul.mobikul.odoo.data.response.models.CartBaseResponse;
+import com.webkul.mobikul.odoo.data.response.models.DeleteAllCartItemResponse;
+import com.webkul.mobikul.odoo.data.response.models.DeleteCartItemResponse;
+import com.webkul.mobikul.odoo.data.response.models.GetCartId;
+import com.webkul.mobikul.odoo.data.response.models.GetCartResponse;
+import com.webkul.mobikul.odoo.data.response.models.GetDiscountPriceResponse;
+import com.webkul.mobikul.odoo.data.response.models.GetSelectedItemsPriceResponse;
+import com.webkul.mobikul.odoo.data.response.models.GetWishListResponse;
+import com.webkul.mobikul.odoo.data.response.models.OrderReviewResponse;
+import com.webkul.mobikul.odoo.data.response.models.UpdateCartItemResponse;
+import com.webkul.mobikul.odoo.data.response.models.WishListUpdatedResponse;
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.helper.NetworkHelper;
 import com.webkul.mobikul.odoo.model.BaseResponse;
@@ -15,9 +33,9 @@ import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatConfigResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatCreateChannelResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatHistoryResponse;
+import com.webkul.mobikul.odoo.model.checkout.ActiveShippingMethod;
 import com.webkul.mobikul.odoo.model.checkout.OrderDataResponse;
 import com.webkul.mobikul.odoo.model.checkout.OrderPlaceResponse;
-import com.webkul.mobikul.odoo.model.checkout.OrderReviewResponse;
 import com.webkul.mobikul.odoo.model.checkout.PaymentAcquirerResponse;
 import com.webkul.mobikul.odoo.model.checkout.ShippingMethodResponse;
 import com.webkul.mobikul.odoo.model.checkout.UpdateOrderRequest;
@@ -68,11 +86,13 @@ import com.webkul.mobikul.odoo.model.request.WishListToCartRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 
 public class ApiConnection {
@@ -183,6 +203,7 @@ public class ApiConnection {
         return RetrofitClient.getClient(context).create(ApiInterface.class).getOrders(baseLazyRequest.toString());
     }
 
+    @Deprecated
     public static Observable<MyWishListResponse> getWishlist(Context context) {
         return RetrofitClient.getClient(context).create(ApiInterface.class).getWishlist();
     }
@@ -278,7 +299,7 @@ public class ApiConnection {
 
 
     public static Observable<BaseResponse> updateCart(Context context, int saleOrderId, String lineId, int qty) {
-        return RetrofitClient.getClient(context).create(ApiInterface.class).updateCart(saleOrderId, lineId, new UpdateBagReq(qty).toString());
+        return RetrofitClient.getClient(context).create(ApiInterface.class).updateCartV1(saleOrderId, lineId, new UpdateBagReq(qty).toString());
     }
 
     public static Observable<BaseResponse> deleteCartItem(Context context, int saleOrderId, String lineId) {
@@ -289,11 +310,13 @@ public class ApiConnection {
         return RetrofitClient.getClient(context).create(ApiInterface.class).addToCart(addToBagRequest.toString());
     }
 
+    @Deprecated
     public static Observable<BaseResponse> addToWishlist(Context context, AddToWishlistRequest
             addToWishlistRequest) {
         return RetrofitClient.getClient(context).create(ApiInterface.class).addToWishlist(addToWishlistRequest.toString());
     }
 
+    @Deprecated
     public static Observable<BaseResponse> removeFromWishlist(Context context, String productId) {
         return RetrofitClient.getClient(context).create(ApiInterface.class).deleteProductFromWishlist(productId);
     }
@@ -496,5 +519,72 @@ public class ApiConnection {
         return RetrofitClient.getClient(context).create(ApiInterface.class).getTransferInstruction(bankId);
     }
 
+
+
+    public static Observable<CartBaseResponse<GetCartResponse>> getCartData(Context context, int cartId) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getCartDataV1(cartId);
+    }
+
+    public static Observable<CartBaseResponse<CartProductsResponse>> addProductToCartV1(Context context, int cartId, CartProductsRequest cartProductsRequest) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).addProductToCartV1(cartId, cartProductsRequest.getRequestBody());
+    }
+
+    public static Observable<CartBaseResponse<UpdateCartItemResponse>> updateCartV1(Context context, int cartId, int lineId, UpdateCartRequest updateCartRequest) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).updateCartItem(cartId, lineId, updateCartRequest.getRequestBody());
+    }
+
+    public static Observable<CartBaseResponse<CartProductsResponse>> updateBulkCartItemsV1(Context context, int cartId, CartProductsRequest cartProductsRequest) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).updateBulkCartItems(cartId, cartProductsRequest.getRequestBody());
+    }
+
+    public static Observable<CartBaseResponse<GetCartId>> checkIfCartExists(Context context, int partnerId) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).checkIfCartExists(partnerId);
+    }
+
+    public static Observable<CartBaseResponse<GetCartId>> createCart(Context context, int partnerId) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).createCart(partnerId);
+    }
+
+
+
+    public static Observable<CartBaseResponse<DeleteCartItemResponse>> deleteItemFromCartV1(Context context, int cartId, int lineId, SetQuantityRequest setQuantityRequest) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).deleteCartItem(cartId, lineId, setQuantityRequest.getRequestBody());
+    }
+
+    public static Observable<CartBaseResponse<DeleteAllCartItemResponse>> deleteAllCartItems(Context context, int cartId){
+        return RetrofitClient.getClient(context).create(ApiInterface.class).deleteAllCartItem(cartId);
+    }
+
+    public static Observable<WishListUpdatedResponse> addItemToWishListV1(Context context, AddToWishListRequest wishListRequest) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).addItemToWishListV1(wishListRequest.toString());
+    }
+
+    public static Observable<WishListUpdatedResponse> removeItemFromWishListV1(Context context, DeleteFromWishListRequest wishListRequest) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).removeItemFromWishListV1(wishListRequest.toString());
+    }
+
+    public static Observable<GetWishListResponse> getWishlistV1(Context context) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getWishlistV1();
+    }
+
+    public static Observable<CartBaseResponse<GetDiscountPriceResponse>> getDiscountPrice(Context context, GetDiscountPriceRequest request){
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getDiscountPrice(request.getOrderId(), request.getLineIds().toString().replace(" ", ""));
+    }
+
+    public static Observable<CartBaseResponse<GetSelectedItemsPriceResponse>> getSelectedItemsPrice(Context context, int cartId, ArrayList<Integer> lineIds){
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getSelectedItemsPrice(cartId, lineIds.toString().replace(" ", ""));
+    }
+
+    public static Observable<CartBaseResponse<OrderDataResponse>> getSaleOrderDataV2(Context context, int orderId, ArrayList<Integer> lineIds, boolean usePoints) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getSaleOrderDataV2(orderId, lineIds.toString().replace(" ", ""));
+    }
+
+    public static Observable<Response<CartBaseResponse<OrderReviewResponse>>> getOrderReviewDataV3(Context context, OrderReviewRequest orderReviewRequest) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getOrderReviewDataV3(orderReviewRequest.toString());
+    }
+
+    public static Observable<CartBaseResponse<ArrayList<ActiveShippingMethod>>> getActiveShippingMethodV2(Context context, String userId) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getActiveShippingMethodsV2(userId);
+    }
 
 }

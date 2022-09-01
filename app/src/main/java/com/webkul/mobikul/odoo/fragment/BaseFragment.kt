@@ -1,6 +1,5 @@
 package com.webkul.mobikul.odoo.fragment
 
-import android.util.Log
 import androidx.fragment.app.Fragment
 import com.webkul.mobikul.odoo.activity.BaseActivity
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl
@@ -10,8 +9,12 @@ abstract class BaseFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         trackAnalyticsEvent(AnalyticsEvent.FRAGMENT_CLOSED)
-        Log.i(TAG, "onStop: ")
         // FIXME: 25/8/17 Changed for Review backpress to work.
+        if(context is com.webkul.mobikul.odoo.core.platform.BaseActivity){
+                //TODO fix this back stack crash issue
+            (context as com.webkul.mobikul.odoo.core.platform.BaseActivity).finish()
+            return
+        }
         if (this !is ProductReviewFragment) {
             (context as BaseActivity?)?.mCompositeDisposable?.clear()
         }

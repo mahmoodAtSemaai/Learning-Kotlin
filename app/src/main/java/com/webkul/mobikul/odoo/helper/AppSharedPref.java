@@ -6,6 +6,8 @@ import static com.webkul.mobikul.odoo.BuildConfig.DEFAULT_ITEM_PER_PAGE;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.webkul.mobikul.odoo.constant.ApplicationConstant;
+
 /**
  * Created by Shubham Agarwal on 4/1/17. @Webkul Software Private limited
  */
@@ -42,6 +44,9 @@ public class AppSharedPref {
     private static final String KEY_ORDER_ID = "ORDER_ID";
 
     private static final String KEY_CART_COUNT = "CART_COUNT";
+    private static final String KEY_CURRENT_CART_ID = "CART_ID";
+    private static final String KEY_NEW_CART_COUNT = "NEW_CART_COUNT";
+
     private static final String DARK_MODE = "DARK_MODE";
     private static final String KEY_ITEMS_PER_PAGE = "ITEMS_PER_PAGE";
 
@@ -564,6 +569,23 @@ public class AppSharedPref {
     public static String getAuthToken(Context context) {
         return getSharedPreference(context, CUSTOMER_PREF).getString(KEY_CUSTOMER_JWT_AUTH_TOKEN, "");
     }
+
+    public static void setCartId(Context context, int cartId){
+        getSharedPreferenceEditor(context, CUSTOMER_PREF).putInt(KEY_CURRENT_CART_ID, cartId).apply();
+    }
+
+    public static int getCartId(Context context){
+        return getSharedPreference(context, CUSTOMER_PREF).getInt(KEY_CURRENT_CART_ID, ApplicationConstant.CART_ID_NOT_AVAILABLE);
+    }
+
+    public static void setNewCartCount(Context context, int cartCount){
+        getSharedPreferenceEditor(context, CUSTOMER_PREF).putInt(KEY_NEW_CART_COUNT, cartCount).apply();
+    }
+
+    public static int getNewCartCount(Context context){
+        return getSharedPreference(context, CUSTOMER_PREF).getInt(KEY_NEW_CART_COUNT, ApplicationConstant.MIN_ITEM_TO_BE_SHOWN_IN_CART);
+    }
+
 
     public static boolean isFCMTokenSynced(Context context) {
         return getSharedPreference(context, CUSTOMER_PREF).getBoolean(KEY_IS_FCM_TOKEN_SYNCED,false);

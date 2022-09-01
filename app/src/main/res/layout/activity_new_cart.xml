@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_cart_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/tb_cart"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_bar_size"
+            android:background="@drawable/background_app_layout"
+            android:elevation="@dimen/size_5"
+            android:minHeight="?actionBarSize"
+            app:contentInsetStartWithNavigation="@dimen/size_0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_vector_arrow_back_orange">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_tool_bar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_title"
+                    style="@style/Semaai.TextAppearance.Subtitle1.Bold"
+                    android:layout_width="@dimen/size_0"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/margin_12"
+                    android:layout_marginRight="@dimen/margin_12"
+                    android:gravity="center_vertical"
+                    android:text="@string/bag"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_wish_list"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_wish_list"
+                    android:layout_width="@dimen/hamburger_icon_dimens"
+                    android:layout_height="@dimen/hamburger_icon_dimens"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="@dimen/margin_12"
+                    android:padding="@dimen/padding_2"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_drawer_cart"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_drawer_cart"
+                    app:layout_constraintTop_toTopOf="@+id/iv_drawer_cart" />
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_drawer_cart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/padding_end"
+                    android:layout_marginRight="@dimen/padding_end"
+                    android:src="@drawable/ic_hamburger"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+
+        <FrameLayout
+            android:id="@+id/fl_fragment_container_cart"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tb_cart" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

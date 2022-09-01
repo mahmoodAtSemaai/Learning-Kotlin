@@ -11,22 +11,25 @@
 
         <import type="com.webkul.mobikul.odoo.helper.IntentHelper" />
 
+        <import type="com.webkul.mobikul.odoo.data.response.models.WishListData"/>
+
         <variable
             name="data"
-            type="com.webkul.mobikul.odoo.model.customer.wishlist.MyWishListResponse" />
+            type="com.webkul.mobikul.odoo.data.response.models.GetWishListResponse" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/activityBackground"
+            android:background="@color/white"
             android:orientation="vertical"
             android:padding="@dimen/activity_horizontal_margin"
-            android:visibility="@{data!=null &amp;&amp; data.wishlistCount == 0 ? View.VISIBLE : View.GONE}">
+            android:visibility="@{data!=null &amp;&amp; data.result.size == 0 ? View.VISIBLE : View.GONE}">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="match_parent"
@@ -75,7 +78,7 @@
             android:id="@+id/wishlist_product_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="@{data!=null &amp;&amp; data.wishlistCount == 0 ? View.GONE : View.VISIBLE}"
+            android:visibility="@{data!=null &amp;&amp; data.result.size == 0 ? View.GONE : View.VISIBLE}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         <ProgressBar

@@ -18,8 +18,7 @@
     <!-- <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> -->
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="true"
-        android:requiredFeature="true" />
+        android:required="false"/>
     <uses-feature
         android:name="android.hardware.camera.autofocus"
         android:required="false" /> <!-- Feature issue in Moto E http://stackoverflow.com/questions/25078037/my-android-application-is-showing-incompatible-for-android-4-4-4-moto-e-in-play -->
@@ -50,6 +49,13 @@
             android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible" />
+
+        <activity
+            android:name=".ui.cart.NewCartActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            android:exported="false" />
+
         <activity
             android:name=".ui.routing.RoutingActivity"
             android:configChanges="uiMode"
@@ -74,6 +80,7 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.splash.SplashScreenActivityV1"
             android:exported="false"
@@ -149,6 +156,7 @@
         <activity
             android:name=".activity.NewHomeActivity"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:launchMode="singleTop" />
         <activity
             android:name=".activity.SearchActivity"

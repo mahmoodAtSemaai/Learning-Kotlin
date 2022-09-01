@@ -17,6 +17,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.muddzdev.styleabletoastlibrary.StyleableToast
@@ -29,16 +30,25 @@ import com.webkul.mobikul.odoo.constant.ApplicationConstant
 import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE
 import com.webkul.mobikul.odoo.core.extension.makeGone
+import com.webkul.mobikul.odoo.core.extension.makeInvisible
 import com.webkul.mobikul.odoo.core.extension.makeVisible
+import com.webkul.mobikul.odoo.core.utils.HTTP_RESOURCE_NOT_FOUND
+import com.webkul.mobikul.odoo.data.response.models.CartBaseResponse
+import com.webkul.mobikul.odoo.data.response.models.GetCartId
 import com.webkul.mobikul.odoo.databinding.ActivityNewHomeBinding
 import com.webkul.mobikul.odoo.databinding.ItemUserApprovalDialogBinding
 import com.webkul.mobikul.odoo.fragment.AccountFragment
 import com.webkul.mobikul.odoo.handler.home.FragmentNotifier.HomeActivityFragments
+import com.webkul.mobikul.odoo.helper.AlertDialogHelper
+import com.webkul.mobikul.odoo.helper.AppSharedPref
+import com.webkul.mobikul.odoo.helper.CartUpdateListener
+import com.webkul.mobikul.odoo.helper.SnackbarHelper
 import com.webkul.mobikul.odoo.helper.*
 import com.webkul.mobikul.odoo.model.BaseResponse
 import com.webkul.mobikul.odoo.model.ReferralResponse
 import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse
 import com.webkul.mobikul.odoo.model.home.HomePageResponse
+import com.webkul.mobikul.odoo.ui.cart.NewCartActivity
 import com.webkul.mobikul.odoo.updates.FirebaseRemoteConfigHelper.isChatFeatureEnabled
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -60,6 +70,7 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
     private val mBackPressedTime: Long = 0
     private var currentFragmentDisplayed = ""
     private var unreadChatCount = 0
+    lateinit var sweetAlertDialog : SweetAlertDialog
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,11 +82,11 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = ContextCompat.getColor(this, R.color.background_appbar_color)
 
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_new_home)
         setupUIController()
 
         //Open the Navigation Drawer
+        initDialog()
         openDrawer()
         getBagItemsCount()
         getLoyaltyPoints()
@@ -83,13 +94,15 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
         //RegisterFCMToken
         registerFCMToken()
 
+        setCartId()
+
         binding.searchView.setOnClickListener {
             binding.materialSearchView.visibility = View.VISIBLE
             binding.materialSearchView.openSearch()
         }
 
-        binding.cartIcon.setOnClickListener {
-            startActivity(Intent(this@NewHomeActivity, BagActivity::class.java))
+        binding.ivCartIcon.setOnClickListener {
+            navigateToCartActivity()
         }
 
         binding.ivChatIcon.setOnClickListener { showChatHistory() }
@@ -169,6 +182,123 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
             })
     }
 
+    private fun initDialog() {
+        sweetAlertDialog = AlertDialogHelper.getAlertDialog(this,
+            SweetAlertDialog.PROGRESS_TYPE, getString(R.string.please_wait),"", false,false)
+    }
+
+    private fun setCartId(){
+        val cartId = AppSharedPref.getCartId(this)
+
+        if(cartId == ApplicationConstant.CART_ID_NOT_AVAILABLE) {
+            callGetCartApi()
+        }
+    }
+
+    private fun callGetCartApi(){
+        val customerId = AppSharedPref.getCustomerId(this).toInt()
+        ApiConnection.checkIfCartExists(this, customerId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : CustomObserver<CartBaseResponse<GetCartId>>(this){
+                    override fun onNext(response: CartBaseResponse<GetCartId>) {
+                        super.onNext(response)
+                        if(response.statusCode == HTTP_RESOURCE_NOT_FOUND)
+                        else {
+                            AppSharedPref.setCartId(this@NewHomeActivity, response.result.cartId)
+                        }
+                    }
+
+                    override fun onError(t: Throwable) {
+                    }
+                })
+    }
+
+    private fun callCreateCartApi(customerId: Int) {
+        ApiConnection.createCart(this, customerId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : CustomObserver<CartBaseResponse<GetCartId>>(this){
+
+                    override fun onNext(response: CartBaseResponse<GetCartId>) {
+                        super.onNext(response)
+                        AppSharedPref.setCartId(this@NewHomeActivity, response.result.cartId)
+                    }
+
+                    override fun onError(t: Throwable) {
+
+                    }
+                })
+    }
+
+    private fun navigateToCartActivity() {
+        val cartId = AppSharedPref.getCartId(this)
+        if(cartId == ApplicationConstant.CART_ID_NOT_AVAILABLE) {
+            getCartId()
+        }
+        else {
+            startNewCartActivity()
+        }
+    }
+
+    private fun getCartId() {
+        val customerId = AppSharedPref.getCustomerId(this).toInt()
+        ApiConnection.checkIfCartExists(this, customerId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : CustomObserver<CartBaseResponse<GetCartId>>(this){
+                override fun onSubscribe(d: Disposable) {
+                    super.onSubscribe(d)
+                    sweetAlertDialog.show()
+                }
+
+                override fun onNext(response: CartBaseResponse<GetCartId>) {
+                    super.onNext(response)
+                    if(response.statusCode == HTTP_RESOURCE_NOT_FOUND)
+                        createCart(customerId)
+                    else {
+                        AppSharedPref.setCartId(this@NewHomeActivity, response.result.cartId)
+                        sweetAlertDialog.hide()
+                        startNewCartActivity()
+                    }
+                }
+
+                override fun onError(t: Throwable) {
+                    createCart(customerId)
+                }
+            })
+    }
+
+    private fun createCart(customerId: Int) {
+        ApiConnection.createCart(this, customerId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : CustomObserver<CartBaseResponse<GetCartId>>(this){
+
+                override fun onNext(response: CartBaseResponse<GetCartId>) {
+                    super.onNext(response)
+                    AppSharedPref.setCartId(this@NewHomeActivity, response.result.cartId)
+                    sweetAlertDialog.dismiss()
+                    startNewCartActivity()
+                }
+
+                override fun onError(t: Throwable) {
+                    super.onError(t)
+                    sweetAlertDialog.dismiss()
+                    SnackbarHelper.getSnackbar(this@NewHomeActivity, t.message,Snackbar.LENGTH_SHORT).show()
+                }
+
+                override fun onComplete() {
+                    super.onComplete()
+                }
+            })
+    }
+
+    private fun startNewCartActivity() {
+        startActivity(Intent(this, NewCartActivity::class.java)
+            .putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, getHomePageResponse()))
+    }
+
     override fun onBackPressed() {
         if (binding.materialSearchView.isVisible) {
             binding.materialSearchView.visibility = View.GONE
@@ -178,7 +308,7 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
     }
 
     private fun openDrawer() {
-        binding.drawerIcon.setOnClickListener {
+        binding.ivDrawerIcon.setOnClickListener {
             val intent = Intent(this@NewHomeActivity, NewDrawerActivity::class.java)
             intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, getHomePageResponse())
             startActivity(intent)
@@ -259,19 +389,16 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
     }
 
     private fun getBagItemsCount() {
-        val count = AppSharedPref.getCartCount(
-            this@NewHomeActivity,
-            ApplicationConstant.MIN_ITEM_TO_BE_SHOWN_IN_CART
-        )
+        val count = AppSharedPref.getNewCartCount(this@NewHomeActivity)
         binding.apply {
             if (count != ApplicationConstant.MIN_ITEM_TO_BE_SHOWN_IN_CART) {
-                badgeInfo.makeVisible()
+                tvCartItemsCount.makeVisible()
                 if (count < ApplicationConstant.MAX_ITEM_TO_BE_SHOWN_IN_CART)
-                    badgeInfo.text = count.toString()
+                    tvCartItemsCount.text = count.toString()
                 else
-                    badgeInfo.text = getString(R.string.text_nine_plus)
+                    tvCartItemsCount.text = getString(R.string.text_nine_plus)
             } else {
-                badgeInfo.makeGone()
+                tvCartItemsCount.makeGone()
             }
         }
     }
@@ -406,15 +533,11 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
 
     private fun setChatButton(isChatEnable: Boolean) {
         if (isChatEnable) {
-            binding.ivChatIcon.visibility = View.VISIBLE
+            binding.ivChatIcon.makeVisible()
         } else {
-            binding.ivChatIcon.visibility = View.INVISIBLE
-            binding.ivUnreadChatCount.visibility = View.INVISIBLE
+            binding.ivChatIcon.makeInvisible()
+            binding.ivUnreadChatCount.makeInvisible()
         }
-    }
-
-    override fun updateCart() {
-        getBagItemsCount()
     }
 
     private fun registerFCMToken() {
@@ -431,5 +554,8 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
                 }
             })
         }
+    }
+    override fun updateCart() {
+        getBagItemsCount()
     }
 }

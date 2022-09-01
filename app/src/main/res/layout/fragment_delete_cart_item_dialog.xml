@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_delete_cart_item_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_white_bg_grey_1dp_corner_6dp"
+        android:paddingHorizontal="@dimen/padding_16"
+        android:paddingVertical="@dimen/padding_20">
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_delete_cart_item_title"
+            style="@style/Semaai.TextAppearance.Subtitle1.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/remove_product"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_delete_cart_item_description"
+            style="@style/Semaai.TextAppearance.Body1"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16"
+            android:gravity="center_horizontal"
+            android:text="@string/remove_product_description"
+            android:textColor="@color/colorDarkGrey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_delete_cart_item_title" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_delete_product_yes"
+            style="@style/custom_button_2"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_12"
+            android:layout_marginTop="@dimen/margin_12"
+            android:background="@drawable/btn_white_bg_dark_grey_1dp_corner_6dp"
+            android:text="@string/yes"
+            android:textAllCaps="false"
+            android:textColor="@color/colorDarkGrey"
+            app:layout_constraintEnd_toStartOf="@+id/btn_delete_product_no"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="@+id/tv_delete_cart_item_description"
+            app:layout_constraintTop_toBottomOf="@+id/tv_delete_cart_item_description" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_delete_product_no"
+            style="@style/custom_button_2"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_12"
+            android:layout_marginTop="@dimen/margin_12"
+            android:text="@string/no"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="@+id/tv_delete_cart_item_description"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn_delete_product_yes"
+            app:layout_constraintTop_toBottomOf="@+id/tv_delete_cart_item_description" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

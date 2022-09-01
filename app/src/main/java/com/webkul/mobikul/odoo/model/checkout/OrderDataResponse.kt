@@ -15,10 +15,10 @@ data class OrderDataResponse(
     val amountTotal: String,
     @SerializedName("points_redeemed")
     @Expose
-    val pointsRedeemed: String,
+    var pointsRedeemed: String?,
     @SerializedName("grand_total")
     @Expose
-    val grandTotal: String,
+    var grandTotal: String,
     @SerializedName("amount_untaxed")
     @Expose
     val amountUntaxed: String,
@@ -120,9 +120,11 @@ data class OrderDataResponse(
     var mobileOrderStatus: String = ""
 ) {
 
-    @SerializedName("acquirer_id")
+    @SerializedName("default_acquirer_id")
     @Expose
-    var acquirerId : Int? = null
+    var acquirerId : Int = 0
+
+
 
     fun getPaymentExpiryDate(): String {
         if (expireDate == null)

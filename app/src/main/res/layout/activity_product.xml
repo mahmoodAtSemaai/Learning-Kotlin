@@ -601,7 +601,6 @@
                         android:drawableStart="@{(data.isNever() || data.isCustom() || data.isService) ? @drawable/ic_vector_bag_wrapper : (data.isPreOrder ? @drawable/ic_vector_bag_wrapper : (data.inStock ? @drawable/ic_vector_bag_wrapper : @drawable/ic_vector_bag_disabled))}"
                         android:drawableLeft="@{(data.isNever() || data.isCustom() || data.isService) ? @drawable/ic_vector_bag_wrapper : (data.isPreOrder ? @drawable/ic_vector_bag_wrapper : (data.inStock ? @drawable/ic_vector_bag_wrapper : @drawable/ic_vector_bag_disabled))}"
                         android:gravity="center"
-                        android:onClick="@{() -> handler.addToCart(false)}"
                         android:text="@string/add_to_bag"
                         android:textSize="@dimen/text_size_medium"
                         android:textStyle="bold"

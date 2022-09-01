@@ -67,8 +67,9 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideHomePageRepository(
-        remoteDataSource: HomePageRemoteDataSource
-    ): HomePageRepository = HomePageRepositoryImpl(remoteDataSource)
+            remoteDataSource: HomePageRemoteDataSource,
+            appPreferences: AppPreferences
+    ): HomePageRepository = HomePageRepositoryImpl(remoteDataSource, appPreferences)
 
 
     @Provides

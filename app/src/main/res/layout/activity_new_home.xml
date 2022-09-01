@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -21,6 +22,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_home_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
@@ -28,30 +30,30 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/home_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/action_bar_size"
+            android:layout_height="wrap_content"
             android:background="@drawable/background_app_layout"
             android:elevation="@dimen/size_5"
             android:minHeight="?actionBarSize"
+            app:contentInsetLeft="@dimen/size_10"
+            app:contentInsetStart="@dimen/size_10"
+            app:contentInsetStartWithNavigation="@dimen/size_0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_home_tool_bar_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:weightSum="10">
+                android:layout_height="wrap_content">
 
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/search_view"
-                    style="@style/Semaai.TextAppearance.Caption"
                     android:layout_width="@dimen/font_weight_0"
                     android:layout_height="@dimen/search_item_view"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="@dimen/size_5"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="3.5"
+                    android:layout_marginEnd="@dimen/margin_4"
+                    android:layout_marginRight="@dimen/margin_4"
                     android:background="@drawable/search_background"
                     android:drawableStart="@drawable/search"
                     android:drawableLeft="@drawable/search"
@@ -60,78 +62,75 @@
                     android:paddingStart="@dimen/padding_start"
                     android:paddingLeft="@dimen/padding_start"
                     android:paddingEnd="@dimen/padding_end"
-                    android:paddingRight="@dimen/padding_end" />
+                    android:paddingRight="@dimen/padding_end"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/gl_home_tb_vertical_35"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
 
                 <RelativeLayout
-                    android:layout_width="@dimen/font_weight_0"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="@dimen/size_6"
-                    android:layout_marginRight="@dimen/size_8"
-                    android:layout_weight="2.5"
+                    android:id="@+id/rl_semaai_points_container"
+                    android:layout_width="@dimen/size_0"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/search_background"
-                    android:backgroundTint="@color/background_appbar_color"
-                    android:gravity="center_horizontal">
+                    android:paddingVertical="@dimen/padding_0"
+                    app:layout_constraintEnd_toStartOf="@id/gl_home_tb_vertical_60"
+                    app:layout_constraintStart_toEndOf="@id/gl_home_tb_vertical_35"
+                    app:layout_constraintTop_toTopOf="@+id/search_view">
 
 
-                    <RelativeLayout
+                    <LinearLayout
+                        android:id="@+id/ll_semaai_points"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/search_item_view"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/search_background">
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_28"
+                        android:layout_marginLeft="@dimen/margin_28"
+                        android:layout_marginEnd="@dimen/margin_2"
+                        android:layout_marginRight="@dimen/margin_1"
+                        android:orientation="vertical">
 
 
-                        <LinearLayout
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_semaai_points_text"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="@dimen/size_29"
-                            android:layout_marginLeft="@dimen/size_27"
-                            android:layout_marginTop="@dimen/size_4"
-                            android:layout_marginEnd="@dimen/size_2"
-                            android:layout_marginRight="@dimen/size_1"
-                            android:layout_marginBottom="@dimen/size_6"
-                            android:orientation="vertical"
-                            android:weightSum="10">
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/padding_0"
+                            android:text="@string/point" />
 
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/loyalty_points"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:text=""
+                            android:textAlignment="textStart"
+                            tools:text="5000" />
 
-                            <androidx.appcompat.widget.AppCompatTextView
-                                style="@style/Semaai.TextAppearance.Overline"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/font_weight_0"
-                                android:layout_weight="5"
-                                android:drawablePadding="@dimen/points_box_spacing"
-                                android:gravity="center|start"
-                                android:text="@string/point"
-                                android:textAlignment="textStart" />
+                    </LinearLayout>
 
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/loyalty_points"
-                                style="@style/Semaai.TextAppearance.Overline"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/font_weight_0"
-                                android:layout_weight="5"
-                                android:gravity="start"
-                                android:text=""
-                                android:textAlignment="textStart" />
-
-                        </LinearLayout>
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:layout_width="@dimen/size_25"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="@dimen/size_2"
-                            android:layout_marginLeft="@dimen/size_2"
-                            android:layout_marginTop="@dimen/size_10"
-                            android:layout_marginBottom="@dimen/size_10"
-                            android:src="@drawable/ic_semaai_points" />
-
-                    </RelativeLayout>
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/semaai_points_icon"
+                        android:layout_width="@dimen/size_24"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/margin_2"
+                        android:layout_marginLeft="@dimen/margin_2"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:layout_marginBottom="@dimen/margin_10"
+                        android:src="@drawable/ic_semaai_points" />
 
                 </RelativeLayout>
 
+
                 <RelativeLayout
+                    android:id="@+id/rl_chat_container"
                     android:layout_width="@dimen/font_weight_0"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.5">
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/rl_semaai_points_container"
+                    app:layout_constraintEnd_toStartOf="@id/gl_home_tb_vertical_75"
+                    app:layout_constraintStart_toEndOf="@+id/rl_semaai_points_container"
+                    app:layout_constraintTop_toTopOf="@+id/rl_semaai_points_container">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/iv_chat_icon"
@@ -144,7 +143,6 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/iv_unread_chat_count"
-                        style="@style/Semaai.TextAppearance.Caption.Bold"
                         android:layout_width="@dimen/badge_dimension"
                         android:layout_height="@dimen/badge_dimension"
                         android:layout_alignEnd="@+id/iv_chat_icon"
@@ -157,42 +155,75 @@
 
                 </RelativeLayout>
 
-                <RelativeLayout
-                    android:layout_width="@dimen/font_weight_0"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.5">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/cart_icon"
-                        android:layout_width="@dimen/hamburger_icon_dimens"
-                        android:layout_height="@dimen/hamburger_icon_dimens"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/cart" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/badge_info"
-                        style="@style/Semaai.TextAppearance.Caption.Bold"
-                        android:layout_width="@dimen/badge_dimension"
-                        android:layout_height="@dimen/badge_dimension"
-                        android:layout_alignEnd="@+id/cart_icon"
-                        android:layout_marginTop="@dimen/top_margin_badge"
-                        android:layout_marginRight="-9dp"
-                        android:background="@drawable/badge_symbol"
-                        android:gravity="center"
-                        android:text="@string/text_one"
-                        android:textColor="@color/text_color_white" />
-
-                </RelativeLayout>
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/drawer_icon"
+                    android:id="@+id/iv_cart_icon"
+                    android:layout_width="@dimen/hamburger_icon_dimens"
+                    android:layout_height="@dimen/hamburger_icon_dimens"
+                    android:src="@drawable/ic_cart_new"
+                    app:layout_constraintBottom_toBottomOf="@+id/relativeLayout2"
+                    app:layout_constraintEnd_toStartOf="@+id/gl_home_tb_vertical_90"
+                    app:layout_constraintStart_toEndOf="@+id/rl_chat_container"
+                    app:layout_constraintTop_toTopOf="@+id/rl_chat_container" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_cart_items_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/cart_icon"
+                    android:background="@drawable/background_discount_price"
+                    android:paddingHorizontal="@dimen/padding_6"
+                    android:paddingVertical="@dimen/padding_2"
+                    android:text="@string/text_one"
+                    android:textColor="@color/white"
+                    style="@style/Semaai.TextAppearance.Caption.Bold"
+                    app:layout_constraintBottom_toTopOf="@+id/iv_cart_icon"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_cart_icon"
+                    app:layout_constraintStart_toEndOf="@+id/iv_cart_icon"
+                    app:layout_constraintTop_toTopOf="@+id/iv_cart_icon" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_drawer_icon"
                     android:layout_width="@dimen/size_0"
                     android:layout_height="@dimen/hamburger_icon_dimens"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:src="@drawable/ic_baseline_menu_24" />
+                    android:src="@drawable/ic_baseline_menu_24"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_cart_icon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/gl_home_tb_vertical_90"
+                    app:layout_constraintTop_toTopOf="@+id/cart_icon" />
 
-            </LinearLayout>
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gl_home_tb_vertical_35"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.37" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gl_home_tb_vertical_60"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.60" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gl_home_tb_vertical_75"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.75" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gl_home_tb_vertical_90"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.90" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -200,7 +231,7 @@
             android:id="@+id/home_nav_host"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/size_0"
             app:defaultNavHost="true"
             app:layout_constraintBottom_toTopOf="@id/home_bottom_nav"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -222,7 +253,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_bottom_layout"
-            android:elevation="5sp"
+            android:elevation="@dimen/size_5"
             app:labelVisibilityMode="labeled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

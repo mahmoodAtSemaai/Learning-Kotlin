@@ -21,15 +21,13 @@ class ContinuePhoneNumberUseCase @Inject constructor(
         val result = authenticationRepository.validatePhoneNumber(phoneNumber)
         when (result) {
             is Resource.Default -> {}
-            is Resource.Failure -> {
-                emit(Resource.Failure(failureStatus = FailureStatus.API_FAIL, message = result.message))
-            }
+            is Resource.Failure -> { emit(result) }
             is Resource.Loading -> {}
             is Resource.Success -> {
                 if (result.value.statusCode == HTTP_RESPONSE_OK.toString())
                     emit(result)
                 else
-                    emit(Resource.Failure(failureStatus = FailureStatus.API_FAIL, message = result.value.message))
+                    emit(Resource.Failure(failureStatus = FailureStatus.OTHER, message = result.value.message))
             }
         }
 

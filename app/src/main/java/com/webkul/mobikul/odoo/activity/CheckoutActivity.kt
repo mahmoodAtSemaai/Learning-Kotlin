@@ -1,5 +1,6 @@
 package com.webkul.mobikul.odoo.activity
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -12,17 +13,23 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.adapter.checkout.CheckoutProductsAdapter
 import com.webkul.mobikul.odoo.connection.ApiConnection
 import com.webkul.mobikul.odoo.connection.CustomObserver
 import com.webkul.mobikul.odoo.constant.BundleConstant.*
 import com.webkul.mobikul.odoo.core.extension.makeGone
-import com.webkul.mobikul.odoo.core.extension.makeInvisible
 import com.webkul.mobikul.odoo.core.extension.makeVisible
+import com.webkul.mobikul.odoo.core.utils.HTTP_RESPONSE_OK
+import com.webkul.mobikul.odoo.data.response.models.CartBaseResponse
+import com.webkul.mobikul.odoo.data.request.GetDiscountPriceRequest
+import com.webkul.mobikul.odoo.data.response.models.GetDiscountPriceResponse
+import com.webkul.mobikul.odoo.data.response.models.OrderReviewResponse
 import com.webkul.mobikul.odoo.databinding.ActivityNewCheckoutBinding
 import com.webkul.mobikul.odoo.fragment.PaymentStatusFragment
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper
+import com.webkul.mobikul.odoo.helper.AppSharedPref
 import com.webkul.mobikul.odoo.helper.SnackbarHelper
 import com.webkul.mobikul.odoo.model.checkout.*
 import com.webkul.mobikul.odoo.model.payments.CreateVirtualAccountPaymentRequest
@@ -30,10 +37,11 @@ import com.webkul.mobikul.odoo.model.payments.OrderPaymentData
 import com.webkul.mobikul.odoo.model.payments.SelectedPaymentMethod
 import com.webkul.mobikul.odoo.model.request.OrderReviewRequest
 import com.webkul.mobikul.odoo.model.request.PlaceOrderRequest
+import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import com.webkul.mobikul.odoo.helper.AppSharedPref
+import retrofit2.Response
 
 
 class CheckoutActivity : BaseActivity() {
@@ -46,6 +54,10 @@ class CheckoutActivity : BaseActivity() {
     private val START_X = 0
     private var isUserWantToRedeemPoints: Boolean = false
     val orderValueZero = 0L
+    var lineIds = ArrayList<Int>()
+    private var cartOrderId: Int = 1
+    private var discountedPrice = ""
+    private var semaaiPointsRedeemed = 0.0
 
     private val startActivityForShippingAddressResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
@@ -53,6 +65,7 @@ class CheckoutActivity : BaseActivity() {
                 hideError(binding.layoutAddressInfo.root, false)
                 getOrderData(
                     orderDataResponse.orderId,
+                    lineIds,
                     refreshRecyclerView = false,
                     refreshPaymentDetails = false
                 )
@@ -65,6 +78,7 @@ class CheckoutActivity : BaseActivity() {
                 hideError(binding.layoutShippingMethod.clCheckoutOptions, true)
                 getOrderData(
                     orderDataResponse.orderId,
+                    lineIds,
                     refreshRecyclerView = false,
                     refreshPaymentDetails = true
                 )
@@ -95,7 +109,6 @@ class CheckoutActivity : BaseActivity() {
         createDialog()
         setLayoutData()
         setButtonClickListener()
-        getIsUserWantToRedeemPoints()
         getArguments()
     }
 
@@ -141,32 +154,38 @@ class CheckoutActivity : BaseActivity() {
     }
 
     private fun getArguments() {
-        val orderId = intent.getIntExtra(BUNDLE_KEY_ORDER_ID, -1)
-        getOrderData(orderId, true, true)
+        cartOrderId = intent.getIntExtra(BUNDLE_KEY_ORDER_ID, -1)
+        lineIds = intent.getIntegerArrayListExtra(BUNDLE_KEY_LINE_IDS) as ArrayList<Int>
+        isUserWantToRedeemPoints = intent.getBooleanExtra(BUNDLE_KEY_IS_POINTS_USED, false)
+        if(isUserWantToRedeemPoints)
+            getSemaaiPoints()
+        else
+            getOrderData(cartOrderId, lineIds, true, true)
     }
 
     private fun getOrderData(
         orderId: Int,
+        lineIds: ArrayList<Int>,
         refreshRecyclerView: Boolean,
         refreshPaymentDetails: Boolean
     ) {
-        ApiConnection.getOrderData(this, orderId, isUserWantToRedeemPoints)
+        ApiConnection.getSaleOrderDataV2(this, orderId, lineIds, isUserWantToRedeemPoints)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : CustomObserver<OrderDataResponse?>(this@CheckoutActivity) {
+            .subscribe(object : CustomObserver<CartBaseResponse<OrderDataResponse>>(this@CheckoutActivity) {
                 override fun onSubscribe(d: Disposable) {
                     dialog.titleText = getString(R.string.fetching_order_details)
                     dialog.show()
                 }
 
-                override fun onNext(orderDataResponse: OrderDataResponse) {
-                    super.onNext(orderDataResponse)
+                override fun onNext(response: CartBaseResponse<OrderDataResponse>) {
+                    super.onNext(response)
                     handleOrderDataResponse(
-                        orderDataResponse,
+                        response.result,
                         refreshRecyclerView,
                         refreshPaymentDetails
                     )
-                    dialog.hide()
+                    dialog.dismiss()
                 }
 
                 override fun onError(t: Throwable) {
@@ -178,6 +197,36 @@ class CheckoutActivity : BaseActivity() {
 
     }
 
+    private fun getSemaaiPoints() {
+        ApiConnection.getDiscountPrice(this, GetDiscountPriceRequest(cartOrderId, lineIds))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : CustomObserver<CartBaseResponse<GetDiscountPriceResponse>>(this){
+
+                override fun onSubscribe(d: Disposable) {
+                    dialog.titleText = getString(R.string.fetching_order_details)
+                    dialog.show()
+                }
+
+                override fun onNext(response: CartBaseResponse<GetDiscountPriceResponse>) {
+                    discountedPrice = response.result.discountedPrice
+                    semaaiPointsRedeemed = response.result.pointsRedeemed
+                    getOrderData(cartOrderId, lineIds, true, true)
+                }
+
+                override fun onError(t: Throwable) {
+                    dialog.dismiss()
+                    SnackbarHelper.getSnackbar(
+                        this@CheckoutActivity,
+                        getString(R.string.error_request_failed),
+                        Snackbar.LENGTH_SHORT,
+                        SnackbarHelper.SnackbarType.TYPE_WARNING
+                    )
+                }
+
+            })
+    }
+
     private fun showErrorDialog() {
         dialog = AlertDialogHelper.getAlertDialog(
             this, SweetAlertDialog.ERROR_TYPE,
@@ -185,7 +234,7 @@ class CheckoutActivity : BaseActivity() {
         )
         dialog.confirmText = getString(R.string.ok)
         dialog.setConfirmClickListener {
-            dialog.hide()
+            dialog.dismiss()
             setIsCustomerWantToRedeemPointsfalse()
             finish()
         }
@@ -198,6 +247,11 @@ class CheckoutActivity : BaseActivity() {
         refreshPaymentDetails: Boolean
     ) {
         this@CheckoutActivity.orderDataResponse = orderDataResponse
+        if(isUserWantToRedeemPoints) {
+            orderDataResponse.grandTotal = discountedPrice
+            orderDataResponse.pointsRedeemed = semaaiPointsRedeemed.toString()
+        }
+
         binding.data = orderDataResponse
         binding.layoutAddressInfo.addressData = orderDataResponse.shippingAddressId
         setShippingMethodData(orderDataResponse)
@@ -239,8 +293,8 @@ class CheckoutActivity : BaseActivity() {
             orderPaymentData = OrderPaymentData(
                 getString(R.string.cod_text),
                 orderDataResponse.amountTotal,
-                "(${orderDataResponse.cartCount} ${getString(R.string.product)})",
-                orderDataResponse.pointsRedeemed,
+                "(${orderDataResponse.items.size} ${getString(R.string.product)})",
+                orderDataResponse.pointsRedeemed ?:"",
                 "",
                 "",
                 orderDataResponse.grandTotal
@@ -255,8 +309,8 @@ class CheckoutActivity : BaseActivity() {
                 orderPaymentData = OrderPaymentData(
                     paymentMethodText,
                     orderDataResponse.amountTotal,
-                    "(${orderDataResponse.cartCount} ${getString(R.string.product)})",
-                    orderDataResponse.pointsRedeemed,
+                    "(${orderDataResponse.items.size} ${getString(R.string.product)})",
+                    orderDataResponse.pointsRedeemed ?:"",
                     orderDataResponse.delivery.total,
                     "",
                     orderDataResponse.grandTotal
@@ -265,8 +319,8 @@ class CheckoutActivity : BaseActivity() {
                 orderPaymentData = OrderPaymentData(
                     getString(R.string.cod_text),
                     orderDataResponse.amountTotal,
-                    "(${orderDataResponse.cartCount} ${getString(R.string.product)})",
-                    orderDataResponse.pointsRedeemed,
+                    "(${orderDataResponse.items.size} ${getString(R.string.product)})",
+                    orderDataResponse.pointsRedeemed ?: "",
                     orderDataResponse.delivery.total,
                     "",
                     orderDataResponse.grandTotal
@@ -368,39 +422,47 @@ class CheckoutActivity : BaseActivity() {
     }
 
     private fun callOrderReviewDataApi() {
-        ApiConnection.getOrderReviewData(
+        ApiConnection.getOrderReviewDataV3(
             this,
             OrderReviewRequest(
                 orderDataResponse.shippingAddressId.id.toString(),
                 orderDataResponse.delivery?.shippingId.toString(),
                 selectedPaymentMethod?.paymentAcquirerId,
-                isUserWantToRedeemPoints
+                isUserWantToRedeemPoints,
+                lineIds
             )
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : CustomObserver<OrderReviewResponse?>(this) {
+            .subscribe(object : Observer<Response<CartBaseResponse<OrderReviewResponse>>>{
                 override fun onSubscribe(d: Disposable) {
                     dialog.titleText = getString(R.string.placing_your_order)
                     dialog.show()
                 }
 
-                override fun onNext(orderReviewResponse: OrderReviewResponse) {
-                    if(orderReviewResponse.isSuccess) placeOrder(orderReviewResponse.transactionId)
+                @SuppressLint("LogNotTimber")
+                override fun onNext(response: Response<CartBaseResponse<OrderReviewResponse>>) {
+                    if(response.code() == HTTP_RESPONSE_OK)
+                        response.body()?.result?.let {
+                            setRemainingCartCount(it.cartCount)
+                            placeOrder(it)
+                        }
                     else {
-                        dialog.hide()
-                        AlertDialogHelper.showDefaultWarningDialog(this@CheckoutActivity," ",orderReviewResponse.message)
+                        dialog.dismiss()
+                        val errorMessage = response.errorBody()?.string()
+                        val gson = Gson()
+                        val message = gson.fromJson(errorMessage, CartBaseResponse::class.java)
+                        AlertDialogHelper.showDefaultWarningDialog(this@CheckoutActivity,
+                            getString(R.string.error), message?.message)
                     }
                 }
 
                 override fun onError(t: Throwable) {
-                    dialog.hide()
-                    SnackbarHelper.getSnackbar(
-                        this@CheckoutActivity,
-                        getString(R.string.error_request_failed),
-                        Snackbar.LENGTH_SHORT,
-                        SnackbarHelper.SnackbarType.TYPE_WARNING
-                    )
+                    dialog.dismiss()
+                    AlertDialogHelper.showDefaultWarningDialog(this@CheckoutActivity, t.message, "")
+                }
+
+                override fun onComplete() {
                 }
             })
     }
@@ -413,14 +475,14 @@ class CheckoutActivity : BaseActivity() {
     }
 
 
-    private fun placeOrder(transactionId: Int) {
+    private fun placeOrder(response: OrderReviewResponse) {
         if (selectedPaymentMethod?.isCOD == true)
-            placeCODOrder(transactionId)
+            placeCODOrder(response.transactionId)
         else
-            placeVirtualAccountOrder(transactionId)
+            placeVirtualAccountOrder(response.transactionId, response.saleOrderId)
     }
 
-    private fun placeVirtualAccountOrder(transactionId: Int) {
+    private fun placeVirtualAccountOrder(transactionId: Int, saleOrderid: Int) {
         ApiConnection.placeOrder(this, PlaceOrderRequest(transactionId, isUserWantToRedeemPoints))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -428,12 +490,12 @@ class CheckoutActivity : BaseActivity() {
 
                 override fun onNext(t: OrderPlaceResponse) {
                     super.onNext(t)
-                    dialog.hide()
-                    redirectToPaymentProcessingFragment(transactionId)
+                    dialog.dismiss()
+                    redirectToPaymentProcessingFragment(transactionId, saleOrderid)
                 }
 
                 override fun onError(t: Throwable) {
-                    dialog.hide()
+                    dialog.dismiss()
                     SnackbarHelper.getSnackbar(
                         this@CheckoutActivity,
                         getString(R.string.error_request_failed),
@@ -444,7 +506,7 @@ class CheckoutActivity : BaseActivity() {
             })
     }
 
-    private fun redirectToPaymentProcessingFragment(transactionId: Int) {
+    private fun redirectToPaymentProcessingFragment(transactionId: Int, saleOrderId: Int) {
         startActivity(
             Intent(this@CheckoutActivity, FragmentContainerActivity::class.java)
                 .putExtra(BUNDLE_KEY_FRAGMENT_TYPE, BUNDLE_PAYMENT_PROCESSING_SCREEN)
@@ -452,11 +514,11 @@ class CheckoutActivity : BaseActivity() {
                     BUNDLE_ORDER_COST_DATA, CreateVirtualAccountPaymentRequest(
                         getString(R.string.currency_idr),
                         selectedPaymentMethod?.paymentAcquirerProviderId.toString(),
-                        orderDataResponse.orderId.toString(),
+                        saleOrderId.toString(),
                         transactionId.toString()
                     )
                 )
-                .putExtra(BUNDLE_KEY_ORDER_ID, orderDataResponse.orderId.toString())
+                .putExtra(BUNDLE_KEY_ORDER_ID, saleOrderId.toString())
         )
         setIsCustomerWantToRedeemPointsfalse()
         finish()
@@ -470,14 +532,13 @@ class CheckoutActivity : BaseActivity() {
             .subscribe(object : CustomObserver<OrderPlaceResponse?>(this) {
                 override fun onNext(t: OrderPlaceResponse) {
                     super.onNext(t)
-                    dialog.hide()
                     dialog.dismiss()
                     redirectToOrderPlacedFragment()
                 }
 
                 override fun onError(t: Throwable) {
                     super.onError(t)
-                    dialog.hide()
+                    dialog.dismiss()
                     SnackbarHelper.getSnackbar(
                         this@CheckoutActivity, getString(R.string.error_request_failed),
                         Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING
@@ -486,6 +547,9 @@ class CheckoutActivity : BaseActivity() {
             })
     }
 
+    private fun setRemainingCartCount(cartCount: Int){
+        AppSharedPref.setNewCartCount(this@CheckoutActivity, cartCount)
+    }
 
     private fun redirectToOrderPlacedFragment() {
         startActivity(
@@ -527,9 +591,6 @@ class CheckoutActivity : BaseActivity() {
         }
     }
 
-    private fun getIsUserWantToRedeemPoints() {
-        isUserWantToRedeemPoints = AppSharedPref.getIsCustomerWantToRedeemPoints(this)
-    }
 
     private fun setIsCustomerWantToRedeemPointsfalse() {
         AppSharedPref.setIsCustomerWantToRedeemPoints(this, false)
