@@ -264,8 +264,12 @@ class CartFragment : Fragment() ,
         sellerList.forEach { seller ->
             seller.isSellerChecked.set(true)
             seller.products.forEach { product ->
-                product.isChecked.set(true)
-                selectedProducts.add(product.lineId)
+                if(!product.isOutOfStock()) {
+                    product.isChecked.set(true)
+                    selectedProducts.add(product.lineId)
+                }else{
+                    product.isChecked.set(false)
+                }
             }
         }
         setButtonState(selectedProducts.size > 0)
@@ -369,7 +373,13 @@ class CartFragment : Fragment() ,
     override fun onProductSelected(sellerPosition: Int) {
         selectedProducts.clear()
         var totalProducts = 0
+        var totalSeller = 0
+        var selectedSeller = 0
         sellerList.forEach { seller ->
+            totalSeller++
+            if (seller.isSellerChecked.get())
+                selectedSeller++
+
             seller.products.forEach { product ->
                 if(product.isChecked.get())
                     selectedProducts.add(product.lineId)
@@ -378,7 +388,7 @@ class CartFragment : Fragment() ,
         }
         binding.cartCost.tvSelectedProductCount.text = "${selectedProducts.size} ${getString(R.string.product)}"
         setButtonState(selectedProducts.size > 0)
-        binding.cartCost.cbSelectAll.isChecked = selectedProducts.size == totalProducts
+        binding.cartCost.cbSelectAll.isChecked = totalSeller == selectedSeller
         if(selectedProducts.size > 0){
             getSelectedProductCost(selectedProducts)
         }else{
@@ -443,9 +453,17 @@ class CartFragment : Fragment() ,
     private fun updateBulkCartItems(sellerPosition: Int){
         selectedProducts.clear() //clear line ids
         var list = ArrayList<CartProductItemRequest>()
+
+        var totalSeller = 0
+        var selectedSeller = 0
         sellerList.forEach { seller ->
+            totalSeller++
+
+            if (seller.isSellerChecked.get())
+                selectedSeller++
+
             seller.products.forEach { product ->
-                if(product.isChecked.get()) {
+                if(product.isChecked.get() && !product.isOutOfStock()) {
                     selectedProducts.add(product.lineId)//set all selected product line ids
                     list.add(CartProductItemRequest(productId = product.productId, addQty = 0, setQty = product.quantity))
                 }
@@ -466,7 +484,8 @@ class CartFragment : Fragment() ,
             btnRedirectToCheckout.isEnabled = false
             btnRedirectToCheckout.setTextColor(requireContext().getCompatColor(R.color.background_appbar_color))
             tvSelectedProductCount.text = "${selectedProducts.size} ${getString(R.string.product)}"
-            cbSelectAll.isChecked = selectedProducts.size == totalCartItems
+            cbSelectAll.isChecked = totalSeller == selectedSeller
+
         }
 
 
@@ -522,7 +541,15 @@ class CartFragment : Fragment() ,
             btnRedirectToCheckout.isEnabled = false
             btnRedirectToCheckout.setTextColor(requireContext().getCompatColor(R.color.background_appbar_color))
             tvSelectedProductCount.text = "${selectedProducts.size} ${getString(R.string.product)}"
-            cbSelectAll.isChecked = selectedProducts.size == totalCartItems
+
+            var totalSeller = 0
+            var selectedSeller = 0
+            sellerList.forEach { sellerEntity->
+                totalSeller++
+                if (sellerEntity.isSellerChecked.get())
+                    selectedSeller++
+            }
+            cbSelectAll.isChecked = selectedSeller == totalSeller
         }
         ApiConnection.updateCartV1(requireContext(), cartId, lineId, updateCartRequest)
             .subscribeOn(Schedulers.io())

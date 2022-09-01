@@ -39,7 +39,10 @@ class SellerAdapter(
                 val isChecked = (it as AppCompatCheckBox).isChecked
                 seller.isSellerChecked.set(isChecked)
                 seller.products.forEach { cartEntity ->
-                    cartEntity.isChecked.set(isChecked)
+                    if(isChecked && !cartEntity.isOutOfStock())
+                        cartEntity.isChecked.set(true)
+                    else
+                        cartEntity.isChecked.set(false)
                 }
                 (listener as CartFragment).selectAllProductItems(position)
             }
