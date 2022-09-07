@@ -25,6 +25,7 @@
     <color name="text_color_Secondary">@color/grey_700</color>
     <color name="text_color_required">#f10000</color>
     <color name="text_color_white">#E0E0E0</color>
+    <color name="text_orange">#E16E03</color>
 
     <!--MATERIAL COLOR SHEET...............-->
     <color name="grey_900">#212121</color> <!--same for closed order status color-->
@@ -91,8 +92,8 @@
     <color name="background_appbar_color_alpha_50">#90FFD8B8</color>
 
     <color name="green_2A4332">#2A4332</color>
+    <color name="white_transparent">#88ffffff</color>
 
-    <color name="text_orange">#E16E03</color>
     <color name="grey_bg_dark">#8F8E8E</color>
 
 </resources>

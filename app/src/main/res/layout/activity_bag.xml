@@ -279,7 +279,7 @@
                             android:layout_width="@dimen/size_0"
                             android:layout_height="match_parent"
                             android:gravity="end"
-                            android:text="10.000"
+                            android:text=""
                             app:layout_constraintBottom_toBottomOf="@+id/tv_semaai_points_text"
                             app:layout_constraintEnd_toStartOf="@+id/cb_use_points"
                             app:layout_constraintStart_toEndOf="@+id/tv_semaai_points_text"

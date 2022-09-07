@@ -25,6 +25,8 @@ import com.webkul.mobikul.odoo.model.customer.address.addressResponse.DistrictLi
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.StateListResponse;
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.SubDistrictListResponse;
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.VillageListResponse;
+import com.webkul.mobikul.odoo.model.customer.loyalty.LoyaltyHistoryResponse;
+import com.webkul.mobikul.odoo.model.customer.loyalty.LoyaltyTermsResponse;
 import com.webkul.mobikul.odoo.model.customer.order.MyOrderReponse;
 import com.webkul.mobikul.odoo.model.customer.order.OrderDetailResponse;
 import com.webkul.mobikul.odoo.model.customer.signin.LoginResponse;
@@ -159,6 +161,13 @@ public interface ApiInterface {
     String LOYALTY_MANAGEMENT_REFERRAL_CODE = "res-user/{user_id}/res-partner";
     String LOYALTY_MANAGEMENT_POINTS = "redeem-history";
     String LOYALTY_VALIDATE_REFERRAL_CODE = "res-partner/{referral_code}";
+    String LOYALTY_POINTS_HISTORY = "v1/redeem-history";
+    String LOYALTY_TERMS_LIST = "loyalty-program/terms";
+    String LOYALTY_TERM_DETAILS = "loyalty-program/terms/{term_id}";
+
+    String LOYALTY_POINTS_HISTORY_USER_ID = "user_id";
+    String LIMIT = "limit";
+    String OFFSET = "offset";
 
 
     /*Analytics*/
@@ -582,6 +591,17 @@ public interface ApiInterface {
     @GET(MOBIKUL_GET_PAYMENTS_INSTRUCTIONS)
     Observable<TransferInstructionResponse> getTransferInstruction(@Path(MOBIKUL_BANK_ID) int bankId);
 
+    @GET(LOYALTY_POINTS_HISTORY)
+    Observable<LoyaltyHistoryResponse> getLoyaltyPointsHistory(
+            @Query(LOYALTY_POINTS_HISTORY_USER_ID) String user_id
+            , @Query(LIMIT) int limit
+            , @Query(OFFSET) int offset);
+
+    @GET(LOYALTY_TERMS_LIST)
+    Observable<LoyaltyTermsResponse> getLoyaltyTerms();
+
+    @GET(LOYALTY_TERM_DETAILS)
+    Observable<LoyaltyTermsResponse> getLoyaltyTermDetails(@Path("term_id") int bannerId);
 
     @GET(CHECK_IF_CART_EXISTS)
     Observable<CartBaseResponse<GetCartId>> checkIfCartExists(@Query(PARTNER_ID) int partnerId);

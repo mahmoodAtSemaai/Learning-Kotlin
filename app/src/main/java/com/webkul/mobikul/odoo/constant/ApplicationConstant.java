@@ -42,6 +42,7 @@ public interface ApplicationConstant {
     String TYPE_CHAT = "chat";
     String TYPE_NONE = "none";
     String TYPE_SERVICE = "service";
+    String TYPE_LOYALTY_TERMS = "open_loyalty";
 
     /*PAYMENT ACQUIRER CODES*/
     String ACQUIRER_CODE_STRIPE = "STRIPE";
@@ -87,6 +88,15 @@ public interface ApplicationConstant {
     int MAX_ITEM_TO_BE_SHOWN_IN_CART = 10;
     int MIN_ITEM_TO_BE_SHOWN_IN_CART = 0;
     int CART_ID_NOT_AVAILABLE = -1;
+
+    // Point TYPE
+    String CREDIT = "credit";
+    String INDO_CREDIT = "Diterima";
+
+    // Language
+    String INDONESIAN = "id_ID";
+
+
 
     //Address
     int COMPANY_ID = 1;

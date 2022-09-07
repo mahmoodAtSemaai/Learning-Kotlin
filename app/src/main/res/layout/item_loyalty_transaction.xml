@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.customer.loyalty.LoyaltyTransactionData" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_loyalty_history_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/size_12"
+            android:layout_marginTop="@dimen/size_12">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{data.date}"
+                style="@style/Semaai.TextAppearance.Body2.Bold"
+                android:paddingBottom="@dimen/size_8"
+                app:layout_constraintTop_toTopOf="@id/cl_loyalty_history_item"
+                app:layout_constraintStart_toStartOf="@id/cl_loyalty_history_item"
+                tools:text="Sep, 5th 2022"/>
+
+
+            <ImageView
+                android:id="@+id/iv_points"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/spacing_generic"
+                android:paddingEnd="@dimen/spacing_generic"
+                android:paddingTop="@dimen/spacing_generic"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_date"
+                android:src="@{data.isCredit() ? @drawable/ic_semaai_points : @drawable/ic_points}"
+                android:contentDescription="points" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_point_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{data.pointType}"
+                style="@style/Semaai.TextAppearance.Body2.Bold"
+                app:layout_constraintStart_toEndOf="@id/iv_points"
+                app:layout_constraintTop_toBottomOf="@id/tv_date"
+                android:gravity="top"
+                tools:text="Debited, Bonus" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{data.time}"
+                style="@style/Semaai.TextAppearance.Body2"
+                app:layout_constraintStart_toEndOf="@id/iv_points"
+                app:layout_constraintTop_toBottomOf="@id/tv_point_type"
+                tools:text="14.50 WIB" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_points"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{data.points}"
+                android:textColor="@{data.isCredit() ? @color/text_color_green : @color/red_alert}"
+                style="@style/Semaai.TextAppearance.Body2.Bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_date"
+                app:layout_constraintRight_toLeftOf="@id/tv_point_type"
+                android:gravity="center"
+                tools:text="-20.000" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_points_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/point"
+                style="@style/Semaai.TextAppearance.Body2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_point_type"
+                app:layout_constraintRight_toLeftOf="@id/tv_time"
+                android:drawableLeft="@drawable/ic_semaai_points"
+                android:drawablePadding="@dimen/padding_8"
+                android:paddingBottom="@dimen/padding_12"
+                tools:text="@string/point" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include layout="@layout/separator_layout"/>
+   </LinearLayout>
+
+
+</layout>

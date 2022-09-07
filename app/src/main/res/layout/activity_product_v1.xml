@@ -223,6 +223,7 @@
                     android:padding="@dimen/spacing_tiny"
                     android:layout_marginStart="@dimen/spacing_normal"
                     android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginBottom="@dimen/spacing_tiny"
                     android:background="@drawable/bg_pre_order_new"
                     android:visibility="@{data == null ? View.GONE : (data.isPreOrder ? View.VISIBLE : View.GONE)}"
                     android:text="@string/pre_order"

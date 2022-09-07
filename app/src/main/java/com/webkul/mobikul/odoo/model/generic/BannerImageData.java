@@ -43,6 +43,9 @@ public class BannerImageData implements Parcelable {
     @SerializedName("domain")
     @Expose
     private String domain;
+    @SerializedName("loyalty_banner_id")
+    @Expose
+    private String loyaltyTermId;
 
     protected BannerImageData(Parcel in) {
         bannerType = in.readString();
@@ -51,6 +54,7 @@ public class BannerImageData implements Parcelable {
         productId = in.readString();
         id = in.readString();
         domain = in.readString();
+        loyaltyTermId = in.readString();
     }
 
     @Override
@@ -61,6 +65,7 @@ public class BannerImageData implements Parcelable {
         dest.writeString(productId);
         dest.writeString(id);
         dest.writeString(domain);
+        dest.writeString(loyaltyTermId);
     }
 
     @Override
@@ -110,5 +115,12 @@ public class BannerImageData implements Parcelable {
             return "";
         }
         return domain;
+    }
+
+    public String getLoyaltyTermId() {
+        if (loyaltyTermId == null) {
+            return "";
+        }
+        return loyaltyTermId;
     }
 }

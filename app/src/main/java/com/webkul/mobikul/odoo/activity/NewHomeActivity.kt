@@ -77,6 +77,7 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
         super.onCreate(savedInstanceState)
 
         val window: Window = this.window
+
         //changes the status bar color
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -107,6 +108,9 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
 
         binding.ivChatIcon.setOnClickListener { showChatHistory() }
 
+        binding.rlSemaaiPointsContainer.setOnClickListener() {
+            showLoyaltyPointsHistory()
+        }
         if (!AppSharedPref.getUserIsApproved(applicationContext)) {
             showApprovalDialog()
         }
@@ -303,8 +307,17 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
         if (binding.materialSearchView.isVisible) {
             binding.materialSearchView.visibility = View.GONE
             binding.materialSearchView.closeSearch()
-        } else
+        }
+        /*
+        else
             super.onBackPressed()
+        */
+    }
+
+    private fun showLoyaltyPointsHistory() {
+        Intent(this, LoyaltyHistoryActivity::class.java).apply {
+            startActivity(this)
+        }
     }
 
     private fun openDrawer() {
@@ -324,13 +337,13 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
 
     fun hitApiForLoyaltyPoints(userId: String?) {
         ApiConnection.getLoyaltyPoints(this@NewHomeActivity, userId).subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : CustomObserver<ReferralResponse?>(this@NewHomeActivity) {
-                override fun onNext(response: ReferralResponse) {
-                    super.onNext(response)
-                    handleLoyaltyPointsResponse(response)
-                }
-            })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : CustomObserver<ReferralResponse?>(this@NewHomeActivity) {
+                    override fun onNext(response: ReferralResponse) {
+                        super.onNext(response)
+                        handleLoyaltyPointsResponse(response)
+                    }
+                })
     }
 
     fun handleLoyaltyPointsResponse(response: ReferralResponse) {
@@ -338,10 +351,10 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
             showPoints(response.redeemHistory)
         } else {
             SnackbarHelper.getSnackbar(
-                (this@NewHomeActivity),
-                response.message,
-                Snackbar.LENGTH_LONG,
-                SnackbarHelper.SnackbarType.TYPE_WARNING
+                    (this@NewHomeActivity as Activity?)!!,
+                    response.message,
+                    Snackbar.LENGTH_LONG,
+                    SnackbarHelper.SnackbarType.TYPE_WARNING
             ).show()
         }
     }
@@ -357,18 +370,17 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
     }
 
     fun getHomePageResponse(): HomePageResponse? =
-        intent.getParcelableExtra<HomePageResponse>(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE)
-
+            intent.getParcelableExtra<HomePageResponse>(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE)
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onFragmentNotifier(currentFragment: HomeActivityFragments?) {
         when (currentFragment) {
             HomeActivityFragments.HOME_FRAGMENT -> currentFragmentDisplayed =
-                getString(R.string.home)
+                    getString(R.string.home)
             HomeActivityFragments.NOTIFICATION_FRAGMENT -> currentFragmentDisplayed =
-                getString(R.string.notification)
+                    getString(R.string.notification)
             HomeActivityFragments.ACCOUNT_FRAGMENT -> currentFragmentDisplayed =
-                getString(R.string.account)
+                    getString(R.string.account)
         }
     }
 
@@ -411,33 +423,24 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
                     val fragment = mSupportFragmentManager.findFragmentById(R.id.home_nav_host)
                     if (fragment != null && fragment.isAdded) {
                         try {
-                            val imageData: Uri? =
-                                if (data.extras != null && data.extras!!["data"] is Bitmap) {
-                                    getImageUriFromBitmap(data.extras!!["data"] as Bitmap)
-                                } else {
-                                    data.data
-                                }
+                            val imageData: Uri? = if (data.extras != null && data.extras!!["data"] is Bitmap) {
+                                getImageUriFromBitmap(data.extras!!["data"] as Bitmap)
+                            } else {
+                                data.data
+                            }
                             CropImage.activity(imageData)
-                                .setGuidelines(CropImageView.Guidelines.ON)
-                                .setAspectRatio(1, 1)
-                                .setInitialCropWindowPaddingRatio(0f)
-                                .start(this)
+                                    .setGuidelines(CropImageView.Guidelines.ON)
+                                    .setAspectRatio(1, 1)
+                                    .setInitialCropWindowPaddingRatio(0f)
+                                    .start(this)
 
                         } catch (e: Exception) {
                             e.printStackTrace()
-                            (fragment.childFragmentManager.fragments[0] as AccountFragment).uploadFile(
-                                data.data,
-                                false
-                            )
+                            (fragment.childFragmentManager.fragments[0] as AccountFragment).uploadFile(data.data, false)
                         }
                     }
                 } else {
-                    SnackbarHelper.getSnackbar(
-                        this,
-                        getString(R.string.error_in_changing_profile_image),
-                        Snackbar.LENGTH_SHORT,
-                        SnackbarHelper.SnackbarType.TYPE_WARNING
-                    ).show()
+                    SnackbarHelper.getSnackbar(this, getString(R.string.error_in_changing_profile_image), Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show()
                 }
             }
             HomeActivity.RC_CAMERA -> when (resultCode) {
@@ -452,37 +455,24 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
                                 imageData = data.data
                             }
                             CropImage.activity(imageData)
-                                .setGuidelines(CropImageView.Guidelines.ON)
-                                .setAspectRatio(1, 1)
-                                .setInitialCropWindowPaddingRatio(0f)
-                                .start(this)
+                                    .setGuidelines(CropImageView.Guidelines.ON)
+                                    .setAspectRatio(1, 1)
+                                    .setInitialCropWindowPaddingRatio(0f)
+                                    .start(this)
                         }
                     } else {
-                        SnackbarHelper.getSnackbar(
-                            this,
-                            getString(R.string.error_in_changing_profile_image),
-                            Snackbar.LENGTH_SHORT,
-                            SnackbarHelper.SnackbarType.TYPE_WARNING
-                        ).show()
+                        SnackbarHelper.getSnackbar(this, getString(R.string.error_in_changing_profile_image), Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show()
                     }
                 }
             }
-            CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE -> CropImage.activity(
-                CropImage.getPickImageResultUri(
-                    this,
-                    data
-                )
-            )
-                .setGuidelines(CropImageView.Guidelines.ON) //.setAspectRatio(1, 1)
-                .setInitialCropWindowPaddingRatio(0f)
-                .start(this)
+            CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE -> CropImage.activity(CropImage.getPickImageResultUri(this, data))
+                    .setGuidelines(CropImageView.Guidelines.ON) //.setAspectRatio(1, 1)
+                    .setInitialCropWindowPaddingRatio(0f)
+                    .start(this)
             CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> if (resultCode == RESULT_OK) {
                 val fragment = mSupportFragmentManager.findFragmentById(R.id.home_nav_host)
                 if (fragment != null && fragment.isAdded) {
-                    (fragment.childFragmentManager.fragments[0] as AccountFragment).uploadFile(
-                        CropImage.getActivityResult(data).uri,
-                        true
-                    )
+                    (fragment.childFragmentManager.fragments[0] as AccountFragment).uploadFile(CropImage.getActivityResult(data).uri, true)
                 }
             }
         }
@@ -497,28 +487,26 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
 
     private fun fetchUnreadChatCount() {
         ApiConnection.getUnreadChatCount(this).subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : CustomObserver<ChatBaseResponse<*>?>(this) {
-                override fun onNext(chatUnreadMessageCountChatBaseResponse: ChatBaseResponse<*>) {
-                    super.onNext(chatUnreadMessageCountChatBaseResponse)
-                    setUnreadChatCount(chatUnreadMessageCountChatBaseResponse)
-                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : CustomObserver<ChatBaseResponse<*>?>(this) {
+                    override fun onNext(chatUnreadMessageCountChatBaseResponse: ChatBaseResponse<*>) {
+                        super.onNext(chatUnreadMessageCountChatBaseResponse)
+                        setUnreadChatCount(chatUnreadMessageCountChatBaseResponse)
+                    }
 
-                override fun onError(t: Throwable) {
-                    super.onError(t)
-                }
-            })
+                    override fun onError(t: Throwable) {
+                        super.onError(t)
+                    }
+                })
     }
 
     private fun setUnreadChatCount(chatUnreadMessageCountChatBaseResponse: ChatBaseResponse<*>) {
         val chatUnreadMessageCount =
-            chatUnreadMessageCountChatBaseResponse.unreadMessagesCount
+                chatUnreadMessageCountChatBaseResponse.unreadMessagesCount
         if (chatUnreadMessageCount > ApplicationConstant.MIN_UNREAD_CHAT_COUNT) {
             binding.ivUnreadChatCount.text =
-                if (chatUnreadMessageCount > ApplicationConstant.MAX_UNREAD_CHAT_COUNT) getString(
-                    R.string.text_nine_plus
-                )
-                else chatUnreadMessageCount.toString()
+                    if (chatUnreadMessageCount > ApplicationConstant.MAX_UNREAD_CHAT_COUNT) getString(R.string.text_nine_plus)
+                    else chatUnreadMessageCount.toString()
             binding.ivUnreadChatCount.visibility = View.VISIBLE
         } else {
             binding.ivUnreadChatCount.visibility = View.INVISIBLE
