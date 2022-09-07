@@ -147,7 +147,6 @@ public class ProductData extends BaseObservable implements Parcelable {
     @Expose
     private String absoluteUrl;
 
-
     protected ProductData(Parcel in) {
         variants = in.createTypedArrayList(ProductVariant.CREATOR);
         name = in.readString();

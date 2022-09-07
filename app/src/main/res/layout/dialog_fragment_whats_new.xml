@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/activityBackground"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_img_ribbons"
+            android:scaleType="fitXY"
+            android:layout_marginBottom="@dimen/margin_16"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/size_100"
+            android:layout_height="@dimen/size_100"
+            android:layout_marginTop="@dimen/size__8"
+            app:srcCompat="@drawable/ic_semaai" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_8"
+            android:gravity="center"
+            android:text="@string/whats_new"
+            style="@style/Semaai.TextAppearance.Subtitle2.Bold"
+            />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_32"
+            android:layout_marginBottom="@dimen/margin_24"
+            android:gravity="center"
+            android:text="@string/loyalty_points_message" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_continue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/padding_32"
+            android:paddingVertical="@dimen/padding_8"
+            android:layout_marginBottom="@dimen/margin_16"
+            android:text="@string/continue_"
+            android:textColor="@color/text_orange"
+            android:background="@drawable/btn_color"
+            android:textStyle="bold" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</layout>

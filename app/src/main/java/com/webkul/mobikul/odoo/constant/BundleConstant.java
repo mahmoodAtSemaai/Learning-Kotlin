@@ -203,6 +203,9 @@ public interface BundleConstant {
     String QUERY_KEY_CHAT_TITLE = "title";
     String QUERY_KEY_CHAT_PROFILE_PICTURE_URL = "image";
 
+    // For Loyalty Banners
+    String BUNDLE_KEY_LOYALTY_BANNER_ID = "loyaltyBannerId";
+
     String BUNDLE_KEY_IS_USER_NAME_EDIT = "userNameEdit";
     String BUNDLE_KEY_IS_ADDRESS_PENDING = "isAddressStagePending";
     String BUNDLE_KEY_ACCOUNT_INFO_DATA = "account_info_data";

@@ -47,6 +47,8 @@ import com.webkul.mobikul.odoo.model.customer.address.addressResponse.DistrictLi
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.StateListResponse;
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.SubDistrictListResponse;
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.VillageListResponse;
+import com.webkul.mobikul.odoo.model.customer.loyalty.LoyaltyHistoryResponse;
+import com.webkul.mobikul.odoo.model.customer.loyalty.LoyaltyTermsResponse;
 import com.webkul.mobikul.odoo.model.customer.order.MyOrderReponse;
 import com.webkul.mobikul.odoo.model.customer.order.OrderDetailResponse;
 import com.webkul.mobikul.odoo.model.customer.signin.LoginResponse;
@@ -519,6 +521,17 @@ public class ApiConnection {
         return RetrofitClient.getClient(context).create(ApiInterface.class).getTransferInstruction(bankId);
     }
 
+    public static Observable<LoyaltyHistoryResponse> getLoyaltyPointsHistory(Context context, String userId, int limit, int offset) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getLoyaltyPointsHistory(userId, limit, offset);
+    }
+
+    public static Observable<LoyaltyTermsResponse> getLoyaltyTerms(Context context) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getLoyaltyTerms();
+    }
+
+    public static Observable<LoyaltyTermsResponse> getLoyaltyTermDetails(Context context, int bannerId) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getLoyaltyTermDetails(bannerId);
+    }
 
 
     public static Observable<CartBaseResponse<GetCartResponse>> getCartData(Context context, int cartId) {

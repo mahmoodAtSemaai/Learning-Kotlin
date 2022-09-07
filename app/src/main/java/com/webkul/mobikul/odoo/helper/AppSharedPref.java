@@ -19,6 +19,8 @@ public class AppSharedPref {
     public static final String CUSTOMER_PREF = "CUSTOMER_PREF";
     @SuppressWarnings("WeakerAccess")
     public static final String SPLASH_PREF = "SPLASH_PREF";
+    @SuppressWarnings("WeakerAccess")
+    public static final String DEVICE_PREF = "DEVICE_PREF";
     @SuppressWarnings("unused")
     private static final String TAG = "AppSharedPref";
 //    @SuppressWarnings("unused")
@@ -80,6 +82,7 @@ public class AppSharedPref {
     private static final String KEY_IS_RECENT_CLEAR = "KEY_IS_RECENT_CLEAR";
     private static final String KEY_IS_RECENT_ENABLE = "KEY_IS_RECENT_ENABLE";
     private static final String KEY_IS_SEARCH_ENABLE = "KEY_IS_SEARCH_ENABLE";
+    private static final String KEY_IS_LOYALTY_DIALOG_ACTIVE = "KEY_IS_LOYALTY_DIALOG_ACTIVE";
     private static final String PRIVACY_POLICY_URL = "PRIVACY_POLICY_URL";
     private static final String ANALYTICS_ID = "ANALYTICS_ID";
     private static final String KEY_IS_USER_APPROVED = "KEY_IS_USER_APPROVED";
@@ -570,6 +573,15 @@ public class AppSharedPref {
         return getSharedPreference(context, CUSTOMER_PREF).getString(KEY_CUSTOMER_JWT_AUTH_TOKEN, "");
     }
 
+    /* Whats New Loyalty Points Dialog */
+    public static boolean isLoyaltyPointsDialogActive(Context context) {
+        return getSharedPreference(context, DEVICE_PREF).getBoolean(KEY_IS_LOYALTY_DIALOG_ACTIVE, true);
+    }
+
+    public static void setIsLoyaltyPointsDialogActive(Context context, boolean isActive) {
+        getSharedPreferenceEditor(context, DEVICE_PREF).putBoolean(KEY_IS_LOYALTY_DIALOG_ACTIVE, isActive).apply();
+    }
+
     public static void setCartId(Context context, int cartId){
         getSharedPreferenceEditor(context, CUSTOMER_PREF).putInt(KEY_CURRENT_CART_ID, cartId).apply();
     }
@@ -585,7 +597,6 @@ public class AppSharedPref {
     public static int getNewCartCount(Context context){
         return getSharedPreference(context, CUSTOMER_PREF).getInt(KEY_NEW_CART_COUNT, ApplicationConstant.MIN_ITEM_TO_BE_SHOWN_IN_CART);
     }
-
 
     public static boolean isFCMTokenSynced(Context context) {
         return getSharedPreference(context, CUSTOMER_PREF).getBoolean(KEY_IS_FCM_TOKEN_SYNCED,false);

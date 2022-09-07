@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.customer.loyalty.LoyaltyTermsData" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_loyalty_terms"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.LoyaltyTermsActivity"
+        android:background="@color/white">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/mt_custom_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_bar_size"
+            android:background="@drawable/background_app_layout"
+            android:elevation="@dimen/size_5"
+            android:minHeight="?actionBarSize"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="@dimen/size_0"
+                    android:layout_height="@dimen/hamburger_icon_dimens"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_vector_back"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="@dimen/size_0"
+                    android:layout_height="wrap_content"
+                    android:text="@string/loyalty_terms_title"
+                    android:layout_gravity="center"
+                    android:layout_weight="6.8"
+                    style="@style/Semaai.TextAppearance.Subtitle2.Bold"
+                    android:textColor="@color/text_orange"
+                    android:paddingStart="@dimen/padding_10"
+                    />
+            </LinearLayout>
+
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <ScrollView
+            android:id="@+id/sv_loyalty_terms"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_60"
+            android:layout_marginBottom="@dimen/margin_72"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_90"
+                    app:cardElevation="@dimen/size_0"
+                    app:cardCornerRadius="@dimen/spacing_generic"
+                    android:layout_margin="@dimen/spacing_generic"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/iv_loyalty_banner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY" />
+
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/tv_heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{data.title}"
+                    style="@style/Semaai.TextAppearance.Subtitle1.Bold"
+                    android:layout_marginStart="@dimen/margin_16"
+                    android:layout_marginLeft="@dimen/margin_16"
+                    tools:text="First Order" />
+
+                <TextView
+                    android:id="@+id/tv_sub_heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{data.subTitle}"
+                    android:textColor="@color/colorDarkGrey"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:layout_marginTop="@dimen/margin_4"
+                    tools:text="Dapatkan cashback hingga 100.000 Poin Semaai"
+                    />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_16">
+
+                    <ImageView
+                        android:id="@+id/iv_points"
+                        android:layout_width="@dimen/size_24"
+                        android:layout_height="@dimen/size_24"
+                        android:src="@drawable/ic_semaai_points"
+                        android:contentDescription="Points" />
+
+                    <TextView
+                        android:id="@+id/tv_points_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginStart="@dimen/margin_8"
+                        android:layout_toEndOf="@id/iv_points"
+                        android:text="@string/point"
+                        style="@style/Semaai.TextAppearance.Body2"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_points"
+                        style="@style/loyalty_transaction_text_bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerInParent="true"
+                        android:text="@{data.points}"
+                        tools:text="20.000" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/spacing_normal"
+                    android:layout_marginBottom="@dimen/spacing_normal">
+
+                    <ImageView
+                        android:id="@+id/iv_expiry"
+                        android:layout_width="@dimen/size_24"
+                        android:layout_height="@dimen/size_24"
+                        android:src="@drawable/ic_vector_clock"
+                        android:tint="@color/text_color_orange"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/tv_expiry_text"
+                        style="@style/Semaai.TextAppearance.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginStart="@dimen/margin_8"
+                        android:layout_toEndOf="@id/iv_expiry"
+                        android:text="@string/expiration_date" />
+
+                    <TextView
+                        android:id="@+id/tv_expiry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{data.expiry}"
+                        style="@style/loyalty_transaction_text_bold"
+                        tools:text="Jun, 13th 2022"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerInParent="true" />
+
+                </RelativeLayout>
+
+                <View
+                    android:id="@+id/v_separator_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_3"
+                    android:background="?android:attr/divider"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_terms_heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{data.termsTitle}"
+                    style="@style/Semaai.TextAppearance.Body1.Bold"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:layout_marginTop="@dimen/margin_8"
+                    tools:text="Terms and Conditions"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_terms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    style="@style/Semaai.TextAppearance.Body2"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:layout_marginBottom="@dimen/margin_16"
+                    tools:text="Promo kupon hanya berlaku dengan minimum pembayaran produk sebesar Rp. 3.000.000.\n\nPromo kupon hanya berlaku dengan minimum pembayaran produk sebesar Rp. 3.000.000.\n\nKupon Cashback senilai Rp100.000 dalam bentuk poin Semaai yang berlaku di Semaai\n\nPromo kupon hanya berlaku dengan minimum pembayaran produk sebesar Rp. 3.000.000."
+                    />
+
+                <View
+                    android:id="@+id/v_separator_bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_3"
+                    android:background="?android:attr/divider"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_how_to_use_heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{data.howToUseTitle}"
+                    style="@style/Semaai.TextAppearance.Body1.Bold"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:layout_marginTop="@dimen/margin_8"
+                    tools:text="How To Use"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_how_to_use"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    style="@style/Semaai.TextAppearance.Body2"
+                    android:layout_marginHorizontal="@dimen/spacing_normal"
+                    android:layout_marginTop="@dimen/spacing_generic"
+                    tools:text="Promo kupon hanya berlaku dengan minimum pembayaran produk sebesar Rp. 3.000.000./n/nPromo kupon hanya berlaku dengan minimum pembayaran produk sebesar Rp. 3.000.000.\n\nPromo kupon hanya berlaku dengan minimum pembayaran produk sebesar Rp. 3.000.000./n/nKupon Cashback senilai Rp100.000 dalam bentuk poin Semaai yang berlaku di Semaai\n\nPromo kupon hanya berlaku dengan minimum pembayaran produk sebesar Rp. 3.000.000."
+                    />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/btn_shopping"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/start_shopping"
+            style="@style/large_bold_title_text_orange"
+            android:background="@drawable/btn_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:padding="@dimen/spacing_generic"
+            android:layout_marginVertical="@dimen/spacing_normal"
+            android:layout_marginHorizontal="@dimen/size_40"/>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/custom_progress_drawable"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

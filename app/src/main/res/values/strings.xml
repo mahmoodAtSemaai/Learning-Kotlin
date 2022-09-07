@@ -734,6 +734,18 @@
     <string name="text_nine_plus">9+</string>
     <string name="chat_no_conversations">You don’t have any conversation</string>
 
+    <!-- Loyalty History -->
+    <string name="points_history_title">Points</string>
+    <string name="whats_new">What’s New?</string>
+    <string name="loyalty_points_message">Semaai now has loyalty points to maximize your every transaction experience. Your convenient is our priority.</string>
+    <string name="previous">Previous</string>
+    <string name="next_loyalty_history">Next</string>
+
+    <!--  Loyalty Terms & Conditions  -->
+    <string name="loyalty_terms_title">Terms and Conditions</string>
+    <string name="expiration_date">Expiration Date</string>
+    <string name="expired">Expired</string>
+
     <string name="sorry_product_not_available">Sorry, the product is not available</string>
     <string name="search_another_product">You can search another product you want</string>
 
@@ -797,4 +809,6 @@
     <string name="select_from_camera">Capture photo from camera</string>
     <string name="select_from_gallery">Select photo from gallery</string>
     <string name="close">Cancel</string>
+    <string name="trans_history">Transactions History</string>
+    <string name="more_history">More history</string>
 </resources>

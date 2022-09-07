@@ -731,8 +731,22 @@
     <string name="text_nine_plus">9+</string>
     <string name="chat_no_conversations">Anda tidak memiliki percakapan apapun</string>
 
+    <!-- Loyalty History -->
+    <string name="points_history_title">Poin</string>
+    <string name="whats_new">Apa yang baru?</string>
+    <string name="loyalty_points_message">Sekarang Semaai memiliki poin loyalti untuk memaksimalkan pengalaman transaksimu. Kenyamananmu prioritas kami.</string>
+    <string name="previous">Sebelumnya</string>
+    <string name="next_loyalty_history">Selanjutnya</string>
+
+    <!--  Loyalty Terms & Conditions  -->
+    <string name="loyalty_terms_title">Syarat dan Ketentuan</string>
+    <string name="expiration_date">Tanggal berakhir</string>
+    <string name="expired">Berlaku hingga</string>
+
+
     <string name="sorry_product_not_available">Maaf, produk ini tidak tersedia</string>
     <string name="search_another_product">Anda bisa mencari produk lain yang anda butuhkan disini</string>
+    <string name="trans_history">Riwayat Transaksi</string>
 
     <!--Sign-up-->
     <string name="welcome_to_semaai">Selamat Datang di Semaai</string>
@@ -785,4 +799,5 @@
     <string name="select_from_camera">Ambil gambar dari kamera</string>
     <string name="select_from_gallery">Pilih gambar dari galeri</string>
     <string name="close">batalkan</string>
+    <string name="more_history">Lebih lengkap</string>
 </resources>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.customer.loyalty.LoyaltyTermsData" />
+
+    </data>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="@dimen/size_4"
+        app:cardUseCompatPadding="true"
+        app:cardCornerRadius="@dimen/size_10">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_loyalty_terms_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_loyalty_banner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_90"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:scaleType="fitXY"
+                android:contentDescription="points" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                app:layout_constraintTop_toBottomOf="@id/iv_loyalty_banner"
+                android:layout_marginTop="@dimen/margin_8">
+
+                <LinearLayout
+                    android:layout_width="@dimen/size_0"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/iv_clock"
+                        android:layout_width="@dimen/size_20"
+                        android:layout_height="@dimen/size_20"
+                        android:src="@drawable/ic_vector_clock"
+                        android:layout_marginStart="@dimen/margin_16"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="@dimen/margin_4"
+                        android:tint="@color/text_color_orange"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toEndOf="@id/iv_clock"
+                        app:layout_constraintTop_toBottomOf="@id/iv_loyalty_banner"
+                        android:orientation="vertical"
+                        android:layout_gravity="center">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_point_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_10"
+                            android:gravity="top"
+                            android:text="@string/expired"
+                            style="@style/Semaai.TextAppearance.Body2"
+                            tools:text="@string/expired"
+                            />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_expiry"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin_10"
+                            android:gravity="center"
+                            android:text="@{data.expiry}"
+                            android:textSize="@dimen/font_size_14"
+                            tools:text="Mei, 31st 2022"
+                            android:paddingBottom="@dimen/padding_8"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="@dimen/size_0"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end">
+
+                    <ImageView
+                        android:id="@+id/iv_points"
+                        android:layout_width="@dimen/size_20"
+                        android:layout_height="@dimen/size_20"
+                        android:src="@drawable/ic_semaai_points"
+                        android:layout_marginStart="@dimen/margin_16"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="@dimen/margin_4"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginStart="@dimen/margin_8"
+                        android:layout_marginEnd="@dimen/margin_8"
+                        app:layout_constraintStart_toEndOf="@id/iv_points"
+                        app:layout_constraintTop_toBottomOf="@id/iv_loyalty_banner"
+                        >
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_points_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/point"
+                            style="@style/loyalty_transaction_text"
+                            android:gravity="start"
+                            tools:text="Points" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_points"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{data.pointsWithSign}"
+                            android:textColor="@color/text_color_green"
+                            style="@style/loyalty_transaction_text"
+                            android:gravity="start"
+                            tools:text="+20.000"
+                            android:paddingBottom="@dimen/spacing_generic" />
+
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+       </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

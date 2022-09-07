@@ -28,7 +28,11 @@
 
 
     <!-- typical spacing between two views -->
+    <dimen name="spacing_extra_large">56dp</dimen>
+    <dimen name="spacing_large">32dp</dimen>
+    <dimen name="spacing_medium">24dp</dimen>
     <dimen name="spacing_normal">16dp</dimen>
+    <dimen name="spacing_generic_normal">12dp</dimen>
     <dimen name="spacing_generic">8dp</dimen>
     <dimen name="spacing_tiny">4dp</dimen>
     <dimen name="spacing_no">0dp</dimen>
@@ -37,6 +41,7 @@
     <dimen name="size_0">0dp</dimen>
     <dimen name="size_1">1dp</dimen>
     <dimen name="size_2">2dp</dimen>
+    <dimen name="size_3">3dp</dimen>
 
     <!--GENERIC DIMENSIONS FOR THE TOOLBAR ELEVATION-->
     <dimen name="toolbar_elevation_generic">4dp</dimen>
@@ -155,10 +160,13 @@
 
     <dimen name="size__4">-4dp</dimen>
     <dimen name="size__8">-8dp</dimen>
+    <dimen name="size__9">-9dp</dimen>
     <dimen name="size__16">-16dp</dimen>
     <dimen name="size__24">-24dp</dimen>
     <dimen name="size__32">-32dp</dimen>
     <dimen name="size__40">-40dp</dimen>
+    <dimen name="size__60">-60dp</dimen>
+    <dimen name="size__80">-80dp</dimen>
 
     <!--    size of hambuger icon-->
     <dimen name="hamburger_icon_dimens">30dp</dimen>
@@ -209,5 +217,16 @@
 
     <dimen name="warning_vector_height">112dp</dimen>
     <dimen name="warning_vector_width">186dp</dimen>
+
+    <!--=============================================================================================================================================================
+                                                  padding dimensions
+  =============================================================================================================================================================-->
+
+
+    <!--=============================================================================================================================================================
+                                                 margin dimensions
+ =============================================================================================================================================================-->
+    <dimen name="margin_10">10dp</dimen>
+
 
 </resources>

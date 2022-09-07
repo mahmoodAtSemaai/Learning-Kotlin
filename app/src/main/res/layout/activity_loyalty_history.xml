@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_loyalty_history"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.LoyaltyHistoryActivity"
+        android:background="@color/white">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/mt_loyalty_history"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_bar_size"
+            android:background="@drawable/background_app_layout"
+            android:elevation="@dimen/size_5"
+            android:minHeight="?actionBarSize"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="@dimen/size_0"
+                    android:layout_height="@dimen/hamburger_icon_dimens"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_vector_back"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="@dimen/size_0"
+                    android:layout_height="wrap_content"
+                    android:text="@string/points_history_title"
+                    android:layout_gravity="center"
+                    android:layout_weight="6.6"
+                    android:textColor="@color/text_orange"
+                    style="@style/Semaai.TextAppearance.Subtitle2.Bold"
+                    android:paddingStart="@dimen/padding_10"
+                    />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_wishlist"
+                    android:layout_width="@dimen/size_0"
+                    android:layout_height="@dimen/hamburger_icon_dimens"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_vector_favorite"
+                    android:layout_weight="0.8"/>
+
+                <RelativeLayout
+                    android:id="@+id/rl_cart"
+                    android:layout_width="@dimen/size_0"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.6"
+                    android:layout_marginEnd="@dimen/size_10">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_cart"
+                        android:layout_width="@dimen/hamburger_icon_dimens"
+                        android:layout_height="@dimen/hamburger_icon_dimens"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_vector_cart" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_badge_info"
+                        style="@style/Semaai.TextAppearance.Caption.Bold"
+                        android:layout_width="@dimen/badge_dimension"
+                        android:layout_height="@dimen/badge_dimension"
+                        android:layout_alignEnd="@+id/iv_cart"
+                        android:layout_marginTop="@dimen/margin_7"
+                        android:layout_marginRight="@dimen/margin_9"
+                        android:background="@drawable/badge_symbol"
+                        android:gravity="center"
+                        android:text="@string/text_one"
+                        android:textColor="@color/text_color_white"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_56"
+            android:scrollbars="none">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_bar_size"
+            android:src="@drawable/bg_circles"
+            android:scaleType="fitXY"
+            android:layout_marginBottom="@dimen/margin_12"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/ll_total_points"
+            />
+
+        <LinearLayout
+            android:id="@+id/ll_total_points"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_generic"
+            android:fitsSystemWindows="true"
+            android:gravity="center_horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_margin="@dimen/spacing_generic_normal"
+            android:background="@drawable/points_background"
+            >
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="@dimen/size_0"
+                android:layout_height="match_parent"
+                android:drawableLeft="@drawable/ic_semaai_points"
+                android:drawablePadding="@dimen/size_10"
+                android:drawableStart="@drawable/ic_semaai_points"
+                android:gravity="center|start"
+                android:padding="@dimen/spacing_normal"
+                android:text="@string/points_history_title"
+                style="@style/medium_bold_text_no_color"
+                android:layout_weight="1"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_loyalty_points"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="match_parent"
+                android:gravity="center|end"
+                android:padding="@dimen/padding_12"
+                android:text=""
+                style="@style/large_bold_text"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_8"
+            android:src="@drawable/grey_shadow"
+            android:scaleType="center"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            app:layout_constraintTop_toBottomOf="@id/ll_total_points"
+            />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_loyalty_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/trans_history"
+            android:layout_marginTop="@dimen/margin_12"
+            style="@style/Semaai.TextAppearance.Body1.Bold"
+            app:layout_constraintTop_toBottomOf="@id/ll_total_points"
+            app:layout_constraintStart_toStartOf="@id/ll_total_points" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_loyalty_transactions"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            app:layout_constraintBottom_toTopOf="@id/ll_pages"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_default="wrap"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_loyalty_history"
+            app:layout_constraintVertical_bias="0"
+            android:nestedScrollingEnabled="false"
+            tools:itemCount="10"
+            tools:listitem="@layout/item_loyalty_transaction"/>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/custom_progress_drawable"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone" />
+
+        <View
+            android:id="@+id/v_transparent_bg"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_70"
+            app:layout_constraintBottom_toBottomOf="@+id/rv_loyalty_transactions"
+            android:background="@color/white_transparent"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_more_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/more_history"
+            android:textColor="@color/text_color_orange"
+            style="@style/loyalty_transaction_text_bold"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/rv_loyalty_transactions"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:visibility="gone"
+            />
+
+        <View
+            android:id="@+id/v_top_separator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_3"
+            android:background="?android:attr/divider"
+            app:layout_constraintBottom_toTopOf="@+id/ll_pages"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:id="@+id/ll_pages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_generic"
+            app:layout_constraintTop_toBottomOf="@id/rv_loyalty_transactions"
+            app:layout_constraintBottom_toTopOf="@id/rv_loyalty_terms"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_previous"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center|start"
+                android:padding="@dimen/padding_12"
+                android:text="@string/previous"
+                style="@style/medium_bold_text_no_color"
+                android:textColor="@color/colorDarkGrey"
+                android:drawableStart="@drawable/ic_arrow_left_grey"
+                android:drawablePadding="@dimen/spacing_generic"
+                android:layout_marginRight="@dimen/size_20"/>
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_next"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center|end"
+                android:padding="@dimen/padding_12"
+                android:drawableEnd="@drawable/ic_arrow_right_orange"
+                android:drawablePadding="@dimen/padding_8"
+                android:text="@string/next_loyalty_history"
+                style="@style/Semaai.TextAppearance.Body1.Bold"
+                android:textColor="@color/text_color_orange"
+                android:layout_marginLeft="@dimen/margin_20"/>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v_bottom_separator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_3"
+            android:background="?android:attr/divider"
+            app:layout_constraintTop_toBottomOf="@+id/ll_pages"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_loyalty_terms"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            android:nestedScrollingEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_default="wrap"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_pages"
+            app:layout_constraintVertical_bias="0"
+            tools:itemCount="2"
+            tools:listitem="@layout/item_loyalty_banner"
+            android:shadowColor="@color/grey_600"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -5,6 +5,8 @@
     <color name="text_color_Secondary">@color/grey_700</color>
     <color name="text_color_required">#f10000</color>
     <color name="text_color_white">#E0E0E0</color>
+    <color name="text_color_green">#0F7C32</color>
+    <color name="text_color_orange">#E16E03</color>
 
     <!--MAIN COLORS-->
     <color name="colorPrimary">#ff6a13</color>

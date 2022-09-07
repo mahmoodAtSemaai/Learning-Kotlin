@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
+import com.webkul.mobikul.odoo.activity.LoyaltyTermsActivity;
 import com.webkul.mobikul.odoo.activity.NewHomeActivity;
 import com.webkul.mobikul.odoo.activity.SplashScreenActivity;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
@@ -18,13 +19,14 @@ import com.webkul.mobikul.odoo.model.home.HomePageResponse;
 
 import static com.webkul.mobikul.odoo.constant.ApplicationConstant.TYPE_CATEGORY;
 import static com.webkul.mobikul.odoo.constant.ApplicationConstant.TYPE_CUSTOM;
+import static com.webkul.mobikul.odoo.constant.ApplicationConstant.TYPE_LOYALTY_TERMS;
 import static com.webkul.mobikul.odoo.constant.ApplicationConstant.TYPE_NONE;
 import static com.webkul.mobikul.odoo.constant.ApplicationConstant.TYPE_PRODUCT;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGORY_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGORY_NAME;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_NAME;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_LOYALTY_BANNER_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_NAME;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID;
@@ -76,6 +78,10 @@ public class HomeBannerHandler {
                 intent.putExtra(BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE, CatalogHelper.CatalogProductRequestType.BANNER_CATEGORY);
                 intent.putExtra(BUNDLE_KEY_CATEGORY_ID, mData.getId());
                 intent.putExtra(BUNDLE_KEY_CATEGORY_NAME, mData.getBannerName());
+                break;
+            case TYPE_LOYALTY_TERMS:
+                intent = new Intent(mContext, LoyaltyTermsActivity.class);
+                intent.putExtra(BUNDLE_KEY_LOYALTY_BANNER_ID, Integer.parseInt(mData.getLoyaltyTermId()));
                 break;
             case TYPE_NONE:
                 //do nothing

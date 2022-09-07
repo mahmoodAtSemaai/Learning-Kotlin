@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.BaseActivity;
 import com.webkul.mobikul.odoo.activity.HomeActivity;
+import com.webkul.mobikul.odoo.activity.LoyaltyHistoryActivity;
 import com.webkul.mobikul.odoo.activity.SettingsActivity;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
@@ -113,5 +114,10 @@ public class HomeActivityHandler {
         Intent intent = new Intent(mContext, SettingsActivity.class);
         mContext.startActivity(intent);
 
+    }
+
+    public void showPointsHistory() {
+        Intent intent = new Intent(mContext, LoyaltyHistoryActivity.class);
+        mContext.startActivity(intent);
     }
 }
