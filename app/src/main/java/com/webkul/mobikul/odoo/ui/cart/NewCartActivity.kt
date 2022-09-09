@@ -108,7 +108,8 @@ class NewCartActivity : AppCompatActivity() {
             add(R.id.fl_fragment_container_cart,
                 EmptyFragmentV1.newInstance(
                     getString(R.string.empty_bag),getString(R.string.add_item_to_your_bag_now),
-                    R.drawable.ic_empty_cart),
+                    R.drawable.ic_empty_cart,
+                    false),
                 EmptyFragmentV1::class.java.simpleName)
             }
     }

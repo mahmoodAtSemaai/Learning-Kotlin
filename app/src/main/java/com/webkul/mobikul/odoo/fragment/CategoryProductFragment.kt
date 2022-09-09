@@ -11,17 +11,20 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity
+import com.webkul.mobikul.odoo.activity.NewHomeActivity
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity
 import com.webkul.mobikul.odoo.adapter.home.CategoryProductListAdapter
 import com.webkul.mobikul.odoo.connection.ApiConnection
 import com.webkul.mobikul.odoo.connection.CustomObserver
 import com.webkul.mobikul.odoo.constant.BundleConstant
+import com.webkul.mobikul.odoo.core.extension.inTransaction
 import com.webkul.mobikul.odoo.database.SaveData
 import com.webkul.mobikul.odoo.databinding.FragmentCategoryProductBinding
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper
 import com.webkul.mobikul.odoo.helper.AppSharedPref
 import com.webkul.mobikul.odoo.helper.CatalogHelper.CatalogProductRequestType
 import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse
+import com.webkul.mobikul.odoo.ui.cart.EmptyFragmentV1
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -110,7 +113,7 @@ class CategoryProductFragment : Fragment() {
             val requestTypeIdentifier = CatalogProductRequestType.FEATURED_CATEGORY.toString()
             SaveData(activity, catalogProductResponse, requestTypeIdentifier)
             if (catalogResponse.products!!.isEmpty()) {
-                showNoProductsFoundLayout()
+                showEmptyProductMessage()
             } else {
                 initProductCatalogRv()
             }
@@ -118,10 +121,17 @@ class CategoryProductFragment : Fragment() {
         }
     }
 
-    private fun showNoProductsFoundLayout(){
+    private fun showEmptyProductMessage(){
         binding.productRecyclerView.visibility = View.GONE
-        binding.noProductsFountLl.visibility = View.VISIBLE
-    }
+        (requireContext() as NewHomeActivity).supportFragmentManager.inTransaction {
+            replace(R.id.fl_test_container, EmptyFragmentV1.newInstance(
+                getString(R.string.no_products_found),
+                "",
+                R.drawable.ic_no_products_found,
+                true
+            ))
+        }
+     }
 
     private fun redirectToSignUp() {
         AlertDialogHelper.showDefaultWarningDialogWithDismissListener(requireContext(), getString(R.string.error_login_failure), getString(R.string.access_denied_message)) { sweetAlertDialog ->
