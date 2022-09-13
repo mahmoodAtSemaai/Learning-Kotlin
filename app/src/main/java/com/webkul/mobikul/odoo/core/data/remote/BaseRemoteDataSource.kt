@@ -13,6 +13,8 @@ import com.webkul.mobikul.odoo.model.customer.address.addressResponse.DistrictLi
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.StateListResponse
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.SubDistrictListResponse
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.VillageListResponse
+import com.webkul.mobikul.odoo.model.extra.SplashScreenResponse
+import com.webkul.mobikul.odoo.model.home.HomePageResponse
 import org.json.JSONObject
 import retrofit2.HttpException
 import java.io.IOException
@@ -38,7 +40,7 @@ open class BaseRemoteDataSource @Inject constructor(
                             failureStatus = FailureStatus.ACCESS_DENIED,
                             message = apiResponse.message
                         )
-                    } else if (apiResponse.isUserOnboarded.not()){
+                    } else if (apiResponse.isUserOnboarded.not() && ((apiResponse is SplashScreenResponse)||(apiResponse is HomePageResponse))){
                         appPreferences.isUserOnboarded = false
                         if(apiResponse.userId.isNotEmpty()){
                             appPreferences.userId = apiResponse.userId.toInt()
