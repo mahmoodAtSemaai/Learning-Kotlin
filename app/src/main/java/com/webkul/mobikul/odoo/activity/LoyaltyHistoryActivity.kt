@@ -1,6 +1,5 @@
 package com.webkul.mobikul.odoo.activity
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -11,6 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.snackbar.Snackbar
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.adapter.loyalty.LoyaltyHistoryListAdapter
@@ -21,8 +21,12 @@ import com.webkul.mobikul.odoo.constant.ApplicationConstant
 import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.core.extension.makeGone
 import com.webkul.mobikul.odoo.core.extension.makeVisible
+import com.webkul.mobikul.odoo.core.utils.HTTP_RESOURCE_NOT_FOUND
+import com.webkul.mobikul.odoo.data.response.models.CartBaseResponse
+import com.webkul.mobikul.odoo.data.response.models.GetCartId
 import com.webkul.mobikul.odoo.databinding.ActivityLoyaltyHistoryBinding
 import com.webkul.mobikul.odoo.dialog_frag.WhatsNewDialogFragment
+import com.webkul.mobikul.odoo.helper.AlertDialogHelper
 import com.webkul.mobikul.odoo.helper.AppSharedPref
 import com.webkul.mobikul.odoo.helper.CustomerHelper
 import com.webkul.mobikul.odoo.helper.SnackbarHelper
@@ -31,7 +35,9 @@ import com.webkul.mobikul.odoo.model.customer.loyalty.LoyaltyHistoryResponse
 import com.webkul.mobikul.odoo.model.customer.loyalty.LoyaltyTermsData
 import com.webkul.mobikul.odoo.model.customer.loyalty.LoyaltyTermsResponse
 import com.webkul.mobikul.odoo.model.customer.loyalty.LoyaltyTransactionData
+import com.webkul.mobikul.odoo.ui.cart.NewCartActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 class LoyaltyHistoryActivity : BaseActivity() {
@@ -46,6 +52,7 @@ class LoyaltyHistoryActivity : BaseActivity() {
     var loyaltyBanners: List<LoyaltyTermsData> = listOf<LoyaltyTermsData>()
     var customerId : String = ""
     var count = 0
+    private lateinit var sweetAlertDialog : SweetAlertDialog
 
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -58,6 +65,7 @@ class LoyaltyHistoryActivity : BaseActivity() {
         getSemaaiPoints()
         getLoyaltyTerms()
         showLoyaltyPointsDialog()
+        initDialog()
     }
 
     override fun onResume() {
@@ -73,7 +81,7 @@ class LoyaltyHistoryActivity : BaseActivity() {
         binding.apply {
             ivBack.setOnClickListener { onBackPressed() }
             ivWishlist.setOnClickListener { openWishlist() }
-            ivCart.setOnClickListener { openCart() }
+            ivCartIcon.setOnClickListener { navigateToCartScreen() }
             tvMoreHistory.setOnClickListener { showLoyaltyhistoryList(loyaltyHistory) }
             tvNext.setOnClickListener {
                 offset += limit
@@ -87,18 +95,17 @@ class LoyaltyHistoryActivity : BaseActivity() {
     }
 
     private fun getBagItemsCount() {
-        // TODO: change preference to take values of new cart count @likhit-14
-        val count = AppSharedPref.getCartCount(this@LoyaltyHistoryActivity, ApplicationConstant.MIN_ITEM_TO_BE_SHOWN_IN_CART)
+        val count = AppSharedPref.getNewCartCount(this@LoyaltyHistoryActivity)
         binding.apply {
             if (count != ApplicationConstant.MIN_ITEM_TO_BE_SHOWN_IN_CART) {
 
-                tvBadgeInfo.makeVisible()
+                tvCartItemsCount.makeVisible()
                 if (count < ApplicationConstant.MAX_ITEM_TO_BE_SHOWN_IN_CART)
-                    tvBadgeInfo.text = count.toString()
+                    tvCartItemsCount.text = count.toString()
                 else
-                    tvBadgeInfo.text = getString(R.string.text_nine_plus)
+                    tvCartItemsCount.text = getString(R.string.text_nine_plus)
             } else {
-                tvBadgeInfo.makeGone()
+                tvCartItemsCount.makeGone()
             }
         }
     }
@@ -112,8 +119,71 @@ class LoyaltyHistoryActivity : BaseActivity() {
         }
     }
 
-    private fun openCart() {
-        startActivity(Intent(this@LoyaltyHistoryActivity, BagActivity::class.java))
+    private fun initDialog() {
+        sweetAlertDialog = AlertDialogHelper.getAlertDialog(this,
+            SweetAlertDialog.PROGRESS_TYPE, getString(R.string.please_wait),"", false,false);
+    }
+
+    private fun navigateToCartScreen() {
+        val cartId = AppSharedPref.getCartId(this);
+        if(cartId == ApplicationConstant.CART_ID_NOT_AVAILABLE)
+            getCartId()
+        else {
+            startActivity(Intent(this, NewCartActivity::class.java))
+        }
+    }
+
+    private fun getCartId() {
+        val customerId = AppSharedPref.getCustomerId(this).toInt()
+        ApiConnection.checkIfCartExists(this, customerId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : CustomObserver<CartBaseResponse<GetCartId>>(this){
+                override fun onSubscribe(d: Disposable) {
+                    super.onSubscribe(d)
+                    sweetAlertDialog.show()
+                }
+
+                override fun onNext(response: CartBaseResponse<GetCartId>) {
+                    super.onNext(response)
+                    if(response.statusCode == HTTP_RESOURCE_NOT_FOUND)
+                        createCart(customerId)
+                    else {
+                        AppSharedPref.setCartId(this@LoyaltyHistoryActivity, response.result.cartId)
+                        sweetAlertDialog.dismiss()
+                        startActivity(Intent(this@LoyaltyHistoryActivity, NewCartActivity::class.java))
+                    }
+                }
+
+                override fun onError(t: Throwable) {
+                    createCart(customerId)
+                }
+            })
+    }
+
+    private fun createCart(customerId: Int) {
+        ApiConnection.createCart(this, customerId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : CustomObserver<CartBaseResponse<GetCartId>>(this){
+
+                override fun onNext(response: CartBaseResponse<GetCartId>) {
+                    super.onNext(response)
+                    AppSharedPref.setCartId(this@LoyaltyHistoryActivity, response.result.cartId)
+                    sweetAlertDialog.dismiss()
+                    startActivity(Intent(this@LoyaltyHistoryActivity, NewCartActivity::class.java))
+                }
+
+                override fun onError(t: Throwable) {
+                    super.onError(t)
+                    sweetAlertDialog.dismiss()
+                }
+
+                override fun onComplete() {
+                    super.onComplete()
+                    sweetAlertDialog.dismiss()
+                }
+            })
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
