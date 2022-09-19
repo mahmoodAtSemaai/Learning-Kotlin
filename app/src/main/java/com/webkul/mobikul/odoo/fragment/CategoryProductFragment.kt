@@ -18,6 +18,8 @@ import com.webkul.mobikul.odoo.connection.ApiConnection
 import com.webkul.mobikul.odoo.connection.CustomObserver
 import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.core.extension.inTransaction
+import com.webkul.mobikul.odoo.core.extension.makeGone
+import com.webkul.mobikul.odoo.core.extension.makeVisible
 import com.webkul.mobikul.odoo.database.SaveData
 import com.webkul.mobikul.odoo.databinding.FragmentCategoryProductBinding
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper
@@ -62,8 +64,10 @@ class CategoryProductFragment : Fragment() {
 
     fun callApi() {
         dataRequested = true
-        binding.shimmerProgressBar.visibility = View.VISIBLE
-        binding.shimmerProgressBar.startShimmer()
+        if(mIsFirstCall) {
+            binding.shimmerProgressBar.makeVisible()
+            binding.shimmerProgressBar.startShimmer()
+        }
         ApiConnection.getCategoryProducts(requireContext(), id, mOffset, limit)
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : CustomObserver<CatalogProductResponse?>(requireContext()) {
@@ -74,7 +78,7 @@ class CategoryProductFragment : Fragment() {
                         redirectToSignUp()
                     } else {
                         binding.shimmerProgressBar.stopShimmer()
-                        binding.shimmerProgressBar.visibility = View.GONE
+                        binding.shimmerProgressBar.makeGone()
                         if (mIsFirstCall) {
 
                             isFirstCall(catalogProductResponse)
@@ -88,7 +92,7 @@ class CategoryProductFragment : Fragment() {
 
                     //on network error hide shimmer and stop loading animation
                     binding.shimmerProgressBar.stopShimmer()
-                    binding.shimmerProgressBar.visibility = View.GONE
+                    binding.shimmerProgressBar.makeGone()
                 }
             })
     }
