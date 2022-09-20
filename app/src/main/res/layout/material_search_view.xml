@@ -186,19 +186,18 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_empty_search"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 app:visibility="@{searchSuggestionData.products.empty ? View.VISIBLE : View.GONE}">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_empty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.30"
                     app:srcCompat="@drawable/ic_empty_search" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -207,9 +206,10 @@
                     android:layout_height="wrap_content"
                     android:text="@string/sorry_product_not_available"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="@dimen/margin_16"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_empty"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/iv_empty"
                     app:layout_constraintTop_toBottomOf="@+id/iv_empty" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -217,10 +217,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_16"
+                    android:layout_marginHorizontal="@dimen/margin_16"
                     android:text="@string/search_another_product"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textAlignment="center"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_product_not_available"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/tv_product_not_available"
                     app:layout_constraintTop_toBottomOf="@+id/tv_product_not_available" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
