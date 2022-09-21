@@ -64,6 +64,11 @@
             </LinearLayout>
         </com.facebook.shimmer.ShimmerFrameLayout>
 
+        <FrameLayout
+            android:id="@+id/fl_test_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
         <LinearLayout
             android:id="@+id/no_products_fount_ll"
             android:layout_width="match_parent"

@@ -745,7 +745,7 @@
 
 
     <string name="sorry_product_not_available">Maaf, produk ini tidak tersedia</string>
-    <string name="search_another_product">Anda bisa mencari produk lain yang anda butuhkan disini</string>
+    <string name="search_another_product">Anda bisa mencari produk lain yang anda \nbutuhkan disini</string>
     <string name="trans_history">Riwayat Transaksi</string>
 
     <!--Sign-up-->

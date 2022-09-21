@@ -10,6 +10,8 @@ import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.activity.NewHomeActivity
 import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.core.extension.getCompatDrawable
+import com.webkul.mobikul.odoo.core.extension.makeGone
+import com.webkul.mobikul.odoo.core.extension.makeVisible
 import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
 import com.webkul.mobikul.odoo.databinding.FragmentEmptyV1Binding
 import com.webkul.mobikul.odoo.model.home.HomePageResponse
@@ -26,7 +28,8 @@ class EmptyFragmentV1 : BindingBaseFragment<FragmentEmptyV1Binding>() {
         fun newInstance(
             title: String,
             description: String,
-            drawable: Int
+            drawable: Int,
+            hideButton : Boolean
         ) =
             EmptyFragmentV1().apply {
                 val bundle = Bundle()
@@ -34,6 +37,7 @@ class EmptyFragmentV1 : BindingBaseFragment<FragmentEmptyV1Binding>() {
                     putString(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_TITLE_ID, title)
                     putString(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_SUBTITLE_ID, description)
                     putInt(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_DRAWABLE_ID, drawable)
+                    putBoolean(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_HIDE_CONTINUE_SHOPPING_BTN, hideButton)
                 }
                 arguments = bundle
             }
@@ -60,6 +64,11 @@ class EmptyFragmentV1 : BindingBaseFragment<FragmentEmptyV1Binding>() {
             tvEmptyCartTitle.text = arguments?.getString(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_TITLE_ID)
             tvEmptyCartDescription.text = arguments?.getString(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_SUBTITLE_ID)
             ivEmptyCart.setImageDrawable(requireContext().getCompatDrawable(arguments?.getInt(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_DRAWABLE_ID)!!))
+            val hideButton = arguments.getBoolean(BundleConstant.BUNDLE_KEY_EMPTY_FRAGMENT_HIDE_CONTINUE_SHOPPING_BTN)
+            if(hideButton)
+                btnRedirectToHome.makeGone()
+            else
+                btnRedirectToHome.makeVisible()
         }
     }
 

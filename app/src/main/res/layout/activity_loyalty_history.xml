@@ -17,15 +17,16 @@
             android:background="@drawable/background_app_layout"
             android:elevation="@dimen/size_5"
             android:minHeight="?actionBarSize"
+            app:contentInsetLeft="@dimen/size_10"
+            app:contentInsetStart="@dimen/size_10"
+            app:contentInsetStartWithNavigation="@dimen/size_0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_tool_bar_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:weightSum="10">
-
+                android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_back"
@@ -33,60 +34,74 @@
                     android:layout_height="@dimen/hamburger_icon_dimens"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_vector_back"
-                    android:layout_weight="1"/>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_title"
+                    style="@style/Semaai.TextAppearance.Subtitle2.Bold"
                     android:layout_width="@dimen/size_0"
                     android:layout_height="wrap_content"
-                    android:text="@string/points_history_title"
                     android:layout_gravity="center"
-                    android:layout_weight="6.6"
-                    android:textColor="@color/text_orange"
-                    style="@style/Semaai.TextAppearance.Subtitle2.Bold"
+                    android:layout_marginStart="@dimen/margin_4"
+                    android:layout_marginLeft="@dimen/margin_4"
                     android:paddingStart="@dimen/padding_10"
-                    />
+                    android:text="@string/points_history_title"
+                    android:textColor="@color/text_orange"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/iv_back"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_wishlist"
                     android:layout_width="@dimen/size_0"
                     android:layout_height="@dimen/hamburger_icon_dimens"
-                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/margin_16"
+                    android:layout_marginRight="@dimen/margin_16"
                     android:src="@drawable/ic_vector_favorite"
-                    android:layout_weight="0.8"/>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_cart_icon"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <RelativeLayout
-                    android:id="@+id/rl_cart"
-                    android:layout_width="@dimen/size_0"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.6"
-                    android:layout_marginEnd="@dimen/size_10">
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/iv_cart"
-                        android:layout_width="@dimen/hamburger_icon_dimens"
-                        android:layout_height="@dimen/hamburger_icon_dimens"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/ic_vector_cart" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_cart_icon"
+                    android:layout_width="@dimen/hamburger_icon_dimens"
+                    android:layout_height="@dimen/hamburger_icon_dimens"
+                    android:src="@drawable/ic_cart_new"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/gl_home_tb_vertical_90"
+                    app:layout_constraintStart_toStartOf="@id/gl_home_tb_vertical_90"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_badge_info"
-                        style="@style/Semaai.TextAppearance.Caption.Bold"
-                        android:layout_width="@dimen/badge_dimension"
-                        android:layout_height="@dimen/badge_dimension"
-                        android:layout_alignEnd="@+id/iv_cart"
-                        android:layout_marginTop="@dimen/margin_7"
-                        android:layout_marginRight="@dimen/margin_9"
-                        android:background="@drawable/badge_symbol"
-                        android:gravity="center"
-                        android:text="@string/text_one"
-                        android:textColor="@color/text_color_white"
-                        android:visibility="gone" />
 
-                </RelativeLayout>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_cart_items_count"
+                    style="@style/Semaai.TextAppearance.Caption.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/cart_icon"
+                    android:background="@drawable/background_discount_price"
+                    android:paddingHorizontal="@dimen/padding_6"
+                    android:paddingVertical="@dimen/padding_2"
+                    android:text="@string/text_one"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toTopOf="@+id/iv_cart_icon"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_cart_icon"
+                    app:layout_constraintStart_toEndOf="@+id/iv_cart_icon"
+                    app:layout_constraintTop_toTopOf="@+id/iv_cart_icon" />
 
-            </LinearLayout>
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gl_home_tb_vertical_90"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.90" />
 
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.appbar.MaterialToolbar>
 
