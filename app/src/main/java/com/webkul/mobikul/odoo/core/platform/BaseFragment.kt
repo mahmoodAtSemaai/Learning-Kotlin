@@ -91,7 +91,7 @@ abstract class BaseFragment : Fragment() {
             Intent(
                 requireActivity(),
                 UserOnboardingActivity::class.java
-            ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         )
         requireActivity().finish()
     }
@@ -103,7 +103,6 @@ abstract class BaseFragment : Fragment() {
                 NewHomeActivity::class.java
             ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         )
-        requireActivity().finish()
     }
 
 }

@@ -87,6 +87,7 @@ public interface ApplicationConstant {
     int QTY_ZERO = 0;
     int MAX_ITEM_TO_BE_SHOWN_IN_CART = 10;
     int MIN_ITEM_TO_BE_SHOWN_IN_CART = 0;
+    long SET_QTY_ERROR_DIALOG_TIME = 1500;
     int CART_ID_NOT_AVAILABLE = -1;
 
     // Point TYPE

@@ -108,7 +108,7 @@ abstract class BaseActivity : AppCompatActivity() {
             Intent(
                 this,
                 UserOnboardingActivity::class.java
-            ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         )
         finish()
     }
@@ -120,7 +120,6 @@ abstract class BaseActivity : AppCompatActivity() {
                 NewHomeActivity::class.java
             ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         )
-        finish()
     }
 
 }

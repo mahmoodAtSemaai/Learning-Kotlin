@@ -1,6 +1,7 @@
 package com.webkul.mobikul.odoo.data.entity
 
 data class LoginEntity(
-        val customerName: String,
-        val customerEmail: String
+		val customerName : String,
+		val customerEmail : String,
+		val userId : String
 )

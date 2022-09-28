@@ -25,11 +25,6 @@ import io.reactivex.Observable;
 @HiltAndroidApp
 public class OdooMarketplaceApplication extends OdooApplication {
 
-    @Override
-    public Class getSellerProfileActivity() {
-        return SellerProfileActivity.class;
-    }
-
     public Observable<CatalogProductResponse> getSellerCollection(String sellerId, int offset, int itemsPerPage) {
         return MarketplaceApiConnection.getSellerCollectionData(this, sellerId, offset, itemsPerPage);
     }

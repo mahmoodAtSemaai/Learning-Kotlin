@@ -12,24 +12,21 @@ import com.webkul.mobikul.odoo.model.request.SignUpRequest
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
-        private val remoteDataSource: AuthRemoteDataSource,
-        private val appPreferences: AppPreferences
+    private val remoteDataSource: AuthRemoteDataSource,
+    private val appPreferences: AppPreferences
 ) : AuthRepository {
 
     override suspend fun logIn(username: String, password: String): Resource<LoginEntity> {
 
         appPreferences.customerLoginToken = Base64.encodeToString(
-                AuthenticationRequest(
-                        username, password
-                ).toString().toByteArray(), Base64.NO_WRAP
+            AuthenticationRequest(username, password).toString().toByteArray(), Base64.NO_WRAP
         )
 
         val result = remoteDataSource.logIn()
 
         when (result) {
-            is Resource.Failure -> {
-                appPreferences.customerLoginToken = null
-            }
+            is Resource.Failure -> appPreferences.customerLoginToken = null
+            is Resource.Success -> appPreferences.userId = result.value.userId
         }
 
         return result
@@ -37,16 +34,14 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun signUp(signUpRequest: SignUpRequest): Resource<SignUpEntity> {
         appPreferences.customerLoginToken = Base64.encodeToString(
-                AuthenticationRequest(
-                        signUpRequest.login, signUpRequest.password
-                ).toString().toByteArray(), Base64.NO_WRAP
+            AuthenticationRequest(signUpRequest.login, signUpRequest.password).toString()
+                .toByteArray(), Base64.NO_WRAP
         )
         val result = remoteDataSource.signUp(signUpRequest)
 
         when (result) {
-            is Resource.Failure -> {
-                appPreferences.customerLoginToken = null
-            }
+            is Resource.Failure -> appPreferences.customerLoginToken = null
+            is Resource.Success -> appPreferences.userId = result.value.userId
         }
 
         return result

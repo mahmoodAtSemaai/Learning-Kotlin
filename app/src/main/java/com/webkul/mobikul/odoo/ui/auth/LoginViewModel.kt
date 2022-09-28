@@ -72,7 +72,7 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = LoginState.Loading
             _state.value = try {
-                val intent = viewPrivacyPolicyUseCase.invoke()
+                val intent = viewPrivacyPolicyUseCase()
                 var loginState: LoginState = LoginState.Idle
 
                 intent.collect {

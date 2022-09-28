@@ -57,9 +57,11 @@ public class ProductDefaultStyleAdapter extends RecyclerView.Adapter<ProductDefa
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final ProductData productData = mProductDatas.get(position);
-        holder.mBinding.setData(productData);
+        //TODO -> need to check this
+//        holder.mBinding.setData(productData);
         holder.mBinding.setSliderMode(mSliderMode);
-        holder.mBinding.setHandler(new ProductHandler(mContext, productData));
+        //TODO -> need to check this
+//        holder.mBinding.setHandler(new ProductHandler(mContext, productData));
         holder.mBinding.getHandler().setProductDefaultBinding(holder.mBinding);
         holder.mBinding.executePendingBindings();
     }

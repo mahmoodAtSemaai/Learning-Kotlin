@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
+import com.webkul.mobikul.odoo.data.entity.ProductEntity;
 import com.webkul.mobikul.odoo.databinding.ItemCatalogProductListBinding;
 import com.webkul.mobikul.odoo.databinding.ItemProductGridBinding;
 import com.webkul.mobikul.odoo.handler.home.ProductHandler;
@@ -37,11 +38,11 @@ public class CatalogProductListAdapter extends RecyclerView.Adapter<CatalogProdu
     @SuppressWarnings("unused")
     private static final String TAG = "CatalogProductListRvAda";
     private final Context mContext;
-    private final List<ProductData> mProductDatas;
+    private final List<ProductEntity> mProductDatas;
     public int VIEW_TYPE;
     public int VIEW_TYPE_BACK_TO_TOP = 3;
 
-    public CatalogProductListAdapter(Context context, @NonNull List<ProductData> productDatas, int viewTypeGrid) {
+    public CatalogProductListAdapter(Context context, @NonNull List<ProductEntity> productDatas, int viewTypeGrid) {
         mContext = context;
         mProductDatas = productDatas;
         VIEW_TYPE = viewTypeGrid;
@@ -64,7 +65,7 @@ public class CatalogProductListAdapter extends RecyclerView.Adapter<CatalogProdu
     @Override
     public void onBindViewHolder(CatalogProductListAdapter.ViewHolder holder, int position) {
         if (position < mProductDatas.size()) {
-            final ProductData productData = mProductDatas.get(position);
+            final ProductEntity productData = mProductDatas.get(position);
             if (getItemViewType(position) == VIEW_TYPE) {
                 ((ItemCatalogProductListBinding) holder.mBinding).setData(productData);
                 ((ItemCatalogProductListBinding) holder.mBinding).setHandler(new ProductHandler(mContext, productData));

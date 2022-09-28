@@ -6,21 +6,22 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 data class CartProductsRequest(
-        @SerializedName("products")
-        @Expose
-        var products: ArrayList<CartProductItemRequest>
+    @SerializedName("products")
+    @Expose
+    var products: ArrayList<CartProductItemRequest>,
+    var cartId: Int = -1,
 ) {
     fun getRequestBody() =
-            JSONObject().apply {
+        JSONObject().apply {
 
-                val jsonArray = JSONArray()
-                products.forEach {
-                    jsonArray.put(it.getRequestBody())
-                }
+            val jsonArray = JSONArray()
+            products.forEach {
+                jsonArray.put(it.getRequestBody())
+            }
 
-                //stringify product list
-                put(PRODUCTS, jsonArray)
-            }.toString()
+            //stringify product list
+            put(PRODUCTS, jsonArray)
+        }.toString()
 
     companion object {
         private const val PRODUCTS = "products"

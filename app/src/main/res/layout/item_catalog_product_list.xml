@@ -9,7 +9,7 @@
 
         <variable
             name="data"
-            type="com.webkul.mobikul.odoo.model.generic.ProductData" />
+            type="com.webkul.mobikul.odoo.data.entity.ProductEntity" />
 
         <variable
             name="sliderMode"
@@ -51,7 +51,7 @@
             android:layout_centerHorizontal="true"
             android:background="@color/white"
             app:imageType="@{ImageType.PRODUCT_GENERIC}"
-            app:imageUrl="@{data.thumbNail}"
+            app:imageUrl="@{data.thumbnail}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:placeholder="@{@drawable/ic_vector_odoo_placeholder_grey400_48dp}"

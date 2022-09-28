@@ -123,38 +123,33 @@
 
                 </RelativeLayout>
 
-
-                <RelativeLayout
-                    android:id="@+id/rl_chat_container"
-                    android:layout_width="@dimen/font_weight_0"
-                    android:layout_height="wrap_content"
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_chat_icon"
+                    android:layout_width="@dimen/hamburger_icon_dimens"
+                    android:layout_height="@dimen/hamburger_icon_dimens"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_chat"
+                    android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="@+id/rl_semaai_points_container"
                     app:layout_constraintEnd_toStartOf="@id/gl_home_tb_vertical_75"
                     app:layout_constraintStart_toEndOf="@+id/rl_semaai_points_container"
-                    app:layout_constraintTop_toTopOf="@+id/rl_semaai_points_container">
+                    app:layout_constraintTop_toTopOf="@+id/rl_semaai_points_container" />
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/iv_chat_icon"
-                        android:layout_width="@dimen/hamburger_icon_dimens"
-                        android:layout_height="@dimen/hamburger_icon_dimens"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/ic_chat"
-                        android:visibility="invisible" />
-
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/iv_unread_chat_count"
-                        android:layout_width="@dimen/badge_dimension"
-                        android:layout_height="@dimen/badge_dimension"
-                        android:layout_alignEnd="@+id/iv_chat_icon"
-                        android:layout_marginTop="@dimen/top_margin_badge"
-                        android:layout_marginRight="@dimen/right_margin_badge"
-                        android:background="@drawable/badge_symbol_orange"
-                        android:gravity="center"
-                        android:textColor="@color/text_color_white"
-                        android:visibility="invisible" />
-
-                </RelativeLayout>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/iv_unread_chat_count"
+                    style="@style/Semaai.TextAppearance.Caption.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/cart_icon"
+                    android:background="@drawable/badge_symbol_orange"
+                    android:paddingHorizontal="@dimen/padding_6"
+                    android:paddingVertical="@dimen/padding_2"
+                    android:textColor="@color/white"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toTopOf="@+id/iv_chat_icon"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_chat_icon"
+                    app:layout_constraintStart_toEndOf="@+id/iv_chat_icon"
+                    app:layout_constraintTop_toTopOf="@+id/iv_chat_icon" />
 
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -162,14 +157,15 @@
                     android:layout_width="@dimen/hamburger_icon_dimens"
                     android:layout_height="@dimen/hamburger_icon_dimens"
                     android:src="@drawable/ic_cart_new"
-                    app:layout_constraintBottom_toBottomOf="@+id/relativeLayout2"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_chat_icon"
                     app:layout_constraintEnd_toStartOf="@+id/gl_home_tb_vertical_90"
-                    app:layout_constraintStart_toEndOf="@+id/rl_chat_container"
-                    app:layout_constraintTop_toTopOf="@+id/rl_chat_container" />
+                    app:layout_constraintStart_toEndOf="@+id/iv_chat_icon"
+                    app:layout_constraintTop_toTopOf="@+id/iv_chat_icon" />
 
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_cart_items_count"
+                    style="@style/Semaai.TextAppearance.Caption.Bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignEnd="@+id/cart_icon"
@@ -178,7 +174,6 @@
                     android:paddingVertical="@dimen/padding_2"
                     android:text="@string/text_one"
                     android:textColor="@color/white"
-                    style="@style/Semaai.TextAppearance.Caption.Bold"
                     app:layout_constraintBottom_toTopOf="@+id/iv_cart_icon"
                     app:layout_constraintEnd_toEndOf="@+id/iv_cart_icon"
                     app:layout_constraintStart_toEndOf="@+id/iv_cart_icon"

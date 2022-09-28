@@ -15,11 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.webkul.mobikul.odoo.BuildConfig;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.adapter.catalog.CatalogProductListAdapter;
@@ -27,10 +27,11 @@ import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.constant.BundleConstant;
+import com.webkul.mobikul.odoo.core.utils.AppConstantsKt;
 import com.webkul.mobikul.odoo.custom.CustomToast;
 import com.webkul.mobikul.odoo.custom.MaterialSearchView;
-import com.webkul.mobikul.odoo.database.SaveData;
-import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
+import com.webkul.mobikul.odoo.data.entity.ProductListEntity;
+import com.webkul.mobikul.odoo.data.response.ProductListResponse;
 import com.webkul.mobikul.odoo.databinding.ActivityProductCatalogBinding;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.fragment.EmptyFragment;
@@ -38,19 +39,16 @@ import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.CatalogHelper;
 import com.webkul.mobikul.odoo.helper.EndlessRecyclerViewScrollListener;
-import com.webkul.mobikul.odoo.helper.ErrorConstants;
 import com.webkul.mobikul.odoo.helper.FragmentHelper;
-import com.webkul.mobikul.odoo.helper.NetworkHelper;
-import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.helper.ViewHelper;
-import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse;
+import com.webkul.mobikul.odoo.core.data.response.BaseResponseNew;
 
 import java.util.ArrayList;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
@@ -59,7 +57,6 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGOR
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGORY_NAME;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_SEARCH_DOMAIN;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_SELLER_ID;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_SLIDER_ID;
 
 /**
  * Webkul Software.
@@ -83,19 +80,16 @@ public class CatalogProductActivity extends BaseActivity {
     public static final int VIEW_TYPE_LIST = 1;
     public static final int VIEW_TYPE_GRID = 2;
 
-
-    private CustomObserver<CatalogProductResponse> mCatalogProductDataObserver = new CustomObserver<CatalogProductResponse>(this) {
-
+    private CustomObserver<BaseResponseNew<ProductListResponse>> mProductListEntityObserver = new CustomObserver<BaseResponseNew<ProductListResponse>>(this) {
         @Override
-        public void onComplete() {
-
+        public void onSubscribe(Disposable d) {
+            super.onSubscribe(d);
         }
 
         @Override
-        public void onNext(@NonNull CatalogProductResponse catalogProductResponse) {
-            super.onNext(catalogProductResponse);
-
-            if (catalogProductResponse.isAccessDenied()) {
+        public void onNext(BaseResponseNew<ProductListResponse> productListResponse) {
+            super.onNext(productListResponse);
+            if (productListResponse.getStatusCode() == AppConstantsKt.HTTP_ERROR_UNAUTHORIZED_REQUEST) {
                 AlertDialogHelper.showDefaultWarningDialogWithDismissListener(CatalogProductActivity.this, getString(R.string.error_login_failure), getString(R.string.access_denied_message), new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
@@ -106,127 +100,48 @@ public class CatalogProductActivity extends BaseActivity {
                         startActivity(i);
                     }
                 });
-            } else {
+            }
+            Gson gson = new Gson();
+            ProductListEntity productListEntity = gson.fromJson(gson.toJson(productListResponse.getData()), ProductListEntity.class);
 
+            mBinding.getData().setLazyLoading(false);
 
-                mBinding.getData().setLazyLoading(false);
+            if (mIsFirstCall) {
+                mBinding.setData(productListEntity);
+                mBinding.executePendingBindings();
 
-                if (mIsFirstCall) {
-                    mBinding.setData(catalogProductResponse);
-                    mBinding.executePendingBindings();
-                    catalogProductResponse.setWishlistData();
-
-                    /*BETTER REPLACE SOME CONTAINER INSTEAD OF WHOLE PAGE android.R.id.content */
-                    CatalogHelper.CatalogProductRequestType catalogProductRequestType = (CatalogHelper.CatalogProductRequestType) getIntent().getSerializableExtra(BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE);
-                    String requestTypeIdentifier = "";
-
-                    switch (catalogProductRequestType) {
-                        case PRODUCT_SLIDER:
-                            requestTypeIdentifier = "ProductSlider" + getIntent().getExtras().getString(BUNDLE_KEY_SLIDER_ID);
-                            break;
-                        case SELLER_PRODUCTS:
-                            requestTypeIdentifier = "SellerCollection" + getIntent().getExtras().getString(BUNDLE_KEY_SELLER_ID);
-                            break;
-
-                        case FEATURED_CATEGORY:
-                        case GENERAL_CATEGORY:
-                        case BANNER_CATEGORY:
-                            requestTypeIdentifier = "CategoryRequest" + getIntent().getExtras().getString(BUNDLE_KEY_CATEGORY_ID);
-                            break;
-
-                        case SEARCH_QUERY:
-                            AnalyticsImpl.INSTANCE.trackItemSearchSuccessful(getIntent().getExtras().getString(SearchManager.QUERY),
-                                    catalogProductResponse.getTotalCount());
-                            requestTypeIdentifier = "SearchRequestQuery" + getIntent().getExtras().getString(SearchManager.QUERY);
-                            FirebaseAnalyticsImpl.logSearchEvent(CatalogProductActivity.this, getIntent().getExtras().getString(SearchManager.QUERY));
-                            break;
-
-                        case SEARCH_DOMAIN:
-                            requestTypeIdentifier = "SearchRequestDomain" + getIntent().getExtras().getString(BUNDLE_KEY_SEARCH_DOMAIN);
-                            break;
-                    }
-                    new SaveData(CatalogProductActivity.this, catalogProductResponse, requestTypeIdentifier);
-
-
-                    if (mBinding.getData().getProducts().isEmpty()) {
-                        FragmentHelper.replaceFragment(R.id.container, CatalogProductActivity.this, EmptyFragment.newInstance(R.drawable.ic_vector_empty_product_catalog, getString(R.string.empty_product_catalog), getString(R.string.try_different_category_or_search_keyword_maybe), true,
-                                EmptyFragment.EmptyFragType.TYPE_CATALOG_PRODUCT.ordinal()), EmptyFragment.class.getSimpleName(), false, false);
-                        mBinding.floatingButton.setVisibility(View.GONE);
-                    } else {
-                        /*Remove empty fragment if added*/
-                        Fragment fragment = getSupportFragmentManager().findFragmentByTag(EmptyFragment.class.getSimpleName());
-                        if (fragment != null) {
-                            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                        }
-                        initProductCatalogRv();
-                        mBinding.floatingButton.setVisibility(View.VISIBLE);
-                    }
+                if (mBinding.getData().getProducts().isEmpty()) {
+                    FragmentHelper.replaceFragment(R.id.container, CatalogProductActivity.this, EmptyFragment.newInstance(R.drawable.ic_vector_empty_product_catalog, getString(R.string.empty_product_catalog), getString(R.string.try_different_category_or_search_keyword_maybe), true,
+                            EmptyFragment.EmptyFragType.TYPE_CATALOG_PRODUCT.ordinal()), EmptyFragment.class.getSimpleName(), false, false);
+                    mBinding.floatingButton.setVisibility(View.GONE);
                 } else {
-                    /*update offset from new response*/
-                    catalogProductResponse.setWishlistData();
-                    mBinding.getData().setOffset(catalogProductResponse.getOffset());
-                    mBinding.getData().setLimit(catalogProductResponse.getLimit());
-                    mBinding.getData().getProducts().addAll(catalogProductResponse.getProducts());
-                    mBinding.productCatalogRv.getAdapter().notifyDataSetChanged();
+                    /*Remove empty fragment if added*/
+                    Fragment fragment = getSupportFragmentManager().findFragmentByTag(EmptyFragment.class.getSimpleName());
+                    if (fragment != null) {
+                        getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                    }
+                    initProductCatalogRv();
                     mBinding.floatingButton.setVisibility(View.VISIBLE);
-
                 }
+            } else {
+                mBinding.getData().setOffset(productListEntity.getOffset());
+                mBinding.getData().setTCount(productListEntity.getTCount());
+                mBinding.getData().getProducts().addAll(productListEntity.getProducts());
+                mBinding.productCatalogRv.getAdapter().notifyDataSetChanged();
+                mBinding.floatingButton.setVisibility(View.VISIBLE);
+
             }
         }
 
         @Override
-        public void onError(@NonNull Throwable t) {
-
-            /* this might not be true for Rx Callbacks..*/
-            // onFailure can be called if the activity is sudden closed, thus dispatcher calls the cancel which result in calling of onFailure..
-            if (mBinding.getData() != null) {
-                mBinding.getData().setLazyLoading(false);
-            }
-
-            if (!NetworkHelper.isNetworkAvailable(CatalogProductActivity.this)) {
-                SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(CatalogProductActivity.this);
-                CatalogHelper.CatalogProductRequestType catalogProductRequestType = (CatalogHelper.CatalogProductRequestType) getIntent().getSerializableExtra(BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE);
-                String requestTypeIdentifier = "";
-                switch (catalogProductRequestType) {
-                    case PRODUCT_SLIDER:
-                        requestTypeIdentifier = "ProductSlider" + getIntent().getExtras().getString(BUNDLE_KEY_SLIDER_ID);
-                        break;
-                    case SELLER_PRODUCTS:
-                        requestTypeIdentifier = "SellerCollection" + getIntent().getExtras().getString(BUNDLE_KEY_SELLER_ID);
-                        break;
-
-                    case FEATURED_CATEGORY:
-                    case GENERAL_CATEGORY:
-                    case BANNER_CATEGORY:
-                        requestTypeIdentifier = "CategoryRequest" + getIntent().getExtras().getString(BUNDLE_KEY_CATEGORY_ID);
-                        break;
-
-                    case SEARCH_QUERY:
-                        AnalyticsImpl.INSTANCE.trackItemSearchFailed(getIntent().getExtras().getString(SearchManager.QUERY),
-                                ErrorConstants.APIError.INSTANCE.getErrorMessage(), 400, "");
-                        requestTypeIdentifier = "SearchRequestQuery" + getIntent().getExtras().getString(SearchManager.QUERY);
-                        break;
-
-                    case SEARCH_DOMAIN:
-                        requestTypeIdentifier = "SearchRequestDomain" + getIntent().getExtras().getString(BUNDLE_KEY_SEARCH_DOMAIN);
-                        break;
-                }
-                CatalogProductResponse dbResponse = sqlLiteDbHelper.getCatalogProductData(requestTypeIdentifier);
-
-                if (mIsFirstCall) {
-                    if (dbResponse != null) {
-                        onNext(dbResponse);
-                    } else {
-                        super.onError(t);
-                    }
-                } else {
-                    super.onError(t);
-                }
-            } else {
-                super.onError(t);
-            }
+        public void onError(Throwable t) {
+            super.onError(t);
         }
 
+        @Override
+        public void onComplete() {
+            super.onComplete();
+        }
     };
 
     @Override
@@ -263,31 +178,28 @@ public class CatalogProductActivity extends BaseActivity {
             offset = mBinding.getData().getOffset() + AppSharedPref.getItemsPerPage(this);
         }
         CatalogHelper.CatalogProductRequestType catalogProductRequestType = (CatalogHelper.CatalogProductRequestType) getIntent().getSerializableExtra(BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE);
-        Observable<CatalogProductResponse> catalogProductDataObservable = null;
+        Observable<BaseResponseNew<ProductListResponse>> productListResponseObservable = null;
         switch (catalogProductRequestType) {
-            case PRODUCT_SLIDER:
-                catalogProductDataObservable = ApiConnection.getProductSliderData(this, getIntent().getExtras().getInt(BUNDLE_KEY_SLIDER_ID), offset, AppSharedPref.getItemsPerPage(this));
-                break;
             case SELLER_PRODUCTS:
-                catalogProductDataObservable = ((OdooApplication) getApplicationContext()).getSellerCollection(getIntent().getExtras().getString(BUNDLE_KEY_SELLER_ID), offset, AppSharedPref.getItemsPerPage(this));
+                productListResponseObservable = ApiConnection.getSellerProducts(this, Integer.parseInt(getIntent().getExtras().getString(BUNDLE_KEY_SELLER_ID)), offset, AppSharedPref.getItemsPerPage(this));
                 break;
 
             case FEATURED_CATEGORY:
             case GENERAL_CATEGORY:
             case BANNER_CATEGORY:
-                catalogProductDataObservable = ApiConnection.getCategoryProducts(this, getIntent().getExtras().getString(BUNDLE_KEY_CATEGORY_ID), offset, AppSharedPref.getItemsPerPage(this));
+                productListResponseObservable = ApiConnection.getCategoryProductList(this, getIntent().getExtras().getInt(BUNDLE_KEY_CATEGORY_ID), offset, AppSharedPref.getItemsPerPage(this));
                 break;
 
             case SEARCH_QUERY:
-                catalogProductDataObservable = ApiConnection.getSearchResponse(this, getIntent().getExtras().getString(SearchManager.QUERY), offset, AppSharedPref.getItemsPerPage(this));
+                productListResponseObservable = ApiConnection.getProductSearchResponse(this, true, getIntent().getExtras().getString(SearchManager.QUERY), offset, AppSharedPref.getItemsPerPage(this));
                 break;
 
             case SEARCH_DOMAIN:
-                catalogProductDataObservable = ApiConnection.getSearchResponse(this, getIntent().getExtras().getString(BUNDLE_KEY_SEARCH_DOMAIN), offset, AppSharedPref.getItemsPerPage(this));
+                productListResponseObservable = ApiConnection.getProductSearchResponse(this, true, getIntent().getExtras().getString(BUNDLE_KEY_SEARCH_DOMAIN), offset, AppSharedPref.getItemsPerPage(this));
                 break;
         }
 
-        catalogProductDataObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(mCatalogProductDataObserver);
+        productListResponseObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(mProductListEntityObserver);
     }
 
 
@@ -309,13 +221,13 @@ public class CatalogProductActivity extends BaseActivity {
     private void init() {
         /*Init Data */
         mIsFirstCall = true;
-        mBinding.setData(new CatalogProductResponse());
+        mBinding.setData(new ProductListEntity());
         mBinding.getData().setLazyLoading(true);
         AppSharedPref.setItemsPerPage(this, BuildConfig.DEFAULT_ITEM_PER_PAGE);
     }
 
     private void showPositionToast(int lastVisibleItemPosition) {
-        String toastString = lastVisibleItemPosition + " " + getString(R.string.of_toast_for_no_of_item) + " " + mBinding.getData().getTotalCount();
+        String toastString = lastVisibleItemPosition + " " + getString(R.string.of_toast_for_no_of_item) + " " + mBinding.getData().getTCount();
         if (mToast != null) {
             mToast.setToastMsg(toastString);
             mToast.show();
@@ -378,7 +290,7 @@ public class CatalogProductActivity extends BaseActivity {
                     int lastVisibleItemPosition = ((GridLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
 
                     if (mBinding.getData().getProducts().size() <= 9) {
-                        if ((lastVisibleItemPosition + 1) == mBinding.getData().getTotalCount()) {
+                        if ((lastVisibleItemPosition + 1) == mBinding.getData().getTCount()) {
                             mBinding.footerTv.setVisibility(View.VISIBLE);
                         } else {
                             mBinding.footerTv.setVisibility(View.GONE);
@@ -387,7 +299,7 @@ public class CatalogProductActivity extends BaseActivity {
                     }
                     if (mBinding.getData().getProducts().size() > 9) {
 
-                        if ((lastVisibleItemPosition) == mBinding.getData().getTotalCount()) {
+                        if ((lastVisibleItemPosition) == mBinding.getData().getTCount()) {
                             mBinding.footerTv.setVisibility(View.VISIBLE);
                         } else {
                             mBinding.footerTv.setVisibility(View.GONE);
@@ -399,7 +311,7 @@ public class CatalogProductActivity extends BaseActivity {
                 } else {
                     int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
                     if (mBinding.getData().getProducts().size() <= 5) {
-                        if ((lastVisibleItemPosition + 1) == mBinding.getData().getTotalCount()) {
+                        if ((lastVisibleItemPosition + 1) == mBinding.getData().getTCount()) {
                             mBinding.footerTv.setVisibility(View.VISIBLE);
                         } else {
                             mBinding.footerTv.setVisibility(View.GONE);
@@ -407,7 +319,7 @@ public class CatalogProductActivity extends BaseActivity {
                         showPositionToast(lastVisibleItemPosition + 1);
                     }
                     if (mBinding.getData().getProducts().size() > 5) {
-                        if ((lastVisibleItemPosition) == mBinding.getData().getTotalCount()) {
+                        if ((lastVisibleItemPosition) == mBinding.getData().getTCount()) {
                             mBinding.footerTv.setVisibility(View.VISIBLE);
                         } else {
                             mBinding.footerTv.setVisibility(View.GONE);

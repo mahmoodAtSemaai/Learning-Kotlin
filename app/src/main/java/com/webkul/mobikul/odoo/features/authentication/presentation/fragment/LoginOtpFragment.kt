@@ -213,7 +213,7 @@ class LoginOtpFragment @Inject constructor() : BindingBaseFragment<FragmentLogin
                 triggerIntent(LoginOtpIntent.GetHomePageData)
             }
             is LoginOtpState.HomePage -> {
-                redirectToHomeActivity(state.homePageResponse)
+                redirectToHomeActivity()
             }
             is LoginOtpState.UnauthorisedUser -> {
                 redirectToUserApprovalActivity()
@@ -275,10 +275,9 @@ class LoginOtpFragment @Inject constructor() : BindingBaseFragment<FragmentLogin
         )
     }
 
-    private fun redirectToHomeActivity(homePageResponse: HomePageResponse) {
+    private fun redirectToHomeActivity() {
         startActivity(
             Intent(requireActivity(), NewHomeActivity::class.java)
-                .putExtra(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         )
     }

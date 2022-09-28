@@ -122,10 +122,7 @@ class CartFragment : Fragment() ,
     }
 
     private fun redirectToHomeScreen() {
-        startActivity(
-            Intent(requireContext(), NewHomeActivity::class.java)
-                .putExtra(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE,
-                    (requireActivity() as NewCartActivity).getHomePageResponse()))
+        startActivity(Intent(requireContext(), NewHomeActivity::class.java))
     }
 
     override fun onResume() {

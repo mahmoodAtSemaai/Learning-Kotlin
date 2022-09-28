@@ -10,13 +10,13 @@ import javax.inject.Inject
 class IsUserLoggedInUseCase @Inject constructor(
     private val appPreferences: AppPreferences
 ) {
-    operator fun invoke(): Flow<Resource<Boolean>> = flow {
+    operator fun invoke(): Resource<Boolean> {
 
-        try {
+        return try {
             val result = appPreferences.isLoggedIn
-            emit(Resource.Success(result))
+            Resource.Success(result)
         } catch (e: Exception) {
-            emit(Resource.Failure(FailureStatus.ACCESS_DENIED))
+            Resource.Failure(FailureStatus.ACCESS_DENIED)
         }
     }
 }

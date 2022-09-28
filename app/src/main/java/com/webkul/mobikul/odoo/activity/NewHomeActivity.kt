@@ -27,8 +27,6 @@ import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.connection.ApiConnection
 import com.webkul.mobikul.odoo.connection.CustomObserver
 import com.webkul.mobikul.odoo.constant.ApplicationConstant
-import com.webkul.mobikul.odoo.constant.BundleConstant
-import com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE
 import com.webkul.mobikul.odoo.core.extension.makeGone
 import com.webkul.mobikul.odoo.core.extension.makeInvisible
 import com.webkul.mobikul.odoo.core.extension.makeVisible
@@ -47,9 +45,9 @@ import com.webkul.mobikul.odoo.helper.*
 import com.webkul.mobikul.odoo.model.BaseResponse
 import com.webkul.mobikul.odoo.model.ReferralResponse
 import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse
-import com.webkul.mobikul.odoo.model.home.HomePageResponse
 import com.webkul.mobikul.odoo.ui.cart.NewCartActivity
 import com.webkul.mobikul.odoo.updates.FirebaseRemoteConfigHelper.isChatFeatureEnabled
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -57,8 +55,8 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.io.ByteArrayOutputStream
 
-
-class NewHomeActivity : BaseActivity(), CartUpdateListener {
+@AndroidEntryPoint
+class NewHomeActivity : BaseActivity(), CartUpdateListener, LoyaltyPointsListener {
     lateinit var binding: ActivityNewHomeBinding
     private val RC_ACCESS_FINE_LOCATION_NEW_ADDRESS = 1001
     private val RC_CHECK_LOCATION_SETTINGS = 1003
@@ -70,7 +68,7 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
     private val mBackPressedTime: Long = 0
     private var currentFragmentDisplayed = ""
     private var unreadChatCount = 0
-    lateinit var sweetAlertDialog : SweetAlertDialog
+    lateinit var sweetAlertDialog: SweetAlertDialog
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -187,60 +185,61 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
     }
 
     private fun initDialog() {
-        sweetAlertDialog = AlertDialogHelper.getAlertDialog(this,
-            SweetAlertDialog.PROGRESS_TYPE, getString(R.string.please_wait),"", false,false)
+        sweetAlertDialog = AlertDialogHelper.getAlertDialog(
+            this,
+            SweetAlertDialog.PROGRESS_TYPE, getString(R.string.please_wait), "", false, false
+        )
     }
 
-    private fun setCartId(){
+    private fun setCartId() {
         val cartId = AppSharedPref.getCartId(this)
 
-        if(cartId == ApplicationConstant.CART_ID_NOT_AVAILABLE) {
+        if (cartId == ApplicationConstant.CART_ID_NOT_AVAILABLE) {
             callGetCartApi()
         }
     }
 
-    private fun callGetCartApi(){
+    private fun callGetCartApi() {
         val customerId = AppSharedPref.getCustomerId(this).toInt()
         ApiConnection.checkIfCartExists(this, customerId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : CustomObserver<CartBaseResponse<GetCartId>>(this){
-                    override fun onNext(response: CartBaseResponse<GetCartId>) {
-                        super.onNext(response)
-                        if(response.statusCode == HTTP_RESOURCE_NOT_FOUND)
-                        else {
-                            AppSharedPref.setCartId(this@NewHomeActivity, response.result.cartId)
-                        }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : CustomObserver<CartBaseResponse<GetCartId>>(this) {
+                override fun onNext(response: CartBaseResponse<GetCartId>) {
+                    super.onNext(response)
+                    if (response.statusCode == HTTP_RESOURCE_NOT_FOUND)
+                    else {
+                        AppSharedPref.setCartId(this@NewHomeActivity, response.result.cartId)
                     }
+                }
 
-                    override fun onError(t: Throwable) {
-                    }
-                })
+                override fun onError(t: Throwable) {
+                }
+            })
     }
 
     private fun callCreateCartApi(customerId: Int) {
         ApiConnection.createCart(this, customerId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : CustomObserver<CartBaseResponse<GetCartId>>(this){
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : CustomObserver<CartBaseResponse<GetCartId>>(this) {
 
-                    override fun onNext(response: CartBaseResponse<GetCartId>) {
-                        super.onNext(response)
-                        AppSharedPref.setCartId(this@NewHomeActivity, response.result.cartId)
-                    }
+                override fun onNext(response: CartBaseResponse<GetCartId>) {
+                    super.onNext(response)
+                    AppSharedPref.setCartId(this@NewHomeActivity, response.result.cartId)
+                }
 
-                    override fun onError(t: Throwable) {
+                override fun onError(t: Throwable) {
 
-                    }
-                })
+                }
+            })
     }
 
     private fun navigateToCartActivity() {
         val cartId = AppSharedPref.getCartId(this)
-        if(cartId == ApplicationConstant.CART_ID_NOT_AVAILABLE) {
+        if (cartId == ApplicationConstant.CART_ID_NOT_AVAILABLE) {
             getCartId()
-        }
-        else {
+        } else {
             startNewCartActivity()
         }
     }
@@ -250,7 +249,7 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
         ApiConnection.checkIfCartExists(this, customerId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : CustomObserver<CartBaseResponse<GetCartId>>(this){
+            .subscribe(object : CustomObserver<CartBaseResponse<GetCartId>>(this) {
                 override fun onSubscribe(d: Disposable) {
                     super.onSubscribe(d)
                     sweetAlertDialog.show()
@@ -258,7 +257,7 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
 
                 override fun onNext(response: CartBaseResponse<GetCartId>) {
                     super.onNext(response)
-                    if(response.statusCode == HTTP_RESOURCE_NOT_FOUND)
+                    if (response.statusCode == HTTP_RESOURCE_NOT_FOUND)
                         createCart(customerId)
                     else {
                         AppSharedPref.setCartId(this@NewHomeActivity, response.result.cartId)
@@ -277,7 +276,7 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
         ApiConnection.createCart(this, customerId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : CustomObserver<CartBaseResponse<GetCartId>>(this){
+            .subscribe(object : CustomObserver<CartBaseResponse<GetCartId>>(this) {
 
                 override fun onNext(response: CartBaseResponse<GetCartId>) {
                     super.onNext(response)
@@ -289,7 +288,11 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
                 override fun onError(t: Throwable) {
                     super.onError(t)
                     sweetAlertDialog.dismiss()
-                    SnackbarHelper.getSnackbar(this@NewHomeActivity, t.message,Snackbar.LENGTH_SHORT).show()
+                    SnackbarHelper.getSnackbar(
+                        this@NewHomeActivity,
+                        t.message,
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 }
 
                 override fun onComplete() {
@@ -299,19 +302,16 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
     }
 
     private fun startNewCartActivity() {
-        startActivity(Intent(this, NewCartActivity::class.java)
-            .putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, getHomePageResponse()))
+        startActivity(Intent(this, NewCartActivity::class.java))
     }
 
     override fun onBackPressed() {
         if (binding.materialSearchView.isVisible) {
             binding.materialSearchView.visibility = View.GONE
             binding.materialSearchView.closeSearch()
-        }
-        /*
-        else
+        } else
             super.onBackPressed()
-        */
+
     }
 
     private fun showLoyaltyPointsHistory() {
@@ -322,9 +322,9 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
 
     private fun openDrawer() {
         binding.ivDrawerIcon.setOnClickListener {
-            val intent = Intent(this@NewHomeActivity, NewDrawerActivity::class.java)
-            intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, getHomePageResponse())
-            startActivity(intent)
+            Intent(this@NewHomeActivity, NewDrawerActivity::class.java).apply {
+                startActivity(this)
+            }
             overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left)
         }
     }
@@ -337,13 +337,13 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
 
     fun hitApiForLoyaltyPoints(userId: String?) {
         ApiConnection.getLoyaltyPoints(this@NewHomeActivity, userId).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : CustomObserver<ReferralResponse?>(this@NewHomeActivity) {
-                    override fun onNext(response: ReferralResponse) {
-                        super.onNext(response)
-                        handleLoyaltyPointsResponse(response)
-                    }
-                })
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : CustomObserver<ReferralResponse?>(this@NewHomeActivity) {
+                override fun onNext(response: ReferralResponse) {
+                    super.onNext(response)
+                    handleLoyaltyPointsResponse(response)
+                }
+            })
     }
 
     fun handleLoyaltyPointsResponse(response: ReferralResponse) {
@@ -351,10 +351,10 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
             showPoints(response.redeemHistory)
         } else {
             SnackbarHelper.getSnackbar(
-                    (this@NewHomeActivity as Activity?)!!,
-                    response.message,
-                    Snackbar.LENGTH_LONG,
-                    SnackbarHelper.SnackbarType.TYPE_WARNING
+                (this@NewHomeActivity as Activity?)!!,
+                response.message,
+                Snackbar.LENGTH_LONG,
+                SnackbarHelper.SnackbarType.TYPE_WARNING
             ).show()
         }
     }
@@ -369,18 +369,16 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
         NavigationUI.setupWithNavController(bottomNavigationView, navController)
     }
 
-    fun getHomePageResponse(): HomePageResponse? =
-            intent.getParcelableExtra<HomePageResponse>(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE)
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onFragmentNotifier(currentFragment: HomeActivityFragments?) {
         when (currentFragment) {
             HomeActivityFragments.HOME_FRAGMENT -> currentFragmentDisplayed =
-                    getString(R.string.home)
+                getString(R.string.home)
             HomeActivityFragments.NOTIFICATION_FRAGMENT -> currentFragmentDisplayed =
-                    getString(R.string.notification)
+                getString(R.string.notification)
             HomeActivityFragments.ACCOUNT_FRAGMENT -> currentFragmentDisplayed =
-                    getString(R.string.account)
+                getString(R.string.account)
         }
     }
 
@@ -423,24 +421,33 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
                     val fragment = mSupportFragmentManager.findFragmentById(R.id.home_nav_host)
                     if (fragment != null && fragment.isAdded) {
                         try {
-                            val imageData: Uri? = if (data.extras != null && data.extras!!["data"] is Bitmap) {
-                                getImageUriFromBitmap(data.extras!!["data"] as Bitmap)
-                            } else {
-                                data.data
-                            }
+                            val imageData: Uri? =
+                                if (data.extras != null && data.extras!!["data"] is Bitmap) {
+                                    getImageUriFromBitmap(data.extras!!["data"] as Bitmap)
+                                } else {
+                                    data.data
+                                }
                             CropImage.activity(imageData)
-                                    .setGuidelines(CropImageView.Guidelines.ON)
-                                    .setAspectRatio(1, 1)
-                                    .setInitialCropWindowPaddingRatio(0f)
-                                    .start(this)
+                                .setGuidelines(CropImageView.Guidelines.ON)
+                                .setAspectRatio(1, 1)
+                                .setInitialCropWindowPaddingRatio(0f)
+                                .start(this)
 
                         } catch (e: Exception) {
                             e.printStackTrace()
-                            (fragment.childFragmentManager.fragments[0] as AccountFragment).uploadFile(data.data, false)
+                            (fragment.childFragmentManager.fragments[0] as AccountFragment).uploadFile(
+                                data.data,
+                                false
+                            )
                         }
                     }
                 } else {
-                    SnackbarHelper.getSnackbar(this, getString(R.string.error_in_changing_profile_image), Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show()
+                    SnackbarHelper.getSnackbar(
+                        this,
+                        getString(R.string.error_in_changing_profile_image),
+                        Snackbar.LENGTH_SHORT,
+                        SnackbarHelper.SnackbarType.TYPE_WARNING
+                    ).show()
                 }
             }
             HomeActivity.RC_CAMERA -> when (resultCode) {
@@ -455,24 +462,37 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
                                 imageData = data.data
                             }
                             CropImage.activity(imageData)
-                                    .setGuidelines(CropImageView.Guidelines.ON)
-                                    .setAspectRatio(1, 1)
-                                    .setInitialCropWindowPaddingRatio(0f)
-                                    .start(this)
+                                .setGuidelines(CropImageView.Guidelines.ON)
+                                .setAspectRatio(1, 1)
+                                .setInitialCropWindowPaddingRatio(0f)
+                                .start(this)
                         }
                     } else {
-                        SnackbarHelper.getSnackbar(this, getString(R.string.error_in_changing_profile_image), Snackbar.LENGTH_SHORT, SnackbarHelper.SnackbarType.TYPE_WARNING).show()
+                        SnackbarHelper.getSnackbar(
+                            this,
+                            getString(R.string.error_in_changing_profile_image),
+                            Snackbar.LENGTH_SHORT,
+                            SnackbarHelper.SnackbarType.TYPE_WARNING
+                        ).show()
                     }
                 }
             }
-            CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE -> CropImage.activity(CropImage.getPickImageResultUri(this, data))
-                    .setGuidelines(CropImageView.Guidelines.ON) //.setAspectRatio(1, 1)
-                    .setInitialCropWindowPaddingRatio(0f)
-                    .start(this)
+            CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE -> CropImage.activity(
+                CropImage.getPickImageResultUri(
+                    this,
+                    data
+                )
+            )
+                .setGuidelines(CropImageView.Guidelines.ON) //.setAspectRatio(1, 1)
+                .setInitialCropWindowPaddingRatio(0f)
+                .start(this)
             CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> if (resultCode == RESULT_OK) {
                 val fragment = mSupportFragmentManager.findFragmentById(R.id.home_nav_host)
                 if (fragment != null && fragment.isAdded) {
-                    (fragment.childFragmentManager.fragments[0] as AccountFragment).uploadFile(CropImage.getActivityResult(data).uri, true)
+                    (fragment.childFragmentManager.fragments[0] as AccountFragment).uploadFile(
+                        CropImage.getActivityResult(data).uri,
+                        true
+                    )
                 }
             }
         }
@@ -487,26 +507,26 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
 
     private fun fetchUnreadChatCount() {
         ApiConnection.getUnreadChatCount(this).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : CustomObserver<ChatBaseResponse<*>?>(this) {
-                    override fun onNext(chatUnreadMessageCountChatBaseResponse: ChatBaseResponse<*>) {
-                        super.onNext(chatUnreadMessageCountChatBaseResponse)
-                        setUnreadChatCount(chatUnreadMessageCountChatBaseResponse)
-                    }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : CustomObserver<ChatBaseResponse<*>?>(this) {
+                override fun onNext(chatUnreadMessageCountChatBaseResponse: ChatBaseResponse<*>) {
+                    super.onNext(chatUnreadMessageCountChatBaseResponse)
+                    setUnreadChatCount(chatUnreadMessageCountChatBaseResponse)
+                }
 
-                    override fun onError(t: Throwable) {
-                        super.onError(t)
-                    }
-                })
+                override fun onError(t: Throwable) {
+                    super.onError(t)
+                }
+            })
     }
 
     private fun setUnreadChatCount(chatUnreadMessageCountChatBaseResponse: ChatBaseResponse<*>) {
         val chatUnreadMessageCount =
-                chatUnreadMessageCountChatBaseResponse.unreadMessagesCount
+            chatUnreadMessageCountChatBaseResponse.unreadMessagesCount
         if (chatUnreadMessageCount > ApplicationConstant.MIN_UNREAD_CHAT_COUNT) {
             binding.ivUnreadChatCount.text =
-                    if (chatUnreadMessageCount > ApplicationConstant.MAX_UNREAD_CHAT_COUNT) getString(R.string.text_nine_plus)
-                    else chatUnreadMessageCount.toString()
+                if (chatUnreadMessageCount > ApplicationConstant.MAX_UNREAD_CHAT_COUNT) getString(R.string.text_nine_plus)
+                else chatUnreadMessageCount.toString()
             binding.ivUnreadChatCount.visibility = View.VISIBLE
         } else {
             binding.ivUnreadChatCount.visibility = View.INVISIBLE
@@ -529,21 +549,33 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener {
     }
 
     private fun registerFCMToken() {
-        if (AppSharedPref.getCustomerId(this).isNotBlank() and AppSharedPref.isFCMTokenSynced(this).not()) {
-            ApiConnection.registerDeviceToken(this).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(object : CustomObserver<BaseResponse>(this) {
-                override fun onNext(baseResponse: BaseResponse) {
-                    super.onNext(baseResponse)
-                    AppSharedPref.setFcmTokenSynced(this@NewHomeActivity, baseResponse.isSuccess)
-                }
+        if (AppSharedPref.getCustomerId(this).isNotBlank() and AppSharedPref.isFCMTokenSynced(this)
+                .not()
+        ) {
+            ApiConnection.registerDeviceToken(this).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : CustomObserver<BaseResponse>(this) {
+                    override fun onNext(baseResponse: BaseResponse) {
+                        super.onNext(baseResponse)
+                        AppSharedPref.setFcmTokenSynced(
+                            this@NewHomeActivity,
+                            baseResponse.isSuccess
+                        )
+                    }
 
-                override fun onError(t: Throwable) {
-                    super.onError(t)
-                    AppSharedPref.setFcmTokenSynced(this@NewHomeActivity, false)
-                }
-            })
+                    override fun onError(t: Throwable) {
+                        super.onError(t)
+                        AppSharedPref.setFcmTokenSynced(this@NewHomeActivity, false)
+                    }
+                })
         }
     }
+
     override fun updateCart() {
         getBagItemsCount()
+    }
+
+    override fun onRefreshLoyaltyPoints() {
+        getLoyaltyPoints()
     }
 }

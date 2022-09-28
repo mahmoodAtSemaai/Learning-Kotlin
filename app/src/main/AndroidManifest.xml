@@ -39,6 +39,14 @@
         android:usesCleartextTraffic="true"
         android:vmSafeMode="true"
         tools:replace="icon,allowBackup">
+
+
+        <activity
+            android:name=".ui.seller.SellerProfileActivityV1"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+
+
         <activity
             android:name=".activity.LoyaltyTermsActivity"
             android:screenOrientation="portrait"
@@ -203,6 +211,12 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
+        <activity
+            android:name=".ui.price_comparison.ProductActivityV2"
+            android:configChanges="orientation"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+          android:windowSoftInputMode="stateAlwaysHidden|stateHidden"/>
         <activity
             android:name=".activity.BagActivity"
             android:launchMode="singleTask"

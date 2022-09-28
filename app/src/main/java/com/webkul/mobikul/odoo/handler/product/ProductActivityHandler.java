@@ -46,7 +46,6 @@ import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.FragmentHelper;
 import com.webkul.mobikul.odoo.helper.Helper;
 import com.webkul.mobikul.odoo.helper.IntentHelper;
-import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.helper.SnackbarHelper;
 import com.webkul.mobikul.odoo.model.generic.AttributeData;
 import com.webkul.mobikul.odoo.model.generic.ProductCombination;
@@ -57,6 +56,7 @@ import com.webkul.mobikul.odoo.model.request.AddToBagRequest;
 import com.webkul.mobikul.odoo.data.request.AddToWishListRequest;
 import com.webkul.mobikul.odoo.data.request.DeleteFromWishListRequest;
 import com.webkul.mobikul.odoo.data.response.models.WishListUpdatedResponse;
+import com.webkul.mobikul.odoo.ui.seller.SellerProfileActivityV1;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -78,6 +78,9 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
     private final ProductData data;
     private long mLastClickTime = 0;
     private static final int QTY_ZERO = 0;
+    private static final int QTY_MAX_ALLOWED = 9999999;
+
+
     public ProductActivityHandler(Context context, ProductData productData) {
         this.context = context;
         data = productData;
@@ -146,7 +149,7 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
 
         }
 
-        if(checkQuantity(data.getQuantity())){
+        if (checkQuantity(data.getQuantity())) {
             ((ProductActivityV1) context).showWarning(true);
             return;
         }
@@ -392,13 +395,13 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
         AnalyticsImpl.INSTANCE.trackSellerProfileSelected(Helper.getScreenName(context),
                 data.getSeller().getMarketplaceSellerId(), (int) data.getSeller().getAverageRating(),
                 data.getSeller().getSellerName());
-        Intent intent = new Intent(context, ((OdooApplication) context.getApplicationContext()).getSellerProfileActivity());
+        Intent intent = new Intent(context, SellerProfileActivityV1.class);
         intent.putExtra(BUNDLE_KEY_SELLER_ID, sellerID);
         context.startActivity(intent);
     }
 
     public void onClickChatButton(String sellerId, String sellerName, String sellerProfileImage) {
-        launchChatActivity(Integer.parseInt(sellerId), sellerName,sellerProfileImage);
+        launchChatActivity(Integer.parseInt(sellerId), sellerName, sellerProfileImage);
     }
 
     private void launchChatActivity(int sellerId, String sellerName, String sellerProfileImage) {
@@ -420,7 +423,7 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
 
     public void onClickPlus(int qty) {
         qty++;
-        if(qty > 9999999){
+        if (qty > QTY_MAX_ALLOWED) {
             qty--;
         }
         qty = isQuantityExceeding(qty);

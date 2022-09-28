@@ -8,7 +8,7 @@
 
         <variable
             name="data"
-            type="com.webkul.mobikul.odoo.model.generic.CategoryData" />
+            type="com.webkul.mobikul.odoo.data.entity.ProductCategoryEntity" />
     </data>
 
 

@@ -1,22 +1,17 @@
 package com.webkul.mobikul.marketplace.odoo.handler;
 
+import static com.webkul.mobikul.marketplace.odoo.constant.MarketplaceBundleConstant.BUNDLE_KEY_SELLER_ID;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE;
+
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.webkul.mobikul.marketplace.odoo.activity.BecomeSellerActivity;
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
-import com.webkul.mobikul.odoo.constant.ApplicationConstant;
-import com.webkul.mobikul.odoo.fragment.SignUpFragment;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.CatalogHelper;
-import com.webkul.mobikul.odoo.helper.FragmentHelper;
-import com.webkul.mobikul.odoo.helper.OdooApplication;
-import com.webkul.mobikul.odoo.model.customer.signin.LoginRequestData;
-
-import static com.webkul.mobikul.marketplace.odoo.constant.MarketplaceBundleConstant.BUNDLE_KEY_SELLER_ID;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE;
+import com.webkul.mobikul.odoo.ui.seller.SellerProfileActivityV1;
 
 /**
  * Created by aastha.gupta on 2/11/17 in Mobikul_Odoo_Application.
@@ -37,7 +32,7 @@ public class MarketplaceLandingActivityHandler {
     }
 
     public void onClickViewSellerProfile(int sellerId) {
-        Intent intent = new Intent(mContext, ((OdooApplication) mContext.getApplicationContext()).getSellerProfileActivity());
+        Intent intent = new Intent(mContext, SellerProfileActivityV1.class);
         intent.putExtra(BUNDLE_KEY_SELLER_ID, String.valueOf(sellerId));
         mContext.startActivity(intent);
     }

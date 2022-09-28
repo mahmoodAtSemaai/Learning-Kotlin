@@ -6,26 +6,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.adapter.home.NavDrawerCategoryStartAdapter
 import com.webkul.mobikul.odoo.connection.ApiConnection
 import com.webkul.mobikul.odoo.connection.CustomObserver
 import com.webkul.mobikul.odoo.constant.ApplicationConstant
-import com.webkul.mobikul.odoo.database.SqlLiteDbHelper
+import com.webkul.mobikul.odoo.data.entity.ProductCategoriesEntity
+import com.webkul.mobikul.odoo.data.response.ProductCategoriesResponse
 import com.webkul.mobikul.odoo.databinding.FragmentNewDrawerBinding
 import com.webkul.mobikul.odoo.handler.home.HomeActivityHandler
 import com.webkul.mobikul.odoo.helper.AppSharedPref
 import com.webkul.mobikul.odoo.helper.SnackbarHelper
+import com.webkul.mobikul.odoo.core.data.response.BaseResponseNew
 import com.webkul.mobikul.odoo.model.ReferralResponse
-import com.webkul.mobikul.odoo.model.home.HomePageResponse
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 
@@ -73,22 +74,39 @@ class NewDrawerFragment : BaseFragment() {
 
         navController = Navigation.findNavController(mBinding.root)
 
-
-        //Receiving data from NewDrawerActivity through safe Args
-        val args: NewDrawerFragmentArgs by navArgs()
-
-        val data = args.homeResponseData
-        if (data != null) {
-            setUpDrawer(data)
-        } else {
-            Toast.makeText(context, R.string.error_something_went_wrong, Toast.LENGTH_SHORT).show()
-        }
+        getCategories()
 
         languageSettings()
 
         openAccountFragment()
 
         getLoyaltyPoints()
+    }
+
+    private fun getCategories(){
+        ApiConnection.getCategories(context)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : CustomObserver<BaseResponseNew<ProductCategoriesResponse>>(requireContext()){
+                    override fun onSubscribe(d: Disposable) {
+                        super.onSubscribe(d)
+                    }
+
+                    override fun onNext(productCategoriesResponse: BaseResponseNew<ProductCategoriesResponse>) {
+                        super.onNext(productCategoriesResponse)
+                        val gson = Gson()
+                        val productCategoriesEntity = gson.fromJson(gson.toJson(productCategoriesResponse.data), ProductCategoriesEntity::class.java)
+                        setUpDrawer(productCategoriesEntity)
+                    }
+
+                    override fun onError(t: Throwable) {
+                        super.onError(t)
+                    }
+
+                    override fun onComplete() {
+                        super.onComplete()
+                    }
+                })
     }
 
 
@@ -166,26 +184,14 @@ class NewDrawerFragment : BaseFragment() {
     }
 
 
-    private fun setUpDrawer(homePageResponse: HomePageResponse?) {
-        if (homePageResponse != null) {
+    private fun setUpDrawer(productCategoriesEntity: ProductCategoriesEntity?) {
+        if (productCategoriesEntity != null) {
             mBinding.categoryRv.adapter =
                 NavDrawerCategoryStartAdapter(
                     context,
-                    homePageResponse.categories[0].children,
+                    productCategoriesEntity.categories[0].children,
                     ""
                 )
-        }
-        if (homePageResponse?.languageMap!!.size > 0) {
-            mBinding.languageData =
-                homePageResponse.languageMap
-        } else {
-            val sqlLiteDbHelper = SqlLiteDbHelper(context)
-            if (sqlLiteDbHelper.homeScreenData != null) {
-                if (sqlLiteDbHelper.homeScreenData.languageMap != null) {
-                    mBinding.languageData =
-                        sqlLiteDbHelper.homeScreenData.languageMap
-                }
-            }
         }
     }
 

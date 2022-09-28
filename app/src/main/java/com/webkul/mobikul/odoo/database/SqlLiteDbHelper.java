@@ -1,5 +1,7 @@
 package com.webkul.mobikul.odoo.database;
 
+import static com.webkul.mobikul.odoo.constant.ApplicationConstant.MAX_SEARCH_HISTORY_RESULT;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -8,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.google.gson.Gson;
 import com.webkul.mobikul.odoo.constant.DataBaseConstant;
+import com.webkul.mobikul.odoo.data.entity.ProductEntity;
 import com.webkul.mobikul.odoo.data.entity.SplashEntity;
 import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse;
 import com.webkul.mobikul.odoo.model.customer.account.SaveCustomerDetailResponse;
@@ -17,25 +20,19 @@ import com.webkul.mobikul.odoo.model.home.HomePageResponse;
 import com.webkul.mobikul.odoo.model.notification.NotificationMessagesResponse;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 /**
-
  * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
+ *
  * @author Webkul <support@webkul.com>
-
+ * @package Mobikul App
+ * @Category Mobikul
  * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
  * @license https://store.webkul.com/license.html ASL Licence
-
  * @link https://store.webkul.com/license.html
-
  */
 public class SqlLiteDbHelper extends SQLiteOpenHelper {
 
@@ -138,6 +135,25 @@ public class SqlLiteDbHelper extends SQLiteOpenHelper {
 //                HomePageResponse homePageResponse = (HomePageResponse) Class.forName( cursor.getString(cursor.getColumnIndex(DataBaseConstant.CONTENT)));
         }
         return null;
+    }
+
+    public List<String> getSearchHistoryList(String searchTerm) {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.query(SearchHistoryContract.SearchHistoryEntry.TABLE_NAME,
+                new String[]{SearchHistoryContract.SearchHistoryEntry.COLUMN_QUERY},
+                SearchHistoryContract.SearchHistoryEntry.COLUMN_QUERY + " LIKE ?",
+                new String[]{"%" + searchTerm + "%"},
+                null,
+                null,
+                SearchHistoryContract.SearchHistoryEntry.COLUMN_INSERT_DATE + " DESC"
+                , MAX_SEARCH_HISTORY_RESULT);
+
+        List<String> searchQueries = new ArrayList<>();
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            searchQueries.add(cursor.getString(cursor.getColumnIndexOrThrow(SearchHistoryContract.SearchHistoryEntry.COLUMN_QUERY)));
+        }
+        return searchQueries;
     }
 
     /*
@@ -332,6 +348,42 @@ public class SqlLiteDbHelper extends SQLiteOpenHelper {
 
     }
 
+    public long insertProductEntity(ProductEntity productEntity) {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.query(DataBaseConstant.TABLE_NAME,
+                null,
+                DataBaseConstant.PAGEID + " ='" + productEntity.getTemplateId() + "' " + "AND " + DataBaseConstant.PAGETYPE + " = 'ProductEntity'",
+                null/*new String[]{"HomePage"}*/, null, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            if (cursor.getCount() > 0 && cursor.getString(cursor.getColumnIndex(DataBaseConstant.PAGETYPE)).equalsIgnoreCase("ProductEntity")) {
+                sqLiteDatabase.delete(DataBaseConstant.TABLE_NAME, DataBaseConstant.PAGEID + " ='" + productEntity.getTemplateId() + "' " + "AND " +
+                        DataBaseConstant.PAGETYPE + " = 'ProductEntity'", null);
+
+            }
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(DataBaseConstant.PAGEID, productEntity.getTemplateId());
+            contentValues.put(DataBaseConstant.PAGETYPE, "ProductEntity");
+            Gson gson = new Gson();
+            String jsonString = gson.toJson(productEntity);
+            contentValues.put(DataBaseConstant.CONTENT, jsonString);
+            long id = sqLiteDatabase.insert(DataBaseConstant.TABLE_NAME, null, contentValues);
+            sqLiteDatabase.close();
+            return id;
+        } else {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(DataBaseConstant.PAGEID, productEntity.getTemplateId());
+            contentValues.put(DataBaseConstant.PAGETYPE, "ProductEntity");
+            contentValues.put(DataBaseConstant.CONTENT, productEntity.toString());
+            long id = sqLiteDatabase.insert(DataBaseConstant.TABLE_NAME, null, contentValues);
+            sqLiteDatabase.close();
+            return id;
+        }
+
+
+    }
+
+
     /*This method is used for updating the notification data to the Database.*/
     private long upDateProductPageData(int Id, ProductData productData) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -500,41 +552,41 @@ public class SqlLiteDbHelper extends SQLiteOpenHelper {
             if (requestType.contains("\'")) {
                 requestType = requestType.replaceAll("\'", "");
             }
-        String  PageType = "CatalogPage" +requestType;
+            String PageType = "CatalogPage" + requestType;
 
-        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        Cursor cursor = sqLiteDatabase.query(DataBaseConstant.TABLE_NAME,
-                null,
-                DataBaseConstant.PAGETYPE + " = '"+PageType +"'",
-                null/*new String[]{"HomePage"}*/, null, null, null, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
-            if (cursor.getCount() > 0 && cursor.getString(cursor.getColumnIndex(DataBaseConstant.PAGETYPE)).equalsIgnoreCase(PageType)) {
+            SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+            Cursor cursor = sqLiteDatabase.query(DataBaseConstant.TABLE_NAME,
+                    null,
+                    DataBaseConstant.PAGETYPE + " = '" + PageType + "'",
+                    null/*new String[]{"HomePage"}*/, null, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                if (cursor.getCount() > 0 && cursor.getString(cursor.getColumnIndex(DataBaseConstant.PAGETYPE)).equalsIgnoreCase(PageType)) {
 
-                long id = upDateCatalogPageData(cursor.getInt(cursor.getColumnIndex(DataBaseConstant.ID)), catalogProductResponse);
-                cursor.close();
-                sqLiteDatabase.close();
-                return id;
+                    long id = upDateCatalogPageData(cursor.getInt(cursor.getColumnIndex(DataBaseConstant.ID)), catalogProductResponse);
+                    cursor.close();
+                    sqLiteDatabase.close();
+                    return id;
+                } else {
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(DataBaseConstant.PAGEID, 0);
+                    contentValues.put(DataBaseConstant.PAGETYPE, PageType);
+                    Gson gson = new Gson();
+                    String jsonString = gson.toJson(catalogProductResponse);
+                    contentValues.put(DataBaseConstant.CONTENT, jsonString);
+                    long id = sqLiteDatabase.insert(DataBaseConstant.TABLE_NAME, null, contentValues);
+                    sqLiteDatabase.close();
+                    return id;
+                }
             } else {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(DataBaseConstant.PAGEID, 0);
                 contentValues.put(DataBaseConstant.PAGETYPE, PageType);
-                Gson gson = new Gson();
-                String jsonString = gson.toJson(catalogProductResponse);
-                contentValues.put(DataBaseConstant.CONTENT, jsonString);
+                contentValues.put(DataBaseConstant.CONTENT, catalogProductResponse.toString());
                 long id = sqLiteDatabase.insert(DataBaseConstant.TABLE_NAME, null, contentValues);
                 sqLiteDatabase.close();
                 return id;
             }
-        } else {
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(DataBaseConstant.PAGEID, 0);
-            contentValues.put(DataBaseConstant.PAGETYPE, PageType);
-            contentValues.put(DataBaseConstant.CONTENT, catalogProductResponse.toString());
-            long id = sqLiteDatabase.insert(DataBaseConstant.TABLE_NAME, null, contentValues);
-            sqLiteDatabase.close();
-            return id;
-        }
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
@@ -561,18 +613,18 @@ public class SqlLiteDbHelper extends SQLiteOpenHelper {
             if (requestType.contains("\'")) {
                 requestType = requestType.replaceAll("\'", "");
             }
-        String  PageType = "CatalogPage" +requestType;
-        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        Cursor cursor = sqLiteDatabase.query(DataBaseConstant.TABLE_NAME,
-                null,
-                DataBaseConstant.PAGETYPE + " = '"+PageType+"'",
-                null/*new String[]{"HomePage"}*/, null, null, null, null);
-        if (cursor != null && cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            Gson gson = new Gson();
-            CatalogProductResponse catalogProductResponse= gson.fromJson(cursor.getString(cursor.getColumnIndex(DataBaseConstant.CONTENT)), CatalogProductResponse.class);
-            return catalogProductResponse;
-        }
+            String PageType = "CatalogPage" + requestType;
+            SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+            Cursor cursor = sqLiteDatabase.query(DataBaseConstant.TABLE_NAME,
+                    null,
+                    DataBaseConstant.PAGETYPE + " = '" + PageType + "'",
+                    null/*new String[]{"HomePage"}*/, null, null, null, null);
+            if (cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                Gson gson = new Gson();
+                CatalogProductResponse catalogProductResponse = gson.fromJson(cursor.getString(cursor.getColumnIndex(DataBaseConstant.CONTENT)), CatalogProductResponse.class);
+                return catalogProductResponse;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -580,8 +632,8 @@ public class SqlLiteDbHelper extends SQLiteOpenHelper {
     }
 
     /* *************************************************************
-    * ********************* RECENT VIEW ****************************
-    * *************************************************************/
+     * ********************* RECENT VIEW ****************************
+     * *************************************************************/
 
     /* Method for fetching data from DataBase*/
     public ArrayList<ProductData> getRecentProductList() {
@@ -590,11 +642,11 @@ public class SqlLiteDbHelper extends SQLiteOpenHelper {
         Cursor cursor = sqLiteDatabase.query(DataBaseConstant.TABLE_NAME,
                 null,
                 DataBaseConstant.PAGETYPE + " = 'Product'",
-                null/*new String[]{"HomePage"}*/, null, null, DataBaseConstant.ID +" desc ", "5");
+                null/*new String[]{"HomePage"}*/, null, null, DataBaseConstant.ID + " desc ", "5");
 
         if (cursor.moveToFirst()) {
             do {
-                System.out.println(" *******  "+cursor.getString(cursor.getColumnIndex(DataBaseConstant.ID)));
+                System.out.println(" *******  " + cursor.getString(cursor.getColumnIndex(DataBaseConstant.ID)));
                 Gson gson = new Gson();
                 listProductData.add(gson.fromJson(cursor.getString(cursor.getColumnIndex(DataBaseConstant.CONTENT)), ProductData.class));
             } while (cursor.moveToNext());
@@ -609,9 +661,10 @@ public class SqlLiteDbHelper extends SQLiteOpenHelper {
                 DataBaseConstant.PAGETYPE + " = 'Product'", null);
         sqLiteDatabase.close();
     }
+
     public void deleteAllSearchData() {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        sqLiteDatabase.execSQL("delete from "+ SearchHistoryContract.SearchHistoryEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("delete from " + SearchHistoryContract.SearchHistoryEntry.TABLE_NAME);
     }
 
 

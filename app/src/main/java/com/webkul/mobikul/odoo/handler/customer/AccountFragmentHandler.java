@@ -29,7 +29,6 @@ import com.webkul.mobikul.odoo.activity.CustomerBaseActivity;
 import com.webkul.mobikul.odoo.activity.NewDrawerActivity;
 import com.webkul.mobikul.odoo.activity.NewHomeActivity;
 import com.webkul.mobikul.odoo.activity.SignInSignUpActivity;
-import com.webkul.mobikul.odoo.activity.SplashScreenActivity;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
@@ -42,6 +41,7 @@ import com.webkul.mobikul.odoo.helper.ImageHelper;
 import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.helper.SnackbarHelper;
 import com.webkul.mobikul.odoo.model.BaseResponse;
+import com.webkul.mobikul.odoo.ui.seller.SellerProfileActivityV1;
 
 import java.util.List;
 
@@ -102,7 +102,7 @@ public class AccountFragmentHandler {
     }
 
     public void showSellerProfile() {
-        Intent intent = new Intent(context, ((OdooApplication) context.getApplicationContext()).getSellerProfileActivity());
+        Intent intent = new Intent(context, SellerProfileActivityV1.class);
         intent.putExtra(BUNDLE_KEY_SELLER_ID, AppSharedPref.getCustomerId(context));
         context.startActivity(intent);
     }

@@ -4,10 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
-import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
-import com.webkul.mobikul.odoo.activity.BaseActivity
-import com.webkul.mobikul.odoo.activity.SplashScreenActivity
 import com.webkul.mobikul.odoo.helper.AppSharedPref
 import com.webkul.mobikul.odoo.ui.routing.RoutingActivity
 import java.util.*

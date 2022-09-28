@@ -67,8 +67,8 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideHomePageRepository(
-            remoteDataSource: HomePageRemoteDataSource,
-            appPreferences: AppPreferences
+        remoteDataSource: HomePageRemoteDataSource,
+        appPreferences: AppPreferences
     ): HomePageRepository = HomePageRepositoryImpl(remoteDataSource, appPreferences)
 
 
@@ -89,7 +89,13 @@ class RepositoryModule {
         localeManager: LocaleManager,
         resourcesProvider: ResourcesProvider
     ): SplashDataRepository =
-        SplashDataRepositoryImpl(remoteDataSource, saveData, appPreferences, localeManager,resourcesProvider)
+        SplashDataRepositoryImpl(
+            remoteDataSource,
+            saveData,
+            appPreferences,
+            localeManager,
+            resourcesProvider
+        )
 
     @Provides
     @Singleton
@@ -105,8 +111,11 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun providesSignUpAuthRepository(appPreferences: AppPreferences,remoteDataSource: SignUpAuthRemoteDataSource): SignUpAuthRepository =
-        SignUpAuthRepositoryImpl(appPreferences,remoteDataSource)
+    fun providesSignUpAuthRepository(
+        appPreferences: AppPreferences,
+        remoteDataSource: SignUpAuthRemoteDataSource
+    ): SignUpAuthRepository =
+        SignUpAuthRepositoryImpl(appPreferences, remoteDataSource)
 
     @Provides
     @Singleton
@@ -115,13 +124,20 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun providesCustomerGroupRepository(appPreferences: AppPreferences,remoteDataSource: CustomerGroupRemoteDataSource): CustomerGroupRepository =
-        CustomerGroupRepositoryImpl(remoteDataSource,appPreferences)
+    fun providesCustomerGroupRepository(
+        appPreferences: AppPreferences,
+        remoteDataSource: CustomerGroupRemoteDataSource
+    ): CustomerGroupRepository =
+        CustomerGroupRepositoryImpl(remoteDataSource, appPreferences)
 
     @Provides
     @Singleton
-    fun providesUserDetailsRepository(appPreferences: AppPreferences,remoteDataSource: UserDetailsRemoteDataSource,resourcesProvider: ResourcesProvider): UserDetailsRepository =
-        UserDetailsRepositoryImpl(remoteDataSource,appPreferences,resourcesProvider)
+    fun providesUserDetailsRepository(
+        appPreferences: AppPreferences,
+        remoteDataSource: UserDetailsRemoteDataSource,
+        resourcesProvider: ResourcesProvider
+    ): UserDetailsRepository =
+        UserDetailsRepositoryImpl(remoteDataSource, appPreferences, resourcesProvider)
 
     @Provides
     @Singleton
@@ -136,8 +152,11 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun providesUserLocationRepository(remoteDataSource: UserLocationRemoteDataSource,appPreferences: AppPreferences): UserLocationRepository =
-        UserLocationRepositoryImpl(remoteDataSource,appPreferences)
+    fun providesUserLocationRepository(
+        remoteDataSource: UserLocationRemoteDataSource,
+        appPreferences: AppPreferences
+    ): UserLocationRepository =
+        UserLocationRepositoryImpl(remoteDataSource, appPreferences)
 
     @Provides
     @Singleton
@@ -158,11 +177,89 @@ class RepositoryModule {
     @Singleton
     fun providesVillageRepository(remoteDataSource: VillageRemoteDataSource): VillageRepository =
         VillageRepositoryImpl(remoteDataSource)
+
     @Provides
     @Singleton
     fun providesFCMTokenRepository(
-            remoteDataSource: FCMTokenRemoteDataSource,
-            appPreferences: AppPreferences
+        remoteDataSource: FCMTokenRemoteDataSource,
+        appPreferences: AppPreferences
     ): FCMTokenRepository = FCMTokenRepositoryImpl(remoteDataSource, appPreferences)
 
+
+    @Provides
+    @Singleton
+    fun providesUpdateCartRepository(
+        remoteDataSource: CartRemoteDataSource,
+        appPreferences: AppPreferences
+    ): CartRepository = CartRepositoryImpl(remoteDataSource, appPreferences)
+
+    @Provides
+    @Singleton
+    fun providesWishListRepository(
+        remoteDataSource: WishListRemoteDataSource,
+        appPreferences : AppPreferences
+    ): WishListRepository = WishListRepositoryImpl(remoteDataSource,appPreferences)
+
+    @Provides
+    @Singleton
+    fun provideUserDetailRepository(
+        userDetailRemoteDataSource: UserDetailRemoteDataSource,
+        appPreferences: AppPreferences
+    ): UserDetailRepository = UserDetailRepositoryImpl(userDetailRemoteDataSource, appPreferences)
+
+    @Provides
+    @Singleton
+    fun provideProductCategoriesRepository(
+        categoriesRemoteDataSource: CategoriesRemoteDataSource
+    ): CategoriesRepository = CategoriesRepositoryImpl(categoriesRemoteDataSource)
+
+    @Provides
+    @Singleton
+    fun provideBannerRepository(
+        bannerRemoteDataSource: BannerRemoteDataSource
+    ): BannerRepository = BannerRepositoryImpl(bannerRemoteDataSource)
+
+    @Provides
+    @Singleton
+    fun provideSellerRepository(
+        sellerRemoteDataSource: SellerRemoteDataSource
+    ): SellerRepository = SellerRepositoryImpl(sellerRemoteDataSource)
+
+    @Provides
+    @Singleton
+    fun provideSellerProductRepository(
+        sellerProductsRemoteDataSource: SellerProductsRemoteDataSource
+    ): SellerProductRepository = SellerProductRepositoryImpl(sellerProductsRemoteDataSource)
+
+    @Provides
+    @Singleton
+    fun provideSearchRepository(
+        searchRemoteDataSource: SearchRemoteDataSource
+    ): SearchRepository = SearchRepositoryImpl(searchRemoteDataSource)
+
+    @Provides
+    @Singleton
+    fun provideProductDetailsRepository(
+        productDetailsRemoteDataSource: ProductDetailsRemoteDataSource
+    ): ProductDetailsRepository = ProductDetailsRepositoryImpl(productDetailsRemoteDataSource)
+
+    @Provides
+    @Singleton
+    fun provideProductSellersRepository(
+        productSellersRemoteDataSource: ProductSellersRemoteDataSource
+    ): ProductSellersRepository = ProductSellersRepositoryImpl(productSellersRemoteDataSource)
+
+    @Provides
+    @Singleton
+    fun provideCategoryProductRepository(
+        productSellersRemoteDataSource: CategoryProductRemoteDataSource
+    ): CategoryProductRepository = CategoryProductRepositoryImpl(productSellersRemoteDataSource)
+
+    @Provides
+    @Singleton
+    fun provideBagItemsCountRepository(
+        appPreferences: AppPreferences
+    ): BagItemsCountRepository = BagItemsCountRepositoryImpl(appPreferences)
+
+   
 }

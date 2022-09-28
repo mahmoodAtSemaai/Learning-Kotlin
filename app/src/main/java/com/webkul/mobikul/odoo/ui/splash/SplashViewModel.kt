@@ -12,7 +12,6 @@ import com.webkul.mobikul.odoo.domain.usecase.auth.IsFirstTimeUseCase
 import com.webkul.mobikul.odoo.domain.usecase.auth.IsUserAuthorisedUseCase
 import com.webkul.mobikul.odoo.domain.usecase.auth.IsUserLoggedInUseCase
 import com.webkul.mobikul.odoo.domain.usecase.chat.CreateChatChannelUseCase
-import com.webkul.mobikul.odoo.domain.usecase.home.HomeUseCase
 import com.webkul.mobikul.odoo.domain.usecase.splash.SplashUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -24,7 +23,6 @@ import javax.inject.Inject
 class SplashViewModel @Inject constructor(
         private val userAnalyticsUseCase: UserAnalyticsUseCase,
         private val splashUseCase: SplashUseCase,
-        private val homeUseCase: HomeUseCase,
         private val isUserLoggedInUseCase: IsUserLoggedInUseCase,
         private val isFirstTimeUseCase: IsFirstTimeUseCase,
         private val createChatChannelUseCase: CreateChatChannelUseCase,
@@ -66,29 +64,22 @@ class SplashViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = SplashState.Loading
             _state.value = try {
-                val intent = isUserLoggedInUseCase()
-                var splashState: SplashState = SplashState.Idle
-
-                intent.collect {
-                    splashState = when (it) {
+                val splashState: SplashState = when (val intent = isUserLoggedInUseCase()) {
                         is Resource.Default -> SplashState.Loading
                         is Resource.Failure -> SplashState.UserUnAuthenticated
                         is Resource.Loading -> SplashState.Loading
                         is Resource.Success -> {
-                            if (it.value) {
+                            if (intent.value) {
                                 SplashState.UserLoggedIn
                             } else {
                                 SplashState.UserUnAuthenticated
                             }
                         }
                     }
-                }
-
                 splashState
             } catch (e: Exception) {
                 SplashState.Error(e.localizedMessage, FailureStatus.OTHER)
             }
-
         }
     }
 
@@ -155,22 +146,14 @@ class SplashViewModel @Inject constructor(
             viewModelScope.launch {
                 _state.value = SplashState.Loading
                 try {
-                    splashUseCase().zip(homeUseCase()) { splashResponse, homeResponse ->
-                        when (splashResponse) {
-                            is Resource.Default -> splashResponse
-                            is Resource.Failure -> splashResponse
-                            is Resource.Loading -> splashResponse
-                            is Resource.Success -> homeResponse
-                        }
-                    }.collect {
-                        when (it) {
-                            is Resource.Success -> _effect.send(SplashEffect.NavigateToHomeScreen(it.value))
+                    splashUseCase().collect{
+                        when(it){
+                            is Resource.Success -> _effect.send(SplashEffect.NavigateToHomeScreen)
                             is Resource.Default -> _state.value = SplashState.Idle
                             is Resource.Failure -> _state.value = SplashState.Error(it.message, it.failureStatus)
                             is Resource.Loading -> _state.value = SplashState.Loading
                         }
                     }
-
                 } catch (e: Exception) {
                     _state.value = SplashState.Error(e.localizedMessage, FailureStatus.OTHER)
                 }

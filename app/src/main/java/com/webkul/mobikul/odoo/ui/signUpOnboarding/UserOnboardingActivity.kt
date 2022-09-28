@@ -126,7 +126,7 @@ class UserOnboardingActivity @Inject constructor() :
             is UserOnboardingEffect.NavigateToCustomerGroup -> navigateToCustomerGroup()
             is UserOnboardingEffect.NavigateToDetailsScreen -> navigateToDetailsScreen()
             is UserOnboardingEffect.NavigateToAddressScreen -> navigateToAddressScreen(effect.isAddressStagePending)
-            is UserOnboardingEffect.NavigateToHomeScreen -> navigateToHomeScreen(effect.homePageResponse)
+            is UserOnboardingEffect.NavigateToHomeScreen -> navigateToHomeScreen()
             is UserOnboardingEffect.RelaunchActivity -> navigateToNoInternerFragment()
         }
     }
@@ -150,10 +150,9 @@ class UserOnboardingActivity @Inject constructor() :
         triggerIntent(UserOnboardingIntent.LaunchNextStage)
     }
 
-    private fun navigateToHomeScreen(homePageResponse: HomePageResponse) {
+    private fun navigateToHomeScreen() {
         startActivity(
             Intent(applicationContext, NewHomeActivity::class.java)
-                .putExtra(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         )
         finish()

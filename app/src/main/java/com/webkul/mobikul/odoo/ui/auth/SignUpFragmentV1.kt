@@ -236,10 +236,6 @@ class SignUpFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentSignU
                         requireContext(),
                         UpdateAddressActivity::class.java
                 ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        .putExtra(
-                                BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE,
-                                signUpEntity.homepage
-                        )
                         .putExtra(BundleConstant.BUNDLE_KEY_NAME, signUpData.name)
                         .putExtra(BundleConstant.BUNDLE_KEY_PHONE_NUMBER, signUpData.phoneNumber)
                         .putExtra(BundleConstant.BUNDLE_KEY_URL, billingAddressUrl)

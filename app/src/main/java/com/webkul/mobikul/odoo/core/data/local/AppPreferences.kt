@@ -2,6 +2,7 @@ package com.webkul.mobikul.odoo.core.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.webkul.mobikul.odoo.constant.ApplicationConstant
 import com.webkul.mobikul.odoo.core.utils.PRIVACY_POLICY_URL_DEFAULT
 import javax.inject.Inject
 
@@ -66,6 +67,7 @@ class AppPreferences @Inject constructor(private val context: Context) {
         private const val KEY_CUSTOMER_BANNER_IMAGE = "CUSTOMER_BANNER_IMAGE"
 
         private const val KEY_NEW_CART = "NEW_CART_COUNT"
+        private const val KEY_CURRENT_CART_ID = "CART_ID"
 
         private const val KEY_USER_ID = "USER_ID"
         private const val KEY_CUSTOMER_GROUP_NAME = "CUSTOMER_GROUP_NAME"
@@ -73,6 +75,8 @@ class AppPreferences @Inject constructor(private val context: Context) {
         private const val KEY_CUSTOMER_GROUP_ID = "CUSTOMER_GROUP_ID"
         private const val KEY_IS_USER_ONBOARDED = "KEY_IS_USER_ONBOARDED"
         private const val KEY_USER_NAME = "USER_NAME"
+
+        private const val KEY_CART_COUNT = "CART_COUNT"
 
     }
 
@@ -150,12 +154,12 @@ class AppPreferences @Inject constructor(private val context: Context) {
             it.putString(KEY_CUSTOMER_ID, value)
         }
 
-    var userId: Int
+    var userId: String?
         get() {
-            return customerPreferences.getInt(KEY_USER_ID, -1)
+            return customerPreferences.getString(KEY_USER_ID, "")
         }
         set(value) = customerPreferences.edit {
-            it.putInt(KEY_USER_ID, value)
+            it.putString(KEY_USER_ID, value)
         }
 
     var customerGroupName: String
@@ -382,6 +386,15 @@ class AppPreferences @Inject constructor(private val context: Context) {
             it.putBoolean(KEY_IS_USER_APPROVED, value)
         }
 
+    var cartCount: Int
+        get() {
+            return customerPreferences.getInt(KEY_CART_COUNT, 0)
+        }
+        set(value) = customerPreferences.edit {
+            it.putInt(KEY_CART_COUNT, value)
+        }
+
+
     var isFCMTokenSynced: Boolean
         get() {
             return customerPreferences.getBoolean(KEY_IS_FCM_TOKEN_SYNCED, false)
@@ -392,10 +405,18 @@ class AppPreferences @Inject constructor(private val context: Context) {
 
     var newCartCount : Int
         get(){
-            return customerPreferences.getInt(KEY_NEW_CART, 0)
+            return customerPreferences.getInt(KEY_NEW_CART, ApplicationConstant.MIN_ITEM_TO_BE_SHOWN_IN_CART)
         }
         set(value) = customerPreferences.edit{
             it.putInt(KEY_NEW_CART, value)
+        }
+
+    var cartId : Int
+        get(){
+            return customerPreferences.getInt(KEY_CURRENT_CART_ID, ApplicationConstant.CART_ID_NOT_AVAILABLE)
+        }
+        set(value) = customerPreferences.edit{
+            it.putInt(KEY_CURRENT_CART_ID, value)
         }
 
     fun clearCustomerData() {

@@ -7,6 +7,8 @@ import com.webkul.mobikul.odoo.data.response.BaseOtpSignUpResponse
 import com.webkul.mobikul.odoo.data.response.BaseUserOnboardingResponse
 import com.webkul.mobikul.odoo.data.response.TermsAndConditionsResponse
 import com.webkul.mobikul.odoo.model.BaseResponse
+import com.webkul.mobikul.odoo.core.data.response.BaseResponseNew
+import com.webkul.mobikul.odoo.data.response.models.CartBaseResponse
 import com.webkul.mobikul.odoo.model.ReferralResponse
 import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse
 import com.webkul.mobikul.odoo.model.customer.address.addressResponse.DistrictListResponse
@@ -40,10 +42,10 @@ open class BaseRemoteDataSource @Inject constructor(
                             failureStatus = FailureStatus.ACCESS_DENIED,
                             message = apiResponse.message
                         )
-                    } else if (apiResponse.isUserOnboarded.not() && ((apiResponse is SplashScreenResponse)||(apiResponse is HomePageResponse))){
+                    } else if (apiResponse.isUserOnboarded.not() && ((apiResponse is SplashScreenResponse) || (apiResponse is HomePageResponse))) {
                         appPreferences.isUserOnboarded = false
-                        if(apiResponse.userId.isNotEmpty()){
-                            appPreferences.userId = apiResponse.userId.toInt()
+                        if (apiResponse.userId.isNotEmpty()) {
+                            appPreferences.userId = apiResponse.userId
                             appPreferences.customerId = apiResponse.customerId
                         }
                         Resource.Failure(
@@ -70,7 +72,7 @@ open class BaseRemoteDataSource @Inject constructor(
                 }
             } else if (apiResponse is ChatBaseResponse<*>) {
                 if (apiResponse.success) {
-                    val parsedResponse = gson.fromJson(gson.toJson(apiResponse), domainType)
+                    val parsedResponse = gson.fromJson(gson.toJson(apiResponse.data), domainType)
                     Resource.Success(parsedResponse)
                 } else {
                     Resource.Failure(
@@ -78,7 +80,17 @@ open class BaseRemoteDataSource @Inject constructor(
                         message = apiResponse.message
                     )
                 }
-            } else if(apiResponse is BaseUserOnboardingResponse<*>){
+            } else if (apiResponse is BaseResponseNew<*>) {
+                if (apiResponse.status) {
+                    val parsedResponse = gson.fromJson(gson.toJson(apiResponse.data), domainType)
+                    Resource.Success(parsedResponse)
+                } else {
+                    Resource.Failure(
+                        failureStatus = FailureStatus.API_FAIL,
+                        message = apiResponse.message
+                    )
+                }
+            } else if (apiResponse is BaseUserOnboardingResponse<*>) {
                 val isSuccess = when (val extractedStatusCode = apiResponse.statusCode) {
                     is String -> {
                         extractedStatusCode.toInt() == HTTP_RESPONSE_OK ||
@@ -93,7 +105,7 @@ open class BaseRemoteDataSource @Inject constructor(
                 ) {
                     val parsedResponse = gson.fromJson(gson.toJson(apiResponse.result), domainType)
                     Resource.Success(parsedResponse)
-                } else if(apiResponse.statusCode == HTTP_RESOURCE_NOT_FOUND.toString()){
+                } else if (apiResponse.statusCode == HTTP_RESOURCE_NOT_FOUND.toString()) {
                     Resource.Failure(
                         failureStatus = FailureStatus.OTHER,
                         code = HTTP_RESOURCE_NOT_FOUND,
@@ -106,7 +118,7 @@ open class BaseRemoteDataSource @Inject constructor(
                         message = apiResponse.message
                     )
                 }
-            }else if ((apiResponse is StateListResponse)) {
+            } else if ((apiResponse is StateListResponse)) {
                 if (apiResponse.status == HTTP_RESPONSE_OK) {
                     val parsedResponse = gson.fromJson(gson.toJson(apiResponse), domainType)
                     Resource.Success(parsedResponse)
@@ -116,7 +128,7 @@ open class BaseRemoteDataSource @Inject constructor(
                         message = apiResponse.message
                     )
                 }
-            }else if ((apiResponse is DistrictListResponse)) {
+            } else if ((apiResponse is DistrictListResponse)) {
                 if (apiResponse.status == HTTP_RESPONSE_OK.toString()) {
                     val parsedResponse = gson.fromJson(gson.toJson(apiResponse), domainType)
                     Resource.Success(parsedResponse)
@@ -126,7 +138,7 @@ open class BaseRemoteDataSource @Inject constructor(
                         message = apiResponse.message
                     )
                 }
-            }else if ((apiResponse is SubDistrictListResponse)) {
+            } else if ((apiResponse is SubDistrictListResponse)) {
                 if (apiResponse.status == HTTP_RESPONSE_OK.toString()) {
                     val parsedResponse = gson.fromJson(gson.toJson(apiResponse), domainType)
                     Resource.Success(parsedResponse)
@@ -136,7 +148,7 @@ open class BaseRemoteDataSource @Inject constructor(
                         message = apiResponse.message
                     )
                 }
-            }else if ((apiResponse is VillageListResponse)) {
+            } else if ((apiResponse is VillageListResponse)) {
                 if (apiResponse.status == HTTP_RESPONSE_OK.toString()) {
                     val parsedResponse = gson.fromJson(gson.toJson(apiResponse), domainType)
                     Resource.Success(parsedResponse)
@@ -156,7 +168,7 @@ open class BaseRemoteDataSource @Inject constructor(
                         message = apiResponse.message
                     )
                 }
-            } else if(apiResponse is TermsAndConditionsResponse){
+            } else if (apiResponse is TermsAndConditionsResponse) {
                 if (apiResponse.success) {
                     val parsedResponse = gson.fromJson(gson.toJson(apiResponse), domainType)
                     Resource.Success(parsedResponse)
@@ -164,6 +176,17 @@ open class BaseRemoteDataSource @Inject constructor(
                     Resource.Failure(
                         failureStatus = FailureStatus.API_FAIL,
                         message = apiResponse.message
+                    )
+                }
+            } else if (apiResponse is CartBaseResponse<*>) {
+                if (apiResponse.statusCode == HTTP_RESPONSE_OK || apiResponse.statusCode == HTTP_RESPONSE_RESOURCE_CREATED) {
+                    val parsedResponse = gson.fromJson(gson.toJson(apiResponse.result), domainType)
+                    Resource.Success(parsedResponse)
+                } else {
+                    Resource.Failure(
+                        failureStatus = FailureStatus.API_FAIL,
+                        message = apiResponse.message,
+                        code = apiResponse.statusCode.toInt()
                     )
                 }
             } else {
@@ -260,10 +283,10 @@ open class BaseRemoteDataSource @Inject constructor(
                             failureStatus = FailureStatus.ACCESS_DENIED,
                             message = apiResponse.message
                         )
-                    } else if (apiResponse.isUserOnboarded.not()){
+                    } else if (apiResponse.isUserOnboarded.not()) {
                         appPreferences.isUserOnboarded = false
-                        if(apiResponse.userId.isNotEmpty()){
-                            appPreferences.userId = apiResponse.userId.toInt()
+                        if (apiResponse.userId.isNotEmpty()) {
+                            appPreferences.userId = apiResponse.userId
                             appPreferences.customerId = apiResponse.customerId
                         }
                         Resource.Failure(
@@ -295,8 +318,7 @@ open class BaseRemoteDataSource @Inject constructor(
                         Resource.Success(apiResponse)
                     } else {
                         Resource.Failure(
-                            failureStatus = FailureStatus.API_FAIL,
-                            message = apiResponse.message
+                            failureStatus = FailureStatus.API_FAIL, message = apiResponse.message
                         )
                     }
                 } else if ((apiResponse is SubDistrictListResponse)) {
@@ -333,7 +355,8 @@ open class BaseRemoteDataSource @Inject constructor(
                     )
                 }
             } else if (apiResponse is BaseOtpSignUpResponse<*>) {
-                if (apiResponse.statusCode == HTTP_RESPONSE_OK.toString()) {
+                if (apiResponse.statusCode == HTTP_RESPONSE_OK.toString() ||
+                    apiResponse.statusCode == HTTP_RESPONSE_RESOURCE_CREATED.toString()) {
                     Resource.Success(apiResponse)
                 } else {
                     Resource.Failure(
@@ -342,7 +365,7 @@ open class BaseRemoteDataSource @Inject constructor(
                         code = apiResponse.statusCode.toInt()
                     )
                 }
-            } else if(apiResponse is TermsAndConditionsResponse){
+            } else if (apiResponse is TermsAndConditionsResponse) {
                 if (apiResponse.success) {
                     Resource.Success(apiResponse)
                 } else {
@@ -351,7 +374,7 @@ open class BaseRemoteDataSource @Inject constructor(
                         message = apiResponse.message
                     )
                 }
-            }  else {
+            } else {
                 Resource.Success(apiResponse)
             }
 

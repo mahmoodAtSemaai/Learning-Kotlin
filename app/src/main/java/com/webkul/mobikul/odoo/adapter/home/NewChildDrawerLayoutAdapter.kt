@@ -13,14 +13,15 @@ import com.webkul.mobikul.odoo.activity.HomeActivity
 import com.webkul.mobikul.odoo.activity.SubCategoryActivity
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl
 import com.webkul.mobikul.odoo.constant.BundleConstant
+import com.webkul.mobikul.odoo.data.entity.ProductCategoryEntity
 import com.webkul.mobikul.odoo.databinding.ItemDrawerChildCategoryBinding
 import com.webkul.mobikul.odoo.helper.CatalogHelper
 import com.webkul.mobikul.odoo.model.generic.CategoryData
 
 class NewChildDrawerLayoutAdapter(
-    private val mContext: Context,
-    private val mCategoriesData: List<CategoryData>,
-    private val mParentCategory: String
+        private val mContext: Context,
+        private val mCategoriesData: List<ProductCategoryEntity>,
+        private val mParentCategory: String
 ) :
     RecyclerView.Adapter<NewChildDrawerLayoutAdapter.CategoryParentViewHolder>() {
 
@@ -48,12 +49,12 @@ class NewChildDrawerLayoutAdapter(
         return mCategoriesData.size
     }
 
-    private fun onClickParentCategoryItem(parentCategoryData: CategoryData) {
+    private fun onClickParentCategoryItem(parentCategoryData: ProductCategoryEntity) {
         if (parentCategoryData.children.isEmpty()) {
             AnalyticsImpl.trackSubCategoryItemSelect(
                 mParentCategory,
                 parentCategoryData.name,
-                parentCategoryData.categoryId
+                parentCategoryData.categoryId.toString()
             )
             val intent = Intent(mContext, CatalogProductActivity::class.java)
             intent.putExtra(

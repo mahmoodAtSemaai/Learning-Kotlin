@@ -105,12 +105,12 @@ public class SearchActivity extends AppCompatActivity {
                                 public void onNext(@NonNull CatalogProductResponse catalogProductResponse) {
                                     super.onNext(catalogProductResponse);
                                     FirebaseAnalyticsImpl.logSearchEvent(context, textViewTextChangeEvent.text().toString());
-                                    binding.setSearchSuggestionData(catalogProductResponse);
-                                    if (binding.rvSearchSuggestions.getAdapter() == null) {
-                                        binding.rvSearchSuggestions.setAdapter(new SearchSuggestionProductAdapter(context, catalogProductResponse.getProducts(), textViewTextChangeEvent.text().toString()));
-                                    } else {
-                                        ((SearchSuggestionProductAdapter) binding.rvSearchSuggestions.getAdapter()).updateData(catalogProductResponse.getProducts(), textViewTextChangeEvent.text().toString());
-                                    }
+//                                    binding.setSearchSuggestionData(catalogProductResponse);
+//                                    if (binding.rvSearchSuggestions.getAdapter() == null) {
+//                                        binding.rvSearchSuggestions.setAdapter(new SearchSuggestionProductAdapter(context, catalogProductResponse.getProducts(), textViewTextChangeEvent.text().toString()));
+//                                    } else {
+//                                        ((SearchSuggestionProductAdapter) binding.rvSearchSuggestions.getAdapter()).updateData(catalogProductResponse.getProducts(), textViewTextChangeEvent.text().toString());
+//                                    }
                                 }
 
                                 @Override

@@ -216,4 +216,85 @@ object RemoteDataSourceModule {
             gson: Gson,
             appPreferences: AppPreferences
     ): FCMTokenRemoteDataSource = FCMTokenRemoteDataSource(fcmTokenServices, context, gson, appPreferences)
+
+    @Provides
+    @Singleton
+    fun updateCartRemoteDataSource(
+            cartServices: CartServices,
+            gson: Gson,
+            appPreferences: AppPreferences
+    ): CartRemoteDataSource = CartRemoteDataSource(cartServices, gson, appPreferences)
+
+    @Provides
+    @Singleton
+    fun wishListRemoteDataSource(
+            wishListServices: WishListServices,
+            gson: Gson,
+            appPreferences: AppPreferences
+    ): WishListRemoteDataSource = WishListRemoteDataSource(wishListServices, gson, appPreferences)
+
+    @Provides
+    @Singleton
+    fun userDetailRemoteDataSource(
+        userDetailServices: UserDetailServices,
+        gson: Gson,
+        appPreferences: AppPreferences
+    ): UserDetailRemoteDataSource = UserDetailRemoteDataSource(userDetailServices, gson, appPreferences)
+
+
+    @Provides
+    @Singleton
+    fun productCategoriesRemoteDataSource(
+            categoriesServices: CategoriesServices,
+            gson: Gson,
+            appPreferences: AppPreferences
+    ): CategoriesRemoteDataSource = CategoriesRemoteDataSource(categoriesServices, gson, appPreferences)
+
+    @Provides
+    @Singleton
+    fun bannerRemoteDataSource(
+            bannerServices: BannerServices,
+            gson: Gson,
+            appPreferences: AppPreferences
+    ): BannerRemoteDataSource = BannerRemoteDataSource(bannerServices, gson, appPreferences)
+
+    @Provides
+    @Singleton
+    fun sellerRemoteDataSource(
+            sellerServices: SellerServices,
+            gson: Gson,
+            appPreferences: AppPreferences
+    ): SellerRemoteDataSource = SellerRemoteDataSource(sellerServices, gson, appPreferences)
+
+    @Provides
+    @Singleton
+    fun sellerProductsRemoteDataSource(
+            productServices: ProductServices,
+            gson: Gson,
+            appPreferences: AppPreferences
+    ): SellerProductsRemoteDataSource = SellerProductsRemoteDataSource(productServices, gson, appPreferences)
+
+    @Provides
+    @Singleton
+    fun searchRemoteDataSource(
+            productServices: ProductServices,
+            gson: Gson,
+            appPreferences: AppPreferences
+    ): SearchRemoteDataSource = SearchRemoteDataSource(productServices, gson, appPreferences)
+
+    @Provides
+    @Singleton
+    fun productDetailsRemoteDataSource(
+            productServices: ProductServices,
+            gson: Gson,
+            appPreferences: AppPreferences
+    ): ProductDetailsRemoteDataSource = ProductDetailsRemoteDataSource(productServices, gson, appPreferences)
+
+    @Provides
+    @Singleton
+    fun productSellersRemoteDataSource(
+            productServices: ProductServices,
+            gson: Gson,
+            appPreferences: AppPreferences
+    ): ProductSellersRemoteDataSource = ProductSellersRemoteDataSource(productServices, gson, appPreferences)
 }

@@ -89,7 +89,7 @@ class OnboardingViewModel @Inject constructor(
     private fun getOnboardingData() {
         viewModelScope.launch {
             _state.value = try {
-                val onboardingData = onboardingUseCase.invoke()
+                val onboardingData = onboardingUseCase()
                 var onboardingState: OnboardingState = OnboardingState.Idle
 
                 onboardingData.collect {
@@ -109,7 +109,7 @@ class OnboardingViewModel @Inject constructor(
 
     private fun startTimer(time: Int) {
         countDownTimer = viewModelScope.launch {
-            val timerData = countdownTimerUseCase.invoke(time, 5_000)
+            val timerData = countdownTimerUseCase(time, 5_000)
 
             timerData.collect {
                 _state.value = OnboardingState.CountDownTimer(it)

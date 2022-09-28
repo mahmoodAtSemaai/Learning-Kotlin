@@ -80,7 +80,7 @@ class AuthenticationViewModel @Inject constructor(
     private fun validatePhoneNumber(phoneNumber: String) {
         viewModelScope.launch {
             _state.value = try {
-                val verifyPhoneNumber = verifyPhoneNumberUseCase.invoke(phoneNumber)
+                val verifyPhoneNumber = verifyPhoneNumberUseCase(phoneNumber)
                 var authenticationState: AuthenticationState = AuthenticationState.Idle
 
                 verifyPhoneNumber.catch {
@@ -114,7 +114,7 @@ class AuthenticationViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = AuthenticationState.Loading
             _state.value = try {
-                val continuePhoneNumber = continuePhoneNumberUseCase.invoke(phoneNumber)
+                val continuePhoneNumber = continuePhoneNumberUseCase(phoneNumber)
                 var authenticationState: AuthenticationState = AuthenticationState.Idle
 
                 continuePhoneNumber.collect {

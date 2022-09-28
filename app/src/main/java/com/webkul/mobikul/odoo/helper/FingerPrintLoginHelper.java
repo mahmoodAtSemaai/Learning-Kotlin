@@ -2,7 +2,6 @@ package com.webkul.mobikul.odoo.helper;
 
 import static android.content.Context.FINGERPRINT_SERVICE;
 import static android.content.Context.KEYGUARD_SERVICE;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_NAME;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PHONE_NUMBER;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_URL;
@@ -245,7 +244,6 @@ public class FingerPrintLoginHelper {
             signUpResponse.getLogin().updateSharedPref(mContext, sData.getPassword());
             ((Activity) mContext).startActivity(new Intent(mContext, UpdateAddressActivity.class).
                     setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            .putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, signUpResponse.getHomePageResponse())
             .putExtra(BUNDLE_KEY_NAME,sData.getName())
             .putExtra(BUNDLE_KEY_PHONE_NUMBER,sData.getPhoneNumber())
             .putExtra(BUNDLE_KEY_URL, billingAddressUrl));

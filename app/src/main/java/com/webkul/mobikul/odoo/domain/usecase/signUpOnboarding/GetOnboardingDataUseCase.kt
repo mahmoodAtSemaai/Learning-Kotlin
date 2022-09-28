@@ -16,7 +16,7 @@ class GetOnboardingDataUseCase @Inject constructor(
         val userId = appPreferences.userId
         val groupName = appPreferences.groupName
         val customerGroupId = appPreferences.customerGroupId
-        return if ((customerId.isEmpty()) || (userId == -1)) {
+        return if ((customerId.isEmpty()) || (userId.isNullOrBlank())) {
             Resource.Failure(
                 FailureStatus.OTHER,
                 null,

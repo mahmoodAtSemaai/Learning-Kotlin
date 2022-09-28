@@ -32,7 +32,6 @@ import com.webkul.mobikul.odoo.model.generic.DistrictData
 import com.webkul.mobikul.odoo.model.generic.StateData
 import com.webkul.mobikul.odoo.model.generic.SubDistrictData
 import com.webkul.mobikul.odoo.model.generic.VillageData
-import com.webkul.mobikul.odoo.model.home.HomePageResponse
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -63,7 +62,6 @@ class UpdateAddressActivity : BaseActivity() {
     private var addressRequestBody = AddressRequestBody()
     private val analyticsModel = AnalyticsAddressDataModel()
 
-    private var homePageResponse: HomePageResponse? = null
     private var isMissingDetails: Boolean = false
     private var selectedStateId = ""
 
@@ -110,9 +108,6 @@ class UpdateAddressActivity : BaseActivity() {
     }
 
     private fun setBundleData() {
-        if (intent.hasExtra(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE))
-            homePageResponse =
-                intent.extras?.getParcelable(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE)
         if (intent.hasExtra(BundleConstant.BUNDLE_KEY_NAME))
             binding?.nameEt?.setText(intent.extras?.getString(BundleConstant.BUNDLE_KEY_NAME))
         else
@@ -673,13 +668,11 @@ class UpdateAddressActivity : BaseActivity() {
                 if (baseResponse.isSuccess) {
                     AnalyticsImpl.trackAddressUpdateSuccessfull(analyticsModel)
                     showShortToast(string)
-                    if (homePageResponse != null) {
+                    if (baseResponse.isUserApproved.not()) {
                         // user is never approved on this screen so auto intent to user approval activity
                         IntentHelper.goToUserUnapprovedScreen(this@UpdateAddressActivity)
-                        finish()
-                    } else {
-                        finish()
                     }
+                    finish()
                     hideDialog()
                 } else {
                     AnalyticsImpl.trackAddressUpdateFailed(

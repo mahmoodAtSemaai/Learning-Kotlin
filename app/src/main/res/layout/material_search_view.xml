@@ -11,7 +11,7 @@
 
         <variable
             name="searchSuggestionData"
-            type="com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse" />
+            type="com.webkul.mobikul.odoo.data.entity.ProductListEntity" />
 
         <variable
             name="handler"

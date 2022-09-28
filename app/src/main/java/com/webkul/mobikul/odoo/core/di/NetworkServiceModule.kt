@@ -128,4 +128,39 @@ object NetworkServiceModule {
     @Singleton
     fun provideVillageServices(retrofit: Retrofit) :  VillageServices =
         retrofit.create(VillageServices::class.java)
+    @Provides
+    @Singleton
+    fun provideWishListServices(retrofit: Retrofit): WishListServices =
+            retrofit.create(WishListServices::class.java)
+
+    @Provides
+    @Singleton
+    fun provideCartServices(retrofit: Retrofit): CartServices =
+            retrofit.create(CartServices::class.java)
+
+    @Provides
+    @Singleton
+    fun provideUserDetailServices(retrofit: Retrofit): UserDetailServices =
+            retrofit.create(UserDetailServices::class.java)
+
+    @Provides
+    @Singleton
+    fun provideProductCategoriesServices(retrofit: Retrofit): CategoriesServices =
+            retrofit.create(CategoriesServices::class.java)
+
+
+    @Provides
+    @Singleton
+    fun provideBannerServices(retrofit: Retrofit): BannerServices =
+            retrofit.create(BannerServices::class.java)
+
+    @Provides
+    @Singleton
+    fun provideSellerServices(retrofit: Retrofit): SellerServices =
+            retrofit.create(SellerServices::class.java)
+
+    @Provides
+    @Singleton
+    fun provideProductServices(retrofit: Retrofit): ProductServices =
+            retrofit.create(ProductServices::class.java)
 }

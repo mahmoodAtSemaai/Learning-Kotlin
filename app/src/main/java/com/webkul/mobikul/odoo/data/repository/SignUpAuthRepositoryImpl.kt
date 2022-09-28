@@ -23,11 +23,11 @@ class SignUpAuthRepositoryImpl  @Inject constructor(
         val result = remoteDataSource.loginViaOtpJWTToken(signUpOtpAuthRequest)
         when (result) {
             is Resource.Success -> {
-                saveCustomerCredentials(result.value.result.userId.toInt(), result.value.result.customerId,result.value.result.auth)
+                saveCustomerCredentials(result.value.result.userId, result.value.result.customerId,result.value.result.auth)
             }
             is Resource.Default -> {}
             is Resource.Failure -> {
-                saveCustomerCredentials(-1, "","")
+                saveCustomerCredentials("", "","")
                 appPreferences.customerLoginToken = ""
             }
             is Resource.Loading -> {}
@@ -35,7 +35,7 @@ class SignUpAuthRepositoryImpl  @Inject constructor(
         return result
     }
 
-    private fun saveCustomerCredentials(userId: Int, customerId: String, auth: String) {
+    private fun saveCustomerCredentials(userId: String, customerId: String, auth: String) {
         appPreferences.authToken = auth
         appPreferences.customerId = customerId
         appPreferences.userId = userId

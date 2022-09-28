@@ -1,9 +1,14 @@
 package com.webkul.mobikul.odoo.helper;
 
+import static android.app.Activity.RESULT_OK;
+import static com.webkul.mobikul.odoo.BuildConfig.isMarketplace;
+import static com.webkul.mobikul.odoo.activity.ProductActivity.RC_ADD_TO_CART;
+import static com.webkul.mobikul.odoo.activity.ProductActivity.RC_BUY_NOW;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_REQ_CODE;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.webkul.mobikul.odoo.activity.HomeActivity;
@@ -20,13 +25,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-
-import static android.app.Activity.RESULT_OK;
-import static com.webkul.mobikul.odoo.BuildConfig.isMarketplace;
-import static com.webkul.mobikul.odoo.activity.ProductActivity.RC_ADD_TO_CART;
-import static com.webkul.mobikul.odoo.activity.ProductActivity.RC_BUY_NOW;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_REQ_CODE;
 
 /**
  * Created by shubham.agarwal on 14/6/17.
@@ -67,7 +65,6 @@ public class ApiRequestHelper {
                 }
 
                 Intent intent = new Intent(context, NewHomeActivity.class);
-                intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
                 context.startActivity(intent);
                 ((Activity) context).finish();
             }
@@ -103,7 +100,6 @@ public class ApiRequestHelper {
                 if (homePageResponse != null) {
                     homePageResponse.updateSharedPref(context, "");
                     Intent intent = new Intent(context, HomeActivity.class);
-                    intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
                     context.startActivity(intent);
                     ((Activity) context).finish();
                     return;
@@ -152,7 +148,6 @@ public class ApiRequestHelper {
                     return;
                 }
                 Intent intent = new Intent(context, NewHomeActivity.class);
-                intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
                 context.startActivity(intent);
                 ((Activity) context).finish();
             }

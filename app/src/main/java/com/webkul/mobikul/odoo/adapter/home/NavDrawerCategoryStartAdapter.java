@@ -19,6 +19,7 @@ import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.activity.CatalogProductActivity;
 import com.webkul.mobikul.odoo.activity.HomeActivity;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
+import com.webkul.mobikul.odoo.data.entity.ProductCategoryEntity;
 import com.webkul.mobikul.odoo.databinding.ItemDrawerStartCategoryBinding;
 import com.webkul.mobikul.odoo.helper.CatalogHelper;
 import com.webkul.mobikul.odoo.model.generic.CategoryData;
@@ -41,10 +42,10 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGOR
  */
 public class NavDrawerCategoryStartAdapter extends RecyclerView.Adapter<NavDrawerCategoryStartAdapter.CategoryParentViewHolder> {
     private final Context mContext;
-    private List<CategoryData> mCategoriesData;
+    private List<ProductCategoryEntity> mCategoriesData;
     private final String mParentCategory;
 
-    public NavDrawerCategoryStartAdapter(Context context, List<CategoryData> categoriesData, String parentCategory) {
+    public NavDrawerCategoryStartAdapter(Context context, List<ProductCategoryEntity> categoriesData, String parentCategory) {
         mContext = context;
         mCategoriesData = categoriesData;
         mParentCategory = parentCategory;
@@ -70,9 +71,9 @@ public class NavDrawerCategoryStartAdapter extends RecyclerView.Adapter<NavDrawe
         return mCategoriesData.size();
     }
 
-    private void onClickParentCategoryItem(@NonNull CategoryParentViewHolder parentViewHolder, CategoryData parentCategoryData) {
+    private void onClickParentCategoryItem(@NonNull CategoryParentViewHolder parentViewHolder, ProductCategoryEntity parentCategoryData) {
         if (parentCategoryData.getChildren().isEmpty()) {
-            AnalyticsImpl.INSTANCE.trackSubCategoryItemSelect(mParentCategory, parentCategoryData.getName(), parentCategoryData.getCategoryId());
+            AnalyticsImpl.INSTANCE.trackSubCategoryItemSelect(mParentCategory, parentCategoryData.getName(), String.valueOf(parentCategoryData.getCategoryId()));
             Intent intent = new Intent(mContext, CatalogProductActivity.class);
             intent.putExtra(BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE, CatalogHelper.CatalogProductRequestType.GENERAL_CATEGORY);
             intent.putExtra(BUNDLE_KEY_CATEGORY_ID, parentCategoryData.getCategoryId());
@@ -87,7 +88,7 @@ public class NavDrawerCategoryStartAdapter extends RecyclerView.Adapter<NavDrawe
                 changeDrawable(parentViewHolder, R.drawable.ic_baseline_keyboard_arrow_up_24);
             }
 
-            List<CategoryData> data = parentCategoryData.getChildren();
+            List<ProductCategoryEntity> data = parentCategoryData.getChildren();
             String name = parentCategoryData.getName();
             NewChildDrawerLayoutAdapter adapter = new NewChildDrawerLayoutAdapter(parentViewHolder.itemView.getContext(), data, name);
             parentViewHolder.mBinding.childRecyclerview.setLayoutManager(new LinearLayoutManager(parentViewHolder.itemView.getContext()));

@@ -144,7 +144,7 @@ public class HomeFragment extends BaseFragment implements CustomRetrofitCallback
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        HomePageResponse homePageResponse = ((NewHomeActivity) getActivity()).getHomePageResponse();
+        HomePageResponse homePageResponse = null;
         fetchExistingAddresses();
         if (homePageResponse == null) {
             hitApiForFetchingData();

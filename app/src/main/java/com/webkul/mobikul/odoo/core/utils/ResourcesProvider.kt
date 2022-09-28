@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.util.DisplayMetrics
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.webkul.mobikul.odoo.core.extension.getCompatDrawable
@@ -19,5 +20,9 @@ class ResourcesProvider @Inject constructor(private val context: Context) {
 
     fun getDrawabale(@DrawableRes drawableResId: Int): Drawable {
         return context.getCompatDrawable(drawableResId) ?: ColorDrawable(Color.TRANSPARENT)
+    }
+    
+    fun getDisplayMetrics(): DisplayMetrics {
+        return context.resources.displayMetrics
     }
 }

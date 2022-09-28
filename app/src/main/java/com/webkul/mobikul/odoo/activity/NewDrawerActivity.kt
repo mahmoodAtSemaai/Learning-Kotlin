@@ -28,14 +28,9 @@ class NewDrawerActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_drawer)
 
-        val homePageResponse =
-                intent.getParcelableExtra<HomePageResponse>(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE)
-
         val navController =
                 Navigation.findNavController(this@NewDrawerActivity, R.id.drawer_fragment)
-        val bundle = Bundle()
-        bundle.putParcelable(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse)
-        navController.setGraph(R.navigation.drawer_layout_navigation, bundle)
+        navController.setGraph(R.navigation.drawer_layout_navigation)
     }
 
     override fun onPause() {
