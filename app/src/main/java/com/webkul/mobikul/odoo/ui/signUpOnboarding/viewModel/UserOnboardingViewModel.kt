@@ -8,7 +8,6 @@ import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.core.utils.ResourcesProvider
 import com.webkul.mobikul.odoo.domain.enums.ExistingUserValidation
-import com.webkul.mobikul.odoo.domain.usecase.home.HomeUseCase
 import com.webkul.mobikul.odoo.domain.usecase.signUpOnboarding.*
 import com.webkul.mobikul.odoo.domain.usecase.splash.SplashUseCase
 import com.webkul.mobikul.odoo.ui.signUpOnboarding.effect.UserOnboardingEffect
@@ -22,7 +21,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserOnboardingViewModel @Inject constructor(
-    private val homeUseCase: HomeUseCase,
     private val onboardingStageUseCase: OnboardingStageUseCase,
     private val userOnboardingStageUseCase: UserOnboardingStageUseCase,
     private val getOnboardingDataUseCase: GetOnboardingDataUseCase,
@@ -187,27 +185,14 @@ class UserOnboardingViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = UserOnboardingState.Loading
             try {
-                splashUseCase().zip(homeUseCase()) { splashResponse, homeResponse ->
-                    when (splashResponse) {
-                        is Resource.Default -> splashResponse
-                        is Resource.Failure -> splashResponse
-                        is Resource.Loading -> splashResponse
-                        is Resource.Success -> homeResponse
-                    }
-                }.collect {
-                    when (it) {
-                        is Resource.Success -> _effect.send(
-                            UserOnboardingEffect.NavigateToHomeScreen(
-                                it.value
-                            )
-                        )
+                splashUseCase().collect{
+                    when(it){
+                        is Resource.Success -> _effect.send(UserOnboardingEffect.NavigateToHomeScreen)
                         is Resource.Default -> _state.value = UserOnboardingState.Idle
-                        is Resource.Failure -> _state.value =
-                            UserOnboardingState.Error(it.message, it.failureStatus)
+                        is Resource.Failure -> _state.value = UserOnboardingState.Error(it.message, it.failureStatus)
                         is Resource.Loading -> _state.value = UserOnboardingState.Loading
                     }
                 }
-
             } catch (e: Exception) {
                 _state.value = UserOnboardingState.Error(e.localizedMessage, FailureStatus.OTHER)
             }

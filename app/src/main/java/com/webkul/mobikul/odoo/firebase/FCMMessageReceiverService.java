@@ -9,7 +9,6 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGORY_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGORY_NAME;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_NAME;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID;
@@ -45,13 +44,11 @@ import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.constant.ApplicationConstant;
 import com.webkul.mobikul.odoo.constant.BundleConstant;
-import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.CatalogHelper;
-import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.model.BaseResponse;
-import com.webkul.mobikul.odoo.model.home.HomePageResponse;
 import com.webkul.mobikul.odoo.model.notification.FcmAdvanceData;
+import com.webkul.mobikul.odoo.ui.price_comparison.ProductActivityV2;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -67,157 +64,152 @@ import io.reactivex.schedulers.Schedulers;
  * @author Webkul <support@webkul.com>
  * @package Mobikul App
  * @Category Mobikul
-
  * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
  * @license https://store.webkul.com/license.html ASL Licence
  * @link https://store.webkul.com/license.html
  */
 public class FCMMessageReceiverService extends FirebaseMessagingService {
-    @SuppressWarnings("unused")
-    private static final String TAG = "FCMMessageReceiverServi";
-
-    @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.d("TAG", "FCMMessageReceiverService onMessageReceived remoteMessage.getData : " + remoteMessage.getData());
-        Log.d("TAG", "FCMMessageReceiverService onMessageReceived remoteMessage.getNotification : " + remoteMessage.getNotification());
-        /*for safety side throwing all exception*/
-        try {
-            int notificationId = 0;
-            Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, BuildConfig.LIBRARY_PACKAGE_NAME + "id")
-                    .setSmallIcon(getNotificationIcon())
-                    .setContentTitle(remoteMessage.getNotification().getTitle())
-                    .setContentText(remoteMessage.getNotification().getBody())
-                    .setLargeIcon(icon)
-                    .setAutoCancel(true)
-                    .setColor(ContextCompat.getColor(this, R.color.colorAccent))
-                    .setSound(defaultSoundUri);
-
-
-            /*advance data*/
-            Map<String, String> data = remoteMessage.getData();
-            if (data.size() > 0) {
-                Gson gson = new GsonBuilder().create();
-                FcmAdvanceData fcmAdvanceData = new Gson().fromJson(gson.toJson(data), FcmAdvanceData.class);
-                notificationId = fcmAdvanceData.getNotificationId();
-                Intent intent = null;
-                switch (fcmAdvanceData.getType()) {
-                    case TYPE_CUSTOM:
-                        intent = new Intent(this, CatalogProductActivity.class);
-                        intent.putExtra(BUNDLE_KEY_SEARCH_DOMAIN, fcmAdvanceData.getDomain());
-                        intent.putExtra(BUNDLE_KEY_CATEGORY_NAME, fcmAdvanceData.getName());
-                        intent.putExtra(BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE, SEARCH_DOMAIN);
-                        break;
-
-                    case TYPE_PRODUCT:
-                        intent = new Intent(this, ((OdooApplication) getApplication()).getProductActivity());
-                        intent.putExtra(BUNDLE_KEY_PRODUCT_ID, fcmAdvanceData.getId());
-                        intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, fcmAdvanceData.getName());
-                        intent.putExtra(BUNDLE_KEY_PRODUCT_TEMPLATE_ID, fcmAdvanceData.getProductTemplateId());
-                        SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(this);
-                        HomePageResponse homePageResponse = sqlLiteDbHelper.getHomeScreenData();
-                        if(homePageResponse != null){
-                            intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
-                        }
-                        break;
-
-                    case TYPE_CATEGORY:
-                        intent = new Intent(this, CatalogProductActivity.class);
-                        intent.putExtra(BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE, CatalogHelper.CatalogProductRequestType.GENERAL_CATEGORY);
-                        intent.putExtra(BUNDLE_KEY_CATEGORY_ID, fcmAdvanceData.getId());
-                        intent.putExtra(BUNDLE_KEY_CATEGORY_NAME, fcmAdvanceData.getName());
-                        break;
-                    case TYPE_CHAT:
-                        intent = new Intent(this, ChatActivity.class);
-                        intent.putExtra(BundleConstant.BUNDLE_KEY_CHAT_URL, fcmAdvanceData.getChatUrl());
-                        intent.putExtra(BundleConstant.BUNDLE_KEY_CHAT_UUID, fcmAdvanceData.getUuid());
-                        intent.putExtra(BundleConstant.BUNDLE_KEY_CHAT_TITLE, fcmAdvanceData.getTitle());
-                        intent.putExtra(BundleConstant.BUNDLE_KEY_CHAT_PROFILE_PICTURE_URL, fcmAdvanceData.getImage());
-                        notificationId = fcmAdvanceData.getUuid();
-                        break;
-                    case TYPE_NONE:
-
-                        break;
-                }
-
-                if (intent != null) {
-                    intent.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, FCMMessageReceiverService.class.getSimpleName());
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-                    notificationBuilder.setContentIntent(pendingIntent);
-                }
-
-
-                if (URLUtil.isValidUrl(fcmAdvanceData.getImage()) && !fcmAdvanceData.getType().equals(TYPE_CHAT)) {
-                    try {
-                        NotificationCompat.BigPictureStyle notificationBigPictureStyle = new NotificationCompat.BigPictureStyle();
-                        Bitmap remote_picture = BitmapFactory.decodeStream((InputStream) new URL(fcmAdvanceData.getResizedImageUrl(this)).getContent());
-                        notificationBigPictureStyle.bigPicture(remote_picture);
-                        notificationBuilder.setStyle(notificationBigPictureStyle);
-                    } catch (Exception e) {
-                        Log.e(TAG, "onMessageReceived: " + e.getMessage());
-                        Log.e(TAG, "onMessageReceived: " + fcmAdvanceData.getResizedImageUrl(this));
-                    }
-                }
-            }
-
-            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                NotificationChannel channel = new NotificationChannel(BuildConfig.LIBRARY_PACKAGE_NAME + "id", BuildConfig.LIBRARY_PACKAGE_NAME + "channel", NotificationManager.IMPORTANCE_HIGH);
-                notificationManager.createNotificationChannel(channel);
-            }
-
-            if(AppSharedPref.isLoggedIn(this)) {
-                notificationManager.notify(notificationId, notificationBuilder.build());
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private int getNotificationIcon() {
-        boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
-        return useWhiteIcon ? R.drawable.ic_stat_ic_notification : R.mipmap.ic_launcher;
-    }
-
-    @Override
-    public void onNewToken(String s) {
-        super.onNewToken(s);
-        printToken();
-        // Get updated InstanceID token.
-        if(AppSharedPref.isLoggedIn(this)) {
-            sendRegistrationToServer(this);
-        }
-        subscribeTopics();
-
-    }
-
-    public static void printToken() {
-        Log.d(TAG, "printToken: " + (FirebaseInstanceId.getInstance().getToken() == null ? "NO TOKEN" : FirebaseInstanceId.getInstance().getToken()));
-    }
-
-    private void sendRegistrationToServer(Context context) {
-        ApiConnection.registerDeviceToken(this.getApplicationContext()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<BaseResponse>(context) {
-            @Override
-            public void onNext(BaseResponse baseResponse) {
-                super.onNext(baseResponse);
-                AppSharedPref.setFcmTokenSynced(context, baseResponse.isSuccess());
-            }
-
-            @Override
-            public void onError(Throwable t) {
-                super.onError(t);
-                AppSharedPref.setFcmTokenSynced(context,false);
-            }
-        });
-    }
-
-    private void subscribeTopics() {
-        FirebaseMessaging pubSub = FirebaseMessaging.getInstance();
-        for (String topic : ApplicationConstant.DEFAULT_GCM_TOPICS) {
-            pubSub.subscribeToTopic(topic);
-        }
-    }
+	@SuppressWarnings("unused")
+	private static final String TAG = "FCMMessageReceiverServi";
+	
+	@Override
+	public void onMessageReceived(RemoteMessage remoteMessage) {
+		Log.d("TAG", "FCMMessageReceiverService onMessageReceived remoteMessage.getData : " + remoteMessage.getData());
+		Log.d("TAG", "FCMMessageReceiverService onMessageReceived remoteMessage.getNotification : " + remoteMessage.getNotification());
+		/*for safety side throwing all exception*/
+		try {
+			int notificationId = 0;
+			Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+			Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+			NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, BuildConfig.LIBRARY_PACKAGE_NAME + "id")
+					.setSmallIcon(getNotificationIcon())
+					.setContentTitle(remoteMessage.getNotification().getTitle())
+					.setContentText(remoteMessage.getNotification().getBody())
+					.setLargeIcon(icon)
+					.setAutoCancel(true)
+					.setColor(ContextCompat.getColor(this, R.color.colorAccent))
+					.setSound(defaultSoundUri);
+			
+			
+			/*advance data*/
+			Map<String, String> data = remoteMessage.getData();
+			if (data.size() > 0) {
+				Gson gson = new GsonBuilder().create();
+				FcmAdvanceData fcmAdvanceData = new Gson().fromJson(gson.toJson(data), FcmAdvanceData.class);
+				notificationId = fcmAdvanceData.getNotificationId();
+				Intent intent = null;
+				switch (fcmAdvanceData.getType()) {
+					case TYPE_CUSTOM:
+						intent = new Intent(this, CatalogProductActivity.class);
+						intent.putExtra(BUNDLE_KEY_SEARCH_DOMAIN, fcmAdvanceData.getDomain());
+						intent.putExtra(BUNDLE_KEY_CATEGORY_NAME, fcmAdvanceData.getName());
+						intent.putExtra(BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE, SEARCH_DOMAIN);
+						break;
+					
+					case TYPE_PRODUCT:
+						intent = new Intent(this, ProductActivityV2.class);
+						intent.putExtra(BUNDLE_KEY_PRODUCT_ID, fcmAdvanceData.getId());
+						intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, fcmAdvanceData.getName());
+						try {intent.putExtra(BUNDLE_KEY_PRODUCT_TEMPLATE_ID, Integer.parseInt(fcmAdvanceData.getProductTemplateId()));
+						} catch(NumberFormatException ignored){}
+						break;
+					
+					case TYPE_CATEGORY:
+						intent = new Intent(this, CatalogProductActivity.class);
+						intent.putExtra(BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE, CatalogHelper.CatalogProductRequestType.GENERAL_CATEGORY);
+						intent.putExtra(BUNDLE_KEY_CATEGORY_ID, fcmAdvanceData.getId());
+						intent.putExtra(BUNDLE_KEY_CATEGORY_NAME, fcmAdvanceData.getName());
+						break;
+					case TYPE_CHAT:
+						intent = new Intent(this, ChatActivity.class);
+						intent.putExtra(BundleConstant.BUNDLE_KEY_CHAT_URL, fcmAdvanceData.getChatUrl());
+						intent.putExtra(BundleConstant.BUNDLE_KEY_CHAT_UUID, fcmAdvanceData.getUuid());
+						intent.putExtra(BundleConstant.BUNDLE_KEY_CHAT_TITLE, fcmAdvanceData.getTitle());
+						intent.putExtra(BundleConstant.BUNDLE_KEY_CHAT_PROFILE_PICTURE_URL, fcmAdvanceData.getImage());
+						notificationId = fcmAdvanceData.getUuid();
+						break;
+					case TYPE_NONE:
+						
+						break;
+				}
+				
+				if (intent != null) {
+					intent.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, FCMMessageReceiverService.class.getSimpleName());
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+					notificationBuilder.setContentIntent(pendingIntent);
+				}
+				
+				
+				if (URLUtil.isValidUrl(fcmAdvanceData.getImage()) && !fcmAdvanceData.getType().equals(TYPE_CHAT)) {
+					try {
+						NotificationCompat.BigPictureStyle notificationBigPictureStyle = new NotificationCompat.BigPictureStyle();
+						Bitmap remote_picture = BitmapFactory.decodeStream((InputStream) new URL(fcmAdvanceData.getResizedImageUrl(this)).getContent());
+						notificationBigPictureStyle.bigPicture(remote_picture);
+						notificationBuilder.setStyle(notificationBigPictureStyle);
+					} catch (Exception e) {
+						Log.e(TAG, "onMessageReceived: " + e.getMessage());
+						Log.e(TAG, "onMessageReceived: " + fcmAdvanceData.getResizedImageUrl(this));
+					}
+				}
+			}
+			
+			NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+				NotificationChannel channel = new NotificationChannel(BuildConfig.LIBRARY_PACKAGE_NAME + "id", BuildConfig.LIBRARY_PACKAGE_NAME + "channel", NotificationManager.IMPORTANCE_HIGH);
+				notificationManager.createNotificationChannel(channel);
+			}
+			
+			if (AppSharedPref.isLoggedIn(this)) {
+				notificationManager.notify(notificationId, notificationBuilder.build());
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private int getNotificationIcon() {
+		boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
+		return useWhiteIcon ? R.drawable.ic_stat_ic_notification : R.mipmap.ic_launcher;
+	}
+	
+	@Override
+	public void onNewToken(String s) {
+		super.onNewToken(s);
+		printToken();
+		// Get updated InstanceID token.
+		if (AppSharedPref.isLoggedIn(this)) {
+			sendRegistrationToServer(this);
+		}
+		subscribeTopics();
+		
+	}
+	
+	public static void printToken() {
+		Log.d(TAG, "printToken: " + (FirebaseInstanceId.getInstance().getToken() == null ? "NO TOKEN" : FirebaseInstanceId.getInstance().getToken()));
+	}
+	
+	private void sendRegistrationToServer(Context context) {
+		ApiConnection.registerDeviceToken(this.getApplicationContext()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CustomObserver<BaseResponse>(context) {
+			@Override
+			public void onNext(BaseResponse baseResponse) {
+				super.onNext(baseResponse);
+				AppSharedPref.setFcmTokenSynced(context, baseResponse.isSuccess());
+			}
+			
+			@Override
+			public void onError(Throwable t) {
+				super.onError(t);
+				AppSharedPref.setFcmTokenSynced(context, false);
+			}
+		});
+	}
+	
+	private void subscribeTopics() {
+		FirebaseMessaging pubSub = FirebaseMessaging.getInstance();
+		for (String topic : ApplicationConstant.DEFAULT_GCM_TOPICS) {
+			pubSub.subscribeToTopic(topic);
+		}
+	}
 }

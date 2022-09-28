@@ -84,7 +84,7 @@ class LoginPasswordViewModel @Inject constructor(
             _state.value = LoginPasswordState.Loading
 
             _state.value = try {
-                val login = loginPasswordUseCase.invoke(loginOtpAuthenticationRequest)
+                val login = loginPasswordUseCase(loginOtpAuthenticationRequest)
                 var loginPasswordState: LoginPasswordState = LoginPasswordState.Loading
 
                 login.collect {
@@ -109,7 +109,7 @@ class LoginPasswordViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = LoginPasswordState.Loading
             _state.value = try {
-                val splash = splashPageUseCase.invoke()
+                val splash = splashPageUseCase()
                 var loginPasswordState: LoginPasswordState = LoginPasswordState.Loading
 
                 splash.collect {
@@ -133,31 +133,9 @@ class LoginPasswordViewModel @Inject constructor(
     }
 
     private fun getHomePageData() {
-        viewModelScope.launch {
-            _state.value = LoginPasswordState.Loading
-            _state.value = try {
-                val homePage = homePageDataUseCase.invoke()
-                var loginPasswordState: LoginPasswordState = LoginPasswordState.Loading
-
-                homePage.collect {
-                    loginPasswordState = when (it) {
-                        is Resource.Default -> LoginPasswordState.Idle
-                        is Resource.Loading -> LoginPasswordState.Loading
-                        is Resource.Failure -> LoginPasswordState.Error(
-                                it.message,
-                                it.failureStatus
-                        )
-                        is Resource.Success -> LoginPasswordState.HomePage(it.value)
-                    }
-                }
-                loginPasswordState
-            } catch (e: Exception) {
-                LoginPasswordState.Error(e.localizedMessage, FailureStatus.OTHER)
-            }
-
-        }
+        _state.value = LoginPasswordState.HomePage
     }
-
+    
 
     private fun registerFCMToken() {
         viewModelScope.launch {

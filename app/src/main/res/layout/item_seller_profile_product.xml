@@ -1,0 +1,128 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_product"
+        android:layout_width="@dimen/product_container_small"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/margin_4"
+        android:background="@drawable/shape_rectangular_white_bg_grey200_border_half_dp"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_2"
+        tools:layout_width="@dimen/product_container_small">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/white">
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_product"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/product_image_generic"
+                android:layout_centerHorizontal="true"
+                android:padding="@dimen/padding_4"
+                tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:layout_marginRight="@dimen/margin_10"
+                android:background="@android:color/transparent"
+                tools:src="@drawable/ic_vector_wishlist_grey_24dp" />
+            <!--
+              todo("Need to discuss its implementation")
+                android:onClick="@{(view)->handler.onClickWishlistIcon(view)}"
+                android:visibility="@{isLoggedIn &amp;&amp; wishlistEnabled ? View.VISIBLE : View.GONE}"
+                app:srcCompat="@{data.addedToWishlist ? @drawable/ic_vector_wishlist_red_24dp : @drawable/ic_vector_wishlist_grey_24dp}"
+            -->
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_preorder"
+                style="@style/Semaai.TextAppearance.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                android:layout_marginTop="@dimen/product_image_small"
+                android:gravity="center"
+                android:padding="@dimen/padding_2"
+                android:textColor="@color/white" />
+
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_4">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/product_name"
+                style="@style/Semaai.TextAppearance.Caption.Bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_4"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="3"
+                android:minLines="3"
+                tools:text="Mobikul" />
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_tiny"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <!--SPECIAL/REDUCED PRICE-->
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_price_reduce"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_tiny"
+                    android:layout_marginRight="@dimen/spacing_tiny"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:padding="@dimen/padding_2"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textSize="@dimen/text_size_min"
+                    android:textStyle="bold"
+                    tools:text="$310.00" />
+
+                <!--Normal Price-->
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_price_unit"
+                    style="@style/Semaai.TextAppearance.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_tiny"
+                    android:layout_marginRight="@dimen/spacing_tiny"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:padding="@dimen/padding_2"
+                    tools:text="$310.00" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</layout>

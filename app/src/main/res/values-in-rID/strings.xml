@@ -1,4 +1,30 @@
 <resources>
+
+    <!-- Seller Profile Activity -->
+    <string name="about_store">Deskripsi Toko</string>
+    <string name="recently_added_products">Pembaharuan Terakhir</string>
+    <string name="view_all_title">Lihat Semua</string>
+    <string name="store_rating">Peringkat Toko</string>
+    <string name="average_rating">Peringkat Rata - rata</string>
+    <string name="make_a_review">Tulis Ulasan</string>
+    <string name="please_login_to_write_reviews">Silahkan login untuk menulis ulasan.</string>
+    <string name="title_fragment_policies">Kebijakan</string>
+    <string name="product_reviews">Ulasan Barang</string>
+    <string name="recent_feedbacks">Balasan Terbaru</string>
+    <string name="view_large_map">Lihat Lokasi Lebih Luas</string>
+    <string name="empty_about_store">Tidak ada Informasi Tersedia.</string>
+    <string name="view_all_x_reviews">Lihat Semua %1$d Ulasan.</string>
+    <string name="no_policies_added_by_seller">Tidak ada Tambahan Kebijakan dari Penjual.</string>
+    <string name="return_policy">Kebijakan Pengembalian</string>
+    <string name="shipping_policy">Kebijakan Pengiriman</string>
+    <string name="seller_have_no_review_yet">Penjual Belum Memiliki Ulasan.</string>
+    <string name="top_sellers">Penjual Terbaik</string>
+    <string name="x_products">%1$d Produk - produk.</string>
+    <string name="products">Produk</string>
+    <string name="no_products_still_added_by_the_seller">Belum ada Produk yang Ditambahkan Penjual</string>
+    <string name="seller_reviews">Ulasan Penjual</string>
+
+
     <!--CONFIGURATION -->
     <string name="app_name" translatable="false">Semaai</string>
     <string name="store_name" translatable="false">Semaai</string>
@@ -427,6 +453,7 @@
     <string name="seller_dashboard">dasbor Penjual</string>
     <string name="register">Daftar</string>
     <string name="become_seller_activity_title">Menjadi Penjual</string>
+    <string name="seller_chat">Chat Penjual</string>
 
     <!---->
     <!---->
@@ -525,8 +552,7 @@
     <string name="privacy_policy">Kebijakan Privasi</string>
     <string name="false_">False</string>
     <string name="service_not_availabe_text">Maaf, tidak pelayanan kami belum tersedia di dalam negeri ini sekarang.</string>
-
-
+    <string name="text_1">1</string>
 
 
     <string name="semaai_points">Poin Semaai</string>
@@ -680,6 +706,13 @@
     <string name="product_details_minus">-</string>
     <string name="product_details_weight_zero">0.0</string>
     <string name="estimated_arrival_x">Estimasi tiba %s</string>
+    <string name="other_sellers_for_this_product">Penjual Lain Untuk Produk Ini</string>
+
+
+    <string name="chat">Chat</string>
+    <string name="add">Tambah</string>
+
+
 
     <!-- SplashScreen  -->
     <string name="welcome">Selamat Datang</string>

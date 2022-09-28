@@ -52,6 +52,7 @@ class SplashDataRepositoryImpl @Inject constructor(
         }
         appPreferences.userName = splashEntity.userName
 
+        appPreferences.userId = splashEntity.userId
         if (appPreferences.languageCode.isNullOrBlank() and splashEntity.defaultLanguage.isNotEmpty()) {
             appPreferences.languageCode = splashEntity.defaultLanguage[0]
             localeManager.setLocale(false)

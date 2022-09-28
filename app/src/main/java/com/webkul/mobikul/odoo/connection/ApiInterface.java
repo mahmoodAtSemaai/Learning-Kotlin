@@ -1,7 +1,19 @@
 package com.webkul.mobikul.odoo.connection;
 
+import static com.webkul.mobikul.odoo.data.remoteSource.remoteServices.CategoriesServices.GET_PRODUCT_CATEGORIES;
+import static com.webkul.mobikul.odoo.data.remoteSource.remoteServices.ProductServices.GET_PRODUCT;
+import static com.webkul.mobikul.odoo.data.remoteSource.remoteServices.ProductServices.QUERY_CATEGORY_PRODUCTS;
+import static com.webkul.mobikul.odoo.data.remoteSource.remoteServices.ProductServices.QUERY_GLOBAL_PRODUCTS_ENABLED;
+import static com.webkul.mobikul.odoo.data.remoteSource.remoteServices.ProductServices.QUERY_PRODUCTS_LIMIT;
+import static com.webkul.mobikul.odoo.data.remoteSource.remoteServices.ProductServices.QUERY_PRODUCTS_OFFSET;
+import static com.webkul.mobikul.odoo.data.remoteSource.remoteServices.ProductServices.QUERY_SEARCH_PRODUCTS;
+import static com.webkul.mobikul.odoo.data.remoteSource.remoteServices.ProductServices.QUERY_SELLER_PRODUCTS;
+
+import com.webkul.mobikul.odoo.data.response.ProductCategoriesResponse;
+import com.webkul.mobikul.odoo.data.response.ProductListResponse;
 import com.webkul.mobikul.odoo.data.response.models.CartProductsResponse;
 import com.webkul.mobikul.odoo.model.BaseResponse;
+import com.webkul.mobikul.odoo.core.data.response.BaseResponseNew;
 import com.webkul.mobikul.odoo.model.ReferralResponse;
 import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
 import com.webkul.mobikul.odoo.model.cart.BagResponse;
@@ -78,6 +90,7 @@ public interface ApiInterface {
 
     /*Catalog*/
     String MOBIKUL_CATALOG_HOME_PAGE_DATA = "home-page";
+    String MOBIKUL_SAME_PRODUCT_FROM_DIFF_SELLERS = "v1/products";
     String MOBIKUL_CATALOG_PRODUCT_TEMPLATE_DATA = "product-products/{product_id}/product-templates/{product_template_id}";
     String MOBIKUL_PRODUCT_REVIEWS = "product/reviews";
     String MOBIKUL_ADD_PRODUCT_REVIEWS = "my/saveReview";
@@ -488,6 +501,31 @@ public interface ApiInterface {
             @Query("offset") int offset,
             @Query("limit") int limit
     );
+
+    @GET(GET_PRODUCT)
+    Observable<BaseResponseNew<ProductListResponse>> getProductSearchResponse(
+            @Query(QUERY_SEARCH_PRODUCTS) String searchQuery,
+            @Query(QUERY_GLOBAL_PRODUCTS_ENABLED) Boolean globalProductsEnabled ,
+            @Query(QUERY_PRODUCTS_OFFSET) int offset,
+            @Query(QUERY_PRODUCTS_LIMIT) int limit
+    );
+
+    @GET(GET_PRODUCT)
+    Observable<BaseResponseNew<ProductListResponse>> getSellerProducts(
+            @Query(QUERY_SELLER_PRODUCTS) int sellerId,
+            @Query(QUERY_PRODUCTS_OFFSET) int offset,
+            @Query(QUERY_PRODUCTS_LIMIT) int limit
+    );
+
+    @GET(GET_PRODUCT)
+    Observable<BaseResponseNew<ProductListResponse>> getCategoryProductList(
+            @Query(QUERY_CATEGORY_PRODUCTS) int categoryId,
+            @Query(QUERY_PRODUCTS_OFFSET) int offset,
+            @Query(QUERY_PRODUCTS_LIMIT) int limit
+    );
+
+    @GET(GET_PRODUCT_CATEGORIES)
+    Observable<BaseResponseNew<ProductCategoriesResponse>> getCategories();
 
     @POST(MOBIKUL_EXTRAS_NOTIFICATION_MESSAGES)
     Observable<NotificationMessagesResponse> getNotificationMessages();

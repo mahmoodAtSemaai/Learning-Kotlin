@@ -9,10 +9,10 @@ import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGORY_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGORY_NAME;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_NOTIFICATION_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_NAME;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_SEARCH_DOMAIN;
 import static com.webkul.mobikul.odoo.helper.AppSharedPref.CUSTOMER_PREF;
 import static com.webkul.mobikul.odoo.helper.CatalogHelper.CatalogProductRequestType.SEARCH_DOMAIN;
@@ -42,7 +42,6 @@ import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.CatalogHelper;
 import com.webkul.mobikul.odoo.helper.IntentHelper;
 import com.webkul.mobikul.odoo.helper.NetworkHelper;
-import com.webkul.mobikul.odoo.helper.OdooApplication;
 import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatBaseResponse;
 import com.webkul.mobikul.odoo.model.chat.ChatCreateChannelResponse;
@@ -51,6 +50,7 @@ import com.webkul.mobikul.odoo.model.extra.SplashScreenResponse;
 import com.webkul.mobikul.odoo.model.home.HomePageResponse;
 import com.webkul.mobikul.odoo.model.user.UserModel;
 import com.webkul.mobikul.odoo.ui.auth.SignInSignUpActivityV1;
+import com.webkul.mobikul.odoo.ui.price_comparison.ProductActivityV2;
 import com.webkul.mobikul.odoo.updates.FirebaseRemoteConfigHelper;
 
 import java.util.Locale;
@@ -233,17 +233,8 @@ public class SplashScreenActivity extends BaseActivity {
             } else {
 
                 if (AppSharedPref.getUserIsApproved(SplashScreenActivity.this)) {
-
-                    SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(SplashScreenActivity.this);
-                    HomePageResponse homePageResponse = sqlLiteDbHelper.getHomeScreenData();
-                    if (homePageResponse != null) {
-
-                        directToNewHomeActivity(homePageResponse);
-
-                    } else {
-                        initSplashScreenAPI();
-                    }
-                }else{
+                    initSplashScreenAPI();
+                } else {
                     IntentHelper.goToUserUnapprovedScreen(SplashScreenActivity.this);
                     finish();
                 }
@@ -262,9 +253,8 @@ public class SplashScreenActivity extends BaseActivity {
         }
     }
 
-    private void directToNewHomeActivity(HomePageResponse homePageResponse) {
+    private void directToNewHomeActivity() {
         Intent intent = new Intent(SplashScreenActivity.this, NewHomeActivity.class);
-        intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
         startActivity(intent);
         finish();
     }
@@ -290,7 +280,6 @@ public class SplashScreenActivity extends BaseActivity {
                 if (homePageResponse.isSuccess()) {
                     new SaveData(SplashScreenActivity.this, homePageResponse);
                     Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
-                    intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
                     startActivity(intent);
                     finish();
                 } else {
@@ -340,6 +329,8 @@ public class SplashScreenActivity extends BaseActivity {
                     public void onNext(@androidx.annotation.NonNull SplashScreenResponse splashScreenResponse) {
                         super.onNext(splashScreenResponse);
                         splashScreenResponse.updateSharedPref(SplashScreenActivity.this);
+                        AppSharedPref.setUserId(SplashScreenActivity.this, splashScreenResponse.getUserId());
+                        AppSharedPref.setUserIsApproved(SplashScreenActivity.this, splashScreenResponse.isUserApproved());
                         if(splashScreenResponse.isUserOnboarded()){
                             initHomeScreenAPI(splashScreenResponse);
                         }else{
@@ -375,7 +366,6 @@ public class SplashScreenActivity extends BaseActivity {
                             new SaveData(SplashScreenActivity.this, homePageResponse);
                             AppSharedPref.setNewCartCount(SplashScreenActivity.this, homePageResponse.getNewCartCount());
                             Intent intent = new Intent(SplashScreenActivity.this, NewHomeActivity.class);
-                            intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
                             startActivity(intent);
                             finish();
                         } else {
@@ -472,14 +462,11 @@ public class SplashScreenActivity extends BaseActivity {
                     break;
 
                 case TYPE_PRODUCT:
-                    intent = new Intent(SplashScreenActivity.this, ((OdooApplication) getApplication()).getProductActivity());
-                    intent.putExtra(BUNDLE_KEY_PRODUCT_ID, getIntent().getExtras().getString("id"));
+                    intent = new Intent(SplashScreenActivity.this, ProductActivityV2.class);
                     intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, getIntent().getExtras().getString("name"));
-                    SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(getApplicationContext());
-                    HomePageResponse homePageResponse = sqlLiteDbHelper.getHomeScreenData();
-                    if (homePageResponse != null) {
-                        intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
-                    }
+                    try {
+                        intent.putExtra(BUNDLE_KEY_PRODUCT_TEMPLATE_ID, Integer.parseInt(getIntent().getExtras().getString("id")));
+                    }catch (NumberFormatException ignored){}
                     break;
 
                 case TYPE_CATEGORY:

@@ -309,7 +309,7 @@ public class WishlistFragment extends Fragment implements WishlistProductInfoRvA
         ArrayList<CartProductItemRequest> list = new ArrayList<CartProductItemRequest>();
         list.add(new CartProductItemRequest(mData.getProductId(), 1, 0));
 
-        ApiConnection.addProductToCartV1(requireContext(), cartId,new CartProductsRequest(list))
+        ApiConnection.addProductToCartV1(requireContext(), cartId,new CartProductsRequest(list,cartId))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CustomObserver<CartBaseResponse<CartProductsResponse>>(requireContext()) {

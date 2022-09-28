@@ -152,7 +152,7 @@ public class SplashScreenResponse extends LoginResponse {
     @Override
     @SuppressWarnings("WeakerAccess")
     public boolean isAllowWishlistModule() {
-        return super.isAllowWishlistModule() && allowModuleWebsiteWishlist;
+        return super.isAllowWishlistModule();
     }
 //    public List<List<String>> getAllLanguages() {
 //        return allLanguages;
@@ -256,7 +256,7 @@ public class SplashScreenResponse extends LoginResponse {
         AppSharedPref.setUserIsOnboarded(context,isUserOnboarded());
         AppSharedPref.setCustomerGroupId(context,getCustomerGroupId());
         AppSharedPref.setUserName(context,getUserName());
-        AppSharedPref.setUserId(context,Integer.parseInt(getUserId()));
+        AppSharedPref.setUserId(context,getUserId());
         AppSharedPref.setCustomerId(context,getCustomerId());
     }
 }

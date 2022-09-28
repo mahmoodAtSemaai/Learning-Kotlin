@@ -69,28 +69,32 @@ class ProductActivityV1 : BaseActivity() {
 
     private var categoryId : String = ""
     private val productDataCustomObserver: CustomObserver<ProductData?> =
-        object : CustomObserver<ProductData?>(this) {
-            override fun onNext(productData: ProductData) {
-                super.onNext(productData)
-                if (productData.isAccessDenied) {
-                    sweetAlertDialog = AlertDialogHelper.getAlertDialog(
-                        this@ProductActivityV1, SweetAlertDialog.WARNING_TYPE,
-                        getString(R.string.error_login_failure),
-                        getString(R.string.access_denied_message), false, false)
-
-                    sweetAlertDialog.setConfirmClickListener {
-                        sweetAlertDialog.dismiss()
-                        AppSharedPref.clearCustomerData(this@ProductActivityV1)
-                        startActivity(Intent(this@ProductActivityV1, SignInSignUpActivity::class.java)
-                            .putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ProductActivityV1::class.java.simpleName))
+            object : CustomObserver<ProductData?>(this) {
+                override fun onNext(productData: ProductData) {
+                    super.onNext(productData)
+                    if (productData.isAccessDenied) {
+                        sweetAlertDialog = AlertDialogHelper.getAlertDialog(
+                                this@ProductActivityV1,SweetAlertDialog.WARNING_TYPE,
+                                getString(R.string.error_login_failure),
+                                getString(R.string.access_denied_message), false, false)
+                        sweetAlertDialog.setConfirmClickListener {
+                            sweetAlertDialog.dismiss()
+                            AppSharedPref.clearCustomerData(this@ProductActivityV1)
+                            startActivity(
+                                    Intent(this@ProductActivityV1, SignInSignUpActivity::class.java)
+                            .
+                                putExtra(
+                                        BUNDLE_KEY_CALLING_ACTIVITY,
+                                        ProductActivityV1::class.java.simpleName
+                                ))
+                        }
+                    } else {
+                        setDataAfterFetchData(productData)
                     }
-                } else {
-                    setDataAfterFetchData(productData)
                 }
-            }
 
-            override fun onError(t: Throwable) {
-                super.onError(t)
+                override fun onError(t: Throwable) {
+                    super.onError(t)
                 sweetAlertDialog = AlertDialogHelper.getAlertDialog(
                     this@ProductActivityV1, SweetAlertDialog.WARNING_TYPE,
                     getString(R.string.error_something_went_wrong),
@@ -102,9 +106,9 @@ class ProductActivityV1 : BaseActivity() {
                 }
             }
 
-            override fun onComplete() {
+                override fun onComplete() {
+                }
             }
-        }
 
     private var returnedWithResult = false
 
@@ -124,7 +128,8 @@ class ProductActivityV1 : BaseActivity() {
         binding.apply {
             handler = ProductActivityHandler(this@ProductActivityV1, productData)
             executePendingBindings()
-            vpProductSlider.adapter = ProductImageAdapter(this@ProductActivityV1, productData.images)
+            vpProductSlider.adapter =
+                    ProductImageAdapter(this@ProductActivityV1, productData.images)
             tlProductSlider.setupWithViewPager(vpProductSlider, true)
         }
         quantityEditTextOnChange()
@@ -159,13 +164,13 @@ class ProductActivityV1 : BaseActivity() {
     }
 
 
-    private fun getDescriptionLineCount(){
-        if(binding.tvProductDesciption.visibility != View.GONE) {
+    private fun getDescriptionLineCount() {
+        if (binding.tvProductDesciption.visibility != View.GONE) {
             binding.tvProductDesciption.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
                     binding.tvProductDesciption.viewTreeObserver.removeOnGlobalLayoutListener(this);
                     lineCount = binding.tvProductDesciption.layout.lineCount
-                    if(lineCount > DESCRIPTION_TEXTVIEW_LIMIT){
+                    if (lineCount > DESCRIPTION_TEXTVIEW_LIMIT) {
                         expandDescription()
                     }
                 }
@@ -187,7 +192,7 @@ class ProductActivityV1 : BaseActivity() {
         binding.rvProductDetails.apply {
             layoutManager = linearLayoutManager
             setHasFixedSize(true)
-            adapter = ProductDetailsAdapterV1(productDetails,categoryId,this@ProductActivityV1)
+            adapter = ProductDetailsAdapterV1(productDetails, categoryId, this@ProductActivityV1)
         }
     }
 
@@ -197,11 +202,11 @@ class ProductActivityV1 : BaseActivity() {
         details[getString(R.string.product_details_category)] = mutableListOf(mobikulCategoryDetails.category.toString())
         categoryId = mobikulCategoryDetails.categoryId.toString()
         details[getString(R.string.product_details_brand)] =
-            mutableListOf(productData.getBrandName())
+                mutableListOf(productData.getBrandName())
         details[getString(R.string.product_details_active_ingredients)] =
-            mutableListOf(mobikulCategoryDetails.activeIngredients.toString())
+                mutableListOf(mobikulCategoryDetails.activeIngredients.toString())
         details[getString(R.string.product_details_dosage)] =
-            mutableListOf(mobikulCategoryDetails.dosage.toString())
+                mutableListOf(mobikulCategoryDetails.dosage.toString())
         val crops: MutableList<String> = mutableListOf<String>()
         for (crop in mobikulCategoryDetails.crops) {
             crops.add(crop)
@@ -209,31 +214,31 @@ class ProductActivityV1 : BaseActivity() {
         details[getString(R.string.product_details_crops)] = crops
         if (mobikulCategoryDetails.isOrganic)
             details[getString(R.string.product_details_organic)] =
-                mutableListOf(getString(R.string.yes))
+                    mutableListOf(getString(R.string.yes))
         else
             details[getString(R.string.product_details_organic)] =
-                mutableListOf(getString(R.string.no))
+                    mutableListOf(getString(R.string.no))
         details[getString(R.string.product_details_weight)] =
-            mutableListOf(mobikulCategoryDetails.weight.toString())
+                mutableListOf(mobikulCategoryDetails.weight.toString())
         details[getString(R.string.product_details_mrp)] =
-            mutableListOf(mobikulCategoryDetails.mrp.toString())
+                mutableListOf(mobikulCategoryDetails.mrp.toString())
         details[getString(R.string.product_details_planting_method)] =
-            mutableListOf(mobikulCategoryDetails.plantingMethod.toString())
+                mutableListOf(mobikulCategoryDetails.plantingMethod.toString())
         details[getString(R.string.product_details_duration_of_effect)] =
-            mutableListOf(mobikulCategoryDetails.durationOfEffect.toString())
+                mutableListOf(mobikulCategoryDetails.durationOfEffect.toString())
         details[getString(R.string.product_details_planting_spacing)] =
-            mutableListOf(mobikulCategoryDetails.plantSpacing.toString())
+                mutableListOf(mobikulCategoryDetails.plantSpacing.toString())
         details[getString(R.string.product_details_pests_and_diseases)] =
-            mutableListOf(mobikulCategoryDetails.pestsAndDiseases.toString())
+                mutableListOf(mobikulCategoryDetails.pestsAndDiseases.toString())
         details[getString(R.string.product_details_application_method)] =
-            mutableListOf(mobikulCategoryDetails.applicationMethod.toString())
+                mutableListOf(mobikulCategoryDetails.applicationMethod.toString())
         details[getString(R.string.product_details_frequency_of_application)] =
-            mutableListOf(mobikulCategoryDetails.frequencyOfApplication.toString())
+                mutableListOf(mobikulCategoryDetails.frequencyOfApplication.toString())
 
         val detailsUpdated = mutableMapOf<String, List<String>>()
         for (item in details.entries.iterator()) {
             val checkEmptyList =
-                ((item.value.toString() == "[${getString(R.string.product_details_weight_zero)}]") or (item.value.toString() == "[]"))
+                    ((item.value.toString() == "[${getString(R.string.product_details_weight_zero)}]") or (item.value.toString() == "[]"))
             if (!checkEmptyList) {
                 detailsUpdated[item.key] = item.value
             }
@@ -247,9 +252,9 @@ class ProductActivityV1 : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_product_v1)
         initDialog()
         FirebaseAnalyticsImpl.logViewItem(
-            this,
-            intent.extras?.getString(BUNDLE_KEY_PRODUCT_ID),
-            intent.extras?.getString(BUNDLE_KEY_PRODUCT_NAME)
+                this,
+                intent.extras?.getString(BUNDLE_KEY_PRODUCT_ID),
+                intent.extras?.getString(BUNDLE_KEY_PRODUCT_NAME)
         )
         showBackButton(true)
         onNewIntent(intent)
@@ -258,6 +263,13 @@ class ProductActivityV1 : BaseActivity() {
         launchNewDrawerActivity()
         getBagItemsCount()
         setStatusBarColor()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getBagItemsCount()
+        Helper.hideKeyboard(this)
+        onResumeHandler()
     }
 
     private fun setStatusBarColor() {
@@ -275,31 +287,22 @@ class ProductActivityV1 : BaseActivity() {
     }
 
 
-    fun getHomePageResponse(): HomePageResponse? =
-        intent.getParcelableExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE)
-
-    override fun onResume() {
-        super.onResume()
-        getBagItemsCount()
-        Helper.hideKeyboard(this)
-        onResumeHandler()
-    }
 
     private fun onResumeHandler() {
         if (!returnedWithResult) {
             val sqlLiteDbHelper = SqlLiteDbHelper(this)
             val productData = sqlLiteDbHelper.getProductScreenData(
-                intent.extras?.getString(BUNDLE_KEY_PRODUCT_ID)
+                    intent.extras?.getString(BUNDLE_KEY_PRODUCT_ID)
             )
             if (!NetworkHelper.isNetworkAvailable(this) && productData != null) {
                 setDataAfterFetchData(productData)
             } else {
                 ApiConnection.getProductData(
-                    this,
-                    intent.extras?.getString(BUNDLE_KEY_PRODUCT_ID),
-                    intent.extras?.getString(BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID)
+                        this,
+                        intent.extras?.getString(BUNDLE_KEY_PRODUCT_ID),
+                        intent.extras?.getString(BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID)
                 ).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(productDataCustomObserver)
+                        .subscribe(productDataCustomObserver)
             }
         } else {
             returnedWithResult = false
@@ -318,7 +321,7 @@ class ProductActivityV1 : BaseActivity() {
             setIntent(intent)
             binding.data = null
         } else if (currentProductId == intent?.extras?.getString(BUNDLE_KEY_PRODUCT_ID)
-                .toString()
+                        .toString()
         ) {
             binding.etMaterialSearchView.closeSearch()
         } else {
@@ -361,8 +364,8 @@ class ProductActivityV1 : BaseActivity() {
             try {
                 val inputManager = this.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 inputManager.hideSoftInputFromWindow(
-                    binding.tvSearch.windowToken,
-                    InputMethodManager.HIDE_NOT_ALWAYS
+                        binding.tvSearch.windowToken,
+                        InputMethodManager.HIDE_NOT_ALWAYS
                 )
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -381,8 +384,8 @@ class ProductActivityV1 : BaseActivity() {
             ivWarning.setImageResource(R.drawable.ic_new_warning_icon)
             clDailogBox.visibility = View.VISIBLE
             clDailogBox.postDelayed(
-                Runnable { binding.clDailogBox.setVisibility(View.GONE) },
-                1500
+                    Runnable { binding.clDailogBox.setVisibility(View.GONE) },
+                    1500
             )
         }
     }
@@ -393,8 +396,8 @@ class ProductActivityV1 : BaseActivity() {
             tvWarningMsg.text = getString(R.string.product_successfully_added)
             clDailogBox.visibility = View.VISIBLE
             clDailogBox.postDelayed(
-                Runnable { binding.clDailogBox.setVisibility(View.GONE) },
-                1500
+                    Runnable { binding.clDailogBox.setVisibility(View.GONE) },
+                    1500
             )
         }
     }
@@ -432,10 +435,10 @@ class ProductActivityV1 : BaseActivity() {
             }
 
             tvReadMore.setOnClickListener {
-                if(expandable){
+                if (expandable) {
                     tvProductDesciption.maxLines = lineCount
                     tvReadMore.text = getString(R.string.read_less)
-                }else{
+                } else {
                     tvProductDesciption.maxLines = DESCRIPTION_TEXTVIEW_LIMIT
                     tvReadMore.text = getString(R.string.read_more)
                 }
@@ -579,7 +582,7 @@ class ProductActivityV1 : BaseActivity() {
                         AlertDialogHelper.showDefaultWarningDialogWithDismissListener(this@ProductActivityV1, getString(R.string.error_login_failure), getString(R.string.access_denied_message)) { sweetAlertDialog ->
                             sweetAlertDialog.dismiss()
                             AppSharedPref.clearCustomerData(this@ProductActivityV1)
-                            
+
                             Intent(this@ProductActivityV1, SignInSignUpActivity::class.java).apply {
                                 putExtra(BUNDLE_KEY_CALLING_ACTIVITY, this@ProductActivityV1.javaClass.simpleName)
                                 startActivity(this)
@@ -720,10 +723,8 @@ class ProductActivityV1 : BaseActivity() {
 
     private fun launchNewDrawerActivity() {
         binding.ivDrawer.setOnClickListener {
-            val intent = Intent(this, NewDrawerActivity::class.java)
-            intent.let {
-                it.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, getHomePageResponse())
-                startActivity(it)
+            Intent(this, NewDrawerActivity::class.java).apply {
+                startActivity(this)
             }
             overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left)
         }

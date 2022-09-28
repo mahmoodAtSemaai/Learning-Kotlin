@@ -1,34 +1,24 @@
 package com.webkul.mobikul.odoo.handler.customer;
 
-import android.content.Context;
-import android.content.Intent;
-
-import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
-import com.webkul.mobikul.odoo.helper.OdooApplication;
-import com.webkul.mobikul.odoo.model.customer.order.OrderItem;
-import com.webkul.mobikul.odoo.model.home.HomePageResponse;
-
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_NAME;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID;
 
+import android.content.Context;
+import android.content.Intent;
+
+import com.webkul.mobikul.odoo.model.customer.order.OrderItem;
+import com.webkul.mobikul.odoo.ui.price_comparison.ProductActivityV2;
+
 /**
-
  * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
+ *
  * @author Webkul <support@webkul.com>
-
+ * @package Mobikul App
+ * @Category Mobikul
  * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
  * @license https://store.webkul.com/license.html ASL Licence
-
  * @link https://store.webkul.com/license.html
-
  */
 
 
@@ -45,15 +35,11 @@ public class OrderProductInfoItemHandler {
     }
 
     public void viewProduct() {
-        Intent intent = new Intent(mContext, ((OdooApplication) mContext.getApplicationContext()).getProductActivity());
+        Intent intent = new Intent(mContext, ProductActivityV2.class);
         intent.putExtra(BUNDLE_KEY_PRODUCT_ID, mData.getProductId());
-        intent.putExtra(BUNDLE_KEY_PRODUCT_TEMPLATE_ID, mData.getTemplateId());
         intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, mData.getName());
-        SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(mContext);
-        HomePageResponse homePageResponse = sqlLiteDbHelper.getHomeScreenData();
-        if(homePageResponse != null){
-            intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
-        }
+        try {intent.putExtra(BUNDLE_KEY_PRODUCT_TEMPLATE_ID, Integer.parseInt(mData.getTemplateId()));
+        } catch(NumberFormatException ignored){}
         mContext.startActivity(intent);
     }
 }

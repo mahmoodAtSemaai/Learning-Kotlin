@@ -12,7 +12,7 @@ sealed class LoginPasswordState : IState {
     object Idle : LoginPasswordState()
     object Loading : LoginPasswordState()
     data class Splash(val splashScreenResponse: SplashScreenResponse) : LoginPasswordState()
-    data class HomePage(val homePageResponse: HomePageResponse) : LoginPasswordState()
+    object HomePage : LoginPasswordState()
     data class LoggedIn(val data: BaseOtpLoginResponse<OtpAuthenticationResponse>) : LoginPasswordState()
 
     object EnableButton : LoginPasswordState()

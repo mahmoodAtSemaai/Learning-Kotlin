@@ -2,7 +2,6 @@ package com.webkul.mobikul.odoo.ui.splash
 
 import com.webkul.mobikul.odoo.core.mvicore.IState
 import com.webkul.mobikul.odoo.core.utils.FailureStatus
-import com.webkul.mobikul.odoo.model.home.HomePageResponse
 
 sealed class SplashState : IState {
     object Idle : SplashState()

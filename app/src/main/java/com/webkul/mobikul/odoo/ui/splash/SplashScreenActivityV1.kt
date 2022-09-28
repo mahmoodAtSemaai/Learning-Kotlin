@@ -16,7 +16,6 @@ import com.webkul.mobikul.odoo.core.platform.BindingBaseActivity
 import com.webkul.mobikul.odoo.core.utils.DeeplinkManager
 import com.webkul.mobikul.odoo.databinding.ActivitySplashScreenV1Binding
 import com.webkul.mobikul.odoo.features.onboarding.presentation.OnboardingActivity
-import com.webkul.mobikul.odoo.model.home.HomePageResponse
 import com.webkul.mobikul.odoo.ui.signUpOnboarding.UserOnboardingActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_splash_screen_v1.*
@@ -76,7 +75,7 @@ class SplashScreenActivityV1() :
     override fun render(effect: SplashEffect) {
         when (effect) {
             is SplashEffect.ExecuteDeepLink -> executeDeepLink()
-            is SplashEffect.NavigateToHomeScreen -> navigateToHomeScreen(effect.homePageResponse)
+            is SplashEffect.NavigateToHomeScreen -> navigateToHomeScreen()
             is SplashEffect.NavigateToOnBoardingActivity -> navigateToOnBoardingActivity()
             is SplashEffect.NavigateToSignInSignUpActivity -> navigateToSignInSignUpActivity()
         }
@@ -120,22 +119,15 @@ class SplashScreenActivityV1() :
     }
 
     private fun navigateToSignInSignUpActivity() {
-        val intent = Intent(this, SignInSignUpActivity::class.java)
-        intent.also {
-            it.putExtra(
-                    BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY,
-                    SplashScreenActivity::class.java.simpleName
-            )
-            startActivity(it)
+        Intent(this, SignInSignUpActivity::class.java).apply {
+            startActivity(this)
         }
         finish()
     }
 
-    private fun navigateToHomeScreen(homePageResponse: HomePageResponse) {
-        val intent = Intent(this, NewHomeActivity::class.java)
-        intent.also {
-            it.putExtra(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse)
-            startActivity(it)
+    private fun navigateToHomeScreen() {
+        Intent(this, NewHomeActivity::class.java).apply {
+            startActivity(this)
         }
         finish()
     }

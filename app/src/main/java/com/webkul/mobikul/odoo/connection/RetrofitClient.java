@@ -76,7 +76,7 @@ public class RetrofitClient {
 
             Request.Builder builder = chain.request().newBuilder();
             builder.addHeader("Authorization", BuildConfig.BASIC_AUTH_KEY)
-                    .addHeader("Content-Type", "text/html");
+                    .addHeader("Content-Type", "text/plain; charset=UTF-8");
 
             if (AppSharedPref.getAuthToken(sContext).isEmpty()) {
                 if (AppSharedPref.isLoggedIn(sContext)) {

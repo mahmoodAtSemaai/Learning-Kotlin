@@ -3,24 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_nav_graph"
-    app:startDestination="@id/homeFragment">
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.webkul.mobikul.odoo.fragment.HomeFragment"
-        android:label="@string/label_home_fragment"
-        tools:layout="@layout/fragment_home">
-        <action
-            android:id="@+id/action_homeFragment_to_emptyFragment"
-            app:destination="@id/emptyFragment" />
-    </fragment>
+    app:startDestination="@id/homeFragmentV1">
+
+
     <fragment
         android:id="@+id/wishlistFragment"
         android:name="com.webkul.mobikul.odoo.fragment.WishlistFragment"
         android:label="@string/label_wishlist_fragment"
-        tools:layout="@layout/fragment_wishlist" >
+        tools:layout="@layout/fragment_wishlist">
         <action
             android:id="@+id/action_wishlistFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragmentV1" />
     </fragment>
 
     <fragment
@@ -55,7 +48,7 @@
         <action
             android:id="@+id/action_accountFragment_to_orderListFragment"
             app:destination="@id/orderListFragment"
-            app:popUpTo="@id/homeFragment" />
+            app:popUpTo="@id/homeFragmentV1" />
     </fragment>
     <fragment
         android:id="@+id/emptyFragment"
@@ -70,6 +63,14 @@
         <argument
             android:name="orderid"
             app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragmentV1"
+        android:name="com.webkul.mobikul.odoo.ui.home.HomeFragmentV1"
+        android:label="HomeFragmentV1">
+        <action
+            android:id="@+id/action_homeFragmentV1_to_emptyFragment"
+            app:destination="@id/emptyFragment" />
     </fragment>
 
 

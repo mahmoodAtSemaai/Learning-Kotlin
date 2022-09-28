@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.webkul.mobikul.odoo.R;
+import com.webkul.mobikul.odoo.data.entity.ProductEntity;
 import com.webkul.mobikul.odoo.databinding.ItemSearchSuggestionProductBinding;
 import com.webkul.mobikul.odoo.handler.extra.search.SearchSuggestionProductHandler;
 import com.webkul.mobikul.odoo.helper.SearchHelper;
@@ -22,10 +23,10 @@ public class SearchSuggestionProductAdapter extends RecyclerView.Adapter<SearchS
     private static final String TAG = "SearchSuggestionProduct";
 
     private final Context context;
-    private List<ProductData> products;
+    private List<ProductEntity> products;
     private String searchQuery;
 
-    public SearchSuggestionProductAdapter(Context context, List<ProductData> products, String searchQuery) {
+    public SearchSuggestionProductAdapter(Context context, List<ProductEntity> products, String searchQuery) {
         this.context = context;
         this.products = products;
         this.searchQuery = searchQuery;
@@ -39,7 +40,7 @@ public class SearchSuggestionProductAdapter extends RecyclerView.Adapter<SearchS
     }
 
 
-    public void updateData(List<ProductData> products, String searchQuery) {
+    public void updateData(List<ProductEntity> products, String searchQuery) {
         this.products = products;
         this.searchQuery = searchQuery;
         notifyDataSetChanged();

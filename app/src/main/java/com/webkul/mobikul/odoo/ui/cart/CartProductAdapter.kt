@@ -17,15 +17,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableBoolean
 import androidx.recyclerview.widget.RecyclerView
 import com.webkul.mobikul.odoo.R
-import com.webkul.mobikul.odoo.activity.ProductActivityV1
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl
 import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.data.entity.CartProductEntity
-import com.webkul.mobikul.odoo.database.SqlLiteDbHelper
 import com.webkul.mobikul.odoo.databinding.ItemCartBinding
 import com.webkul.mobikul.odoo.helper.AppSharedPref
 import com.webkul.mobikul.odoo.helper.Helper
 import com.webkul.mobikul.odoo.helper.StringUtil
+import com.webkul.mobikul.odoo.ui.price_comparison.ProductActivityV2
 
 class CartProductAdapter(
     val context: Context,
@@ -259,16 +258,12 @@ class CartProductAdapter(
 
     private fun redirectToProductDetailScreen(product: CartProductEntity) {
         AnalyticsImpl.trackProductItemSelected(Helper.getScreenName(context), product.productId.toString(), product.name)
-        val intent = Intent(context, ProductActivityV1::class.java)
-            .putExtra(BundleConstant.BUNDLE_KEY_PRODUCT_ID, product.productId.toString())
-            .putExtra(BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID, product.templateId.toString())
-            .putExtra(BundleConstant.BUNDLE_KEY_PRODUCT_NAME, product.name)
-        val sqlLiteDbHelper = SqlLiteDbHelper(context)
-        val homePageResponse = sqlLiteDbHelper.homeScreenData
-        if (homePageResponse != null) {
-            intent.putExtra(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse)
+        Intent(context, ProductActivityV2::class.java).apply {
+            putExtra(BundleConstant.BUNDLE_KEY_PRODUCT_ID, product.productId.toString())
+            putExtra(BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID, product.templateId)
+            putExtra(BundleConstant.BUNDLE_KEY_PRODUCT_NAME, product.name)
+            context.startActivity(this)
         }
-        context.startActivity(intent)
     }
 
 

@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.adapter.home.NavDrawerCategoryStartAdapter;
 import com.webkul.mobikul.odoo.custom.MaterialSearchView;
+import com.webkul.mobikul.odoo.data.entity.ProductCategoryEntity;
 import com.webkul.mobikul.odoo.databinding.ActivitySubCategoryBinding;
 import com.webkul.mobikul.odoo.model.generic.CategoryData;
 
@@ -36,7 +37,7 @@ public class SubCategoryActivity extends BaseActivity {
         setSupportActionBar(binding.toolbar);
         if (getIntent().getExtras() != null) {
             if (getIntent().getExtras().containsKey(BUNDLE_KEY_CATEGORY_OBJECT)) {
-                CategoryData data = getIntent().getExtras().getParcelable(BUNDLE_KEY_CATEGORY_OBJECT);
+                ProductCategoryEntity data = getIntent().getExtras().getParcelable(BUNDLE_KEY_CATEGORY_OBJECT);
                 String parentCategory = getIntent().getExtras().getString(BUNDLE_KEY_PARENT_CATEGORY);
                 if (data != null) {
                     binding.setTitle(data.getName());

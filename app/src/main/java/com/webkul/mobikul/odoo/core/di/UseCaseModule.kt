@@ -3,21 +3,34 @@ package com.webkul.mobikul.odoo.core.di
 
 import android.content.Context
 import com.webkul.mobikul.odoo.core.data.local.AppPreferences
+import com.webkul.mobikul.odoo.core.utils.FirebaseAnalyticsImpl
 import com.webkul.mobikul.odoo.core.utils.NetworkManager
 import com.webkul.mobikul.odoo.core.utils.ResourcesProvider
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper
 import com.webkul.mobikul.odoo.domain.repository.*
 import com.webkul.mobikul.odoo.domain.usecase.account.GetAccountInfoDataUseCase
 import com.webkul.mobikul.odoo.domain.usecase.auth.*
+import com.webkul.mobikul.odoo.domain.usecase.banner.BannersUseCase
+import com.webkul.mobikul.odoo.domain.usecase.cart.AddToCartUseCase
+import com.webkul.mobikul.odoo.domain.usecase.cart.BagItemsCountUseCase
+import com.webkul.mobikul.odoo.domain.usecase.cart.CreateCartUseCase
+import com.webkul.mobikul.odoo.domain.usecase.cart.GetCartIdUseCase
 import com.webkul.mobikul.odoo.domain.usecase.chat.CreateChatChannelUseCase
 import com.webkul.mobikul.odoo.domain.usecase.fcmToken.RegisterFCMTokenUseCase
 import com.webkul.mobikul.odoo.domain.usecase.home.HomeLocalDataUseCase
 import com.webkul.mobikul.odoo.domain.usecase.home.HomeUseCase
 import com.webkul.mobikul.odoo.domain.usecase.network.IsNetworkUseCase
+import com.webkul.mobikul.odoo.domain.usecase.product.*
+import com.webkul.mobikul.odoo.domain.usecase.productCategories.CategoriesUseCase
+import com.webkul.mobikul.odoo.domain.usecase.search.GetSearchUseCase
+import com.webkul.mobikul.odoo.domain.usecase.seller.GetSellerProductUseCase
+import com.webkul.mobikul.odoo.domain.usecase.seller.GetSellerUseCase
 import com.webkul.mobikul.odoo.domain.usecase.session.IsValidSessionUseCase
 import com.webkul.mobikul.odoo.domain.usecase.signUpOnboarding.*
 import com.webkul.mobikul.odoo.domain.usecase.splash.SplashLocalDataUseCase
 import com.webkul.mobikul.odoo.domain.usecase.splash.SplashUseCase
+import com.webkul.mobikul.odoo.domain.usecase.user.UserDetailUseCase
+import com.webkul.mobikul.odoo.domain.usecase.wishlist.IsWishListAllowedUseCase
 import com.webkul.mobikul.odoo.features.authentication.domain.repo.AuthenticationRepository
 import com.webkul.mobikul.odoo.features.authentication.domain.repo.HomePageRepository
 import com.webkul.mobikul.odoo.features.authentication.domain.repo.SplashPageRepository
@@ -38,86 +51,86 @@ class UseCaseModule {
     @Provides
     @Singleton
     fun provideLogInUseCase(
-            authRepository: AuthRepository
+        authRepository: AuthRepository
     ): LogInUseCase = LogInUseCase(authRepository)
 
     @Provides
     @Singleton
     fun provideSignUpUseCase(
-            authRepository: AuthRepository,
-            @ApplicationContext context: Context
+        authRepository: AuthRepository,
+        @ApplicationContext context: Context
     ): SignUpUseCase = SignUpUseCase(authRepository, context)
 
     @Provides
     @Singleton
     fun provideViewPrivacyPolicyUseCase(@ApplicationContext context: Context): ViewPrivacyPolicyUseCase =
-            ViewPrivacyPolicyUseCase(context)
+        ViewPrivacyPolicyUseCase(context)
 
     @Provides
     @Singleton
     fun provideBillingAddressUseCase(
-            addressRepository: AddressRepository
+        addressRepository: AddressRepository
     ): BillingAddressUseCase = BillingAddressUseCase(addressRepository)
 
     @Provides
     @Singleton
     fun provideCountryStateUseCase(
-            countryStateRepository: CountryStateRepository
+        countryStateRepository: CountryStateRepository
     ): CountryStateUseCase = CountryStateUseCase(countryStateRepository)
 
     @Provides
     @Singleton
     fun provideViewMarketPlaceTnCUseCase(
-            termsConditionRepository: TermsConditionRepository
+        termsConditionRepository: TermsConditionRepository
     ): ViewMarketPlaceTnCUseCase = ViewMarketPlaceTnCUseCase(termsConditionRepository)
 
     @Provides
     @Singleton
     fun provideViewTnCUseCase(
-            termsConditionRepository: TermsConditionRepository
+        termsConditionRepository: TermsConditionRepository
     ): ViewTnCUseCase = ViewTnCUseCase(termsConditionRepository)
 
     @Provides
     @Singleton
     fun provideVerifyPhoneNumberUseCase(): VerifyPhoneNumberUseCase =
-            VerifyPhoneNumberUseCase()
+        VerifyPhoneNumberUseCase()
 
     @Provides
     @Singleton
     fun provideContinuePhoneNumberUseCase(authenticationRepository: AuthenticationRepository): ContinuePhoneNumberUseCase =
-            ContinuePhoneNumberUseCase(authenticationRepository)
+        ContinuePhoneNumberUseCase(authenticationRepository)
 
     @Provides
     @Singleton
     fun provideLoginPasswordUseCase(
-            authenticationRepository: AuthenticationRepository,
-            appPreferences: AppPreferences
+        authenticationRepository: AuthenticationRepository,
+        appPreferences: AppPreferences
     ): LoginPasswordUseCase =
-            LoginPasswordUseCase(authenticationRepository, appPreferences)
+        LoginPasswordUseCase(authenticationRepository, appPreferences)
 
 
     @Provides
     @Singleton
     fun provideGenerateOtpUseCase(authenticationRepository: AuthenticationRepository): GenerateOtpUseCase =
-            GenerateOtpUseCase(authenticationRepository)
+        GenerateOtpUseCase(authenticationRepository)
 
     @Provides
     @Singleton
     fun provideVerifyOtpUseCase(
-            authenticationRepository: AuthenticationRepository,
-            appPreferences: AppPreferences
+        authenticationRepository: AuthenticationRepository,
+        appPreferences: AppPreferences
     ): VerifyOtpUseCase =
-            VerifyOtpUseCase(authenticationRepository, appPreferences)
+        VerifyOtpUseCase(authenticationRepository, appPreferences)
 
     @Provides
     @Singleton
     fun provideSplashPageUseCase(splashPageRepository: SplashPageRepository): SplashPageUseCase =
-            SplashPageUseCase(splashPageRepository)
+        SplashPageUseCase(splashPageRepository)
 
     @Provides
     @Singleton
     fun provideHomePageUseCase(homePageRepository: HomePageRepository): HomePageDataUseCase =
-            HomePageDataUseCase(homePageRepository)
+        HomePageDataUseCase(homePageRepository)
 
     @Provides
     @Singleton
@@ -126,71 +139,92 @@ class UseCaseModule {
     @Provides
     @Singleton
     fun provideOnboardingUseCase(resourcesProvider: ResourcesProvider): OnboardingUseCase =
-            OnboardingUseCase(resourcesProvider)
+        OnboardingUseCase(resourcesProvider)
 
     @Provides
     @Singleton
     fun provideCreateChatChannelUseCase(
-            chatChannelRepository: ChatChannelRepository,
-            appPreferences: AppPreferences
+        chatChannelRepository: ChatChannelRepository,
+        appPreferences: AppPreferences
     ): CreateChatChannelUseCase =
-            CreateChatChannelUseCase(chatChannelRepository, appPreferences)
+        CreateChatChannelUseCase(chatChannelRepository, appPreferences)
 
     @Provides
     @Singleton
     fun provideIsFirstTimeUseCase(
-            appPreferences: AppPreferences
+        appPreferences: AppPreferences
     ): IsFirstTimeUseCase = IsFirstTimeUseCase(appPreferences)
 
     @Provides
     @Singleton
     fun provideHomeDataUseCase(
-            homeDataRepository: HomeDataRepository,
-            homeLocalDataUseCase: HomeLocalDataUseCase
+        homeDataRepository: HomeDataRepository,
+        homeLocalDataUseCase: HomeLocalDataUseCase
     ): HomeUseCase = HomeUseCase(homeDataRepository, homeLocalDataUseCase)
 
     @Provides
     @Singleton
     fun provideSplashDataUseCase(
-            splashDataRepository: SplashDataRepository,
-            splashLocalDataUseCase: SplashLocalDataUseCase
+        splashDataRepository: SplashDataRepository,
+        splashLocalDataUseCase: SplashLocalDataUseCase
     ): SplashUseCase = SplashUseCase(splashDataRepository, splashLocalDataUseCase)
 
     @Provides
     @Singleton
     fun provideHomeLocalDataUseCase(
-            sqlLiteDbHelper: SqlLiteDbHelper
+        sqlLiteDbHelper: SqlLiteDbHelper
     ): HomeLocalDataUseCase = HomeLocalDataUseCase(sqlLiteDbHelper)
 
     @Provides
     @Singleton
     fun provideSplashLocalDataUseCase(
-            sqlLiteDbHelper: SqlLiteDbHelper
+        sqlLiteDbHelper: SqlLiteDbHelper
     ): SplashLocalDataUseCase = SplashLocalDataUseCase(sqlLiteDbHelper)
 
     @Provides
     @Singleton
     fun provideIsNetworkUseCase(
-            networkManager: NetworkManager
+        networkManager: NetworkManager
     ): IsNetworkUseCase = IsNetworkUseCase(networkManager)
 
 
     @Provides
     @Singleton
     fun provideIsUserAuthorisedUseCase(
-            appPreferences: AppPreferences
+        appPreferences: AppPreferences
     ): IsUserAuthorisedUseCase = IsUserAuthorisedUseCase(appPreferences)
 
     @Provides
     @Singleton
     fun provideIsUserApprovedUseCase(
-            appPreferences: AppPreferences
+        appPreferences: AppPreferences
     ): IsUserApprovedUseCase = IsUserApprovedUseCase(appPreferences)
 
     @Provides
     @Singleton
+    fun provideCheckChatFeatureEnabledUseCase(
+        appPreferences: AppPreferences
+    ): CheckChatFeatureEnabledUseCase = CheckChatFeatureEnabledUseCase(appPreferences)
+
+
+    @Provides
+    @Singleton
+    fun provideIsWishListAllowedUseCase(
+        wishListRepository: WishListRepository,
+    ): IsWishListAllowedUseCase = IsWishListAllowedUseCase(wishListRepository)
+
+
+    @Provides
+    @Singleton
+    fun provideBagItemCountUseCase(
+        bagItemsCountRepository: BagItemsCountRepository,
+        resourcesProvider: ResourcesProvider
+    ): BagItemsCountUseCase = BagItemsCountUseCase(bagItemsCountRepository, resourcesProvider)
+
+    @Provides
+    @Singleton
     fun provideIsValidSessionUseCase(
-            isUserAuthorisedUseCase: IsUserAuthorisedUseCase
+        isUserAuthorisedUseCase: IsUserAuthorisedUseCase
     ): IsValidSessionUseCase = IsValidSessionUseCase(isUserAuthorisedUseCase)
 
     @Provides
@@ -233,7 +267,7 @@ class UseCaseModule {
         resourcesProvider: ResourcesProvider,
         appPreferences: AppPreferences
     ): CustomerGroupUseCase =
-        CustomerGroupUseCase(customerGroupRepository,resourcesProvider,appPreferences)
+        CustomerGroupUseCase(customerGroupRepository, resourcesProvider, appPreferences)
 
     @Provides
     @Singleton
@@ -293,13 +327,19 @@ class UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideVerifyUserDetailsUseCase(appPreferences: AppPreferences,resourcesProvider: ResourcesProvider): VerifyUserDetailsUseCase =
+    fun provideVerifyUserDetailsUseCase(
+        appPreferences: AppPreferences,
+        resourcesProvider: ResourcesProvider
+    ): VerifyUserDetailsUseCase =
         VerifyUserDetailsUseCase(appPreferences, resourcesProvider)
 
     @Provides
     @Singleton
-    fun provideGetOnboardingDataUseCase(appPreferences: AppPreferences,resourcesProvider: ResourcesProvider): GetOnboardingDataUseCase =
-        GetOnboardingDataUseCase(appPreferences,resourcesProvider)
+    fun provideGetOnboardingDataUseCase(
+        appPreferences: AppPreferences,
+        resourcesProvider: ResourcesProvider
+    ): GetOnboardingDataUseCase =
+        GetOnboardingDataUseCase(appPreferences, resourcesProvider)
 
     @Provides
     @Singleton
@@ -307,12 +347,16 @@ class UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideNextOnboardingStageUseCase(resourcesProvider: ResourcesProvider): NextOnboardingStageUseCase = NextOnboardingStageUseCase(resourcesProvider)
+    fun provideNextOnboardingStageUseCase(resourcesProvider: ResourcesProvider): NextOnboardingStageUseCase =
+        NextOnboardingStageUseCase(resourcesProvider)
 
     @Provides
     @Singleton
-    fun provideGetUserDetailsViewsUseCase(appPreferences: AppPreferences,resourcesProvider: ResourcesProvider): GetUserDetailsViewsUseCase =
-        GetUserDetailsViewsUseCase(appPreferences,resourcesProvider)
+    fun provideGetUserDetailsViewsUseCase(
+        appPreferences: AppPreferences,
+        resourcesProvider: ResourcesProvider
+    ): GetUserDetailsViewsUseCase =
+        GetUserDetailsViewsUseCase(appPreferences, resourcesProvider)
 
     @Provides
     @Singleton
@@ -353,6 +397,77 @@ class UseCaseModule {
     @Provides
     @Singleton
     fun provideRegisterFCMTokenUseCase(
-            fcmTokenRepository: FCMTokenRepository
+        fcmTokenRepository: FCMTokenRepository
     ): RegisterFCMTokenUseCase = RegisterFCMTokenUseCase(fcmTokenRepository)
+
+    @Provides
+    @Singleton
+    fun provideUserDetailUseCase(
+        userDetailRepository: UserDetailRepository,
+        appPreferences: AppPreferences
+    ): UserDetailUseCase = UserDetailUseCase(userDetailRepository, appPreferences)
+
+    @Provides
+    @Singleton
+    fun provideProductCategoriesUseCase(
+        categoriesRepository: CategoriesRepository
+    ): CategoriesUseCase = CategoriesUseCase(categoriesRepository)
+
+    @Provides
+    @Singleton
+    fun provideBannersUseCase(
+        bannerRepository: BannerRepository
+    ): BannersUseCase = BannersUseCase(bannerRepository)
+
+    @Provides
+    @Singleton
+    fun provideGetSellerUseCase(
+        sellerRepository: SellerRepository
+    ): GetSellerUseCase = GetSellerUseCase(sellerRepository)
+
+    @Provides
+    @Singleton
+    fun provideGetSellerProductUseCase(
+        sellerProductRepository: SellerProductRepository
+    ): GetSellerProductUseCase = GetSellerProductUseCase(sellerProductRepository)
+
+    @Provides
+    @Singleton
+    fun provideGetSearchUseCase(
+        searchRepository: SearchRepository
+    ): GetSearchUseCase = GetSearchUseCase(searchRepository)
+
+    @Provides
+    @Singleton
+    fun provideGetProductDetailsUseCase(
+        productDetailsRepository: ProductDetailsRepository
+    ): GetProductDetailsUseCase = GetProductDetailsUseCase(productDetailsRepository)
+
+    @Provides
+    @Singleton
+    fun provideGetProductSellersUseCase(
+        productSellersRepository: ProductSellersRepository
+    ): GetProductSellersUseCase = GetProductSellersUseCase(productSellersRepository)
+
+    @Provides
+    @Singleton
+    fun provideAddToCartUseCase(
+        cartRepository: CartRepository,
+        firebaseAnalyticsImpl: FirebaseAnalyticsImpl,
+        resourcesProvider: ResourcesProvider
+    ): AddToCartUseCase = AddToCartUseCase(cartRepository, firebaseAnalyticsImpl, resourcesProvider)
+
+    @Provides
+    @Singleton
+    fun provideCreateCartUseCase(
+        userDetailRepository: UserDetailRepository,
+        cartRepository: CartRepository
+    ): CreateCartUseCase = CreateCartUseCase(userDetailRepository, cartRepository)
+
+    @Provides
+    @Singleton
+    fun provideGetCartIdUseCase(
+        userDetailRepository: UserDetailRepository,
+        cartRepository: CartRepository
+    ): GetCartIdUseCase = GetCartIdUseCase(userDetailRepository, cartRepository)
 }

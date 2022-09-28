@@ -12,10 +12,6 @@
         <import type="com.webkul.mobikul.odoo.helper.AppSharedPref" />
 
         <variable
-            name="languageData"
-            type="java.util.HashMap" />
-
-        <variable
             name="handler"
             type="com.webkul.mobikul.odoo.handler.home.HomeActivityHandler" />
 

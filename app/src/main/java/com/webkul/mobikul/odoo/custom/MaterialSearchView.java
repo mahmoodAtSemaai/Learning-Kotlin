@@ -7,7 +7,6 @@ import android.app.SearchManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import androidx.databinding.DataBindingUtil;
 import android.os.Build;
@@ -16,11 +15,11 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.google.gson.Gson;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.jakewharton.rxbinding2.widget.TextViewTextChangeEvent;
 import com.webkul.mobikul.odoo.BuildConfig;
@@ -32,6 +31,8 @@ import com.webkul.mobikul.odoo.adapter.extra.SearchSuggestionProductAdapter;
 import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.connection.RetrofitClient;
+import com.webkul.mobikul.odoo.data.entity.ProductListEntity;
+import com.webkul.mobikul.odoo.data.response.ProductListResponse;
 import com.webkul.mobikul.odoo.database.SearchHistoryContract;
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.databinding.MaterialSearchViewBinding;
@@ -40,9 +41,8 @@ import com.webkul.mobikul.odoo.handler.extra.search.MaterialSearchViewHandler;
 import com.webkul.mobikul.odoo.helper.AnimationHelper;
 import com.webkul.mobikul.odoo.helper.BindingAdapterUtils;
 import com.webkul.mobikul.odoo.helper.Helper;
-import com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse;
+import com.webkul.mobikul.odoo.core.data.response.BaseResponseNew;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -52,7 +52,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.webkul.mobikul.odoo.constant.ApplicationConstant.DEBOUNCE_REQUEST_TIMEOUT;
-import static com.webkul.mobikul.odoo.constant.ApplicationConstant.MAX_SEARCH_HISTORY_RESULT;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CATEGORY_NAME;
 import static com.webkul.mobikul.odoo.helper.CatalogHelper.CatalogProductRequestType.SEARCH_QUERY;
@@ -132,38 +131,41 @@ public class MaterialSearchView extends FrameLayout {
             public void onNext(@NonNull TextViewTextChangeEvent textViewTextChangeEvent) {
                 if (!isFromSubmitResult) {
 
-                    ApiConnection.getSearchResponse(context, textViewTextChangeEvent.text().toString(), 0, BuildConfig.DEFAULT_NO_OF_SEARCH_PRODUCTS)
-                            .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).debounce(2, TimeUnit.SECONDS).subscribe(new CustomObserver<CatalogProductResponse>(context) {
-                        @Override
-                        public void onSubscribe(@NonNull Disposable d) {
-                            super.onSubscribe(d);
-                            binding.pbSearch.setVisibility(VISIBLE);
-                        }
+                    ApiConnection.getProductSearchResponse(context, true, textViewTextChangeEvent.text().toString(), 0, BuildConfig.DEFAULT_NO_OF_SEARCH_PRODUCTS)
+                                    .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).debounce(2,TimeUnit.SECONDS).subscribe(new CustomObserver<BaseResponseNew<ProductListResponse>>(context) {
+                                @Override
+                                public void onSubscribe(Disposable d) {
+                                    super.onSubscribe(d);
+                                    binding.pbSearch.setVisibility(VISIBLE);
+                                }
 
-                        @Override
-                        public void onNext(@NonNull CatalogProductResponse catalogProductResponse) {
-                            super.onNext(catalogProductResponse);
-                            Log.d(TAG, "onNext: ");
-                            FirebaseAnalyticsImpl.logSearchEvent(context,textViewTextChangeEvent.text().toString());
-                            binding.setSearchSuggestionData(catalogProductResponse);
-                            if (binding.rvSearchSuggestions.getAdapter() == null) {
-                                binding.rvSearchSuggestions.setAdapter(new SearchSuggestionProductAdapter(context, catalogProductResponse.getProducts(), textViewTextChangeEvent.text().toString()));
-                            } else {
-                                ((SearchSuggestionProductAdapter) binding.rvSearchSuggestions.getAdapter()).updateData(catalogProductResponse.getProducts(), textViewTextChangeEvent.text().toString());
-                            }
-                        }
+                                @Override
+                                public void onNext(BaseResponseNew<ProductListResponse> productListResponse) {
+                                    super.onNext(productListResponse);
+                                    FirebaseAnalyticsImpl.logSearchEvent(context,textViewTextChangeEvent.text().toString());
+                                    Gson gson = new Gson();
+                                    ProductListEntity productListEntity = gson.fromJson(gson.toJson(productListResponse.getData()), ProductListEntity.class);
+                                    binding.setSearchSuggestionData(productListEntity);
+                                    if (binding.rvSearchSuggestions.getAdapter() == null) {
+                                        binding.rvSearchSuggestions.setAdapter(new SearchSuggestionProductAdapter(context, productListEntity.getProducts(), textViewTextChangeEvent.text().toString()));
+                                    } else {
+                                        ((SearchSuggestionProductAdapter) binding.rvSearchSuggestions.getAdapter()).updateData(productListEntity.getProducts(), textViewTextChangeEvent.text().toString());
+                                    }
+                                }
 
-                        @Override
-                        public void onError(@NonNull Throwable t) {
-                            super.onError(t);
-                        }
+                                @Override
+                                public void onError(Throwable t) {
+                                    super.onError(t);
+                                }
 
-                        @Override
-                        public void onComplete() {
-                            binding.pbSearch.setVisibility(GONE);
-                        }
-                    });
-                }
+                                @Override
+                                public void onComplete() {
+                                    super.onComplete();
+                                    binding.pbSearch.setVisibility(GONE);
+                                }
+                            });
+
+                   }
 
             }
         });
@@ -193,23 +195,8 @@ public class MaterialSearchView extends FrameLayout {
     }
 
     private List<String> getSearchHistoryList(String searchTerm) {
-        Cursor cursor = ((BaseActivity) context).mSqLiteDatabase.query(
-                SearchHistoryContract.SearchHistoryEntry.TABLE_NAME,
-                new String[]{SearchHistoryContract.SearchHistoryEntry.COLUMN_QUERY},
-                SearchHistoryContract.SearchHistoryEntry.COLUMN_QUERY + " LIKE ?",
-                new String[]{"%" + searchTerm + "%"},
-                null,
-                null,
-                SearchHistoryContract.SearchHistoryEntry.COLUMN_INSERT_DATE + " DESC"
-                , MAX_SEARCH_HISTORY_RESULT
-        );
-
-        List<String> searchQueries = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            searchQueries.add(cursor.getString(cursor.getColumnIndexOrThrow(SearchHistoryContract.SearchHistoryEntry.COLUMN_QUERY)));
-        }
-        cursor.close();
-        return searchQueries;
+        SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(context);
+       return sqlLiteDbHelper.getSearchHistoryList(searchTerm);
     }
 
     private void deleteAllSearchHistory(){

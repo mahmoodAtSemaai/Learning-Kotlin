@@ -16,7 +16,7 @@ import com.webkul.mobikul.odoo.ui.cart.CartProductAdapter.ShowDialogFragmentList
 
 
 class SellerAdapter(
-    val context : Context,
+    val context: Context,
     private val sellerList: ArrayList<SellerEntity>,
     val listener: ShowDialogFragmentListener,
     private val clickListener: (SellerEntity) -> Unit
@@ -39,7 +39,7 @@ class SellerAdapter(
                 val isChecked = (it as AppCompatCheckBox).isChecked
                 seller.isSellerChecked.set(isChecked)
                 seller.products.forEach { cartEntity ->
-                    if(isChecked && !cartEntity.isOutOfStock())
+                    if (isChecked && !cartEntity.isOutOfStock())
                         cartEntity.isChecked.set(true)
                     else
                         cartEntity.isChecked.set(false)
@@ -47,10 +47,10 @@ class SellerAdapter(
                 (listener as CartFragment).selectAllProductItems(position)
             }
             tvSellerName.setOnClickListener {
-                clickListener.invoke(seller)
+                clickListener(seller)
             }
             ivGoToSellerPage.setOnClickListener {
-                clickListener.invoke(seller)
+                clickListener(seller)
             }
         }
     }
@@ -66,8 +66,8 @@ class SellerAdapter(
         }
     }
 
-    interface SelectSellerItems{
-        fun selectAllProductItems(sellerPosition : Int)
+    interface SelectSellerItems {
+        fun selectAllProductItems(sellerPosition: Int)
     }
 
 }

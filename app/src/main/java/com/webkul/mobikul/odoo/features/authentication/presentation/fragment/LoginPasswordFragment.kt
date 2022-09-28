@@ -162,7 +162,7 @@ class LoginPasswordFragment @Inject constructor() :
                 redirectToUserOnboardingActivity()
             }
             is LoginPasswordState.HomePage -> {
-                redirectToHomeActivity(state.homePageResponse)
+                redirectToHomeActivity()
             }
         }
     }
@@ -177,9 +177,8 @@ class LoginPasswordFragment @Inject constructor() :
         progressDialog.dismiss()
     }
 
-    private fun redirectToHomeActivity(homePageResponse: HomePageResponse) {
+    private fun redirectToHomeActivity() {
         startActivity(Intent(requireActivity(), NewHomeActivity::class.java)
-                .putExtra(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         )
         progressDialog.dismiss()

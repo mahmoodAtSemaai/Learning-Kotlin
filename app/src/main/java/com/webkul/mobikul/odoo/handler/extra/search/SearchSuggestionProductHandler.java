@@ -1,6 +1,5 @@
 package com.webkul.mobikul.odoo.handler.extra.search;
 
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_ID;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_NAME;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID;
@@ -13,37 +12,28 @@ import com.webkul.mobikul.odoo.activity.CustomerBaseActivity;
 import com.webkul.mobikul.odoo.activity.HomeActivity;
 import com.webkul.mobikul.odoo.activity.ProductActivity;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
-import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
+import com.webkul.mobikul.odoo.data.entity.ProductEntity;
 import com.webkul.mobikul.odoo.helper.Helper;
-import com.webkul.mobikul.odoo.helper.OdooApplication;
-import com.webkul.mobikul.odoo.model.generic.ProductData;
-import com.webkul.mobikul.odoo.model.home.HomePageResponse;
+import com.webkul.mobikul.odoo.ui.price_comparison.ProductActivityV2;
 
 
 /**
-
  * Webkul Software.
-
- * @package Mobikul App
-
- * @Category Mobikul
-
+ *
  * @author Webkul <support@webkul.com>
-
+ * @package Mobikul App
+ * @Category Mobikul
  * @Copyright (c) Webkul Software Private Limited (https://webkul.com)
-
  * @license https://store.webkul.com/license.html ASL Licence
-
  * @link https://store.webkul.com/license.html
-
  */
 public class SearchSuggestionProductHandler {
     @SuppressWarnings("unused")
     private static final String TAG = "SearchSuggestionProduct";
     private final Context mContext;
-    private final ProductData mData;
+    private final ProductEntity mData;
 
-    public SearchSuggestionProductHandler(Context context, ProductData data) {
+    public SearchSuggestionProductHandler(Context context, ProductEntity data) {
         mContext = context;
         mData = data;
     }
@@ -59,18 +49,15 @@ public class SearchSuggestionProductHandler {
             ((CatalogProductActivity) mContext).mBinding.searchView.closeSearch();
         } else if (mContext instanceof ProductActivity) {
             ((ProductActivity) mContext).mBinding.searchView.closeSearch();
+        } else if (mContext instanceof ProductActivityV2) {
+            ((ProductActivityV2)mContext).getBinding().etMaterialSearchView.closeSearch();
         }
 
 
-        Intent intent = new Intent(mContext, ((OdooApplication) mContext.getApplicationContext()).getProductActivity());
+        Intent intent = new Intent(mContext, ProductActivityV2.class);
         intent.putExtra(BUNDLE_KEY_PRODUCT_ID, mData.getProductId());
         intent.putExtra(BUNDLE_KEY_PRODUCT_TEMPLATE_ID, mData.getTemplateId());
         intent.putExtra(BUNDLE_KEY_PRODUCT_NAME, mData.getName());
-        SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(mContext);
-        HomePageResponse homePageResponse = sqlLiteDbHelper.getHomeScreenData();
-        if(homePageResponse != null){
-            intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
-        }
         mContext.startActivity(intent);
     }
 }

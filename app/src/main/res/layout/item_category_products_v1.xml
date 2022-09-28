@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_category_product_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_4"
+        android:layout_marginLeft="@dimen/size_4"
+        android:layout_marginTop="@dimen/size_8"
+        android:layout_marginEnd="@dimen/size_4"
+        android:layout_marginRight="@dimen/size_4"
+        app:cardCornerRadius="@dimen/size_8"
+        app:cardElevation="@dimen/size_12"
+        tools:targetApi="lollipop">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_category_product"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/size_4"
+            android:paddingTop="@dimen/size_12"
+            android:paddingBottom="@dimen/size_12">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_product"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_160"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_discount_price"
+                style="@style/Semaai.TextAppearance.Caption.Bold"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/size_10"
+                android:layout_marginTop="@dimen/spacing_generic"
+                android:background="@drawable/background_discount_price"
+                android:padding="@dimen/spacing_tiny"
+                android:textColor="@color/white"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/iv_product"
+                />
+
+            <FrameLayout
+                android:id="@+id/fl_container"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="@dimen/size_30"
+                android:layout_marginEnd="@dimen/size_30"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/iv_product"
+                app:layout_constraintEnd_toEndOf="@id/iv_product"
+                app:layout_constraintStart_toStartOf="@id/iv_product"
+                android:paddingHorizontal="@dimen/size_20"
+                android:layout_marginBottom="@dimen/spacing_generic">
+                <!--android:visibility="@{data == null ? View.GONE : ((data.isNever() || data.isCustom() || data.isService()) ? View.GONE : (data.isPreOrder ? View.VISIBLE : (data.inStock ? View.GONE : View.VISIBLE)))}"-->
+
+                <!-- Todo("Need to add this methods in respective entity ")-->
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_pre_order"
+                    style="@style/Semaai.TextAppearance.Caption.Bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_tiny"
+                    android:layout_marginBottom="@dimen/spacing_tiny"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/text_size_12sp"
+                    android:textColor="@color/white" />
+
+            </FrameLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_product_name"
+                style="@style/Semaai.TextAppearance.Body1"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="@dimen/size_45"
+                android:layout_marginHorizontal="@dimen/size_10"
+                android:layout_marginTop="@dimen/size_10"
+                android:ellipsize="end"
+                android:maxLines="2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_product"
+                tools:text="Popuk bio konversi alabala babatala" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_reduced_price"
+                style="@style/Semaai.TextAppearance.Body1.Bold"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/size_10"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_product_name"
+                tools:text="Rp999.999.09" />
+            <!--TODO- > check-->
+            <!-- Todo("Need to add this methods in respective entity ")-->
+            <!--android:text="@{data.priceReduce.empty == true ? data.priceUnit : data.priceReduce}"-->
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_price_unit"
+                style="@style/Semaai.TextAppearance.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/size_10"
+                android:layout_marginTop="@dimen/size_2"
+                android:background="@drawable/bg_strikethrough"
+                android:textColor="@color/colorDarkGrey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.003"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_reduced_price"
+                tools:text="Rp990.999.99" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_seller_name"
+                style="@style/Semaai.TextAppearance.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/size_10"
+                android:layout_marginTop="@dimen/size_4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.003"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_price_unit"
+                tools:text="PT Benih Unggul Sejati" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_stock_value"
+                style="@style/Semaai.TextAppearance.Body2"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/size_10"
+                android:layout_marginTop="@dimen/margin_4"
+                android:paddingBottom="@dimen/spacing_generic"
+                android:textColor="@color/colorDarkGrey"
+                android:textSize="@dimen/font_size_13sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_seller_name"
+                tools:text="Stock 10k" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_estimated_arrival"
+                style="@style/Semaai.TextAppearance.Caption"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_10"
+                android:paddingBottom="@dimen/spacing_generic"
+                android:textColor="@color/colorDarkGrey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_stock_value"
+                tools:text="Estimated arrival 22 June" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

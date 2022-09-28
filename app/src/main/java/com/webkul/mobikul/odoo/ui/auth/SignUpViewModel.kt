@@ -71,7 +71,7 @@ class SignUpViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = SignUpState.Loading
             _state.value = try {
-                val signUp = viewTnCUseCase.invoke()
+                val signUp = viewTnCUseCase()
                 var signUpState: SignUpState = SignUpState.Idle
 
                 signUp.collect {
@@ -95,7 +95,7 @@ class SignUpViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = SignUpState.Loading
             _state.value = try {
-                val signUp = viewMarketPlaceTnCUseCase.invoke()
+                val signUp = viewMarketPlaceTnCUseCase()
                 var signUpState: SignUpState = SignUpState.Idle
 
                 signUp.collect {
@@ -124,7 +124,7 @@ class SignUpViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = SignUpState.Idle
             _state.value = try {
-                val signUp = countryStateUseCase.invoke()
+                val signUp = countryStateUseCase()
                 var signUpState: SignUpState = SignUpState.Idle
 
                 signUp.collect {
@@ -154,7 +154,7 @@ class SignUpViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = SignUpState.Loading
             _state.value = try {
-                val signUp = billingAddressUseCase.invoke()
+                val signUp = billingAddressUseCase()
                 var signUpState: SignUpState = SignUpState.Loading
 
                 signUp.collect {
@@ -178,7 +178,7 @@ class SignUpViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = SignUpState.Loading
             _state.value = try {
-                val signUp = signUpUseCase.invoke(signUpData)
+                val signUp = signUpUseCase(signUpData)
                 var signUpState: SignUpState = SignUpState.Idle
 
                 signUp.catch {

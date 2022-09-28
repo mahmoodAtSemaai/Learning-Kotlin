@@ -13,7 +13,7 @@
 
         <variable
             name="data"
-            type="com.webkul.mobikul.odoo.model.catalog.CatalogProductResponse" />
+            type="com.webkul.mobikul.odoo.data.entity.ProductListEntity" />
 
         <variable
             name="title"
@@ -73,7 +73,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="?android:attr/actionBarSize"
                         android:gravity="center"
-                        android:text="@{@string/x_results_found(data.totalCount)}"
+                        android:text="@{@string/x_results_found(data.tCount)}"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textStyle="bold"
                         android:visibility="@{data.products.size() == 0 ? View.GONE : View.VISIBLE}"

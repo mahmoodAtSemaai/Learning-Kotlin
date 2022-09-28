@@ -18,6 +18,5 @@
         <domain includeSubdomains="true">play.google.com</domain>
         <domain includeSubdomains="true">test-toko.semaai.com</domain>
         <domain includeSubdomains="true">192.168.29.162</domain>
-        <domain includeSubdomains="true">83ac-103-47-32-92.ngrok.io</domain>
     </domain-config>
 </network-security-config>

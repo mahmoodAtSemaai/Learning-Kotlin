@@ -53,8 +53,7 @@ class EmptyFragmentV1 : BindingBaseFragment<FragmentEmptyV1Binding>() {
     private fun setClickListeners() {
         binding.apply {
             btnRedirectToHome.setOnClickListener {
-                startActivity(Intent(requireActivity(), NewHomeActivity::class.java)
-                    .putExtra(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE, (requireActivity() as NewCartActivity).getHomePageResponse()))
+                startActivity(Intent(requireActivity(), NewHomeActivity::class.java))
             }
         }
     }

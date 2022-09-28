@@ -10,7 +10,7 @@
 
         <variable
             name="data"
-            type="com.webkul.mobikul.odoo.model.generic.ProductData" />
+            type="com.webkul.mobikul.odoo.data.entity.ProductEntity" />
 
         <variable
             name="handler"
@@ -34,7 +34,7 @@
             android:layout_marginStart="@dimen/size_16"
             android:layout_marginLeft="@dimen/size_16"
             app:imageType="@{ImageType.PRODUCT_SMALL}"
-            app:imageUrl="@{data.thumbNail}"
+            app:imageUrl="@{data.thumbnail}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:placeholder="@{@drawable/ic_vector_odoo_placeholder_grey400_48dp}"

@@ -1,0 +1,49 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_4"
+        android:layout_marginStart="@dimen/margin_1"
+        android:layout_marginEnd="@dimen/margin_1"
+        android:layout_marginBottom="@dimen/margin_4">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="@dimen/size_4">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/product_iv"
+                android:layout_width="@dimen/size_45"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="@dimen/size_50"
+                android:background="@color/activityBackground"
+                android:scaleType="fitXY"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="@dimen/size_75"
+                android:id="@+id/category_name"
+                android:layout_height="@dimen/size_32"
+                android:gravity="center"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:paddingBottom="@dimen/size_1"
+                android:paddingTop="@dimen/size_1"
+                android:textAllCaps="false"
+                style="@style/Semaai.TextAppearance.Caption"
+                tools:text="Magento" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>
+

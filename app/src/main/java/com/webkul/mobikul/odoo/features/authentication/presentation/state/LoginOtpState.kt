@@ -18,7 +18,7 @@ sealed class LoginOtpState : IState {
     data class GetOTPFromInput(val otp: String) : LoginOtpState()
     object OTPVerified : LoginOtpState()
     data class Splash(val splashScreenResponse: SplashScreenResponse) : LoginOtpState()
-    data class HomePage(val homePageResponse: HomePageResponse) : LoginOtpState()
+    object HomePage : LoginOtpState()
     data class CountDownTimer(val timeRemaining: Int) : LoginOtpState()
     object UnauthorisedUser : LoginOtpState()
     data class InvalidOTP(val message: String?, val failureStatus: FailureStatus) : LoginOtpState()

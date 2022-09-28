@@ -80,7 +80,7 @@ class LoginOtpViewModel @Inject constructor(
 
     private fun startTimer(time: Int) {
         countDownTimer = viewModelScope.launch {
-            val timerData = countdownTimerUseCase.invoke(time, 1_000)
+            val timerData = countdownTimerUseCase(time, 1_000)
 
             timerData.collect {
                 _state.value = LoginOtpState.CountDownTimer(it)
@@ -109,7 +109,7 @@ class LoginOtpViewModel @Inject constructor(
 
                 _state.value = try {
                     val verifyOTP =
-                            verifyOtpUseCase.invoke(phoneNumber, OtpAuthenticationRequest(otp = otp))
+                            verifyOtpUseCase(phoneNumber, OtpAuthenticationRequest(otp = otp))
                     var verifyOTPState: LoginOtpState = LoginOtpState.Idle
 
                     verifyOTP.collect {
@@ -132,7 +132,7 @@ class LoginOtpViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = LoginOtpState.Loading
             _state.value = try {
-                val generatedOtp = generateOtpUseCase.invoke(phoneNumber)
+                val generatedOtp = generateOtpUseCase(phoneNumber)
                 var generateOtpState: LoginOtpState = LoginOtpState.Idle
 
                 generatedOtp.collect {
@@ -157,7 +157,7 @@ class LoginOtpViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = LoginOtpState.Loading
             _state.value = try {
-                val verifyOtp = verifyOtpUseCase.invoke(phoneNumber, otpAuthenticationRequest)
+                val verifyOtp = verifyOtpUseCase(phoneNumber, otpAuthenticationRequest)
                 var verifyOtpState: LoginOtpState = LoginOtpState.Idle
 
                 verifyOtp.collect {
@@ -179,7 +179,7 @@ class LoginOtpViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = LoginOtpState.Loading
             _state.value = try {
-                val splash = splashPageUseCase.invoke()
+                val splash = splashPageUseCase()
                 var loginOtpState: LoginOtpState = LoginOtpState.Loading
 
                 splash.collect {
@@ -200,29 +200,7 @@ class LoginOtpViewModel @Inject constructor(
     }
 
     private fun getHomePageData() {
-        viewModelScope.launch {
-            _state.value = LoginOtpState.Loading
-            _state.value = try {
-                val homePage = homePageDataUseCase.invoke()
-                var loginOtpState: LoginOtpState = LoginOtpState.Loading
-
-                homePage.collect {
-                    loginOtpState = when (it) {
-                        is Resource.Default -> LoginOtpState.Idle
-                        is Resource.Loading -> LoginOtpState.Loading
-                        is Resource.Failure -> LoginOtpState.Error(
-                                it.message,
-                                it.failureStatus
-                        )
-                        is Resource.Success -> LoginOtpState.HomePage(it.value)
-                    }
-                }
-                loginOtpState
-            } catch (e: Exception) {
-                LoginOtpState.Error(e.localizedMessage, FailureStatus.OTHER)
-            }
-
-        }
+        _state.value = LoginOtpState.HomePage
     }
 
     private fun registerFCMToken() {

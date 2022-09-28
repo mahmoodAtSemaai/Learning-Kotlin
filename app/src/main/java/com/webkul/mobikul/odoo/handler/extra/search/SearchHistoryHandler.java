@@ -11,6 +11,7 @@ import com.webkul.mobikul.odoo.activity.NewHomeActivity;
 import com.webkul.mobikul.odoo.activity.ProductActivity;
 import com.webkul.mobikul.odoo.activity.ProductActivityV1;
 import com.webkul.mobikul.odoo.custom.MaterialSearchView;
+import com.webkul.mobikul.odoo.ui.price_comparison.ProductActivityV2;
 
 
 /**
@@ -48,7 +49,10 @@ public class SearchHistoryHandler {
             ((NewHomeActivity) mContext).binding.materialSearchView.setQuery(mSearchQuery, false);
         } else if (mContext instanceof ProductActivityV1) {
             ((ProductActivityV1) mContext).binding.etMaterialSearchView.setQuery(mSearchQuery, false);
-        } else if (mContext instanceof BaseActivity) {
+        }else if(mContext instanceof ProductActivityV2){
+            ((ProductActivityV2) mContext).getBinding().etMaterialSearchView.setQuery(mSearchQuery, false);
+        }
+        else if (mContext instanceof BaseActivity) {
             MaterialSearchView materialSearchView = ((BaseActivity) mContext).findViewById(R.id.search_view);
             if (materialSearchView != null) {
                 materialSearchView.setQuery(mSearchQuery, false);

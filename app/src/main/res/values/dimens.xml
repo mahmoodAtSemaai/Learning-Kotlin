@@ -43,6 +43,9 @@
     <dimen name="size_2">2dp</dimen>
     <dimen name="size_3">3dp</dimen>
 
+    <dimen name="pixel_1">1px</dimen>
+
+
     <!--GENERIC DIMENSIONS FOR THE TOOLBAR ELEVATION-->
     <dimen name="toolbar_elevation_generic">4dp</dimen>
 

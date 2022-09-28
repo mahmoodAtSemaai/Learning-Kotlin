@@ -1,13 +1,10 @@
 package com.webkul.mobikul.odoo.core.di
 
 import android.content.Context
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.webkul.mobikul.odoo.BuildConfig
 import com.webkul.mobikul.odoo.core.data.local.AppPreferences
-import com.webkul.mobikul.odoo.core.utils.HTTP_ERROR_UNABLE_TO_PROCESS_REQUEST
-import com.webkul.mobikul.odoo.model.BaseResponse
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,11 +12,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONObject
-import retrofit2.HttpException
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -38,7 +32,7 @@ object RetrofitModule {
 
     private const val AUTHORIZATION = "Authorization"
     private const val CONTENT_TYPE = "Content-Type"
-    private const val TEXT_HTML = "text/html"
+    private const val TEXT_HTML = " text/plain; charset=UTF-8"
     private const val SOCIAL_LOGIN = "SocialLogin"
     private const val LOGIN = "Login"
     private const val LANGUAGE = "lang"

@@ -36,7 +36,7 @@ class VerifyOtpUseCase @Inject constructor(
                 if (result.value.statusCode.toInt() == HTTP_RESPONSE_OK) {
                     appPreferences.authToken = result.value.result.auth
                     appPreferences.customerId = result.value.result.customerId
-                    appPreferences.userId = result.value.result.userId.toInt()
+                    appPreferences.userId = result.value.result.userId
                     emit(result)
                 } else
                     emit(Resource.Failure(failureStatus = FailureStatus.API_FAIL, message = result.value.message))

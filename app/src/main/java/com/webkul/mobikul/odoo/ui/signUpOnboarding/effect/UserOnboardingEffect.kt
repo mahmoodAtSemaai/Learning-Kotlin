@@ -11,7 +11,7 @@ sealed class UserOnboardingEffect : IEffect {
 
     data class NavigateToAddressScreen(val isAddressStagePending: Boolean) : UserOnboardingEffect()
 
-    data class NavigateToHomeScreen(val homePageResponse: HomePageResponse) : UserOnboardingEffect()
+    object NavigateToHomeScreen : UserOnboardingEffect()
 
     object RelaunchActivity : UserOnboardingEffect()
 }

@@ -19,7 +19,7 @@ import com.webkul.mobikul.odoo.model.home.HomePageResponse
 
 class NewCartActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityNewCartBinding
+    private lateinit var binding: ActivityNewCartBinding
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +35,7 @@ class NewCartActivity : AppCompatActivity() {
         supportFragmentManager.addOnBackStackChangedListener {
             val currentFragment = supportFragmentManager.fragments.last()
 
-            if(currentFragment is WishlistFragment){
+            if (currentFragment is WishlistFragment) {
                 setToolbarTitle(getString(R.string.wishlist))
                 //setIcon(this.getCompatDrawable(R.drawable.ic_cart_new)) //TODO: uncomment after withListIcon is fixed
                 return@addOnBackStackChangedListener
@@ -59,16 +59,15 @@ class NewCartActivity : AppCompatActivity() {
             //TODO: handle click on wishlist icon later
             /**
             ivWishList.setOnClickListener {
-                if(isWishListFragmentVisible())
-                    supportFragmentManager.popBackStack()
-                else
-                    setUpWishListFragment()
+            if(isWishListFragmentVisible())
+            supportFragmentManager.popBackStack()
+            else
+            setUpWishListFragment()
             }
-            **/
+             **/
 
             ivDrawerCart.setOnClickListener {
-                startActivity(Intent(this@NewCartActivity, NewDrawerActivity::class.java)
-                    .putExtra(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE, getHomePageResponse()))
+                startActivity(Intent(this@NewCartActivity, NewDrawerActivity::class.java))
             }
         }
     }
@@ -76,7 +75,8 @@ class NewCartActivity : AppCompatActivity() {
     private fun isWishListFragmentVisible(): Boolean {
         val fragment: WishlistFragment? =
             supportFragmentManager.findFragmentByTag(
-                WishlistFragment::class.java.simpleName) as WishlistFragment?
+                WishlistFragment::class.java.simpleName
+            ) as WishlistFragment?
         return fragment != null && fragment.isVisible
     }
 
@@ -97,26 +97,27 @@ class NewCartActivity : AppCompatActivity() {
         //setIcon(this.getCompatDrawable(R.drawable.ic_wishlist)) //TODO: uncomment after withListIcon is fixed
         setToolbarTitle(getString(R.string.bag))
         supportFragmentManager.inTransaction {
-            add(R.id.fl_fragment_container_cart,
+            add(
+                R.id.fl_fragment_container_cart,
                 CartFragment.newInstance(),
-                CartFragment::class.java.simpleName)
+                CartFragment::class.java.simpleName
+            )
         }
     }
 
-    fun setUpEmptyCartFragment(){
+    fun setUpEmptyCartFragment() {
         supportFragmentManager.inTransaction {
-            add(R.id.fl_fragment_container_cart,
+            add(
+                R.id.fl_fragment_container_cart,
                 EmptyFragmentV1.newInstance(
-                    getString(R.string.empty_bag),getString(R.string.add_item_to_your_bag_now),
+                    getString(R.string.empty_bag), getString(R.string.add_item_to_your_bag_now),
                     R.drawable.ic_empty_cart,
-                    false),
-                EmptyFragmentV1::class.java.simpleName)
-            }
+                    false
+                ),
+                EmptyFragmentV1::class.java.simpleName
+            )
+        }
     }
-
-
-    fun getHomePageResponse(): HomePageResponse? = intent.getParcelableExtra(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE)
-
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun setToolbar() {

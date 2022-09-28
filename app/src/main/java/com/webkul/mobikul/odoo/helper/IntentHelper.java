@@ -21,11 +21,6 @@ import com.webkul.mobikul.odoo.ui.signUpOnboarding.UserOnboardingActivity;
 
 import java.util.Arrays;
 
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
-
-import cn.pedant.SweetAlert.SweetAlertDialog;
-
 /**
  * Created by shubham.agarwal on 31/5/17.
  */
@@ -51,7 +46,6 @@ public class IntentHelper {
     public static void continueShopping(Context context, HomePageResponse homePageResponse) {
         Intent intent = new Intent(context, HomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.putExtra(BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse);
         context.startActivity(intent);
     }
 

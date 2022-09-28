@@ -183,12 +183,12 @@ public class AppSharedPref {
     }
 
     /*User Id*/
-    public static int getUserId(Context context) {
-        return getSharedPreference(context, CUSTOMER_PREF).getInt(KEY_USER_ID, -1);
+    public static String getUserId(Context context) {
+        return getSharedPreference(context, CUSTOMER_PREF).getString(KEY_USER_ID, "");
     }
 
-    public static void setUserId(Context context, int userId) {
-        getSharedPreferenceEditor(context, CUSTOMER_PREF).putInt(KEY_USER_ID, userId).apply();
+    public static void setUserId(Context context, String userId) {
+        getSharedPreferenceEditor(context, CUSTOMER_PREF).putString(KEY_USER_ID, userId).apply();
     }
 
     /*Customer Group Name*/

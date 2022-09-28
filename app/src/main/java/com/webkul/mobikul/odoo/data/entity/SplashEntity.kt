@@ -1,5 +1,6 @@
 package com.webkul.mobikul.odoo.data.entity
 
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.webkul.mobikul.odoo.model.extra.AddOns
 
@@ -29,10 +30,11 @@ data class SplashEntity(
         @SerializedName("customerGroupId") var customerGroupId: Int? = null,
         @SerializedName("groupName") var groupName: String = "",
         @SerializedName("customerGroupName") var customerGroupName: String = "",
-        @SerializedName("user_name") var userName: String = ""
+        @SerializedName("user_name") var userName: String = "",
+        @SerializedName("userId")  var userId : String = ""
 ) {
     fun isAllowWishlistModule(): Boolean {
-        return allowModuleWebsiteWishlist && addons?.isWishlistModuleInstalled ?: false
+        return addons?.isWishlistModuleInstalled ?: false
     }
 
     fun isAllowReviewModule(): Boolean {

@@ -8,10 +8,10 @@ import javax.inject.Inject
 
 class FirebaseAnalyticsImpl @Inject constructor(private val context: Context) {
 
-    fun logViewItem(productId: String, productName: String?) {
+    fun logViewItem(productId: String?, productName: String?) {
         FirebaseAnalytics.getInstance(context).logEvent(FirebaseAnalytics.Event.VIEW_ITEM, Bundle().apply {
             try {
-                putInt(FirebaseAnalytics.Param.ITEM_ID, productId.toInt())
+                putInt(FirebaseAnalytics.Param.ITEM_ID, productId?.toInt() ?:0)
             } catch (e: NumberFormatException) {
                 putInt(FirebaseAnalytics.Param.ITEM_ID, 0)
             }
@@ -64,7 +64,7 @@ class FirebaseAnalyticsImpl @Inject constructor(private val context: Context) {
         })
     }
 
-    fun logShareEvent(productId: String, productName: String?) {
+    fun logShareEvent(productId : String, productName : String?) {
         FirebaseAnalytics.getInstance(context).logEvent(FirebaseAnalytics.Event.SHARE, Bundle().apply {
             putInt(FirebaseAnalytics.Param.ITEM_ID, productId.toInt())
             putString(FirebaseAnalytics.Param.ITEM_NAME, productName ?: "")

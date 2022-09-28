@@ -74,10 +74,7 @@ class LoyaltyTermsActivity : BaseActivity() {
     }
 
     private fun startShopping() {
-        val sqlLiteDbHelper = SqlLiteDbHelper(this@LoyaltyTermsActivity)
-        val homePageResponse = sqlLiteDbHelper.homeScreenData
         Intent(this, NewHomeActivity::class.java).apply {
-            this.putExtra(BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE, homePageResponse)
             this.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(this)
         }

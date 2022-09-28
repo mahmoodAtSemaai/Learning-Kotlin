@@ -22,9 +22,12 @@ import com.webkul.mobikul.odoo.data.response.models.GetWishListResponse;
 import com.webkul.mobikul.odoo.data.response.models.OrderReviewResponse;
 import com.webkul.mobikul.odoo.data.response.models.UpdateCartItemResponse;
 import com.webkul.mobikul.odoo.data.response.models.WishListUpdatedResponse;
+import com.webkul.mobikul.odoo.data.response.ProductCategoriesResponse;
+import com.webkul.mobikul.odoo.data.response.ProductListResponse;
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.helper.NetworkHelper;
 import com.webkul.mobikul.odoo.model.BaseResponse;
+import com.webkul.mobikul.odoo.core.data.response.BaseResponseNew;
 import com.webkul.mobikul.odoo.model.ReferralResponse;
 import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
 import com.webkul.mobikul.odoo.model.cart.BagResponse;
@@ -402,6 +405,21 @@ public class ApiConnection {
         return RetrofitClient.getClient(context).create(ApiInterface.class).getSearchResponse(keyword, offset, limit);
     }
 
+    public static Observable<BaseResponseNew<ProductListResponse>> getProductSearchResponse(Context context,Boolean globalProductsEnabled, String keyword, int offset, int limit) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getProductSearchResponse(keyword,globalProductsEnabled, offset, limit);
+    }
+
+    public static Observable<BaseResponseNew<ProductListResponse>> getSellerProducts(Context context, int sellerId, int offset, int limit) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getSellerProducts(sellerId, offset, limit);
+    }
+
+    public static Observable<BaseResponseNew<ProductListResponse>> getCategoryProductList(Context context, int categoryId, int offset, int limit) {
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getCategoryProductList(categoryId, offset, limit);
+    }
+
+    public static Observable<BaseResponseNew<ProductCategoriesResponse>> getCategories(Context context){
+        return RetrofitClient.getClient(context).create(ApiInterface.class).getCategories();
+    }
 
     public static Observable<NotificationMessagesResponse> getNotificationMessages(Context context) {
         SqlLiteDbHelper sqlLiteDbHelper = new SqlLiteDbHelper(context);

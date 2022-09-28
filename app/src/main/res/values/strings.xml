@@ -1,4 +1,30 @@
 <resources>
+
+<!-- Seller Profile Activity -->
+    <string name="about_store">About Store</string>
+    <string name="recently_added_products">Recently added products</string>
+    <string name="view_all_title">View All</string>
+    <string name="store_rating">Store Rating</string>
+    <string name="average_rating">Average Rating</string>
+    <string name="make_a_review">Write a review</string>
+    <string name="please_login_to_write_reviews">Please login to write a review.</string>
+    <string name="title_fragment_policies">Policies</string>
+    <string name="product_reviews">Product Reviews</string>
+    <string name="recent_feedbacks">Recent Feedbacks</string>
+    <string name="view_large_map">View large map</string>
+    <string name="empty_about_store">No information available.</string>
+    <string name="view_all_x_reviews">View All %1$d reviews.</string>
+    <string name="no_policies_added_by_seller">No policies added by Seller.</string>
+    <string name="return_policy">Return Policy</string>
+    <string name="shipping_policy">Shipping Policy</string>
+    <string name="seller_have_no_review_yet">Seller do not have any review yet.</string>
+    <string name="top_sellers">Top Sellers</string>
+    <string name="x_products">%1$d Product(s).</string>
+    <string name="products">Products</string>
+    <string name="no_products_still_added_by_the_seller">No Products Still added by the seller</string>
+    <string name="seller_reviews">Seller Reviews</string>
+
+
     <!--CONFIGURATION -->
     <string name="app_name" translatable="false">Semaai</string>
     <string name="store_name" translatable="false">Semaai</string>
@@ -428,6 +454,7 @@
     <string name="seller_dashboard">Seller Dashboard</string>
     <string name="register">Register</string>
     <string name="become_seller_activity_title">Become Seller</string>
+    <string name="seller_chat">Seller Chat</string>
 
     <!---->
     <!---->
@@ -527,6 +554,7 @@
     <string name="privacy_policy">Privacy Policy</string>
     <string name="false_">False</string>
     <string name="service_not_availabe_text">Sorry, our services are not available in your village right now.</string>
+    <string name="text_1">1</string>
 
 
     <string name="semaai_points">Semaai Points</string>
@@ -666,6 +694,10 @@
     <string name="text_one">1</string>
     <string name="no_products_found">No products found!</string>
 
+    <string name="chat">Chat</string>
+    <string name="add">Add</string>
+
+
     <string name="product_detail_discount">Discount</string>
     <string name="product_detail_description">Description</string>
     <string name="product_successfully_added">Product successfully added!</string>
@@ -683,6 +715,8 @@
     <string name="label_checked">checked</string>
     <string name="label_unchecked">not checked</string>
     <string name="estimated_arrival_x">Estimated arrival %s</string>
+    <string name="other_sellers_for_this_product">Other Sellers For This Product</string>
+
 
     <!-- SplashScreen  -->
     <string name="welcome">Welcome</string>
@@ -700,6 +734,7 @@
     <string name="onboarding_description_3">In just one click, the product is delivered right away to your shop!</string>
     <string name="onboarding_description_4">Quality guaranteed</string>
     <string name="onboarding_description_5">You can buy it at any time with a payment due.</string>
+
 
     <string name="enter_phone_number_text">Please enter your mobile number and wait for the OTP code to be sent to your number</string>
     <string name="account_does_not_exists">Don\'t have a Semaai account yet?</string>

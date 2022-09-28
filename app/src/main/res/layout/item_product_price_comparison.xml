@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_product"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_item_price_comparison"
+        android:padding="@dimen/padding_8">
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_price"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/padding_10"
+            android:text="@string/product_details_category"
+            style="@style/Semaai.TextAppearance.Subtitle1"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/gl_vertical_60"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/tv_seller_name"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/padding_4"
+            android:text="@string/product_details_category"
+            android:textAppearance="@style/Semaai.TextAppearance.Body1"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintEnd_toStartOf="@+id/gl_vertical_60"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_price" />
+
+        <TextView
+            android:id="@+id/tv_stock"
+            style="@style/Semaai.TextAppearance.Caption"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/padding_2"
+            android:text="@string/product_details_category"
+            android:textColor="@color/text_color_Secondary"
+            app:layout_constraintEnd_toStartOf="@+id/gl_vertical_60"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_seller_name" />
+
+        <TextView
+            android:id="@+id/tv_estimated_arrival"
+            style="@style/Semaai.TextAppearance.Caption"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/padding_2"
+            android:paddingBottom="@dimen/padding_2"
+            android:text="@string/product_details_category"
+            android:textColor="@color/text_color_Secondary"
+            app:layout_constraintEnd_toStartOf="@+id/gl_vertical_60"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_stock" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_vertical_60"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.6" />
+
+        <LinearLayout
+            android:id="@+id/ll_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_2"
+            android:background="@drawable/btn_rounded_corners_chat_bg"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toEndOf="@+id/tv_price"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:layout_width="@dimen/size_40"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:contentDescription="TODO"
+                android:src="@drawable/ic_chat" />
+
+            <TextView
+                style="@style/Semaai.TextAppearance.Overline"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_2"
+                android:layout_marginBottom="@dimen/margin_2"
+                android:lines="2"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text="@string/chat"
+                android:textColor="@color/colorPrimary" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_add_to_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/margin_2"
+            android:background="@drawable/btn_rounded_corners_chat_bg"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/ib_cart_icon"
+                android:layout_width="@dimen/size_40"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:contentDescription="TODO"
+                android:src="@drawable/cart" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_cart_text"
+                style="@style/Semaai.TextAppearance.Overline"
+                android:layout_width="match_parent"
+                android:textAllCaps="false"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_2"
+                android:layout_marginBottom="@dimen/margin_2"
+                android:ellipsize="end"
+                android:lines="2"
+                android:gravity="center"
+                android:text="@string/add"
+                android:textColor="@color/colorPrimary" />
+
+        </LinearLayout>
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.8" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginBottom="@dimen/margin_8"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/padding_4"
+            android:paddingBottom="@dimen/padding_8"
+            app:layout_constraintEnd_toEndOf="@+id/ll_add_to_cart"
+            app:layout_constraintStart_toStartOf="@+id/ll_chat"
+            app:layout_constraintTop_toBottomOf="@+id/ll_add_to_cart">
+
+            <Button
+                android:id="@+id/btn_minus"
+                style="@style/Semaai.TextAppearance.Body1.Bold"
+                android:layout_width="@dimen/size_30"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_rounded_corners_minus_bg"
+                android:text="@string/product_details_minus"
+                android:textAlignment="center" />
+
+            <EditText
+                android:id="@+id/et_quantity"
+                style="@style/Semaai.TextAppearance.Body1.Bold"
+                android:textColor="@color/colorPrimary"
+                android:layout_width="@dimen/size_60"
+                android:layout_height="wrap_content"
+                android:background="@drawable/txtview_quantity_corners_bg"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:maxLength="7"
+                android:text="dddddd"
+                android:textAlignment="center"
+              />
+
+            <Button
+                android:id="@+id/btn_plus"
+                style="@style/Semaai.TextAppearance.Body1.Bold"
+                android:layout_width="@dimen/size_30"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_rounded_corners_plus_bg"
+                android:text="@string/product_details_plus"
+                android:textAlignment="center" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

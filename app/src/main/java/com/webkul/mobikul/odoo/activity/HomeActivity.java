@@ -5,7 +5,6 @@ import static com.webkul.mobikul.odoo.BuildConfig.DEFAULT_DAYS_UNTIL_PROMPT;
 import static com.webkul.mobikul.odoo.BuildConfig.DEFAULT_LAUNCHES_UNTIL_PROMPT;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CUSTOMER_FRAG_TYPE;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_HOME_PAGE_RESPONSE;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -40,8 +39,6 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.webkul.mobikul.odoo.R;
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl;
-import com.webkul.mobikul.odoo.connection.ApiConnection;
-import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.constant.BundleConstant;
 import com.webkul.mobikul.odoo.custom.MaterialSearchView;
 import com.webkul.mobikul.odoo.databinding.ActivityHomeBinding;
@@ -57,16 +54,12 @@ import com.webkul.mobikul.odoo.helper.CustomerHelper;
 import com.webkul.mobikul.odoo.helper.FragmentHelper;
 import com.webkul.mobikul.odoo.helper.IntentHelper;
 import com.webkul.mobikul.odoo.helper.SnackbarHelper;
-import com.webkul.mobikul.odoo.model.analytics.UserAnalyticsResponse;
-import com.webkul.mobikul.odoo.model.user.UserModel;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-
-import io.reactivex.schedulers.Schedulers;
 
 
 
