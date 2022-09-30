@@ -156,7 +156,7 @@ class HomeFragmentV1 @Inject constructor() :
 
     private fun openBanner(bannerEntity: BannerEntity) {
         AnalyticsImpl.trackPromotionalBannerSelected(
-            bannerEntity.id,
+            bannerEntity.bannerId.toString(),
             bannerEntity.bannerName,
             requireContext().getString(R.string.home),
             0
@@ -181,7 +181,7 @@ class HomeFragmentV1 @Inject constructor() :
                     try {
                         putExtra(
                             BundleConstant.BUNDLE_KEY_PRODUCT_TEMPLATE_ID,
-                            bannerEntity.id.toInt()
+                            bannerEntity.bannerId.toInt()
 
                         )
                     } catch (e: NumberFormatException) {
@@ -194,7 +194,7 @@ class HomeFragmentV1 @Inject constructor() :
                         BundleConstant.BUNDLE_KEY_CATALOG_PRODUCT_REQ_TYPE,
                         CatalogProductRequestType.BANNER_CATEGORY
                     )
-                    putExtra(BundleConstant.BUNDLE_KEY_CATEGORY_ID, bannerEntity.id.toInt())
+                    putExtra(BundleConstant.BUNDLE_KEY_CATEGORY_ID, bannerEntity.bannerId.toInt())
                     putExtra(BundleConstant.BUNDLE_KEY_CATEGORY_NAME, bannerEntity.bannerName)
                 }
             }
