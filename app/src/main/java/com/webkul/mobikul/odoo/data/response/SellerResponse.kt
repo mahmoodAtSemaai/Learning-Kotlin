@@ -8,7 +8,6 @@ data class SellerResponse(
         @SerializedName("email") val email: String,
         @SerializedName("average_rating") val averageRating: Int,
         @SerializedName("total_reviews") val totalReviews: Int,
-        @SerializedName("sales_count") val salesCount: Int,
         @SerializedName("product_count") val productCount: Int,
         @SerializedName("profile_image") val profileImage: String,
         @SerializedName("profile_banner") val profileBanner: String,

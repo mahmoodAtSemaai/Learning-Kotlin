@@ -363,7 +363,7 @@ class ProductActivityV2 @Inject constructor() :
 
     private fun setProductDetails(productDetails: MutableMap<String, List<String>>) {
         val mobikulCategoryDetails = viewModel.productData?.mobikulCategoryDetails
-        val categoryId = mobikulCategoryDetails?.categoryId.toString()
+        val categoryId = mobikulCategoryDetails?.categoryId ?: 0
         val productDetailsAdapter =
             ProductDetailsAdapterV1(productDetails, categoryId, this@ProductActivityV2)
         binding.rvProductDetails.apply {
