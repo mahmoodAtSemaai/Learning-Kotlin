@@ -19,7 +19,7 @@ import com.webkul.mobikul.odoo.helper.CatalogHelper
 
 class ProductDetailsAdapterV1(
     private val productDetailsMap: Map<String, List<String>>,
-    private val categoryId : String,
+    private val categoryId : Int,
     private val context: Context
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val CATEGORY_VIEW_TYPE = -2

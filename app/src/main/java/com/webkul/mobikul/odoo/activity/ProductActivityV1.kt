@@ -192,7 +192,7 @@ class ProductActivityV1 : BaseActivity() {
         binding.rvProductDetails.apply {
             layoutManager = linearLayoutManager
             setHasFixedSize(true)
-            adapter = ProductDetailsAdapterV1(productDetails, categoryId, this@ProductActivityV1)
+            adapter = ProductDetailsAdapterV1(productDetails, categoryId.toInt(), this@ProductActivityV1)
         }
     }
 
