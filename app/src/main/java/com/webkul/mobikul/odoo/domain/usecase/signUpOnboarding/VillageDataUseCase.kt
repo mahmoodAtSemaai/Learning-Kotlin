@@ -17,7 +17,7 @@ class VillageDataUseCase @Inject constructor(
     ): Flow<Resource<VillageListEntity>> = flow {
 
         emit(Resource.Loading)
-        val result = villageRepository.getVillages(subDistrictId)
+        val result = villageRepository.getById(subDistrictId)
         emit(result)
 
     }.flowOn(Dispatchers.IO)

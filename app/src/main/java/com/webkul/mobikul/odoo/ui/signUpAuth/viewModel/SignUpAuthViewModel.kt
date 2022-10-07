@@ -5,11 +5,10 @@ import com.webkul.mobikul.odoo.core.mvicore.IModel
 import com.webkul.mobikul.odoo.core.platform.BaseViewModel
 import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.core.utils.Resource
-import com.webkul.mobikul.odoo.domain.usecase.auth.ViewMarketPlaceTnCUseCase
+import com.webkul.mobikul.odoo.domain.enums.VerifyPhoneNumberValidation
+import com.webkul.mobikul.odoo.domain.usecase.auth.ContinuePhoneNumberUseCase
+import com.webkul.mobikul.odoo.domain.usecase.auth.VerifyPhoneNumberUseCase
 import com.webkul.mobikul.odoo.domain.usecase.auth.ViewTnCUseCase
-import com.webkul.mobikul.odoo.features.authentication.domain.enums.VerifyPhoneNumberValidation
-import com.webkul.mobikul.odoo.features.authentication.domain.usecase.ContinuePhoneNumberUseCase
-import com.webkul.mobikul.odoo.features.authentication.domain.usecase.VerifyPhoneNumberUseCase
 import com.webkul.mobikul.odoo.ui.signUpAuth.effect.SignUpAuthEffect
 import com.webkul.mobikul.odoo.ui.signUpAuth.intent.SignUpAuthIntent
 import com.webkul.mobikul.odoo.ui.signUpAuth.state.SignUpAuthState
@@ -23,8 +22,7 @@ import javax.inject.Inject
 class SignUpAuthViewModel @Inject constructor(
     private val verifyPhoneNumberUseCase: VerifyPhoneNumberUseCase,
     private val continuePhoneNumberUseCase: ContinuePhoneNumberUseCase,
-    private val viewTnCUseCase: ViewTnCUseCase,
-    private val viewMarketPlaceTnCUseCase: ViewMarketPlaceTnCUseCase
+    private val viewTnCUseCase: ViewTnCUseCase
 ) :
     BaseViewModel(), IModel<SignUpAuthState, SignUpAuthIntent, SignUpAuthEffect> {
 

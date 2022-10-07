@@ -35,7 +35,7 @@ import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.database.SaveData;
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper;
 import com.webkul.mobikul.odoo.databinding.ActivitySplashScreenBinding;
-import com.webkul.mobikul.odoo.features.onboarding.presentation.OnboardingActivity;
+import com.webkul.mobikul.odoo.ui.onboarding.OnboardingActivity;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;

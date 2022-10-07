@@ -1,12 +1,13 @@
 package com.webkul.mobikul.odoo.domain.usecase.analytics
 
 import com.webkul.mobikul.odoo.analytics.AnalyticsImpl
-import com.webkul.mobikul.odoo.core.data.local.AppPreferences
-import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.core.utils.FirebaseAnalyticsImpl
 import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.data.entity.UserAnalyticsEntity
+import com.webkul.mobikul.odoo.data.entity.UserEntity
+import com.webkul.mobikul.odoo.data.request.UserRequest
 import com.webkul.mobikul.odoo.domain.repository.UserAnalyticsRepository
+import com.webkul.mobikul.odoo.domain.repository.UserRepository
 import com.webkul.mobikul.odoo.model.user.UserModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -16,16 +17,18 @@ import javax.inject.Inject
 
 class UserAnalyticsUseCase @Inject constructor(
         private val userAnalyticsRepository: UserAnalyticsRepository,
-        private val appPreferences: AppPreferences,
+        private val userRepository: UserRepository,
         private val firebaseAnalyticsImpl: FirebaseAnalyticsImpl
 ) {
 
-    operator fun invoke(): Flow<Resource<UserAnalyticsEntity>> = flow {
-
+    operator fun invoke(userEntity: UserEntity?): Flow<Resource<UserAnalyticsEntity>> = flow {
         emit(Resource.Loading)
         firebaseAnalyticsImpl.logAppOpenEvent()
-        if (appPreferences.isLoggedIn && appPreferences.analyticsId.isNullOrEmpty()) {
-            when (val result = userAnalyticsRepository.getUserAnalytics()) {
+        val isUserLoggedIn = userEntity?.isUserLoggedIn ?: false
+        val analyticsId = userEntity?.userAnalyticsId ?: ""
+        if (isUserLoggedIn && analyticsId.isBlank()) {
+
+            when (val result = userAnalyticsRepository.get()) {
                 is Resource.Default -> emit(result)
                 is Resource.Failure -> {
                     AnalyticsImpl.trackAnalyticsFailure()
@@ -41,13 +44,12 @@ class UserAnalyticsUseCase @Inject constructor(
                                     result.value.isSeller
                             )
                     )
-                    appPreferences.analyticsId = result.value.analyticsId
+                    userRepository.update(UserRequest(userAnalyticsId = result.value.analyticsId))
                     emit(result)
                 }
             }
         } else {
-            emit(Resource.Failure(FailureStatus.OTHER))
+            emit(Resource.Default)
         }
-
     }.flowOn(Dispatchers.IO)
 }

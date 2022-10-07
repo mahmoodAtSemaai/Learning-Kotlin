@@ -730,7 +730,7 @@ public class NewAddressFragment extends BaseFragment {
                 requestPermissions(permissions, MAP_PIN_LOCATION_REQUEST_CODE);
                 dialog.dismiss();
             };
-            if (Objects.requireNonNull(getContext()).checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && getContext().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (requireContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && getContext().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 AlertDialogHelper.showPermissionDialog(getContext(), getResources().getString(R.string.permission_confirmation), getResources().getString(R.string.permission_confirmation), listener);
                 return;
             }
@@ -756,7 +756,7 @@ public class NewAddressFragment extends BaseFragment {
 
         });
         fragmentDialog.setCancelable(false);
-        fragmentDialog.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "Custom Bottom Sheet");
+        fragmentDialog.show(requireActivity().getSupportFragmentManager(), "Custom Bottom Sheet");
     }
 
     /**

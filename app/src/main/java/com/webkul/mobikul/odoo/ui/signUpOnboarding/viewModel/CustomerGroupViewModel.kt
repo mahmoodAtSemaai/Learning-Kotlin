@@ -73,7 +73,7 @@ class CustomerGroupViewModel @Inject constructor(
             _state.value = CustomerGroupState.Loading
             try {
                 val customerGroup =
-                    continueCustomerGroupUseCase(userId, CustomerGroupRequest(customerGrpType = selectedGroupId,customerGrpName = selectedGroupName))
+                    continueCustomerGroupUseCase(CustomerGroupRequest(customerGrpType = selectedGroupId,customerGrpName = selectedGroupName, userId = userId))
                 customerGroup.collect {
                     when (it) {
                         is Resource.Default -> _state.value = CustomerGroupState.Idle

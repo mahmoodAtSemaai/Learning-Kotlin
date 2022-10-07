@@ -8,11 +8,11 @@ import com.webkul.mobikul.odoo.core.platform.BaseViewModel
 import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.data.entity.AccountInfoEntity
-import com.webkul.mobikul.odoo.data.request.UserDetailsRequest
+import com.webkul.mobikul.odoo.data.request.UserRequest
 import com.webkul.mobikul.odoo.domain.usecase.account.GetAccountInfoDataUseCase
+import com.webkul.mobikul.odoo.domain.usecase.home.HomeUseCase
 import com.webkul.mobikul.odoo.domain.usecase.signUpOnboarding.ContinueUserDetailsUseCase
 import com.webkul.mobikul.odoo.domain.usecase.signUpOnboarding.GetOnboardingDataUseCase
-import com.webkul.mobikul.odoo.features.authentication.domain.usecase.HomePageDataUseCase
 import com.webkul.mobikul.odoo.ui.account.effect.AccountInfoEffect
 import com.webkul.mobikul.odoo.ui.account.intent.AccountInfoIntent
 import com.webkul.mobikul.odoo.ui.account.state.AccountInfoState
@@ -27,7 +27,7 @@ class AccountInfoViewModel @Inject constructor(
     private val continueUserDetailsUseCase: ContinueUserDetailsUseCase,
     private val getOnboardingDataUseCase: GetOnboardingDataUseCase,
     private val getAccountInfoDataUseCase: GetAccountInfoDataUseCase,
-    private val homePageDataUseCase: HomePageDataUseCase
+    private val homeUseCase: HomeUseCase
 ) : BaseViewModel(),
     IModel<AccountInfoState, AccountInfoIntent, AccountInfoEffect> {
     override val intents: Channel<AccountInfoIntent> = Channel(Channel.UNLIMITED)
@@ -83,19 +83,22 @@ class AccountInfoViewModel @Inject constructor(
     }
 
     private fun editValueListner() {
-        if(accountInfoData.isEdited){
+        if (accountInfoData.isEdited) {
             _state.value = AccountInfoState.EnableContinue
         } else {
             _state.value = AccountInfoState.DisableContinue
         }
     }
 
-    private fun saveInfo(updateUserDetails: UserDetailsRequest) {
+    private fun saveInfo(userDetail: UserRequest) {
         viewModelScope.launch {
             _state.value = AccountInfoState.Loading
             try {
                 val userDetails =
-                    continueUserDetailsUseCase(userId, customerId, updateUserDetails)
+                    continueUserDetailsUseCase(userDetail.apply {
+                        this.userId = this@AccountInfoViewModel.userId
+                        this.customerId = this@AccountInfoViewModel.customerId
+                    })
                 userDetails.collect {
                     when (it) {
                         is Resource.Default -> _state.value = AccountInfoState.Idle
@@ -140,8 +143,20 @@ class AccountInfoViewModel @Inject constructor(
     }
 
     private fun getViews() {
-        accountInfoData = getAccountInfoDataUseCase()
-        _state.value = AccountInfoState.GetArgs
+        viewModelScope.launch {
+            getAccountInfoDataUseCase().collect {
+                when (it) {
+                    is Resource.Default -> _state.value = AccountInfoState.Idle
+                    is Resource.Loading -> _state.value = AccountInfoState.Loading
+                    is Resource.Failure -> _state.value =
+                        AccountInfoState.Error(it.message, it.failureStatus)
+                    is Resource.Success -> {
+                        accountInfoData = it.value
+                        _state.value = AccountInfoState.GetArgs
+                    }
+                }
+            }
+        }
     }
 
     private fun getUserIdCustomerId() {
@@ -163,7 +178,7 @@ class AccountInfoViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = AccountInfoState.Loading
             try {
-                val homePage = homePageDataUseCase()
+                val homePage = homeUseCase()
 
                 homePage.collect {
                     when (it) {

@@ -1,21 +1,10 @@
 package com.webkul.mobikul.odoo.core.di
 
 import com.webkul.mobikul.odoo.core.data.local.AppPreferences
-import com.webkul.mobikul.odoo.core.data.local.SaveData
-import com.webkul.mobikul.odoo.core.utils.LocaleManager
-import com.webkul.mobikul.odoo.core.utils.ResourcesProvider
+import com.webkul.mobikul.odoo.data.localSource.localDataSource.*
 import com.webkul.mobikul.odoo.data.remoteSource.remoteDataSource.*
 import com.webkul.mobikul.odoo.data.repository.*
 import com.webkul.mobikul.odoo.domain.repository.*
-import com.webkul.mobikul.odoo.features.authentication.data.remoteSource.AuthenticationRemoteDataSource
-import com.webkul.mobikul.odoo.features.authentication.data.remoteSource.HomePageRemoteDataSource
-import com.webkul.mobikul.odoo.features.authentication.data.remoteSource.SplashRemoteDataSource
-import com.webkul.mobikul.odoo.features.authentication.data.repo.AuthenticationRepositoryImpl
-import com.webkul.mobikul.odoo.features.authentication.data.repo.HomePageRepositoryImpl
-import com.webkul.mobikul.odoo.features.authentication.data.repo.SplashPageRepositoryImpl
-import com.webkul.mobikul.odoo.features.authentication.domain.repo.AuthenticationRepository
-import com.webkul.mobikul.odoo.features.authentication.domain.repo.HomePageRepository
-import com.webkul.mobikul.odoo.features.authentication.domain.repo.SplashPageRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,6 +16,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class RepositoryModule {
 
+    //TODO-> Remove this
     @Provides
     @Singleton
     fun providesAuthRepository(
@@ -42,6 +32,12 @@ class RepositoryModule {
 
     @Provides
     @Singleton
+    fun providesOrderRepository(
+        remoteDataSource: OrderRemoteDataSource
+    ): OrderRepository = OrderRepositoryImpl(remoteDataSource)
+
+    @Provides
+    @Singleton
     fun providesCountryStateRepository(
         remoteDataSource: CountryStateRemoteDataSource
     ): CountryStateRepository = CountryStateRepositoryImpl(remoteDataSource)
@@ -54,48 +50,67 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideAuthenticationRepository(
-        remoteDataSource: AuthenticationRemoteDataSource
-    ): AuthenticationRepository = AuthenticationRepositoryImpl(remoteDataSource)
+    fun providesSellerTermsConditionRepository(
+        remoteDataSource: SellerTermsConditionRemoteDataSource
+    ): SellerTermsConditionRepository = SellerTermsConditionRepositoryImpl(remoteDataSource)
 
     @Provides
     @Singleton
-    fun provideSplashPageRepository(
-        remoteDataSource: SplashRemoteDataSource
-    ): SplashPageRepository = SplashPageRepositoryImpl(remoteDataSource)
+    fun providesAuthenticationPasswordRepository(
+        remoteDataSource: AuthenticationPasswordRemoteDataSource
+    ): AuthenticationPasswordRepository =
+        AuthenticationPasswordRepositoryImpl(remoteDataSource)
 
     @Provides
     @Singleton
-    fun provideHomePageRepository(
-        remoteDataSource: HomePageRemoteDataSource,
-        appPreferences: AppPreferences
-    ): HomePageRepository = HomePageRepositoryImpl(remoteDataSource, appPreferences)
+    fun providesAuthenticationOtpRepository(
+        remoteDataSource: AuthenticationOtpRemoteDataSource
+    ): AuthenticationOtpRepository = AuthenticationOtpRepositoryImpl(remoteDataSource)
 
+    @Provides
+    @Singleton
+    fun providesOtpRepository(
+        remoteDataSource: OtpRemoteDataSource
+    ): OtpRepository = OtpRepositoryImpl(remoteDataSource)
+
+    @Provides
+    @Singleton
+    fun providesPhoneNumberRepository(
+        remoteDataSource: PhoneNumberRemoteDataSource
+    ): PhoneNumberRepository = PhoneNumberRepositoryImpl(remoteDataSource)
+
+    @Provides
+    @Singleton
+    fun provideShippingMethodRepository(
+        remoteDataSource: ShippingMethodRemoteDataSource
+    ): ShippingMethodRepository = ShippingMethodRepositoryImpl(remoteDataSource)
+
+    @Provides
+    @Singleton
+    fun providePaymentAcquireRepository(
+        remoteDataSource: PaymentAcquireRemoteDataSource
+    ): PaymentAcquireRepository = PaymentAcquireRepositoryImpl(remoteDataSource)
+
+    @Provides
+    @Singleton
+    fun providePaymentStatusRepository(
+            remoteDataSource: PaymentStatusRemoteDataSource
+    ): PaymentStatusRepository = PaymentStatusRepositoryImpl(remoteDataSource)
 
     @Provides
     @Singleton
     fun providesHomeDataRepository(
         remoteDataSource: HomeRemoteDataSource,
-        saveData: SaveData,
-        appPreferences: AppPreferences
-    ): HomeDataRepository = HomeDataRepositoryImpl(remoteDataSource, saveData, appPreferences)
+        localDataSource: HomeLocalDataSource
+    ): HomeDataRepository = HomeDataRepositoryImpl(remoteDataSource, localDataSource)
 
     @Provides
     @Singleton
     fun providesSplashDataRepository(
-        remoteDataSource: SplashPageRemoteDataSource,
-        saveData: SaveData,
-        appPreferences: AppPreferences,
-        localeManager: LocaleManager,
-        resourcesProvider: ResourcesProvider
+        remoteDataSource: SplashRemoteDataSource,
+        localDataSource: SplashLocalDataSource
     ): SplashDataRepository =
-        SplashDataRepositoryImpl(
-            remoteDataSource,
-            saveData,
-            appPreferences,
-            localeManager,
-            resourcesProvider
-        )
+        SplashDataRepositoryImpl(remoteDataSource, localDataSource)
 
     @Provides
     @Singleton
@@ -111,11 +126,22 @@ class RepositoryModule {
 
     @Provides
     @Singleton
+    fun providePaymentProcessingRepository(
+        remoteDataSource: PaymentProcessingRemoteDataSource
+    ) : PaymentProcessingRepository = PaymentProcessingRepositoryImpl(remoteDataSource)
+
+    @Provides
+    @Singleton
+    fun providePaymentTransferInstructionRepository(
+            remoteDataSource: PaymentTransferInstructionRemoteDataSource
+    ) : PaymentTransferInstructionRepository = PaymentTransferInstructionRepositoryImpl(remoteDataSource)
+
+    @Provides
+    @Singleton
     fun providesSignUpAuthRepository(
-        appPreferences: AppPreferences,
         remoteDataSource: SignUpAuthRemoteDataSource
     ): SignUpAuthRepository =
-        SignUpAuthRepositoryImpl(appPreferences, remoteDataSource)
+        SignUpAuthRepositoryImpl(remoteDataSource)
 
     @Provides
     @Singleton
@@ -124,20 +150,22 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun providesCustomerGroupRepository(
-        appPreferences: AppPreferences,
-        remoteDataSource: CustomerGroupRemoteDataSource
-    ): CustomerGroupRepository =
-        CustomerGroupRepositoryImpl(remoteDataSource, appPreferences)
+    fun providesUserOnboardingStageRepository(remoteDataSource: UserOnboardingStageRemoteDataSource): UserOnboardingStageRepository =
+        UserOnboardingStageRepositoryImpl(remoteDataSource)
 
     @Provides
     @Singleton
-    fun providesUserDetailsRepository(
-        appPreferences: AppPreferences,
-        remoteDataSource: UserDetailsRemoteDataSource,
-        resourcesProvider: ResourcesProvider
-    ): UserDetailsRepository =
-        UserDetailsRepositoryImpl(remoteDataSource, appPreferences, resourcesProvider)
+    fun providesCustomerGroupRepository(
+        remoteDataSource: CustomerGroupRemoteDataSource
+    ): CustomerGroupRepository =
+        CustomerGroupRepositoryImpl(remoteDataSource)
+
+    @Provides
+    @Singleton
+    fun providesUserCustomerGroupRepository(
+        remoteDataSource: UserCustomerGroupRemoteDataSource
+    ): UserCustomerGroupRepository =
+        UserCustomerGroupRepositoryImpl(remoteDataSource)
 
     @Provides
     @Singleton
@@ -153,10 +181,9 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun providesUserLocationRepository(
-        remoteDataSource: UserLocationRemoteDataSource,
-        appPreferences: AppPreferences
+        remoteDataSource: UserLocationRemoteDataSource
     ): UserLocationRepository =
-        UserLocationRepositoryImpl(remoteDataSource, appPreferences)
+        UserLocationRepositoryImpl(remoteDataSource)
 
     @Provides
     @Singleton
@@ -181,9 +208,27 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun providesFCMTokenRepository(
-        remoteDataSource: FCMTokenRemoteDataSource,
-        appPreferences: AppPreferences
-    ): FCMTokenRepository = FCMTokenRepositoryImpl(remoteDataSource, appPreferences)
+        remoteDataSource: FCMTokenRemoteDataSource
+    ): FCMTokenRepository = FCMTokenRepositoryImpl(remoteDataSource)
+
+    @Provides
+    @Singleton
+    fun provideOnboardingRepository(
+        localDataSource: OnboardingLocalDataSource
+    ): OnboardingRepository = OnboardingRepositoryImpl(localDataSource)
+
+    @Provides
+    fun provideUserRepository(
+        userRemoteDataSource: UserRemoteDataSource,
+        userLocalDataSource: UserLocalDataSource
+    ): UserRepository = UserRepositoryImpl(userRemoteDataSource, userLocalDataSource)
+
+    @Provides
+    @Singleton
+    fun provideAppConfigRepository(
+        appConfigLocalDataSource: AppConfigLocalDataSource
+    ): AppConfigRepository = AppConfigRepositoryImpl(appConfigLocalDataSource)
+
 
 
     @Provides
@@ -261,5 +306,5 @@ class RepositoryModule {
         appPreferences: AppPreferences
     ): BagItemsCountRepository = BagItemsCountRepositoryImpl(appPreferences)
 
-   
+
 }

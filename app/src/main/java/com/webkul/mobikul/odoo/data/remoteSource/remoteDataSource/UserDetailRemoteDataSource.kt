@@ -8,13 +8,13 @@ import com.webkul.mobikul.odoo.data.remoteSource.remoteServices.UserDetailServic
 import javax.inject.Inject
 
 class UserDetailRemoteDataSource @Inject constructor(
-    private val userDetailServices: UserDetailServices,
-    gson: Gson,
-    appPreferences: AppPreferences
+	private val userDetailServices: UserDetailServices,
+	gson: Gson,
+	appPreferences: AppPreferences
 ) : BaseRemoteDataSource(gson, appPreferences) {
 
-    suspend fun get(userId: String) = safeApiCall(UserDetailEntity::class.java) {
-        userDetailServices.getUserDetails(userId)
-    }
+	suspend fun get(userId: String) = safeApiCall(UserDetailEntity::class.java) {
+		userDetailServices.getUserDetails(userId)
+	}
 
 }

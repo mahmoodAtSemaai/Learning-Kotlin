@@ -17,7 +17,7 @@ class ProvinceDataUseCase @Inject constructor(
     ): Flow<Resource<StateListEntity>> = flow {
 
         emit(Resource.Loading)
-        val result = provinceRepository.getStates(companyId)
+        val result = provinceRepository.getById(companyId)
         emit(result)
 
     }.flowOn(Dispatchers.IO)

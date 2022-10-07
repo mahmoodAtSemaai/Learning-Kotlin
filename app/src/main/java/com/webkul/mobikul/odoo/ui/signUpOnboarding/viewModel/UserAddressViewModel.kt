@@ -127,7 +127,11 @@ class UserAddressViewModel @Inject constructor(
                         it.spinnerType
                     )
 
-                    is UserAddressIntent.ExpandSpinner -> expandSpinner(it.spinner, it.dropDown, it.type)
+                    is UserAddressIntent.ExpandSpinner -> expandSpinner(
+                        it.spinner,
+                        it.dropDown,
+                        it.type
+                    )
                     is UserAddressIntent.VerifyFields -> validateMandatoryFields(it.userAddressRequest)
                     is UserAddressIntent.LocationContinue -> setUserLocation(it.userLocationRequest)
                     is UserAddressIntent.Continue -> setUserAddress(it.userAddressRequest)
@@ -148,10 +152,20 @@ class UserAddressViewModel @Inject constructor(
     }
 
     private suspend fun getSpinnerState(spinnerType: Int) {
-        if(spinnerType == subDistrictSpinnerType){
-            _effect.send(UserAddressEffect.EnableSpinner(spinnerType,selectedDistrictId.isNotEmpty()))
-        }else if (spinnerType == villageSpinnerType){
-            _effect.send(UserAddressEffect.EnableSpinner(spinnerType,selectedSubDistrictId.isNotEmpty()))
+        if (spinnerType == subDistrictSpinnerType) {
+            _effect.send(
+                UserAddressEffect.EnableSpinner(
+                    spinnerType,
+                    selectedDistrictId.isNotEmpty()
+                )
+            )
+        } else if (spinnerType == villageSpinnerType) {
+            _effect.send(
+                UserAddressEffect.EnableSpinner(
+                    spinnerType,
+                    selectedSubDistrictId.isNotEmpty()
+                )
+            )
         }
     }
 
@@ -330,14 +344,15 @@ class UserAddressViewModel @Inject constructor(
     }
 
     private suspend fun getArgs(arguments: Bundle?) {
-        isAddressStagePending = arguments?.getBoolean(BundleConstant.BUNDLE_KEY_IS_ADDRESS_PENDING) ?: false
+        isAddressStagePending =
+            arguments?.getBoolean(BundleConstant.BUNDLE_KEY_IS_ADDRESS_PENDING) ?: false
         checkPendingStage()
     }
 
-    private suspend fun checkPendingStage(){
-        if(isAddressStagePending){
+    private suspend fun checkPendingStage() {
+        if (isAddressStagePending) {
             _state.value = UserAddressState.FetchProvinceData
-        }else{
+        } else {
             _effect.send(UserAddressEffect.LocationDialog)
         }
     }
@@ -351,7 +366,9 @@ class UserAddressViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = UserAddressState.Loading
             try {
-                val userAddress = continueUserAddressUseCase(customerId, userAddressRequest)
+                val userAddress = continueUserAddressUseCase(userAddressRequest.apply {
+                    partnerId = customerId
+                })
                 userAddress.collect {
                     when (it) {
                         is Resource.Default -> _state.value = UserAddressState.Idle
@@ -360,7 +377,8 @@ class UserAddressViewModel @Inject constructor(
                             isAddressStagePending = false
                             _effect.send(UserAddressEffect.LocationDialog)
                         }
-                        is Resource.Failure -> _state.value = UserAddressState.Error(it.message, it.failureStatus)
+                        is Resource.Failure -> _state.value =
+                            UserAddressState.Error(it.message, it.failureStatus)
                     }
                 }
             } catch (e: Exception) {
@@ -374,13 +392,16 @@ class UserAddressViewModel @Inject constructor(
             _state.value = UserAddressState.Loading
             try {
                 val userLocation =
-                    continueUserLocationUseCase(customerId, userLocationRequest)
+                    continueUserLocationUseCase(userLocationRequest.apply {
+                        partnerId = customerId
+                    })
                 userLocation.collect {
                     when (it) {
                         is Resource.Default -> _state.value = UserAddressState.Idle
                         is Resource.Loading -> _state.value = UserAddressState.Loading
                         is Resource.Success -> _state.value = UserAddressState.CompletedAddress
-                        is Resource.Failure -> _state.value = UserAddressState.Error(it.message, it.failureStatus)
+                        is Resource.Failure -> _state.value =
+                            UserAddressState.Error(it.message, it.failureStatus)
                     }
                 }
             } catch (e: Exception) {
@@ -416,16 +437,15 @@ class UserAddressViewModel @Inject constructor(
     }
 
     private fun expandSpinner(spinner: View, dropDown: ImageView, type: Int) {
-        if(type == subDistrictSpinnerType){
-            if(selectedDistrictId.isNotEmpty()){
+        if (type == subDistrictSpinnerType) {
+            if (selectedDistrictId.isNotEmpty()) {
                 _state.value = UserAddressState.ExpandSpinner(spinner, dropDown)
             }
-        }
-        else if(type == villageSpinnerType){
-            if(selectedSubDistrictId.isNotEmpty()){
+        } else if (type == villageSpinnerType) {
+            if (selectedSubDistrictId.isNotEmpty()) {
                 _state.value = UserAddressState.ExpandSpinner(spinner, dropDown)
             }
-        }else {
+        } else {
             _state.value = UserAddressState.ExpandSpinner(spinner, dropDown)
         }
     }

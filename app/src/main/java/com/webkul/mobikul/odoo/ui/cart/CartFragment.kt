@@ -31,6 +31,8 @@ import com.webkul.mobikul.odoo.helper.AppSharedPref
 import com.webkul.mobikul.odoo.helper.OdooApplication
 import com.webkul.mobikul.odoo.helper.SnackbarHelper
 import com.webkul.mobikul.odoo.model.ReferralResponse
+import com.webkul.mobikul.odoo.ui.checkout.CheckoutActivityV1
+import com.webkul.mobikul.odoo.updates.FirebaseRemoteConfigHelper.isCheckoutFeatureEnabled
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -343,10 +345,16 @@ class CartFragment : Fragment() ,
         }
         if(checkoutItems.size != 0)
         {
-            startActivity(Intent(requireContext(), CheckoutActivity::class.java)
-                .putExtra(BundleConstant.BUNDLE_KEY_ORDER_ID, orderId)
-                .putIntegerArrayListExtra(BundleConstant.BUNDLE_KEY_LINE_IDS, checkoutItems)
-                .putExtra(BundleConstant.BUNDLE_KEY_IS_POINTS_USED, binding.cartCost.scSemaaiPoints.isChecked))
+            if (isCheckoutFeatureEnabled) {
+                startActivity(
+                    CheckoutActivityV1.newInstance(requireContext(),orderId, binding.cartCost.scSemaaiPoints.isChecked, checkoutItems)
+                )
+            } else {
+                startActivity(Intent(requireContext(), CheckoutActivity::class.java)
+                    .putExtra(BundleConstant.BUNDLE_KEY_ORDER_ID, orderId)
+                    .putIntegerArrayListExtra(BundleConstant.BUNDLE_KEY_LINE_IDS, checkoutItems)
+                    .putExtra(BundleConstant.BUNDLE_KEY_IS_POINTS_USED, binding.cartCost.scSemaaiPoints.isChecked))
+            }
         }
     }
 

@@ -17,7 +17,7 @@ class SubDistrictDataUseCase @Inject constructor(
     ): Flow<Resource<SubDistrictListEntity>> = flow {
 
         emit(Resource.Loading)
-        val result = subDistrictRepository.getSubDistricts(districtId)
+        val result = subDistrictRepository.getById(districtId)
         emit(result)
 
     }.flowOn(Dispatchers.IO)

@@ -14,12 +14,11 @@ class ContinueUserAddressUseCase @Inject constructor(
     private val userAddressRepository: UserAddressRepository
 ) {
     operator fun invoke(
-        partnerId: String,
         userAddressRequest: UserAddressRequest
     ): Flow<Resource<UserAddressEntity>> = flow {
 
         emit(Resource.Loading)
-        val result = userAddressRepository.setUserAddress(partnerId, userAddressRequest)
+        val result = userAddressRepository.update(userAddressRequest)
         emit(result)
 
     }.flowOn(Dispatchers.IO)

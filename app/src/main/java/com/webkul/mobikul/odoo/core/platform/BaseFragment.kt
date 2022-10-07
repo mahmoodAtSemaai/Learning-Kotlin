@@ -3,6 +3,7 @@ package com.webkul.mobikul.odoo.core.platform
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.snackbar.Snackbar
@@ -15,6 +16,8 @@ import com.webkul.mobikul.odoo.core.extension.getDefaultProgressDialog
 import com.webkul.mobikul.odoo.core.extension.showDefaultWarningDialog
 import com.webkul.mobikul.odoo.core.utils.ERROR_INTERNET_CONNECTION
 import com.webkul.mobikul.odoo.core.utils.FailureStatus
+import com.webkul.mobikul.odoo.helper.AlertDialogHelper
+import com.webkul.mobikul.odoo.helper.IntentHelper
 import com.webkul.mobikul.odoo.helper.SnackbarHelper
 import com.webkul.mobikul.odoo.ui.signUpOnboarding.UserOnboardingActivity
 
@@ -34,6 +37,14 @@ abstract class BaseFragment : Fragment() {
         return DEFAULT_PAGE
     }
 
+    fun updateProgressDialog(message: String, type: Int = SweetAlertDialog.PROGRESS_TYPE) {
+        progressDialog = AlertDialogHelper.getAlertDialog(
+            requireContext(), type,
+            message, "", false, false
+        )
+
+    }
+
     fun showProgressDialog() {
         progressDialog.show()
     }
@@ -42,12 +53,18 @@ abstract class BaseFragment : Fragment() {
         progressDialog.dismiss()
     }
 
-    fun showSnackbarMessage(message: String) {
+    fun showSnackbarMessage(message: String,
+                            snackBarType: SnackbarHelper.SnackbarType = SnackbarHelper.SnackbarType.TYPE_NORMAL) {
         SnackbarHelper.getSnackbar(
-            requireActivity(),
-            message,
-            Snackbar.LENGTH_LONG
+                requireActivity(),
+                message,
+                Snackbar.LENGTH_LONG,
+                snackBarType
         ).show()
+    }
+
+    fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun showErrorDialog(title: String?, message: String?) {
@@ -62,7 +79,7 @@ abstract class BaseFragment : Fragment() {
         when (failureStatus) {
             FailureStatus.API_FAIL -> showSnackbarMessage(showMessage)
             FailureStatus.EMPTY -> showSnackbarMessage(getString(R.string.error_something_went_wrong))
-            FailureStatus.NO_INTERNET -> showSnackbarMessage(ERROR_INTERNET_CONNECTION)
+            FailureStatus.NO_INTERNET -> showSnackbarMessage(getString(R.string.error_no_network_cross_check_connection))
             FailureStatus.OTHER -> showSnackbarMessage(showMessage)
             FailureStatus.ACCESS_DENIED -> navigateToSignInSignUpActivity()
             FailureStatus.USER_UNAPPROVED -> navigateToHomeScreen()

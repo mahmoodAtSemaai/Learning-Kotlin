@@ -15,6 +15,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog.OnSweetClickListener
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.core.utils.INTENT_SPLASH_SCREEN
 import com.webkul.mobikul.odoo.core.utils.Resource
+import com.webkul.mobikul.odoo.helper.AlertDialogHelper
 import com.webkul.mobikul.odoo.helper.AppSharedPref
 import com.webkul.mobikul.odoo.helper.ColorHelper
 import java.io.IOException
@@ -88,6 +89,13 @@ fun Context.getProgressDialogWithText(title: String, description: String): Sweet
     if(description.isNotEmpty())
         sweetAlertDialog.contentText = description
     return sweetAlertDialog
+}
+
+fun Context.showProgressDialogWithTitle(title: String) {
+     AlertDialogHelper.showProgressDialogWithText(
+        this,
+        title
+    )
 }
 
 fun Context.showDefaultWarningDialogWithDismissListener(

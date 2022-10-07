@@ -5,7 +5,7 @@ import com.webkul.mobikul.odoo.core.mvicore.IModel
 import com.webkul.mobikul.odoo.core.platform.BaseViewModel
 import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.core.utils.Resource
-import com.webkul.mobikul.odoo.data.request.UserDetailsRequest
+import com.webkul.mobikul.odoo.data.request.UserRequest
 import com.webkul.mobikul.odoo.domain.enums.ReferralCodeValidation
 import com.webkul.mobikul.odoo.domain.usecase.signUpOnboarding.*
 import com.webkul.mobikul.odoo.ui.signUpOnboarding.effect.UserDetailsEffect
@@ -86,14 +86,17 @@ class UserDetailsViewModel @Inject constructor(
     }
 
     private fun setUserDetails(
-        userDetailsRequest: UserDetailsRequest
+        userDetailsRequest: UserRequest
     ) {
         viewModelScope.launch {
             _state.value = UserDetailsState.Loading
-            userDetailsRequest.profileImage = base64UserImage
+            userDetailsRequest.customerProfileImage = base64UserImage
             try {
                 val userDetails =
-                    continueUserDetailsUseCase(userId, customerId, userDetailsRequest)
+                    continueUserDetailsUseCase(userDetailsRequest.apply {
+                        this.userId = this@UserDetailsViewModel.userId
+                        this.customerId = this@UserDetailsViewModel.customerId
+                    })
                 userDetails.collect {
                     when (it) {
                         is Resource.Default -> _state.value = UserDetailsState.Idle
@@ -151,11 +154,11 @@ class UserDetailsViewModel @Inject constructor(
             _state.value = UserDetailsState.Idle
             try {
                 val mandatoryFields =
-                    verifyUserDetailsUseCase( name, groupName)
+                    verifyUserDetailsUseCase(name, groupName)
                 mandatoryFields.collect {
-                    if(it){
+                    if (it) {
                         _state.value = UserDetailsState.EnableContinue
-                    }else{
+                    } else {
                         _state.value = UserDetailsState.DisableContinue
                     }
                 }

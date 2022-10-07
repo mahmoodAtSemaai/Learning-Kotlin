@@ -13,7 +13,7 @@ class UserDetailRepositoryImpl @Inject constructor(
     private val userDetailRemoteDataSource: UserDetailRemoteDataSource,
     private val appPreferences: AppPreferences
 ) : UserDetailRepository {
-    override suspend fun get(userId: String): Resource<UserDetailEntity> {
+    override suspend fun getUser(userId: String): Resource<UserDetailEntity> {
         val result = userDetailRemoteDataSource.get(userId)
         when (result) {
             is Resource.Success -> saveUserDetails(result.value)
@@ -35,7 +35,7 @@ class UserDetailRepositoryImpl @Inject constructor(
                     false
                 ),
                 appPreferences.customerId?.toInt() ?: -1,
-                appPreferences.userId?.toInt() ?: -1,
+                appPreferences.userId ?: "",
                 appPreferences.cartCount,
                 appPreferences.isUserApproved,
                 0,
@@ -56,7 +56,7 @@ class UserDetailRepositoryImpl @Inject constructor(
             isEmailVerified = value.addons.emailVerification
             isMarketplaceAllowed = value.addons.odooMarketplace
             customerId = value.customerId.toString()
-            userId = value.userId.toString()
+            userId = value.userId
             cartCount = value.cartCount
             newCartCount = value.cartCount
             isUserApproved = value.isApproved

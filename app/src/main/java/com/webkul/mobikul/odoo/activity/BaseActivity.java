@@ -123,11 +123,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         int i = item.getItemId();
         if (i == android.R.id.home) {
             onBackPressed();
-        } else if (i == R.id.menu_item_bag){
+        } else if (i == R.id.menu_item_bag) {
             AnalyticsImpl.INSTANCE.trackShoppingCartSelected(currentFragmentDisplayed);
             IntentHelper.goToBag(this);
-        }
-        else if (item.getItemId() == R.id.menu_item_wishlist) {
+        } else if (item.getItemId() == R.id.menu_item_wishlist) {
             AnalyticsImpl.INSTANCE.trackWishlistSelected(currentFragmentDisplayed);
             Intent intent = new Intent(this, CustomerBaseActivity.class);
             intent.putExtra(BUNDLE_KEY_CUSTOMER_FRAG_TYPE, CustomerHelper.CustomerFragType.TYPE_WISHLIST);

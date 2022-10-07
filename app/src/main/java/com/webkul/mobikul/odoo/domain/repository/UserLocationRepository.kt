@@ -5,9 +5,4 @@ import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.data.entity.UserLocationEntity
 import com.webkul.mobikul.odoo.data.request.UserLocationRequest
 
-interface UserLocationRepository : Repository {
-    suspend fun setUserLocation(
-        partnerId: String,
-        userLocationRequest: UserLocationRequest
-    ): Resource<UserLocationEntity>
-}
+interface UserLocationRepository : Repository<UserLocationEntity, Any, UserLocationRequest>

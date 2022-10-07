@@ -8,7 +8,8 @@ data class CustomerGroupRequest(
     var fcmDeviceId: String = "",
     var customerGrpType: String = "",
     var customerGrpName: String = "",
-    var isOnboarding : Boolean = true
+    var isOnboarding: Boolean = true,
+    var userId: String = ""
 ) {
     override fun toString(): String {
         val valJsonObject = JSONObject()
@@ -25,7 +26,7 @@ data class CustomerGroupRequest(
         valJsonObject.put(CUSTOMER_GROUP_NAME, customerGrpName)
         valJsonObject.put(IS_ONBOARDING, isOnboarding)
         val params = JSONObject()
-        params.put(PARAMS,valJsonObject)
+        params.put(PARAMS, valJsonObject)
         return params.toString()
     }
 

@@ -14,6 +14,7 @@ object FirebaseRemoteConfigHelper {
     private const val KEY_APP_REMOTE_CHAT = "feature_sellerChat_enabled"
     private const val KEY_AUTH_REVAMP_ENABLED = "feature_revamp_arch_auth_screen_enabled"
     private const val KEY_SPLASH_REVAMP_ENABLED = "feature_revamp_arch_splash_screen_enabled"
+    private const val KEY_CHECKOUT_REVAMP_ENABLED = "feature_revamp_arch_checkout_screen_enabled"
 
     private const val currentAppVersion = BuildConfig.CURRENT_APP_VERSION
 
@@ -37,6 +38,7 @@ object FirebaseRemoteConfigHelper {
 
     private val remoteAppVersion = Firebase.remoteConfig[KEY_APP_REMOTE_VERSION].asString()
     private val remoteChatFeature = Firebase.remoteConfig[KEY_APP_REMOTE_CHAT].asBoolean()
+    private val remoteCheckoutFeature = Firebase.remoteConfig[KEY_CHECKOUT_REVAMP_ENABLED].asBoolean()
 
     @JvmStatic
     val authRevampEnabled = Firebase.remoteConfig[KEY_AUTH_REVAMP_ENABLED].asBoolean()
@@ -50,4 +52,7 @@ object FirebaseRemoteConfigHelper {
 
     @JvmStatic
     val isChatFeatureEnabled = remoteChatFeature
+
+    @JvmStatic
+    val isCheckoutFeatureEnabled = remoteCheckoutFeature
 }

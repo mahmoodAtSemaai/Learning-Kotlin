@@ -8,7 +8,7 @@ import com.webkul.mobikul.odoo.data.request.WishListRequest
 import com.webkul.mobikul.odoo.model.BaseResponse
 import com.webkul.mobikul.odoo.model.request.AddToWishlistRequest
 
-interface WishListRepository : Repository {
+interface WishListRepository : Repository<Any,Any,Any> {
 
     suspend fun update(wishListRequest: WishListRequest) : Resource<AddToWishlistEntity>
 

@@ -7,7 +7,9 @@ data class UserDetailsRequest(
     var groupName: String = "",
     var profileImage: String = "",
     var referralCode: String = "",
-    var isOnboarding: Boolean = true
+    var isOnboarding: Boolean = true,
+    var userId: String = "",
+    var partnerId: String = "",
 ) {
     override fun toString(): String {
         val valJsonObject = JSONObject()

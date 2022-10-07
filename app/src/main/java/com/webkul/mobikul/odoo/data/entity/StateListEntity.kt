@@ -1,9 +1,11 @@
 package com.webkul.mobikul.odoo.data.entity
 
-import com.webkul.mobikul.odoo.model.generic.StateData
+import com.google.gson.annotations.SerializedName
 
 data class StateListEntity(
+    val status: String?,
 
-    val data: ArrayList<StateData>
+    @SerializedName("data")
+    val states: ArrayList<StateEntity>,
 
-)
+    )

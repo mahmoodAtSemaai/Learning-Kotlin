@@ -6,7 +6,7 @@ import com.webkul.mobikul.odoo.data.entity.LoginEntity
 import com.webkul.mobikul.odoo.data.entity.SignUpEntity
 import com.webkul.mobikul.odoo.model.request.SignUpRequest
 
-interface AuthRepository : Repository {
+interface AuthRepository : Repository<Any, Any, Any> {
 
     suspend fun logIn(username: String, password: String): Resource<LoginEntity>
 

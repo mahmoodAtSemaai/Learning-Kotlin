@@ -24,7 +24,7 @@ import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
 import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.data.entity.TermsAndConditionsEntity
 import com.webkul.mobikul.odoo.databinding.FragmentSignUpAuthBinding
-import com.webkul.mobikul.odoo.features.authentication.domain.enums.VerifyPhoneNumberValidation
+import com.webkul.mobikul.odoo.domain.enums.VerifyPhoneNumberValidation
 import com.webkul.mobikul.odoo.helper.Helper
 import com.webkul.mobikul.odoo.ui.signUpAuth.effect.SignUpAuthEffect
 import com.webkul.mobikul.odoo.ui.signUpAuth.intent.SignUpAuthIntent
@@ -56,7 +56,8 @@ class SignUpAuthFragment @Inject constructor() :
     }
 
     private fun setViews() {
-        val spannable = SpannableString(requireActivity().applicationContext.getString(R.string.terms_and_conditions_of_semaai))
+        val spannable =
+            SpannableString(requireActivity().applicationContext.getString(R.string.terms_and_conditions_of_semaai))
         spannable.setSpan(
             ForegroundColorSpan(resources.getColor(R.color.background_orange)),
             47, // start
@@ -109,11 +110,11 @@ class SignUpAuthFragment @Inject constructor() :
             }
             is SignUpAuthState.Error -> {
                 progressDialog.dismiss()
-                if(state.failureStatus == FailureStatus.NO_INTERNET){
+                if (state.failureStatus == FailureStatus.NO_INTERNET) {
                     showSnackbarMessage(getString(R.string.no_internet))
-                }else if(state.failureStatus == FailureStatus.API_FAIL){
+                } else if (state.failureStatus == FailureStatus.API_FAIL) {
                     showSnackbarMessage(getString(R.string.error_something_went_wrong))
-                }else{
+                } else {
                     triggerIntent(SignUpAuthIntent.NewUser(binding.etPhoneNumber.text.toString()))
                 }
             }

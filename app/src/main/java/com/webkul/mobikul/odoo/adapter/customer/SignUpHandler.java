@@ -20,7 +20,7 @@ import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.constant.ApplicationConstant;
 import com.webkul.mobikul.odoo.databinding.FragmentSignUpBinding;
-import com.webkul.mobikul.odoo.features.authentication.presentation.AuthenticationActivity;
+import com.webkul.mobikul.odoo.ui.authentication.AuthenticationActivity;
 import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.ErrorConstants;

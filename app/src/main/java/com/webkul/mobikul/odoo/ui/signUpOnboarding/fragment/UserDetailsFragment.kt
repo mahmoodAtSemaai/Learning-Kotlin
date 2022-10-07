@@ -19,7 +19,7 @@ import com.webkul.mobikul.odoo.core.extension.makeVisible
 import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
 import com.webkul.mobikul.odoo.core.utils.FailureStatus
-import com.webkul.mobikul.odoo.data.request.UserDetailsRequest
+import com.webkul.mobikul.odoo.data.request.UserRequest
 import com.webkul.mobikul.odoo.databinding.FragmentUserDetailsBinding
 import com.webkul.mobikul.odoo.databinding.ItemDialogDiscardChangesBinding
 import com.webkul.mobikul.odoo.ui.signUpOnboarding.effect.UserDetailsEffect
@@ -126,9 +126,9 @@ class UserDetailsFragment @Inject constructor() :
         binding.btnContinue.setOnClickListener {
             triggerIntent(
                 UserDetailsIntent.UserDetails(
-                    UserDetailsRequest(
-                        name = binding.etName.text.toString(),
-                        groupName = binding.etGroupName.text.toString(),
+                    UserRequest(
+                        customerName = binding.etName.text.toString(),
+                        customerGroupName = binding.etGroupName.text.toString(),
                         referralCode = binding.etReferralCode.text.toString()
                     )
                 )

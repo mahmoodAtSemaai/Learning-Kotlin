@@ -13,7 +13,7 @@
         android:background="@color/white"
         android:clickable="true"
         android:focusable="true"
-        tools:context=".features.authentication.presentation.fragment.AuthenticationFragment">
+        tools:context=".ui.authentication.fragment.AuthenticationFragment">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_header"
@@ -95,6 +95,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/size_24"
                         android:background="@drawable/shape_rectangular_white_bg_dark_gray_border_1dp_corner_4dp"
+                        android:cursorVisible="true"
                         android:hint="@string/number_hint"
                         android:inputType="numberDecimal"
                         android:maxLength="13"
@@ -166,11 +167,11 @@
             android:layout_marginLeft="@dimen/size_4"
             android:layout_marginTop="@dimen/size_20"
             android:paddingVertical="@dimen/size_12"
-            android:textColor="@color/colorPrimary"
             android:text="@string/sign_up_now"
+            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/font_size_14"
-            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintEnd_toStartOf="@id/gl_vertical_95"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@id/tv_account_does_not_exists"
             app:layout_constraintTop_toBottomOf="@id/cv_phone_number_container" />
 

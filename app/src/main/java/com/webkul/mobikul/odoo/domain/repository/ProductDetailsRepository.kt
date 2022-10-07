@@ -4,7 +4,7 @@ import com.webkul.mobikul.odoo.core.data.Repository
 import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.data.entity.ProductEntity
 
-interface ProductDetailsRepository : Repository {
+interface ProductDetailsRepository : Repository<Any,Any,Any> {
 
     suspend fun get(templateId: Int): Resource<ProductEntity>
 

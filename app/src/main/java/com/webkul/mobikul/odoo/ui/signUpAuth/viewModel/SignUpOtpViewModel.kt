@@ -9,7 +9,7 @@ import com.webkul.mobikul.odoo.data.request.SignUpOtpAuthRequest
 import com.webkul.mobikul.odoo.domain.enums.VerifyOTPValidation
 import com.webkul.mobikul.odoo.domain.usecase.auth.GenerateSignUpOtpUseCase
 import com.webkul.mobikul.odoo.domain.usecase.auth.VerifySignUpOtpUseCase
-import com.webkul.mobikul.odoo.features.onboarding.domain.usecase.CountdownTimerUseCase
+import com.webkul.mobikul.odoo.domain.usecase.onboarding.CountdownTimerUseCase
 import com.webkul.mobikul.odoo.ui.signUpAuth.effect.SignUpOtpEffect
 import com.webkul.mobikul.odoo.ui.signUpAuth.intent.SignUpOtpIntent
 import com.webkul.mobikul.odoo.ui.signUpAuth.state.SignUpOtpState

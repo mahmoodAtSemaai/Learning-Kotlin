@@ -15,7 +15,7 @@ import com.webkul.mobikul.odoo.core.extension.makeGone
 import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BindingBaseFragment
 import com.webkul.mobikul.odoo.data.entity.AccountInfoEntity
-import com.webkul.mobikul.odoo.data.request.UserDetailsRequest
+import com.webkul.mobikul.odoo.data.request.UserRequest
 import com.webkul.mobikul.odoo.databinding.FragmentAccountInfoV1Binding
 import com.webkul.mobikul.odoo.databinding.ItemDialogDiscardChangesBinding
 import com.webkul.mobikul.odoo.helper.FragmentHelper.replaceFragment
@@ -113,9 +113,9 @@ class AccountInfoV1Fragment @Inject constructor() :
         binding.btnContinue.setOnClickListener {
             triggerIntent(
                 AccountInfoIntent.Save(
-                    UserDetailsRequest(
-                        name = binding.tvCustomerName.text.toString(),
-                        groupName = binding.tvCustomerGroupName.text.toString(),
+                    UserRequest(
+                        customerName = binding.tvCustomerName.text.toString(),
+                        customerGroupName = binding.tvCustomerGroupName.text.toString(),
                         isOnboarding = false
                     )
                 )

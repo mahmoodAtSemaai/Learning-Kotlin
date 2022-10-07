@@ -19,9 +19,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:paddingHorizontal="@dimen/size_10"
-        android:paddingTop="@dimen/size_12"
-        android:paddingBottom="@dimen/size_16">
+        android:paddingHorizontal="@dimen/padding_10"
+        android:paddingTop="@dimen/padding_12"
+        android:paddingBottom="@dimen/padding_16">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/shape_rectangular_white_bg_gray_border_1dp"
-            android:padding="@dimen/size_8">
+            android:padding="@dimen/padding_8">
 
             <ImageView
                 android:id="@+id/iv_method_icon"
@@ -44,8 +44,8 @@
                 style="@style/Semaai.TextAppearance.Subtitle2.Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/size_10"
-                android:layout_marginLeft="@dimen/size_10"
+                android:layout_marginStart="@dimen/margin_10"
+                android:layout_marginLeft="@dimen/margin_10"
                 android:text="@{data.optionHeading}"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_method_icon"
                 app:layout_constraintStart_toEndOf="@+id/iv_method_icon"
@@ -56,7 +56,7 @@
                 android:id="@+id/tv_method_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_12"
+                android:layout_marginTop="@dimen/margin_12"
                 android:text="@{data.optionDesc}"
                 android:visibility="@{data.optionDesc.isEmpty() ? View.GONE : View.VISIBLE}"
                 app:layout_constraintStart_toStartOf="@+id/iv_method_icon"
@@ -67,7 +67,7 @@
                 android:id="@+id/imageView6"
                 android:layout_width="@dimen/size_40"
                 android:layout_height="@dimen/size_40"
-                android:padding="@dimen/size_4"
+                android:padding="@dimen/padding_4"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

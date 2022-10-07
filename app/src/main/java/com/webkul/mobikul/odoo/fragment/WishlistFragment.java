@@ -1,9 +1,9 @@
 package com.webkul.mobikul.odoo.fragment;
 
 import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
-import static com.webkul.mobikul.odoo.core.utils.AppConstantsKt.HTTP_RESOURCE_CREATED;
-import static com.webkul.mobikul.odoo.core.utils.AppConstantsKt.HTTP_RESOURCE_NOT_FOUND;
+import static com.webkul.mobikul.odoo.core.utils.AppConstantsKt.HTTP_ERROR_RESOURCE_NOT_FOUND;
 import static com.webkul.mobikul.odoo.core.utils.AppConstantsKt.HTTP_RESPONSE_OK;
+import static com.webkul.mobikul.odoo.core.utils.AppConstantsKt.HTTP_RESPONSE_RESOURCE_CREATED;
 
 import android.content.Context;
 import android.content.Intent;
@@ -38,8 +38,8 @@ import com.webkul.mobikul.odoo.custom.CustomToast;
 import com.webkul.mobikul.odoo.data.request.CartProductItemRequest;
 import com.webkul.mobikul.odoo.data.request.CartProductsRequest;
 import com.webkul.mobikul.odoo.data.request.DeleteFromWishListRequest;
-import com.webkul.mobikul.odoo.data.response.models.CartProductsResponse;
 import com.webkul.mobikul.odoo.data.response.models.CartBaseResponse;
+import com.webkul.mobikul.odoo.data.response.models.CartProductsResponse;
 import com.webkul.mobikul.odoo.data.response.models.GetCartId;
 import com.webkul.mobikul.odoo.data.response.models.GetWishListResponse;
 import com.webkul.mobikul.odoo.data.response.models.WishListData;
@@ -139,7 +139,7 @@ public class WishlistFragment extends Fragment implements WishlistProductInfoRvA
                             //https://stackoverflow.com/questions/28672883/java-lang-illegalstateexception-fragment-not-attached-to-activity
                             // How to rerpoduce it, 1) remove the below if block 2) Run the app
                             // 3) Head over to cart then click on wishlist icon 4) When wishlist APi is in progress press back
-                            if(isAdded() && getActivity()!= null) {
+                            if (isAdded() && getActivity() != null) {
                                 binding.setData(myWishListResponse);
                                 binding.executePendingBindings();
                                 DividerItemDecoration dividerItemDecorationHorizontal = new DividerItemDecoration(requireActivity(), LinearLayout.VERTICAL);
@@ -204,37 +204,37 @@ public class WishlistFragment extends Fragment implements WishlistProductInfoRvA
 
                 ApiConnection.removeItemFromWishListV1(getContext(), new DeleteFromWishListRequest(mData.getProductId()))
                         .subscribeOn(Schedulers.io()).observeOn
-                        (AndroidSchedulers.mainThread()).subscribe(new CustomObserver<WishListUpdatedResponse>(requireContext()) {
+                                (AndroidSchedulers.mainThread()).subscribe(new CustomObserver<WishListUpdatedResponse>(requireContext()) {
 
-                    @Override
-                    public void onNext(@NonNull WishListUpdatedResponse response) {
-                        super.onNext(response);
-                        AlertDialogHelper.dismiss(getContext());
-                        if (response.statusCode == AppConstantsKt.HTTP_ERROR_UNAUTHORIZED_REQUEST) {
-                            AlertDialogHelper.showDefaultWarningDialogWithDismissListener(requireContext(), getString(R.string.error_login_failure), requireContext().getString(R.string.access_denied_message), sweetAlertDialog1 -> {
-                                sweetAlertDialog1.dismiss();
-                                AppSharedPref.clearCustomerData(getContext());
-                                Intent i = new Intent(getContext(), SignInSignUpActivity.class);
-                                i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ((BaseActivity) getContext()).getClass().getSimpleName());
-                                getContext().startActivity(i);
-                            });
-                        } else {
-                            if (response.statusCode == AppConstantsKt.HTTP_RESPONSE_OK) {
-                                AnalyticsImpl.INSTANCE.trackItemRemovedFromWishlist(String.valueOf(mData.getWishlistId()), mData.getName(), mData.getPriceUnit());
-                                callApi();
-                                CustomToast.makeText(getContext(), response.message, Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
-                            } else {
-                                AnalyticsImpl.INSTANCE.trackItemRemoveFromWishlistFailed(response.message, response.statusCode, "");
-                                AlertDialogHelper.showDefaultWarningDialog(getContext(), mData.getName(), response.message);
+                            @Override
+                            public void onNext(@NonNull WishListUpdatedResponse response) {
+                                super.onNext(response);
+                                AlertDialogHelper.dismiss(getContext());
+                                if (response.statusCode == AppConstantsKt.HTTP_ERROR_UNAUTHORIZED_REQUEST) {
+                                    AlertDialogHelper.showDefaultWarningDialogWithDismissListener(requireContext(), getString(R.string.error_login_failure), requireContext().getString(R.string.access_denied_message), sweetAlertDialog1 -> {
+                                        sweetAlertDialog1.dismiss();
+                                        AppSharedPref.clearCustomerData(getContext());
+                                        Intent i = new Intent(getContext(), SignInSignUpActivity.class);
+                                        i.putExtra(BUNDLE_KEY_CALLING_ACTIVITY, ((BaseActivity) getContext()).getClass().getSimpleName());
+                                        getContext().startActivity(i);
+                                    });
+                                } else {
+                                    if (response.statusCode == AppConstantsKt.HTTP_RESPONSE_OK) {
+                                        AnalyticsImpl.INSTANCE.trackItemRemovedFromWishlist(String.valueOf(mData.getWishlistId()), mData.getName(), mData.getPriceUnit());
+                                        callApi();
+                                        CustomToast.makeText(getContext(), response.message, Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
+                                    } else {
+                                        AnalyticsImpl.INSTANCE.trackItemRemoveFromWishlistFailed(response.message, response.statusCode, "");
+                                        AlertDialogHelper.showDefaultWarningDialog(getContext(), mData.getName(), response.message);
+                                    }
+                                }
                             }
-                        }
-                    }
 
-                    @Override
-                    public void onComplete() {
+                            @Override
+                            public void onComplete() {
 
-                    }
-                });
+                            }
+                        });
             }
         });
     }
@@ -267,7 +267,7 @@ public class WishlistFragment extends Fragment implements WishlistProductInfoRvA
 
                     @Override
                     public void onNext(CartBaseResponse<GetCartId> response) {
-                        if (response.getStatusCode() == HTTP_RESOURCE_NOT_FOUND)
+                        if (response.getStatusCode() == HTTP_ERROR_RESOURCE_NOT_FOUND)
                             createCart(Integer.parseInt(customerId), wishListData);
                         else {
                             AppSharedPref.setCartId(requireContext(), response.getResult().cartId);
@@ -287,7 +287,7 @@ public class WishlistFragment extends Fragment implements WishlistProductInfoRvA
         ApiConnection.createCart(requireContext(), customerId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new CustomObserver<CartBaseResponse<GetCartId>> (requireContext()) {
+                .subscribe(new CustomObserver<CartBaseResponse<GetCartId>>(requireContext()) {
 
                     @Override
                     public void onNext(CartBaseResponse<GetCartId> response) {
@@ -302,7 +302,7 @@ public class WishlistFragment extends Fragment implements WishlistProductInfoRvA
                         sweetAlertDialog.dismiss();
                         SnackbarHelper.getSnackbar(requireActivity(), t.getMessage(), Snackbar.LENGTH_SHORT).show();
                     }
-            });
+                });
     }
 
     public void addProductToCart(int cartId, WishListData mData) {
@@ -333,7 +333,7 @@ public class WishlistFragment extends Fragment implements WishlistProductInfoRvA
                         } else {
                             FirebaseAnalyticsImpl.logAddToCartEvent(getContext(), String.valueOf(mData.getProductId()), mData.getName());
                             if (response.getStatusCode() == HTTP_RESPONSE_OK ||
-                                    response.getStatusCode() == HTTP_RESOURCE_CREATED) {
+                                    response.getStatusCode() == HTTP_RESPONSE_RESOURCE_CREATED) {
                                 AppSharedPref.setNewCartCount(getContext(), response.getResult().getCartCount()); //update cart count after cart update
                                 if (cartUpdateListener != null) {
                                     cartUpdateListener.updateCart();

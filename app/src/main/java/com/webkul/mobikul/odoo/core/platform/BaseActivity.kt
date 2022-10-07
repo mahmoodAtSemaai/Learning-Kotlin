@@ -15,6 +15,7 @@ import com.webkul.mobikul.odoo.core.extension.inTransaction
 import com.webkul.mobikul.odoo.core.extension.showDefaultWarningDialog
 import com.webkul.mobikul.odoo.core.utils.ERROR_INTERNET_CONNECTION
 import com.webkul.mobikul.odoo.core.utils.FailureStatus
+import com.webkul.mobikul.odoo.helper.IntentHelper
 import com.webkul.mobikul.odoo.core.utils.LocaleManager
 import com.webkul.mobikul.odoo.helper.SnackbarHelper
 import com.webkul.mobikul.odoo.ui.signUpOnboarding.UserOnboardingActivity
@@ -59,15 +60,21 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    fun addFragmentWithBackStack(containerViewId: Int, fragment: BaseFragment, tag: String) {
+    fun addFragmentWithBackStack(containerViewId: Int, fragment: BaseFragment, tag: String?) {
         supportFragmentManager.inTransaction {
             add(containerViewId, fragment, tag).addToBackStack(tag)
         }
     }
 
-    fun replaceFragment(containerViewId: Int, fragment: BaseFragment, tag: String) {
+    fun replaceFragment(containerViewId: Int, fragment: BaseFragment, tag: String?) {
         supportFragmentManager.inTransaction {
             replace(containerViewId, fragment).addToBackStack(tag)
+        }
+    }
+
+    fun replaceFragmentWithoutBackStack(containerViewId: Int, fragment: BaseFragment) {
+        supportFragmentManager.inTransaction {
+            replace(containerViewId, fragment)
         }
     }
 

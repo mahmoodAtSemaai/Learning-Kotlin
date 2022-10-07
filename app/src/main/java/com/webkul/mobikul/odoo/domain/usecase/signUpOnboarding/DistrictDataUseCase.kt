@@ -17,7 +17,7 @@ class DistrictDataUseCase @Inject constructor(
     ): Flow<Resource<DistrictListEntity>> = flow {
 
         emit(Resource.Loading)
-        val result = districtRepository.getDistricts(stateId)
+        val result = districtRepository.getById(stateId)
         emit(result)
 
     }.flowOn(Dispatchers.IO)

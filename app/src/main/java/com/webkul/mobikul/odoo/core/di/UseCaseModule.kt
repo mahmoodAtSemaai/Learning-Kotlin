@@ -6,9 +6,14 @@ import com.webkul.mobikul.odoo.core.data.local.AppPreferences
 import com.webkul.mobikul.odoo.core.utils.FirebaseAnalyticsImpl
 import com.webkul.mobikul.odoo.core.utils.NetworkManager
 import com.webkul.mobikul.odoo.core.utils.ResourcesProvider
+import com.webkul.mobikul.odoo.data.remoteSource.remoteServices.PaymentTransferInstructionServices
+import com.webkul.mobikul.odoo.domain.repository.*
+import com.webkul.mobikul.odoo.domain.usecase.auth.*
+import com.webkul.mobikul.odoo.domain.usecase.checkout.*
 import com.webkul.mobikul.odoo.database.SqlLiteDbHelper
 import com.webkul.mobikul.odoo.domain.repository.*
 import com.webkul.mobikul.odoo.domain.usecase.account.GetAccountInfoDataUseCase
+import com.webkul.mobikul.odoo.domain.usecase.appConfig.GetAppConfigUseCase
 import com.webkul.mobikul.odoo.domain.usecase.auth.*
 import com.webkul.mobikul.odoo.domain.usecase.banner.BannersUseCase
 import com.webkul.mobikul.odoo.domain.usecase.cart.AddToCartUseCase
@@ -17,9 +22,10 @@ import com.webkul.mobikul.odoo.domain.usecase.cart.CreateCartUseCase
 import com.webkul.mobikul.odoo.domain.usecase.cart.GetCartIdUseCase
 import com.webkul.mobikul.odoo.domain.usecase.chat.CreateChatChannelUseCase
 import com.webkul.mobikul.odoo.domain.usecase.fcmToken.RegisterFCMTokenUseCase
-import com.webkul.mobikul.odoo.domain.usecase.home.HomeLocalDataUseCase
 import com.webkul.mobikul.odoo.domain.usecase.home.HomeUseCase
 import com.webkul.mobikul.odoo.domain.usecase.network.IsNetworkUseCase
+import com.webkul.mobikul.odoo.domain.usecase.onboarding.CountdownTimerUseCase
+import com.webkul.mobikul.odoo.domain.usecase.onboarding.OnboardingUseCase
 import com.webkul.mobikul.odoo.domain.usecase.product.*
 import com.webkul.mobikul.odoo.domain.usecase.productCategories.CategoriesUseCase
 import com.webkul.mobikul.odoo.domain.usecase.search.GetSearchUseCase
@@ -27,16 +33,10 @@ import com.webkul.mobikul.odoo.domain.usecase.seller.GetSellerProductUseCase
 import com.webkul.mobikul.odoo.domain.usecase.seller.GetSellerUseCase
 import com.webkul.mobikul.odoo.domain.usecase.session.IsValidSessionUseCase
 import com.webkul.mobikul.odoo.domain.usecase.signUpOnboarding.*
-import com.webkul.mobikul.odoo.domain.usecase.splash.SplashLocalDataUseCase
 import com.webkul.mobikul.odoo.domain.usecase.splash.SplashUseCase
 import com.webkul.mobikul.odoo.domain.usecase.user.UserDetailUseCase
 import com.webkul.mobikul.odoo.domain.usecase.wishlist.IsWishListAllowedUseCase
-import com.webkul.mobikul.odoo.features.authentication.domain.repo.AuthenticationRepository
-import com.webkul.mobikul.odoo.features.authentication.domain.repo.HomePageRepository
-import com.webkul.mobikul.odoo.features.authentication.domain.repo.SplashPageRepository
-import com.webkul.mobikul.odoo.features.authentication.domain.usecase.*
-import com.webkul.mobikul.odoo.features.onboarding.domain.usecase.CountdownTimerUseCase
-import com.webkul.mobikul.odoo.features.onboarding.domain.usecase.OnboardingUseCase
+import com.webkul.mobikul.odoo.domain.usecase.user.GetUserUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -81,8 +81,8 @@ class UseCaseModule {
     @Provides
     @Singleton
     fun provideViewMarketPlaceTnCUseCase(
-        termsConditionRepository: TermsConditionRepository
-    ): ViewMarketPlaceTnCUseCase = ViewMarketPlaceTnCUseCase(termsConditionRepository)
+        sellerTermsConditionRepository: SellerTermsConditionRepository
+    ): ViewMarketPlaceTnCUseCase = ViewMarketPlaceTnCUseCase(sellerTermsConditionRepository)
 
     @Provides
     @Singleton
@@ -97,40 +97,31 @@ class UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideContinuePhoneNumberUseCase(authenticationRepository: AuthenticationRepository): ContinuePhoneNumberUseCase =
-        ContinuePhoneNumberUseCase(authenticationRepository)
+    fun provideContinuePhoneNumberUseCase(phoneNumberRepository: PhoneNumberRepository): ContinuePhoneNumberUseCase =
+        ContinuePhoneNumberUseCase(phoneNumberRepository)
 
     @Provides
     @Singleton
     fun provideLoginPasswordUseCase(
-        authenticationRepository: AuthenticationRepository,
-        appPreferences: AppPreferences
+        authenticationPasswordRepository: AuthenticationPasswordRepository,
+        userRepository: UserRepository
     ): LoginPasswordUseCase =
-        LoginPasswordUseCase(authenticationRepository, appPreferences)
+        LoginPasswordUseCase(authenticationPasswordRepository, userRepository)
 
 
     @Provides
     @Singleton
-    fun provideGenerateOtpUseCase(authenticationRepository: AuthenticationRepository): GenerateOtpUseCase =
-        GenerateOtpUseCase(authenticationRepository)
+    fun provideGenerateOtpUseCase(otpRepository: OtpRepository): GenerateOtpUseCase =
+        GenerateOtpUseCase(otpRepository)
 
     @Provides
     @Singleton
     fun provideVerifyOtpUseCase(
-        authenticationRepository: AuthenticationRepository,
-        appPreferences: AppPreferences
+        authenticationOtpRepository: AuthenticationOtpRepository,
+        userRepository: UserRepository
     ): VerifyOtpUseCase =
-        VerifyOtpUseCase(authenticationRepository, appPreferences)
+        VerifyOtpUseCase(authenticationOtpRepository, userRepository)
 
-    @Provides
-    @Singleton
-    fun provideSplashPageUseCase(splashPageRepository: SplashPageRepository): SplashPageUseCase =
-        SplashPageUseCase(splashPageRepository)
-
-    @Provides
-    @Singleton
-    fun provideHomePageUseCase(homePageRepository: HomePageRepository): HomePageDataUseCase =
-        HomePageDataUseCase(homePageRepository)
 
     @Provides
     @Singleton
@@ -138,48 +129,139 @@ class UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideOnboardingUseCase(resourcesProvider: ResourcesProvider): OnboardingUseCase =
-        OnboardingUseCase(resourcesProvider)
+    fun provideOnboardingUseCase(onboardingRepository: OnboardingRepository): OnboardingUseCase =
+        OnboardingUseCase(onboardingRepository)
+
+    @Provides
+    @Singleton
+    fun provideAddAddressUseCase(addressRepository: AddressRepository): AddAddressUseCase =
+        AddAddressUseCase(addressRepository)
+
+    @Provides
+    @Singleton
+    fun provideDeleteAddressUseCase(addressRepository: AddressRepository): DeleteAddressUseCase =
+        DeleteAddressUseCase(addressRepository)
+
+    @Provides
+    @Singleton
+    fun provideEditAddressUseCase(addressRepository: AddressRepository): EditAddressUseCase =
+        EditAddressUseCase(addressRepository)
+
+    @Provides
+    @Singleton
+    fun provideFetchAddressFormDataUseCase(addressRepository: AddressRepository): FetchAddressFormDataUseCase =
+        FetchAddressFormDataUseCase(addressRepository)
+
+    @Provides
+    @Singleton
+    fun provideFetchAllAddressUseCase(addressRepository: AddressRepository): FetchAllAddressUseCase =
+        FetchAllAddressUseCase(addressRepository)
+
+    @Provides
+    @Singleton
+    fun provideFetchDistrictsUseCase(addressRepository: AddressRepository): FetchDistrictsUseCase =
+        FetchDistrictsUseCase(addressRepository)
+
+    @Provides
+    @Singleton
+    fun provideFetchStatesUseCase(addressRepository: AddressRepository): FetchStatesUseCase =
+        FetchStatesUseCase(addressRepository)
+
+    @Provides
+    @Singleton
+    fun provideFetchSubDistrictsUseCase(addressRepository: AddressRepository): FetchSubDistrictsUseCase =
+        FetchSubDistrictsUseCase(addressRepository)
+
+    @Provides
+    @Singleton
+    fun provideFetchVillagesUseCase(addressRepository: AddressRepository): FetchVillagesUseCase =
+        FetchVillagesUseCase(addressRepository)
+
+    @Provides
+    @Singleton
+    fun provideUpdateAddressForOrderUseCase(addressRepository: AddressRepository): UpdateAddressForOrderUseCase =
+        UpdateAddressForOrderUseCase(addressRepository)
+
+    @Provides
+    @Singleton
+    fun provideValidateMandatoryAddressFieldsUseCase(): ValidateMandatoryAddressFieldsUseCase =
+        ValidateMandatoryAddressFieldsUseCase()
+
+    @Provides
+    @Singleton
+    fun providePlaceOrderUseCase(orderRepository: OrderRepository): PlaceOrderUseCase =
+        PlaceOrderUseCase(orderRepository)
+
+    @Provides
+    @Singleton
+    fun provideFetchOrderDetailsUseCase(orderRepository: OrderRepository): FetchOrderDetailsUseCase =
+        FetchOrderDetailsUseCase(orderRepository)
+
+    @Provides
+    @Singleton
+    fun provideFetchOrderDetailsAfterCheckoutUseCase(orderRepository: OrderRepository): FetchOrderDetailsAfterCheckoutUseCase =
+        FetchOrderDetailsAfterCheckoutUseCase(orderRepository)
+
+    @Provides
+    @Singleton
+    fun provideFetchOrderReviewUseCase(orderRepository: OrderRepository): FetchOrderReviewDataUseCase =
+        FetchOrderReviewDataUseCase(orderRepository)
+
+    @Provides
+    @Singleton
+    fun provideValidateOrderForCheckOutUseCase() : ValidateOrderForCheckOutUseCase =
+        ValidateOrderForCheckOutUseCase()
+
+    @Provides
+    @Singleton
+    fun provideFetchPaymentAcquirersUseCase(paymentAcquireRepository: PaymentAcquireRepository) : FetchPaymentAcquirersUseCase =
+        FetchPaymentAcquirersUseCase(paymentAcquireRepository)
+
+    @Provides
+    @Singleton
+    fun provideFetchPaymentAcquirerMethodsUseCase(paymentAcquireRepository: PaymentAcquireRepository) : FetchPaymentAcquirerMethodsUseCase =
+        FetchPaymentAcquirerMethodsUseCase(paymentAcquireRepository)
+
+    @Provides
+    @Singleton
+    fun provideFetchPaymentAcquirerMethodProvidersUseCase(paymentAcquireRepository: PaymentAcquireRepository) : FetchPaymentAcquirerMethodProvidersUseCase =
+        FetchPaymentAcquirerMethodProvidersUseCase(paymentAcquireRepository)
+
+    @Provides
+    @Singleton
+    fun provideUpdateShippingMethodForOrderUseCase(shippingMethodRepository: ShippingMethodRepository) : UpdateShippingMethodForOrderUseCase =
+        UpdateShippingMethodForOrderUseCase(shippingMethodRepository)
+
+    @Provides
+    @Singleton
+    fun provideFetchActiveShippingMethodsUseCase(shippingMethodRepository: ShippingMethodRepository) : FetchActiveShippingMethodsUseCase =
+        FetchActiveShippingMethodsUseCase(shippingMethodRepository)
 
     @Provides
     @Singleton
     fun provideCreateChatChannelUseCase(
-        chatChannelRepository: ChatChannelRepository,
-        appPreferences: AppPreferences
+        chatChannelRepository: ChatChannelRepository
     ): CreateChatChannelUseCase =
-        CreateChatChannelUseCase(chatChannelRepository, appPreferences)
+        CreateChatChannelUseCase(chatChannelRepository)
 
     @Provides
     @Singleton
     fun provideIsFirstTimeUseCase(
-        appPreferences: AppPreferences
-    ): IsFirstTimeUseCase = IsFirstTimeUseCase(appPreferences)
+        appConfigRepository: AppConfigRepository
+    ): IsFirstTimeUseCase = IsFirstTimeUseCase(appConfigRepository)
 
     @Provides
     @Singleton
     fun provideHomeDataUseCase(
         homeDataRepository: HomeDataRepository,
-        homeLocalDataUseCase: HomeLocalDataUseCase
-    ): HomeUseCase = HomeUseCase(homeDataRepository, homeLocalDataUseCase)
+        userRepository: UserRepository
+    ): HomeUseCase = HomeUseCase(homeDataRepository, userRepository)
 
     @Provides
     @Singleton
     fun provideSplashDataUseCase(
-        splashDataRepository: SplashDataRepository,
-        splashLocalDataUseCase: SplashLocalDataUseCase
-    ): SplashUseCase = SplashUseCase(splashDataRepository, splashLocalDataUseCase)
-
-    @Provides
-    @Singleton
-    fun provideHomeLocalDataUseCase(
-        sqlLiteDbHelper: SqlLiteDbHelper
-    ): HomeLocalDataUseCase = HomeLocalDataUseCase(sqlLiteDbHelper)
-
-    @Provides
-    @Singleton
-    fun provideSplashLocalDataUseCase(
-        sqlLiteDbHelper: SqlLiteDbHelper
-    ): SplashLocalDataUseCase = SplashLocalDataUseCase(sqlLiteDbHelper)
+        splashDataRepository: SplashDataRepository
+    ): SplashUseCase = SplashUseCase(splashDataRepository)
 
     @Provides
     @Singleton
@@ -187,18 +269,15 @@ class UseCaseModule {
         networkManager: NetworkManager
     ): IsNetworkUseCase = IsNetworkUseCase(networkManager)
 
+    @Provides
+    @Singleton
+    fun provideIsValidSessionUseCase(): IsValidSessionUseCase = IsValidSessionUseCase()
 
     @Provides
     @Singleton
-    fun provideIsUserAuthorisedUseCase(
-        appPreferences: AppPreferences
-    ): IsUserAuthorisedUseCase = IsUserAuthorisedUseCase(appPreferences)
-
-    @Provides
-    @Singleton
-    fun provideIsUserApprovedUseCase(
-        appPreferences: AppPreferences
-    ): IsUserApprovedUseCase = IsUserApprovedUseCase(appPreferences)
+    fun provideSetIsFirstTimeUseCase(
+        appConfigRepository: AppConfigRepository
+    ): SetIsFirstTimeUseCase = SetIsFirstTimeUseCase(appConfigRepository)
 
     @Provides
     @Singleton
@@ -223,21 +302,22 @@ class UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideIsValidSessionUseCase(
-        isUserAuthorisedUseCase: IsUserAuthorisedUseCase
-    ): IsValidSessionUseCase = IsValidSessionUseCase(isUserAuthorisedUseCase)
+    fun getAppConfigUseCase(
+        appConfigRepository: AppConfigRepository
+    ): GetAppConfigUseCase = GetAppConfigUseCase(appConfigRepository)
 
     @Provides
     @Singleton
-    fun provideGenerateSignUpOtpUseCase(signUpAuthRepository: SignUpAuthRepository): GenerateSignUpOtpUseCase =
-        GenerateSignUpOtpUseCase(signUpAuthRepository)
+    fun provideGenerateSignUpOtpUseCase(otpRepository: OtpRepository): GenerateSignUpOtpUseCase =
+        GenerateSignUpOtpUseCase(otpRepository)
 
     @Provides
     @Singleton
     fun provideVerifySignUpOtpUseCase(
-        signUpAuthRepository: SignUpAuthRepository
+        signUpAuthRepository: SignUpAuthRepository,
+        userRepository: UserRepository
     ): VerifySignUpOtpUseCase =
-        VerifySignUpOtpUseCase(signUpAuthRepository)
+        VerifySignUpOtpUseCase(signUpAuthRepository, userRepository)
 
     @Provides
     @Singleton
@@ -249,16 +329,17 @@ class UseCaseModule {
     @Provides
     @Singleton
     fun provideUserOnboardingStageUseCase(
-        onboardingStageRepository: OnboardingStageRepository
+        userOnboardingStageRepository: UserOnboardingStageRepository
     ): UserOnboardingStageUseCase =
-        UserOnboardingStageUseCase(onboardingStageRepository)
+        UserOnboardingStageUseCase(userOnboardingStageRepository)
 
     @Provides
     @Singleton
     fun provideContinueCustomerGroupUseCase(
-        customerGroupRepository: CustomerGroupRepository
+        userCustomerGroupRepository: UserCustomerGroupRepository,
+        userRepository: UserRepository
     ): ContinueCustomerGroupUseCase =
-        ContinueCustomerGroupUseCase(customerGroupRepository)
+        ContinueCustomerGroupUseCase(userCustomerGroupRepository, userRepository)
 
     @Provides
     @Singleton
@@ -272,9 +353,9 @@ class UseCaseModule {
     @Provides
     @Singleton
     fun provideContinueUserDetailsUseCase(
-        userDetailsRepository: UserDetailsRepository
+        userRepository: UserRepository
     ): ContinueUserDetailsUseCase =
-        ContinueUserDetailsUseCase(userDetailsRepository)
+        ContinueUserDetailsUseCase(userRepository)
 
     @Provides
     @Singleton
@@ -293,9 +374,10 @@ class UseCaseModule {
     @Provides
     @Singleton
     fun provideContinueUserLocationUseCase(
-        userLocationRepository: UserLocationRepository
+        userLocationRepository: UserLocationRepository,
+        userRepository: UserRepository
     ): ContinueUserLocationUseCase =
-        ContinueUserLocationUseCase(userLocationRepository)
+        ContinueUserLocationUseCase(userLocationRepository, userRepository)
 
     @Provides
     @Singleton
@@ -328,18 +410,18 @@ class UseCaseModule {
     @Provides
     @Singleton
     fun provideVerifyUserDetailsUseCase(
-        appPreferences: AppPreferences,
+        userRepository: UserRepository,
         resourcesProvider: ResourcesProvider
     ): VerifyUserDetailsUseCase =
-        VerifyUserDetailsUseCase(appPreferences, resourcesProvider)
+        VerifyUserDetailsUseCase(userRepository, resourcesProvider)
 
     @Provides
     @Singleton
     fun provideGetOnboardingDataUseCase(
-        appPreferences: AppPreferences,
+        userRepository: UserRepository,
         resourcesProvider: ResourcesProvider
     ): GetOnboardingDataUseCase =
-        GetOnboardingDataUseCase(appPreferences, resourcesProvider)
+        GetOnboardingDataUseCase(userRepository, resourcesProvider)
 
     @Provides
     @Singleton
@@ -353,15 +435,15 @@ class UseCaseModule {
     @Provides
     @Singleton
     fun provideGetUserDetailsViewsUseCase(
-        appPreferences: AppPreferences,
+        userRepository: UserRepository,
         resourcesProvider: ResourcesProvider
     ): GetUserDetailsViewsUseCase =
-        GetUserDetailsViewsUseCase(appPreferences, resourcesProvider)
+        GetUserDetailsViewsUseCase(userRepository, resourcesProvider)
 
     @Provides
     @Singleton
-    fun provideGetAccountInfoDataUseCase(appPreferences: AppPreferences): GetAccountInfoDataUseCase =
-        GetAccountInfoDataUseCase(appPreferences)
+    fun provideGetAccountInfoDataUseCase(userRepository: UserRepository): GetAccountInfoDataUseCase =
+        GetAccountInfoDataUseCase(userRepository)
 
     @Provides
     @Singleton
@@ -390,15 +472,22 @@ class UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideIsUserOnboardedUseCase(
-        appPreferences: AppPreferences
-    ): IsUserOnboardedUseCase = IsUserOnboardedUseCase(appPreferences)
+    fun provideRegisterFCMTokenUseCase(
+        fcmTokenRepository: FCMTokenRepository,
+        userRepository: UserRepository
+    ): RegisterFCMTokenUseCase = RegisterFCMTokenUseCase(fcmTokenRepository,userRepository)
 
     @Provides
     @Singleton
-    fun provideRegisterFCMTokenUseCase(
-        fcmTokenRepository: FCMTokenRepository
-    ): RegisterFCMTokenUseCase = RegisterFCMTokenUseCase(fcmTokenRepository)
+    fun provideCreatePaymentUseCase(
+        paymentProcessingRepository: PaymentProcessingRepository
+    ): CreatePaymentUseCase = CreatePaymentUseCase(paymentProcessingRepository)
+
+    @Provides
+    @Singleton
+    fun provideFetchTransferInstructionUseCase(
+            paymentTransferInstructionRepository: PaymentTransferInstructionRepository
+    ): FetchTransferInstructionUseCase = FetchTransferInstructionUseCase(paymentTransferInstructionRepository)
 
     @Provides
     @Singleton
@@ -470,4 +559,11 @@ class UseCaseModule {
         userDetailRepository: UserDetailRepository,
         cartRepository: CartRepository
     ): GetCartIdUseCase = GetCartIdUseCase(userDetailRepository, cartRepository)
+
+    @Provides
+    @Singleton
+    fun getUserUseCase(
+        userRepository: UserRepository
+    ): GetUserUseCase = GetUserUseCase(userRepository)
+
 }

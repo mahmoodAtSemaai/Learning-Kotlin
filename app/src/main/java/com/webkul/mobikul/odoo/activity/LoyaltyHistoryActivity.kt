@@ -21,7 +21,7 @@ import com.webkul.mobikul.odoo.constant.ApplicationConstant
 import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.core.extension.makeGone
 import com.webkul.mobikul.odoo.core.extension.makeVisible
-import com.webkul.mobikul.odoo.core.utils.HTTP_RESOURCE_NOT_FOUND
+import com.webkul.mobikul.odoo.core.utils.HTTP_ERROR_RESOURCE_NOT_FOUND
 import com.webkul.mobikul.odoo.data.response.models.CartBaseResponse
 import com.webkul.mobikul.odoo.data.response.models.GetCartId
 import com.webkul.mobikul.odoo.databinding.ActivityLoyaltyHistoryBinding
@@ -48,11 +48,12 @@ class LoyaltyHistoryActivity : BaseActivity() {
     var offset = 0
     val miniListSize = 4
     var isFirstCall = true
-    var loyaltyHistory: MutableList<LoyaltyTransactionData> = mutableListOf<LoyaltyTransactionData>()
+    var loyaltyHistory: MutableList<LoyaltyTransactionData> =
+        mutableListOf<LoyaltyTransactionData>()
     var loyaltyBanners: List<LoyaltyTermsData> = listOf<LoyaltyTermsData>()
-    var customerId : String = ""
+    var customerId: String = ""
     var count = 0
-    private lateinit var sweetAlertDialog : SweetAlertDialog
+    private lateinit var sweetAlertDialog: SweetAlertDialog
 
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -113,20 +114,24 @@ class LoyaltyHistoryActivity : BaseActivity() {
 
     private fun openWishlist() {
         Intent(this, CustomerBaseActivity::class.java).apply {
-            this.putExtra(BundleConstant.BUNDLE_KEY_CUSTOMER_FRAG_TYPE,
-                CustomerHelper.CustomerFragType.TYPE_WISHLIST)
+            this.putExtra(
+                BundleConstant.BUNDLE_KEY_CUSTOMER_FRAG_TYPE,
+                CustomerHelper.CustomerFragType.TYPE_WISHLIST
+            )
             startActivity(this)
         }
     }
 
     private fun initDialog() {
-        sweetAlertDialog = AlertDialogHelper.getAlertDialog(this,
-            SweetAlertDialog.PROGRESS_TYPE, getString(R.string.please_wait),"", false,false);
+        sweetAlertDialog = AlertDialogHelper.getAlertDialog(
+            this,
+            SweetAlertDialog.PROGRESS_TYPE, getString(R.string.please_wait), "", false, false
+        );
     }
 
     private fun navigateToCartScreen() {
         val cartId = AppSharedPref.getCartId(this);
-        if(cartId == ApplicationConstant.CART_ID_NOT_AVAILABLE)
+        if (cartId == ApplicationConstant.CART_ID_NOT_AVAILABLE)
             getCartId()
         else {
             startActivity(Intent(this, NewCartActivity::class.java))
@@ -138,7 +143,7 @@ class LoyaltyHistoryActivity : BaseActivity() {
         ApiConnection.checkIfCartExists(this, customerId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : CustomObserver<CartBaseResponse<GetCartId>>(this){
+            .subscribe(object : CustomObserver<CartBaseResponse<GetCartId>>(this) {
                 override fun onSubscribe(d: Disposable) {
                     super.onSubscribe(d)
                     sweetAlertDialog.show()
@@ -146,12 +151,17 @@ class LoyaltyHistoryActivity : BaseActivity() {
 
                 override fun onNext(response: CartBaseResponse<GetCartId>) {
                     super.onNext(response)
-                    if(response.statusCode == HTTP_RESOURCE_NOT_FOUND)
+                    if (response.statusCode == HTTP_ERROR_RESOURCE_NOT_FOUND)
                         createCart(customerId)
                     else {
                         AppSharedPref.setCartId(this@LoyaltyHistoryActivity, response.result.cartId)
                         sweetAlertDialog.dismiss()
-                        startActivity(Intent(this@LoyaltyHistoryActivity, NewCartActivity::class.java))
+                        startActivity(
+                            Intent(
+                                this@LoyaltyHistoryActivity,
+                                NewCartActivity::class.java
+                            )
+                        )
                     }
                 }
 
@@ -165,7 +175,7 @@ class LoyaltyHistoryActivity : BaseActivity() {
         ApiConnection.createCart(this, customerId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : CustomObserver<CartBaseResponse<GetCartId>>(this){
+            .subscribe(object : CustomObserver<CartBaseResponse<GetCartId>>(this) {
 
                 override fun onNext(response: CartBaseResponse<GetCartId>) {
                     super.onNext(response)
@@ -198,7 +208,8 @@ class LoyaltyHistoryActivity : BaseActivity() {
 
 
     private fun getSemaaiPoints() {
-        ApiConnection.getLoyaltyPoints(this@LoyaltyHistoryActivity, customerId).subscribeOn(Schedulers.io())
+        ApiConnection.getLoyaltyPoints(this@LoyaltyHistoryActivity, customerId)
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : CustomObserver<ReferralResponse?>(this@LoyaltyHistoryActivity) {
                 override fun onNext(response: ReferralResponse) {
@@ -221,8 +232,8 @@ class LoyaltyHistoryActivity : BaseActivity() {
         }
     }
 
-    private fun showLoyaltyPointsDialog(){
-        if(AppSharedPref.isLoyaltyPointsDialogActive(this@LoyaltyHistoryActivity)){
+    private fun showLoyaltyPointsDialog() {
+        if (AppSharedPref.isLoyaltyPointsDialogActive(this@LoyaltyHistoryActivity)) {
             WhatsNewDialogFragment.newInstance().show(
                 mSupportFragmentManager,
                 WhatsNewDialogFragment::class.java.simpleName
@@ -233,7 +244,8 @@ class LoyaltyHistoryActivity : BaseActivity() {
     private fun getLoyaltyPointsHistory(limit: Int, offset: Int) {
         showProgress()
         disablePageButtons()
-        ApiConnection.getLoyaltyPointsHistory(this, customerId, limit, offset).subscribeOn(Schedulers.io())
+        ApiConnection.getLoyaltyPointsHistory(this, customerId, limit, offset)
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe(object :
                 CustomObserver<LoyaltyHistoryResponse>(this) {
                 override fun onNext(loyaltyHistoryResponse: LoyaltyHistoryResponse) {
@@ -263,7 +275,7 @@ class LoyaltyHistoryActivity : BaseActivity() {
     }
 
     private fun enablePageButtons() {
-        if (loyaltyHistory.size == limit && (count != (offset+limit))) {
+        if (loyaltyHistory.size == limit && (count != (offset + limit))) {
             enableNextButton()
         } else {
             disableNextButton()
@@ -326,19 +338,18 @@ class LoyaltyHistoryActivity : BaseActivity() {
 
     private fun handleFirstCallHistoryResponse(loyaltyHistory: MutableList<LoyaltyTransactionData>) {
         isFirstCall = false
-        if (loyaltyHistory.size > miniListSize){
+        if (loyaltyHistory.size > miniListSize) {
             setView(loyaltyHistory.subList(0, miniListSize))
             showMoreHistoryButton()
-        }
-        else {
+        } else {
             setView(loyaltyHistory)
         }
     }
 
-    private fun handlePointsHistoryResponse(loyaltyHistory: MutableList<LoyaltyTransactionData>){
+    private fun handlePointsHistoryResponse(loyaltyHistory: MutableList<LoyaltyTransactionData>) {
         setView(loyaltyHistory)
         hideMoreHistoryButton()
-        if(loyaltyHistory.size == limit) {
+        if (loyaltyHistory.size == limit) {
             showPageButtons()
         }
     }
@@ -360,7 +371,7 @@ class LoyaltyHistoryActivity : BaseActivity() {
     private fun showLoyaltyhistoryList(loyaltyHistory: MutableList<LoyaltyTransactionData>) {
         setView(loyaltyHistory)
         hideMoreHistoryButton()
-        if(loyaltyHistory.size == limit){
+        if (loyaltyHistory.size == limit) {
             showPageButtons()
         }
     }
@@ -392,15 +403,15 @@ class LoyaltyHistoryActivity : BaseActivity() {
             })
     }
 
-    private fun handleLoyaltyTermsResponse(loyaltyBanners: List<LoyaltyTermsData>){
-        if (loyaltyBanners.isEmpty()){
+    private fun handleLoyaltyTermsResponse(loyaltyBanners: List<LoyaltyTermsData>) {
+        if (loyaltyBanners.isEmpty()) {
             hideMoreHistoryButton()
         } else {
             showBanners(loyaltyBanners)
         }
     }
 
-    private fun showBanners(loyaltyBanners: List<LoyaltyTermsData>){
+    private fun showBanners(loyaltyBanners: List<LoyaltyTermsData>) {
         binding.rvLoyaltyTerms.apply {
             layoutManager = LinearLayoutManager(this@LoyaltyHistoryActivity)
             adapter = LoyaltyTermsListAdapter(this@LoyaltyHistoryActivity, loyaltyBanners)

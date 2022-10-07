@@ -16,4 +16,8 @@
         <key>feature_revamp_arch_splash_screen_enabled</key>
         <value>false</value>
     </entry>
+    <entry>
+        <key>feature_revamp_arch_checkout_screen_enabled</key>
+        <value>false</value>
+    </entry>
 </defaultsMap>

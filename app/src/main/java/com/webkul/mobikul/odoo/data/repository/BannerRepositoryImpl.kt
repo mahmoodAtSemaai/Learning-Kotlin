@@ -9,7 +9,7 @@ import javax.inject.Inject
 class BannerRepositoryImpl @Inject constructor(
         private val bannerRemoteDataSource: BannerRemoteDataSource
 ) : BannerRepository {
-    override suspend fun get(): Resource<BannerListEntity> {
+    override suspend fun getBanner(): Resource<BannerListEntity> {
         return bannerRemoteDataSource.get()
     }
 }

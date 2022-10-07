@@ -60,14 +60,14 @@ object RetrofitModule {
                 builder.addHeader(LANGUAGE, appPreferences.languageCode ?: "")
             }
 
-            val response = chain.proceed(
+            var response = chain.proceed(
                 builder.build()
             )
             val body = response.peekBody(Long.MAX_VALUE).string()
             try {
                 if (response.isSuccessful) {
-                    if (body.contains("success")) {
-                        val jsonResponse = JSONObject(body)
+                    val jsonResponse = JSONObject(body)
+                    if (jsonResponse.has("success")) {
                         val isSuccess = jsonResponse.optBoolean("success")
                         if (!isSuccess) {
                             val message = jsonResponse.optString("message")

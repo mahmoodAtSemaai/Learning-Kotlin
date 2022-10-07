@@ -4,6 +4,4 @@ import com.webkul.mobikul.odoo.core.data.Repository
 import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.data.entity.address.VillageListEntity
 
-interface VillageRepository : Repository {
-    suspend fun getVillages(subDistrictId: Int) : Resource<VillageListEntity>
-}
+interface VillageRepository : Repository<VillageListEntity, Int, Any>

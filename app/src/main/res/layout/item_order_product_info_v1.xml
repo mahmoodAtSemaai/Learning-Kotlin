@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <data>
+
+        <import type="com.webkul.mobikul.odoo.helper.ImageHelper.ImageType" />
+
+        <import
+            alias="View"
+            type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.data.entity.OrderProductEntity" />
+
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/padding_16"
+        android:paddingTop="@dimen/padding_12"
+        android:paddingBottom="@dimen/padding_12">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_product_image"
+            android:layout_width="@dimen/size_100"
+            android:layout_height="@dimen/size_100"
+            android:scaleType="centerInside"
+            app:imageType="@{ImageType.PRODUCT_SMALL}"
+            app:imageUrl="@{data.thumbNail}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:placeholder="@{@drawable/ic_vector_odoo_placeholder_grey400_48dp}"
+            app:srcCompat="@drawable/ic_vector_odoo_placeholder_grey400_48dp"
+            tools:src="@drawable/ic_vector_odoo_placeholder_grey400_48dp" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_product_name_big"
+            android:textAppearance="@style/Semaai.TextAppearance.Subtitle3.Bold"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_20"
+            android:text="@{data.productName}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_product_image"
+            app:layout_constraintTop_toTopOf="@+id/iv_product_image"
+            tools:text="BUNCIS LEBAT 3 - 500 GR" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_product_quantity"
+            android:textAppearance="@style/Semaai.TextAppearance.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_4"
+            android:text="@{String.valueOf(data.qty)}"
+            app:layout_constraintEnd_toStartOf="@+id/tv_x"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="@+id/tv_product_name_big"
+            app:layout_constraintTop_toBottomOf="@+id/tv_product_name_big"
+            tools:text="1" />
+
+
+        <TextView
+            android:id="@+id/tv_x"
+            android:textAppearance="@style/Semaai.TextAppearance.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_6"
+            android:text="@string/x"
+            app:layout_constraintEnd_toStartOf="@+id/tv_price"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_product_quantity"
+            app:layout_constraintTop_toTopOf="@+id/tv_product_quantity" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_price"
+            android:textAppearance="@style/Semaai.TextAppearance.Body1"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:text="@{data.priceUnit}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_x"
+            app:layout_constraintTop_toTopOf="@+id/tv_product_quantity"
+            tools:text="Rp47,300" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_price_total"
+            android:textAppearance="@style/Semaai.TextAppearance.Body2"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:gravity="center"
+            android:text="@{@string/price_total_x(data.priceTotal)}"
+            app:layout_constraintEnd_toEndOf="@+id/iv_product_image"
+            app:layout_constraintStart_toStartOf="@+id/iv_product_image"
+            app:layout_constraintTop_toBottomOf="@+id/iv_product_image"
+            tools:text="Total Price\nRp47,000" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

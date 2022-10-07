@@ -244,15 +244,14 @@ public class SplashScreenResponse extends LoginResponse {
         ApplicationSingleton.getInstance().setRatingStatus(getRatingStatus());
 
         //TODO optimize comparisions
+        AppSharedPref.setGroupName(context,getGroupName());
         if(AppSharedPref.getGroupName(context) == context.getString(R.string.toko_tani) || AppSharedPref.getGroupName(context) == context.getString(R.string.kelompok_tani)){
             AppSharedPref.setCustomerName(context,getUserName());
         }else{
             AppSharedPref.setCustomerName(context,getCustomerName());
         }
         AppSharedPref.setCustomerPhoneNumber(context,getCustomerPhoneNumber());
-
         AppSharedPref.setCustomerGroupName(context,getCustomerGroupName());
-        AppSharedPref.setGroupName(context,getGroupName());
         AppSharedPref.setUserIsOnboarded(context,isUserOnboarded());
         AppSharedPref.setCustomerGroupId(context,getCustomerGroupId());
         AppSharedPref.setUserName(context,getUserName());

@@ -12,7 +12,8 @@ data class UserAddressRequest(
     var subDistrictId: String = "",
     var villageId: String = "",
     var countryId: String = ApplicationConstant.COUNTY_ID.toString(),
-    var isOnboarding: Boolean = true
+    var isOnboarding: Boolean = true,
+    var partnerId: String = ""
 ) {
     override fun toString(): String {
         return JSONObject().put(STREET, street).put(STREET2, street2).put(ZIP, zip)

@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/order_details_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:visibility="gone"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <include
+                android:id="@+id/tb_order"
+                layout="@layout/toolbar_layout"
+                app:title="@string/mobikul"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_sub_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingVertical="@dimen/padding_10"
+            app:layout_constraintTop_toBottomOf="@id/tb_order"
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/tv_order_name"
+                android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+                android:textAllCaps="true"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@+id/gl_vertical_97"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/gl_vertical_3"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Order Id #216498014 " />
+
+
+            <TextView
+                android:id="@+id/tv_purchase_date_text"
+                android:textAppearance="@style/Semaai.TextAppearance.Body1"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_12"
+                android:text="@string/date_of_purchase"
+                app:layout_constraintEnd_toStartOf="@+id/tv_purchase_date"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/gl_vertical_3"
+                app:layout_constraintTop_toBottomOf="@+id/tv_order_name" />
+
+            <TextView
+                android:id="@+id/tv_purchase_date"
+                android:textAppearance="@style/Semaai.TextAppearance.Body1"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                app:layout_constraintEnd_toStartOf="@+id/gl_vertical_97"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tv_purchase_date_text"
+                app:layout_constraintTop_toTopOf="@+id/tv_purchase_date_text"
+                tools:text="20th March 2016" />
+
+
+            <TextView
+                android:id="@+id/tv_due_payment_header"
+                android:textAppearance="@style/Semaai.TextAppearance.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_12"
+                android:text="@string/due_payment"
+                app:layout_constraintStart_toStartOf="@+id/tv_purchase_date_text"
+                app:layout_constraintTop_toBottomOf="@+id/tv_purchase_date_text" />
+
+            <TextView
+                android:id="@+id/tv_due_date_day"
+                android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/tv_due_payment_header"
+                app:layout_constraintTop_toBottomOf="@+id/tv_due_payment_header"
+                tools:text="Wed, 26 January 2022" />
+
+
+            <TextView
+                android:id="@+id/tv_remaining_time"
+                android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:textColor="@color/colorPrimary"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_due_date_day"
+                app:layout_constraintEnd_toStartOf="@+id/gl_vertical_97"
+                app:layout_constraintTop_toTopOf="@+id/tv_due_payment_header"
+                tools:text="Time Expired" />
+
+            <include
+                android:id="@+id/horizontal_divider_1"
+                layout="@layout/divider_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_2"
+                android:layout_marginTop="@dimen/margin_12"
+                app:layout_constraintTop_toBottomOf="@+id/tv_due_date_day" />
+
+            <TextView
+                android:id="@+id/tv_product_details_header"
+                android:textAppearance="@style/Semaai.TextAppearance.Subtitle2.Bold"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_12"
+                android:text="@string/product_details"
+                app:layout_constraintEnd_toStartOf="@+id/gl_vertical_97"
+                app:layout_constraintStart_toStartOf="@+id/gl_vertical_3"
+                app:layout_constraintTop_toBottomOf="@+id/horizontal_divider_1" />
+
+            <include
+                android:id="@+id/divider_1"
+                layout="@layout/divider_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_2"
+                android:visibility="invisible"
+                android:layout_marginTop="@dimen/margin_2"
+                app:layout_constraintTop_toBottomOf="@+id/tv_product_details_header" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_products_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/padding_8"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@+id/divider_1"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_order_product_info_v1" />
+
+            <include
+                android:id="@+id/divider_2"
+                layout="@layout/divider_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_2"
+                app:layout_constraintTop_toBottomOf="@+id/rv_products_info" />
+
+            <TextView
+                android:id="@+id/tv_delivery_details_heading"
+                android:textAppearance="@style/Semaai.TextAppearance.Subtitle2.Bold"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_12"
+                android:text="@string/delivery_details"
+                app:layout_constraintEnd_toStartOf="@+id/gl_vertical_97"
+                app:layout_constraintStart_toStartOf="@+id/gl_vertical_3"
+                app:layout_constraintTop_toBottomOf="@+id/divider_2" />
+
+            <include
+                android:id="@+id/divider_3"
+                layout="@layout/divider_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_2"
+                android:layout_marginTop="@dimen/margin_6"
+                app:layout_constraintTop_toBottomOf="@+id/tv_delivery_details_heading" />
+
+
+            <include
+                android:id="@+id/include7"
+                layout="@layout/divider_vertical"
+                android:layout_width="@dimen/size_1"
+                android:layout_height="@dimen/size_0"
+                android:layout_marginTop="@dimen/margin_8"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_address_description"
+                app:layout_constraintEnd_toEndOf="@+id/divider_3"
+                app:layout_constraintHorizontal_bias="0.3"
+                app:layout_constraintStart_toStartOf="@+id/divider_3"
+                app:layout_constraintTop_toBottomOf="@+id/divider_3" />
+
+            <TextView
+                android:id="@+id/tv_courier_text"
+                android:textAppearance="@style/Semaai.TextAppearance.Body1"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginEnd="@dimen/margin_8"
+                android:layout_marginRight="@dimen/size_8"
+                android:text="@string/courier"
+                app:layout_constraintEnd_toStartOf="@+id/include7"
+                app:layout_constraintStart_toStartOf="@+id/gl_vertical_3"
+                app:layout_constraintTop_toBottomOf="@+id/divider_3" />
+
+            <TextView
+                android:id="@+id/tv_address_text"
+                android:textAppearance="@style/Semaai.TextAppearance.Body1"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_12"
+                android:layout_marginEnd="@dimen/margin_8"
+                android:layout_marginRight="@dimen/margin_8"
+                android:text="@string/address"
+                app:layout_constraintEnd_toStartOf="@+id/include7"
+                app:layout_constraintStart_toStartOf="@+id/gl_vertical_3"
+                app:layout_constraintTop_toBottomOf="@+id/tv_courier_text" />
+
+            <TextView
+                android:id="@+id/tv_shipping_method_name"
+                android:textAppearance="@style/Semaai.TextAppearance.Body1"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_8"
+                android:layout_marginLeft="@dimen/margin_8"
+                android:layout_marginTop="@dimen/margin_8"
+                app:layout_constraintEnd_toStartOf="@+id/gl_vertical_97"
+                app:layout_constraintStart_toEndOf="@+id/include7"
+                app:layout_constraintTop_toBottomOf="@+id/divider_3"
+                tools:text="Free Shipping" />
+
+            <TextView
+                android:id="@+id/tv_customer_name"
+                android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@+id/gl_vertical_97"
+                app:layout_constraintStart_toStartOf="@+id/tv_shipping_method_name"
+                app:layout_constraintTop_toTopOf="@+id/tv_address_text"
+                tools:text="Semaai User" />
+
+            <TextView
+                android:id="@+id/tv_phone_number"
+                android:textAppearance="@style/Semaai.TextAppearance.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/tv_customer_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_customer_name"
+                tools:text="(1234567890)" />
+
+            <TextView
+                android:id="@+id/tv_address_description"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@+id/gl_vertical_97"
+                app:layout_constraintStart_toStartOf="@+id/tv_phone_number"
+                app:layout_constraintTop_toBottomOf="@+id/tv_phone_number"
+                tools:text="Jl. K.H. Royani 1, no. 51, RT 02, RW 09. Kelurahan Karet Kuningan, Kecamatan Setia Budi, Kota Jakarta Selatan, DKI Jakarta, ID 12940" />
+
+            <include
+                android:id="@+id/divider_4"
+                layout="@layout/divider_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_2"
+                android:layout_marginTop="@dimen/margin_10"
+                app:layout_constraintTop_toBottomOf="@+id/tv_address_description" />
+
+            <ImageView
+                android:id="@+id/iv_bank_icon"
+                android:layout_width="@dimen/size_48"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8"
+                app:layout_constraintStart_toStartOf="@+id/gl_vertical_3"
+                app:layout_constraintTop_toBottomOf="@+id/divider_4"
+                tools:src="@drawable/ic_bank_bni_logo" />
+
+            <TextView
+                android:id="@+id/tv_method_name"
+                android:textAppearance="@style/Semaai.TextAppearance.Subtitle2.Bold"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_12"
+                app:layout_constraintEnd_toStartOf="@+id/gl_vertical_97"
+                app:layout_constraintStart_toStartOf="@+id/iv_bank_icon"
+                app:layout_constraintTop_toBottomOf="@+id/iv_bank_icon"
+                tools:text="BRI Virtual Account" />
+
+            <include
+                android:id="@+id/divider_5"
+                layout="@layout/divider_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_2"
+                android:layout_marginTop="@dimen/margin_10"
+                app:layout_constraintTop_toBottomOf="@+id/btn_payment_status" />
+
+
+            <TextView
+                android:id="@+id/tv_account_number"
+                android:textAppearance="@style/Semaai.TextAppearance.Subtitle2.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_account_number"
+                android:drawableRight="@drawable/ic_account_number"
+                android:drawablePadding="@dimen/padding_12"
+                android:foreground="?attr/selectableItemBackground"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_payment_status"
+                app:layout_constraintEnd_toStartOf="@+id/btn_payment_status"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/gl_vertical_3"
+                app:layout_constraintTop_toTopOf="@+id/btn_payment_status"
+                tools:text="12345678691901" />
+
+            <Button
+                android:id="@+id/btn_payment_status"
+                android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_12"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/padding_12"
+                android:paddingVertical="@dimen/padding_4"
+                android:text="@string/payment_n_status"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/gl_vertical_97"
+                app:layout_constraintTop_toBottomOf="@+id/tv_method_name" />
+
+            <TextView
+                android:id="@+id/tv_payment_status_text"
+                android:textAppearance="@style/Semaai.TextAppearance.Subtitle2.Bold"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_12"
+                android:text="@string/payment_status"
+                app:layout_constraintEnd_toStartOf="@+id/tv_status"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/gl_vertical_3"
+                app:layout_constraintTop_toBottomOf="@+id/divider_5" />
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:textAppearance="@style/Semaai.TextAppearance.Subtitle2.Bold"
+                android:layout_width="@dimen/size_0"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                app:layout_constraintEnd_toStartOf="@+id/gl_vertical_97"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tv_payment_status_text"
+                app:layout_constraintTop_toTopOf="@+id/tv_payment_status_text"
+                tools:text="@string/to_pay" />
+
+            <include
+                android:id="@+id/include31"
+                layout="@layout/divider_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_2"
+                android:layout_marginTop="@dimen/margin_6"
+                app:layout_constraintTop_toBottomOf="@+id/tv_payment_status_text" />
+
+            <include
+                android:id="@+id/payment_details"
+                layout="@layout/layout_order_cost_calculation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/include31" />
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_vertical_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.030" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_vertical_97"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.970" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/gr_bank_payment_method_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="iv_bank_icon,tv_method_name,tv_account_number,btn_payment_status,divider_4" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/gr_due_date_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="tv_remaining_time,tv_due_payment_header,tv_due_date_day" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/gr_purchase_date_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="tv_purchase_date,tv_purchase_date_text" />
+
+            <ProgressBar
+                android:id="@+id/pb_loader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/custom_progress_drawable"
+                android:indeterminate="true"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.35000002" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+
+
+</layout>
