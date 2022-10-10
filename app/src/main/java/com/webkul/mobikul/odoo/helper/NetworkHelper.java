@@ -37,7 +37,9 @@ public class NetworkHelper {
             return;
         }
         /*dismiss dialog*/
-        AlertDialogHelper.dismiss(((BaseActivity) activity).mSweetAlertDialog);
+        if(activity instanceof BaseActivity) {
+            AlertDialogHelper.dismiss(((BaseActivity) activity).mSweetAlertDialog);
+        }
         t.printStackTrace();
 
         /*display message*/
