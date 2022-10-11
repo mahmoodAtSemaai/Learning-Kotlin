@@ -33,6 +33,7 @@ import com.webkul.mobikul.odoo.helper.SnackbarHelper
 import com.webkul.mobikul.odoo.model.ReferralResponse
 import com.webkul.mobikul.odoo.ui.checkout.CheckoutActivityV1
 import com.webkul.mobikul.odoo.updates.FirebaseRemoteConfigHelper.isCheckoutFeatureEnabled
+import com.webkul.mobikul.odoo.ui.seller.SellerProfileActivityV1
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -277,8 +278,8 @@ class CartFragment : Fragment() ,
     }
 
     private fun redirectToSellerScreen(sellerEntity: SellerEntity){
-        startActivity(Intent(requireContext(), (context?.applicationContext as OdooApplication).sellerProfileActivity)
-            .putExtra(BundleConstant.BUNDLE_KEY_SELLER_ID, sellerEntity.sellerId.toString()))
+        startActivity(Intent(requireContext(), SellerProfileActivityV1::class.java)
+            .putExtra(BundleConstant.BUNDLE_KEY_SELLER_ID, sellerEntity.sellerId))
     }
 
 

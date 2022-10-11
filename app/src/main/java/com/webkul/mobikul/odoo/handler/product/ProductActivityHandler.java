@@ -399,7 +399,7 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
                 data.getSeller().getMarketplaceSellerId(), (int) data.getSeller().getAverageRating(),
                 data.getSeller().getSellerName());
         Intent intent = new Intent(context, SellerProfileActivityV1.class);
-        intent.putExtra(BUNDLE_KEY_SELLER_ID, sellerID);
+        intent.putExtra(BUNDLE_KEY_SELLER_ID, Integer.parseInt(sellerID));
         context.startActivity(intent);
     }
 

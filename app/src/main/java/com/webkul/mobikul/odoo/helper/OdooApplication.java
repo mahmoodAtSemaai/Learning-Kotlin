@@ -69,11 +69,6 @@ public class OdooApplication extends MultiDexApplication implements LifecycleObs
         AbandonedCartAlarmHelper.cancelAlarm(this);
     }
 
-
-    public Class getSellerProfileActivity() {
-        return null;
-    }
-
     public Observable<CatalogProductResponse> getSellerCollection(String sellerId, int offset, int itemsPerPage) {
         return null;
     }
