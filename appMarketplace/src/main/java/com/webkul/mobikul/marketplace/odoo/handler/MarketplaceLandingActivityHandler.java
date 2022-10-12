@@ -33,7 +33,7 @@ public class MarketplaceLandingActivityHandler {
 
     public void onClickViewSellerProfile(int sellerId) {
         Intent intent = new Intent(mContext, SellerProfileActivityV1.class);
-        intent.putExtra(BUNDLE_KEY_SELLER_ID, String.valueOf(sellerId));
+        intent.putExtra(BUNDLE_KEY_SELLER_ID, sellerId);
         mContext.startActivity(intent);
     }
 

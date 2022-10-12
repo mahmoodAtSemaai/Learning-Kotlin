@@ -103,7 +103,7 @@ public class AccountFragmentHandler {
 
     public void showSellerProfile() {
         Intent intent = new Intent(context, SellerProfileActivityV1.class);
-        intent.putExtra(BUNDLE_KEY_SELLER_ID, AppSharedPref.getCustomerId(context));
+        intent.putExtra(BUNDLE_KEY_SELLER_ID, Integer.parseInt(AppSharedPref.getCustomerId(context)));
         context.startActivity(intent);
     }
 
