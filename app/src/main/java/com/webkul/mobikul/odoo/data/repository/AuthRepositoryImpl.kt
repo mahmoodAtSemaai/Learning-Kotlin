@@ -19,7 +19,9 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun logIn(username: String, password: String): Resource<LoginEntity> {
 
         appPreferences.customerLoginToken = Base64.encodeToString(
-            AuthenticationRequest(username, password).toString().toByteArray(), Base64.NO_WRAP
+            AuthenticationRequest(
+                username, password
+            ).toString().toByteArray(), Base64.NO_WRAP
         )
 
         val result = remoteDataSource.logIn()
@@ -34,8 +36,9 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun signUp(signUpRequest: SignUpRequest): Resource<SignUpEntity> {
         appPreferences.customerLoginToken = Base64.encodeToString(
-            AuthenticationRequest(signUpRequest.login, signUpRequest.password).toString()
-                .toByteArray(), Base64.NO_WRAP
+            AuthenticationRequest(
+                signUpRequest.login, signUpRequest.password).toString()
+            .toByteArray(), Base64.NO_WRAP
         )
         val result = remoteDataSource.signUp(signUpRequest)
 

@@ -8,12 +8,10 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.activity.NewHomeActivity
-import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BindingBaseActivity
 import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.databinding.ActivityUserOnboardingBinding
-import com.webkul.mobikul.odoo.model.home.HomePageResponse
 import com.webkul.mobikul.odoo.ui.signUpOnboarding.effect.UserOnboardingEffect
 import com.webkul.mobikul.odoo.ui.signUpOnboarding.fragment.*
 import com.webkul.mobikul.odoo.ui.signUpOnboarding.intent.UserOnboardingIntent
@@ -109,10 +107,6 @@ class UserOnboardingActivity @Inject constructor() :
             is UserOnboardingState.LaunchNextStage -> {
                 dismissProgressDialog()
                 launchNextStage()
-            }
-            is UserOnboardingState.Splash -> {
-                state.splashScreenResponse.updateSharedPref(this)
-                triggerIntent(UserOnboardingIntent.GetHomeData)
             }
         }
     }

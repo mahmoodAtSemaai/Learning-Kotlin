@@ -3,18 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <variable
-            name="data"
-            type="com.webkul.mobikul.odoo.features.onboarding.data.models.OnboardingData" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        tools:context=".features.onboarding.presentation.OnboardingFragment">
+        tools:context=".ui.onboarding.OnboardingFragment">
 
         <TextView
             android:id="@+id/tv_heading"
@@ -22,7 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/size_24"
-            android:text="@{data.titleText}"
             android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toTopOf="@+id/gl_horizontal_15"
             app:layout_constraintEnd_toEndOf="parent"
@@ -36,7 +28,6 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/size_24"
             android:layout_marginTop="@dimen/size_12"
-            android:text="@{data.descriptionText}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/gl_horizontal_15"
@@ -49,7 +40,6 @@ medicine, to fertilizer in just one application." />
             android:layout_height="@dimen/size_320"
             android:layout_marginTop="@dimen/size_12"
             android:adjustViewBounds="true"
-            android:src="@{data.drawable}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

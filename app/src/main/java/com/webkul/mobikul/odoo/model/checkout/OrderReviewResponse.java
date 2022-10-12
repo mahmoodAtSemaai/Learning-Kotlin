@@ -72,6 +72,13 @@ public class OrderReviewResponse extends BaseResponse implements Parcelable {
     @Expose
     private int transactionId;
 
+    @SerializedName("sale_order_id")
+    @Expose
+    private int saleOrderId;
+
+    @SerializedName("cart_count")
+    @Expose
+    private int cartCount;
 
     protected OrderReviewResponse(Parcel in) {
         super(in);
@@ -172,6 +179,14 @@ public class OrderReviewResponse extends BaseResponse implements Parcelable {
 
     public int getTransactionId() {
         return transactionId;
+    }
+
+    public int getSaleOrderId() {
+        return saleOrderId;
+    }
+
+    public int getCartCount() {
+        return cartCount;
     }
 
 

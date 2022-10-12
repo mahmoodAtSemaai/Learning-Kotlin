@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <data>
+
+        <import
+            alias="View"
+            type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.odoo.model.customer.address.AddressData" />
+
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.odoo.ui.checkout.address.CheckoutAddressRecyclerViewHandlerV1" />
+
+        <variable
+            name="position"
+            type="int" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_12"
+        android:background="@drawable/shape_rectangular_white_bg_gray_border_1dp"
+        android:paddingHorizontal="@dimen/padding_12"
+        android:paddingVertical="@dimen/padding_8">
+
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{data.name}"
+            android:textAllCaps="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="User Name" />
+
+        <ImageView
+            android:id="@+id/iv_address_selection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/circular_radio_button_unselected_state"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_name" />
+
+        <TextView
+            android:id="@+id/tv_display_name"
+            android:textAppearance="@style/Semaai.TextAppearance.Body1"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_12"
+            android:text="@{data.displayName}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_name"
+            tools:text="Jl. K.H. Royani 1, no. 51, RT 02, RW 09. Kelurahan Karet Kuningan, Kecamatan Setia Budi, Kota Jakarta Selatan, DKI Jakarta, ID 12940" />
+
+
+        <TextView
+            android:id="@+id/tv_edit_address"
+            android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_12"
+            android:onClick="@{() -> handler.editAddress()}"
+            android:text="@string/edit_address"
+            android:textColor="@color/colorAccent"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toStartOf="@+id/tv_delete_address"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_display_name" />
+
+        <TextView
+            android:id="@+id/tv_delete_address"
+            android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_12"
+            android:gravity="end"
+            android:onClick="@{() -> handler.deleteAddress()}"
+            android:text="@string/delete_address"
+            android:textColor="@color/colorAccent"
+            android:visibility="@{position == 0 ? View.INVISIBLE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_edit_address"
+            app:layout_constraintTop_toBottomOf="@+id/tv_display_name" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

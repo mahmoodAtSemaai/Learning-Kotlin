@@ -86,6 +86,8 @@ public class BaseResponse extends BaseObservable implements Parcelable {
     @Expose
     private boolean isOnboarded;
 
+    protected BaseResponse() {
+    }
 
     protected BaseResponse(Parcel in) {
         if (in == null) {

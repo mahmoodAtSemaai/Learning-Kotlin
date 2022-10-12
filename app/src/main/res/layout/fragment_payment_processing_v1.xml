@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <include
+            android:id="@+id/tb_payment_container"
+            layout="@layout/toolbar_layout"
+            app:title="@string/virtual_account"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_sub_parent"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tb_payment_container"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@color/white">
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_horizontal_25"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".25" />
+
+            <ImageView
+                android:id="@+id/iv_semaai_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/logo_semaai_horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/gl_horizontal_25"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/gl_horizontal_25" />
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_horizontal_45"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".45" />
+
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/cpi_loading"
+                android:layout_width="@dimen/size_64"
+                android:layout_height="@dimen/size_64"
+                android:indeterminate="true"
+                app:indicatorColor="@color/colorAccent"
+                app:indicatorSize="@dimen/size_64"
+                app:layout_constraintBottom_toTopOf="@+id/gl_horizontal_45"
+                app:layout_constraintEnd_toEndOf="@+id/iv_semaai_logo"
+                app:layout_constraintStart_toStartOf="@+id/iv_semaai_logo"
+                app:layout_constraintTop_toTopOf="@+id/gl_horizontal_45"
+                app:trackColor="@color/white"
+                app:trackCornerRadius="@dimen/size_8"
+                app:trackThickness="@dimen/size_8" />
+
+
+            <TextView
+                android:id="@+id/tv_processing"
+                android:textAppearance="@style/Semaai.TextAppearance.Subtitle1.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/processing"
+                app:layout_constraintBottom_toTopOf="@+id/gl_horizontal_65"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cpi_loading"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/tv_loading_text"
+                android:textAppearance="@style/Semaai.TextAppearance.Subtitle2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/please_wait_a_moment"
+                app:layout_constraintEnd_toEndOf="@+id/tv_processing"
+                app:layout_constraintStart_toStartOf="@+id/tv_processing"
+                app:layout_constraintTop_toTopOf="@+id/gl_horizontal_65" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_horizontal_65"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".65" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

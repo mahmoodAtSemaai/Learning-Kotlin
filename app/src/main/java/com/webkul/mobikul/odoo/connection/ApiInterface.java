@@ -105,9 +105,11 @@ public interface ApiInterface {
     String MOBIKUL_CHECKOUT_EMPTY_CART = "mobikul/mycart/setToEmpty";
     String MOBIKUL_CHECKOUT_PAYMENT_ACQUIRERS = "mobikul/paymentAcquirers";
     String LOYALTY_CHECKOUT_ORDER_REVIEW = "v2/sale-orders/review";
+    String LOYALTY_CHECKOUT_ORDER_REVIEW_V3 = "v3/sale-orders/review";
     String LOYALTY_CHECKOUT_PLACE_ORDER = "v1/sale-orders/place";
     String MOBIKUL_CHECKOUT_SALE_ORDERS = "sale-orders";
     String MOBIKUL_CHECKOUT_SHIPPING_METHODS = "/mobikul/ShippingMethods";
+    String MOBIKUL_CHECKOUT_SHIPPING_METHODS_V1 = "/v1/delivery-carriers";
 
     //Cart APIs
     String CART_API_VERSION = "v1";
@@ -220,6 +222,7 @@ public interface ApiInterface {
     String MOBIKUL_GET_PAYMENTS_TRANSACTIONS = "/payment-transactions";
     String MOBIKUL_GET_PAYMENTS_INSTRUCTIONS = "/payment/method-providers/{bank_id}/instructions";
     String MOBIKUL_GET_ORDER_DATA = "/v1/sale-orders/{order_id}";
+    String MOBIKUL_GET_ORDER_DATA_V2 = "/v2/sale-orders/{order_id}";
     String MOBIKUL_UPDATE_ORDER_DATA = "/sale-orders/{order_id}";
     String MOBIKUL_ORDER_ID = "order_id";
     String MOBIKUL_BANK_ID = "bank_id";

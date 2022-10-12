@@ -38,6 +38,9 @@ import com.webkul.mobikul.odoo.connection.ApiConnection;
 import com.webkul.mobikul.odoo.connection.CustomObserver;
 import com.webkul.mobikul.odoo.core.utils.AppConstantsKt;
 import com.webkul.mobikul.odoo.custom.CustomToast;
+import com.webkul.mobikul.odoo.data.request.AddToWishListRequest;
+import com.webkul.mobikul.odoo.data.request.DeleteFromWishListRequest;
+import com.webkul.mobikul.odoo.data.response.models.WishListUpdatedResponse;
 import com.webkul.mobikul.odoo.dialog_frag.ChangeQtyDialogFragment;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.fragment.ProductReviewFragment;
@@ -316,7 +319,7 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
                                 });
                             } else {
                                 if (response.statusCode == AppConstantsKt.HTTP_RESPONSE_OK ||
-                                        response.statusCode == AppConstantsKt.HTTP_RESOURCE_CREATED) {
+                                        response.statusCode == AppConstantsKt.HTTP_RESPONSE_RESOURCE_CREATED) {
                                     data.setAddedToWishlist(false);
                                     CustomToast.makeText(context, response.message, Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();
                                     ((ImageButton) v).setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),
@@ -362,7 +365,7 @@ public class ProductActivityHandler implements ChangeQtyDialogFragment.OnQtyChan
 
                             } else {
                                 if (response.statusCode == AppConstantsKt.HTTP_RESPONSE_OK ||
-                                        response.statusCode == AppConstantsKt.HTTP_RESOURCE_CREATED) {
+                                        response.statusCode == AppConstantsKt.HTTP_RESPONSE_RESOURCE_CREATED) {
                                     data.setAddedToWishlist(true);
                                     FirebaseAnalyticsImpl.logAddToWishlistEvent(context, productId, data.getName());
                                     CustomToast.makeText(context, response.message, Toast.LENGTH_SHORT, R.style.GenericStyleableToast).show();

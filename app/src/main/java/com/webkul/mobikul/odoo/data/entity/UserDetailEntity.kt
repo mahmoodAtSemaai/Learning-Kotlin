@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class UserDetailEntity(
         @SerializedName("addons") val addons: AddOnsEntity,
         @SerializedName("customer_id") val customerId: Int,
-        @SerializedName("user_id") val userId: Int,
+        @SerializedName("user_id") val userId: String,
         @SerializedName("cart_count") val cartCount: Int,
         @SerializedName("is_approved") val isApproved: Boolean,
         @SerializedName("wishlist_count") val wishlistCount: Int,

@@ -37,7 +37,7 @@
                 style="@style/Semaai.TextAppearance.Headline6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/text_color_pure_white"
                 tools:text="Checkout" />
 
         </androidx.appcompat.widget.Toolbar>

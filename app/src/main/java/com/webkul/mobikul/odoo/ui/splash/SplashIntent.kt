@@ -11,4 +11,5 @@ sealed class SplashIntent : IIntent {
     object CheckFirstTimeUser : SplashIntent()
     object DeeplinkSplashPageData : SplashIntent()
     object CreateChatChannel : SplashIntent()
+    object GetConfigs : SplashIntent()
 }

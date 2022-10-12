@@ -30,7 +30,7 @@ import com.webkul.mobikul.odoo.constant.ApplicationConstant
 import com.webkul.mobikul.odoo.core.extension.makeGone
 import com.webkul.mobikul.odoo.core.extension.makeInvisible
 import com.webkul.mobikul.odoo.core.extension.makeVisible
-import com.webkul.mobikul.odoo.core.utils.HTTP_RESOURCE_NOT_FOUND
+import com.webkul.mobikul.odoo.core.utils.HTTP_ERROR_RESOURCE_NOT_FOUND
 import com.webkul.mobikul.odoo.data.response.models.CartBaseResponse
 import com.webkul.mobikul.odoo.data.response.models.GetCartId
 import com.webkul.mobikul.odoo.databinding.ActivityNewHomeBinding
@@ -207,7 +207,7 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener, LoyaltyPointsListene
             .subscribe(object : CustomObserver<CartBaseResponse<GetCartId>>(this) {
                 override fun onNext(response: CartBaseResponse<GetCartId>) {
                     super.onNext(response)
-                    if (response.statusCode == HTTP_RESOURCE_NOT_FOUND)
+                    if (response.statusCode == HTTP_ERROR_RESOURCE_NOT_FOUND)
                     else {
                         AppSharedPref.setCartId(this@NewHomeActivity, response.result.cartId)
                     }
@@ -257,7 +257,7 @@ class NewHomeActivity : BaseActivity(), CartUpdateListener, LoyaltyPointsListene
 
                 override fun onNext(response: CartBaseResponse<GetCartId>) {
                     super.onNext(response)
-                    if (response.statusCode == HTTP_RESOURCE_NOT_FOUND)
+                    if (response.statusCode == HTTP_ERROR_RESOURCE_NOT_FOUND)
                         createCart(customerId)
                     else {
                         AppSharedPref.setCartId(this@NewHomeActivity, response.result.cartId)

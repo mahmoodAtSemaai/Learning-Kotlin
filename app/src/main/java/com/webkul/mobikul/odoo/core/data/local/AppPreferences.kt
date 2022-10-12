@@ -75,6 +75,7 @@ class AppPreferences @Inject constructor(private val context: Context) {
         private const val KEY_CUSTOMER_GROUP_ID = "CUSTOMER_GROUP_ID"
         private const val KEY_IS_USER_ONBOARDED = "KEY_IS_USER_ONBOARDED"
         private const val KEY_USER_NAME = "USER_NAME"
+        private const val KEY_IS_CUSTOMER_REDEEM_POINTS = "IS_CUSTOMER_REDEEM_POINTS"
 
         private const val KEY_CART_COUNT = "CART_COUNT"
 
@@ -128,14 +129,6 @@ class AppPreferences @Inject constructor(private val context: Context) {
         }
         set(value) = customerPreferences.edit {
             it.putString(ANALYTICS_ID, value)
-        }
-
-    var privacyUrl: String?
-        get() {
-            return splashPreferences.getString(PRIVACY_POLICY_URL, "")
-        }
-        set(value) = splashPreferences.edit {
-            it.putString(PRIVACY_POLICY_URL, value)
         }
 
     var authToken: String?
@@ -358,7 +351,7 @@ class AppPreferences @Inject constructor(private val context: Context) {
         get() {
             return customerPreferences.getString(KEY_CUSTOMER_PROFILE_IMAGE, "")
         }
-        set(value) = splashPreferences.edit {
+        set(value) = customerPreferences.edit {
             it.putString(KEY_CUSTOMER_PROFILE_IMAGE, value)
         }
 
@@ -366,7 +359,7 @@ class AppPreferences @Inject constructor(private val context: Context) {
         get() {
             return customerPreferences.getString(KEY_CUSTOMER_BANNER_IMAGE, "")
         }
-        set(value) = splashPreferences.edit {
+        set(value) = customerPreferences.edit {
             it.putString(KEY_CUSTOMER_BANNER_IMAGE, value)
         }
 
@@ -401,6 +394,14 @@ class AppPreferences @Inject constructor(private val context: Context) {
         }
         set(value) = customerPreferences.edit {
             it.putBoolean(KEY_IS_FCM_TOKEN_SYNCED, value)
+        }
+
+    var isCustomerWantToRedeemPoints: Boolean
+        get() {
+            return customerPreferences.getBoolean(KEY_IS_CUSTOMER_REDEEM_POINTS, false)
+        }
+        set(value) = customerPreferences.edit {
+            it.putBoolean(KEY_IS_CUSTOMER_REDEEM_POINTS, value)
         }
 
     var newCartCount : Int

@@ -13,7 +13,7 @@ class BannersUseCase @Inject constructor(
 
     operator fun invoke(): Flow<Resource<BannerListEntity>> = flow {
         emit(Resource.Loading)
-        val result = bannerRepository.get()
+        val result = bannerRepository.getBanner()
         emit(result)
     }
 }

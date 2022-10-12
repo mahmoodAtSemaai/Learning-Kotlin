@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.checkout.paymentpending.PaymentPendingFragmentV1">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <include
+            android:id="@+id/tb_payment_container"
+            layout="@layout/toolbar_layout"
+            app:title="@string/order_status"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_0"
+            app:layout_constraintBottom_toTopOf="@id/btn_payment_status"
+            app:layout_constraintTop_toBottomOf="@id/tb_payment_container">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:context=".fragment.PaymentPendingFragment">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/imageView3"
+                    android:layout_width="@dimen/size_0"
+                    android:layout_height="@dimen/size_240"
+                    android:background="@drawable/ic_payment_pending_bg"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_payment_status_heading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_32"
+                        android:text="@string/payment_is_pending"
+                        android:textAppearance="@style/Semaai.TextAppearance.Headline6.White"
+                        android:textColor="@color/text_color_pure_white"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/divider_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_2"
+                        android:layout_marginHorizontal="@dimen/margin_40"
+                        android:layout_marginTop="@dimen/margin_32"
+                        android:background="@color/white"
+                        app:layout_constraintTop_toBottomOf="@id/tv_payment_status_heading" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_payment_status_desc"
+                        android:layout_width="@dimen/size_0"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_20"
+                        android:layout_marginTop="@dimen/margin_16"
+                        android:text="@string/due_payment"
+                        android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+                        android:textColor="@color/text_color_pure_white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/divider_1" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_payment_due_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+                        android:textColor="@color/text_color_pure_white"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_payment_due_date_time"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="@+id/tv_payment_status_desc"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_payment_status_desc"
+                        tools:text="Wednesday, 26 January 2022" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tv_payment_due_date_time"
+                        android:layout_width="@dimen/size_0"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+                        android:textColor="@color/text_color_pure_white"
+                        app:layout_constraintEnd_toEndOf="@+id/tv_payment_status_desc"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/tv_payment_due_date"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_payment_status_desc"
+                        tools:text="23:59:20" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ImageView
+                    android:id="@+id/iv_virtual_account"
+                    android:layout_width="@dimen/size_48"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_virtual_account_bank"
+                    app:layout_constraintStart_toStartOf="@+id/divider_2"
+                    app:layout_constraintTop_toTopOf="@+id/tv_virtual_account_bank"
+                    tools:src="@drawable/ic_bank_bni_logo" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_virtual_account_bank"
+                    android:layout_width="@dimen/size_0"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_12"
+                    android:layout_marginTop="@dimen/margin_12"
+                    android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+                    app:layout_constraintEnd_toEndOf="@+id/divider_2"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/iv_virtual_account"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView3"
+                    tools:text="Bank BNI (Virtual Payment)" />
+
+                <include
+                    android:id="@+id/divider_2"
+                    layout="@layout/divider_horizontal"
+                    android:layout_width="@dimen/size_0"
+                    android:layout_height="@dimen/size_2"
+                    android:layout_marginHorizontal="@dimen/margin_20"
+                    android:layout_marginTop="@dimen/margin_12"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_virtual_account_bank" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_account_number_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_16"
+                    android:text="@string/account_number"
+                    android:textAppearance="@style/Semaai.TextAppearance.Body2"
+                    app:layout_constraintStart_toStartOf="@+id/divider_2"
+                    app:layout_constraintTop_toBottomOf="@+id/divider_2" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_account_number"
+                    android:layout_width="@dimen/size_0"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_24"
+                    android:layout_marginRight="@dimen/margin_24"
+                    android:drawableEnd="@drawable/ic_account_number"
+                    android:drawableRight="@drawable/ic_account_number"
+                    android:paddingVertical="@dimen/padding_8"
+                    android:textAppearance="@style/Semaai.TextAppearance.Headline5.Orange"
+                    android:textColor="@color/colorPrimary"
+                    android:textIsSelectable="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/tv_account_number_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_account_number_title"
+                    tools:text="123456789" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_total_payment_text"
+                    android:layout_width="@dimen/size_0"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_20"
+                    android:layout_marginLeft="@dimen/margin_20"
+                    android:layout_marginTop="@dimen/margin_32"
+                    android:text="@string/total_payment"
+                    android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_total_payment_value"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_account_number" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_total_payment_value"
+                    android:layout_width="@dimen/size_0"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_32"
+                    android:layout_marginEnd="@dimen/margin_20"
+                    android:layout_marginRight="@dimen/margin_20"
+                    android:gravity="end"
+                    android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/tv_total_payment_text"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_account_number"
+                    tools:text="Rp47,300" />
+
+                <include
+                    android:id="@+id/include"
+                    layout="@layout/divider_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_2"
+                    android:layout_marginHorizontal="@dimen/margin_20"
+                    android:layout_marginTop="@dimen/margin_16"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_total_payment_text"
+                    tools:layout_editor_absoluteX="20dp" />
+
+                <TextView
+                    android:id="@+id/tv_transfer_instruction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_20"
+                    android:background="@drawable/rectangle_green_border"
+                    android:paddingHorizontal="@dimen/padding_16"
+                    android:paddingVertical="@dimen/padding_6"
+                    android:text="@string/transfer_instruction"
+                    android:textAppearance="@style/Semaai.TextAppearance.Body1.Bold"
+                    android:textColor="@color/colorAccent"
+                    app:layout_constraintEnd_toEndOf="@+id/include"
+                    app:layout_constraintStart_toStartOf="@+id/include"
+                    app:layout_constraintTop_toBottomOf="@+id/include" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <Button
+            android:id="@+id/btn_payment_status"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:paddingHorizontal="@dimen/padding_24"
+            android:text="@string/check_status"
+            android:textAppearance="@style/Semaai.TextAppearance.Subtitle1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_order_details"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/btn_order_details"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:text="@string/order_details"
+            android:textAppearance="@style/Semaai.TextAppearance.Subtitle1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn_payment_status" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

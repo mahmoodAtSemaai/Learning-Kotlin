@@ -48,6 +48,10 @@
 
 
         <activity
+        android:name=".ui.checkout.CheckoutActivityV1"
+        android:screenOrientation="portrait"
+        android:exported="false" />
+        <activity
             android:name=".activity.LoyaltyTermsActivity"
             android:screenOrientation="portrait"
             android:exported="false" />
@@ -102,18 +106,19 @@
             android:exported="false"
             android:theme="@style/BaseTheme.AppTheme.NoActionBar.FullScreenTheme"
             android:screenOrientation="portrait"/>
+
         <activity
             android:name=".ui.auth.SignInSignUpActivityV1"
             android:exported="false"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.authentication.presentation.AuthenticationActivity"
+            android:name="com.webkul.mobikul.odoo.ui.authentication.AuthenticationActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible"/>
         <activity
-            android:name=".features.onboarding.presentation.OnboardingActivity"
+            android:name=".ui.onboarding.OnboardingActivity"
             android:exported="true"
             android:theme="@style/BaseTheme.AppTheme.NoActionBar.FullScreenTheme"
             android:windowSoftInputMode="stateHidden"

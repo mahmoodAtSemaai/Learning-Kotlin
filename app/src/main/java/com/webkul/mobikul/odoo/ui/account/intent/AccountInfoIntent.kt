@@ -2,7 +2,7 @@ package com.webkul.mobikul.odoo.ui.account.intent
 
 import android.os.Bundle
 import com.webkul.mobikul.odoo.core.mvicore.IIntent
-import com.webkul.mobikul.odoo.data.request.UserDetailsRequest
+import com.webkul.mobikul.odoo.data.request.UserRequest
 
 sealed class AccountInfoIntent :IIntent {
     data class GetArgs(val arguments : Bundle?): AccountInfoIntent()
@@ -14,7 +14,7 @@ sealed class AccountInfoIntent :IIntent {
     object Discard : AccountInfoIntent()
     object KeepEditing : AccountInfoIntent()
     object BackNavigation :AccountInfoIntent()
-    data class Save(val updateUserDetails: UserDetailsRequest) : AccountInfoIntent()
+    data class Save(val updateUserDetails: UserRequest) : AccountInfoIntent()
     object GetUserIdCustomerId : AccountInfoIntent()
     object EditValue : AccountInfoIntent()
     object InitViews : AccountInfoIntent()

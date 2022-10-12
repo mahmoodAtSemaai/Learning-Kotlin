@@ -6,7 +6,9 @@ data class UserLocationRequest(
     var locationPermission: String = "",
     var partnerLatitude: String = "",
     var partnerLongitude: String = "",
-    var isOnboarding: Boolean = true
+    var isOnboarding: Boolean = true,
+    var partnerId: String = "",
+
 ) {
     override fun toString(): String {
         return JSONObject().put(LOCATION_PERMISSION, locationPermission)

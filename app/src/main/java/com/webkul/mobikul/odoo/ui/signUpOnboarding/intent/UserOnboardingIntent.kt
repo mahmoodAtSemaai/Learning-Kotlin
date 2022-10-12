@@ -10,7 +10,6 @@ sealed class UserOnboardingIntent : IIntent {
     object GetOnboardingStage : UserOnboardingIntent()
     object GetUserOnboardingStage : UserOnboardingIntent()
     object GetIncompleteStage : UserOnboardingIntent()
-    object GetSplashData : UserOnboardingIntent()
     object GetHomeData:UserOnboardingIntent()
     object Refresh : UserOnboardingIntent()
 }

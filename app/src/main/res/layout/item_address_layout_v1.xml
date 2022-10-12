@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import
+            alias="View"
+            type="android.view.View" />
+
+        <variable
+            name="addressData"
+            type="com.webkul.mobikul.odoo.data.entity.ShippingAddressEntity" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/ll_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/padding_6"
+        android:paddingTop="@dimen/padding_4"
+        android:paddingBottom="@dimen/padding_4">
+
+
+        <TextView
+            android:id="@+id/tv_address_name"
+            style="@style/medium_bold_text_no_caps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{addressData.name}"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Address" />
+
+        <TextView
+            android:id="@+id/tv_phone_number"
+            style="@style/medium_normal_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{`(`+addressData.phone+`)`}"
+            app:layout_constraintEnd_toEndOf="@+id/tv_address_name"
+            app:layout_constraintStart_toStartOf="@+id/tv_address_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_address_name"
+            tools:text="(1234567890)" />
+
+
+        <TextView
+            android:id="@+id/tv_address_display_name"
+            style="@style/medium_normal_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{addressData.districtName.isEmpty() == false ? addressData.completeAddressDescription : addressData.incompleteAddressDescription}"
+            app:layout_constraintEnd_toEndOf="@+id/tv_phone_number"
+            app:layout_constraintStart_toStartOf="@+id/tv_phone_number"
+            app:layout_constraintTop_toBottomOf="@+id/tv_phone_number"
+            tools:text="Jl. K.H. Royani 1, no. 51, RT 02, RW 09. Kelurahan Karet Kuningan, Kecamatan Setia Budi, Kota Jakarta Selatan, DKI Jakarta, ID 12940" />
+
+        <TextView
+            android:id="@+id/tv_error"
+            style="@style/medium_bold_text_no_caps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{@string/shipping_address_incomplete}"
+            android:textColor="@color/red_500"
+            android:visibility="@{addressData.districtName.isEmpty() == true ? View.VISIBLE : View.GONE}"
+            tools:text="@string/shipping_address_incomplete"
+            tools:visibility="visible" />
+
+    </LinearLayout>
+
+</layout>

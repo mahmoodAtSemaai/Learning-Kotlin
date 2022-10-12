@@ -9,7 +9,7 @@ import javax.inject.Inject
 class CategoriesRepositoryImpl @Inject constructor(
         private val categoriesRemoteDataSource: CategoriesRemoteDataSource
 ) : CategoriesRepository {
-    override suspend fun get(): Resource<ProductCategoriesEntity> {
+    override suspend fun getCategories(): Resource<ProductCategoriesEntity> {
         return categoriesRemoteDataSource.get()
     }
 }

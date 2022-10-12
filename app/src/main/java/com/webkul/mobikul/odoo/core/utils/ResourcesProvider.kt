@@ -8,9 +8,7 @@ import android.util.DisplayMetrics
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.webkul.mobikul.odoo.core.extension.getCompatDrawable
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class ResourcesProvider @Inject constructor(private val context: Context) {
 
@@ -18,10 +16,14 @@ class ResourcesProvider @Inject constructor(private val context: Context) {
         return context.getString(stringResId)
     }
 
-    fun getDrawabale(@DrawableRes drawableResId: Int): Drawable {
+    fun getDrawable(@DrawableRes drawableResId: Int): Drawable {
         return context.getCompatDrawable(drawableResId) ?: ColorDrawable(Color.TRANSPARENT)
     }
-    
+
+    fun getDrawableName(@DrawableRes drawableResId: Int): String {
+        return context.resources.getResourceName(drawableResId)
+    }
+
     fun getDisplayMetrics(): DisplayMetrics {
         return context.resources.displayMetrics
     }

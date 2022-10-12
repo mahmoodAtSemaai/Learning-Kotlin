@@ -17,7 +17,7 @@ class BillingAddressUseCase @Inject constructor(
     operator fun invoke(): Flow<Resource<AddressEntity>> = flow {
 
         emit(Resource.Loading)
-        val result = addressRepository.getAddress(BaseLazyRequest(0, 1))
+        val result = addressRepository.get(BaseLazyRequest(0, 1))
         emit(result)
 
     }.flowOn(Dispatchers.IO)

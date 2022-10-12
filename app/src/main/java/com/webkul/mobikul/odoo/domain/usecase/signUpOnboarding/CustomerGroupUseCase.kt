@@ -21,18 +21,20 @@ class CustomerGroupUseCase @Inject constructor(
         flow {
 
             emit(Resource.Loading)
-            val result = customerGroupRepository.getCustomerGroup()
-            when(result) {
+            val result = customerGroupRepository.get()
+            when (result) {
                 is Resource.Success -> {
-                    val comparator = compareBy<CustomerGroupEntity>{it.order}
-                    var nameComparator = comparator.thenBy {it.name}
-                    if(appPreferences.languageCode == resourcesProvider.getString(R.string.ind_lang)){
-                        nameComparator = comparator.thenByDescending {it.name}
+                    val comparator = compareBy<CustomerGroupEntity> { it.order }
+                    var nameComparator = comparator.thenBy { it.name }
+                    if (appPreferences.languageCode == resourcesProvider.getString(R.string.ind_lang)) {
+                        nameComparator = comparator.thenByDescending { it.name }
                     }
                     val list = result.value.customerGroups.sortedWith(nameComparator)
                     emit(Resource.Success(list))
                 }
-                is Resource.Failure -> {Resource.Failure(result.failureStatus,result.code,result.message)}
+                is Resource.Failure -> {
+                    Resource.Failure(result.failureStatus, result.code, result.message)
+                }
             }
 
         }.flowOn(Dispatchers.IO)

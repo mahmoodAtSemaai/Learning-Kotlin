@@ -1,4 +1,4 @@
-package com.webkul.mobikul.odoo.data.remoteSource.remoteServices
+package com.webkul.mobikul.odoo.data.remoteSource
 
 
 import com.webkul.mobikul.odoo.connection.ApiInterface

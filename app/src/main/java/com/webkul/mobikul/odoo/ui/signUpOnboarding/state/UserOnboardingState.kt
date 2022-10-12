@@ -14,7 +14,6 @@ sealed class UserOnboardingState : IState {
     object OnboardingStage : UserOnboardingState()
     object GetIncompleteStage : UserOnboardingState()
     object LaunchNextStage : UserOnboardingState()
-    data class Splash(val splashScreenResponse: SplashScreenResponse) : UserOnboardingState()
     data class UserStage(val stageId: List<Int>) : UserOnboardingState()
     data class Error(val message: String?, val failureStatus: FailureStatus) : UserOnboardingState()
 }

@@ -60,6 +60,7 @@ class LoginFragmentV1 @Inject constructor() : BindingBaseFragment<FragmentLoginV
         binding.login.setOnClickListener {
             onLoginBtnClicked()
         }
+
         binding.privacyPolicy.setOnClickListener {
             triggerIntent(LoginIntent.PrivacyPolicy)
         }

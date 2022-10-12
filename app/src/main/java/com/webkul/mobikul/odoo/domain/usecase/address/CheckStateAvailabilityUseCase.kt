@@ -19,8 +19,8 @@ class CheckStateAvailabilityUseCase @Inject constructor() : UseCase {
 		
 		var result = true
 		
-		for (stateData in stateListEntity.data) {
-			if (stateData.isAvailable && (stateData.id.toString() == addressFormEntity.stateId || isStateDataMissing(addressFormEntity)) && areFieldsNullOrEmpty(addressFormEntity)) {
+		for (stateData in stateListEntity.states) {
+			if (stateData.available == true && (stateData.id.toString() == addressFormEntity.stateId || isStateDataMissing(addressFormEntity)) && areFieldsNullOrEmpty(addressFormEntity)) {
 				emit(Resource.Success(false))
 				result = false
 				break

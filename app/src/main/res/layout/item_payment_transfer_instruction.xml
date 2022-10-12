@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_base"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingBottom="@dimen/padding_12">
+
+        <TextView
+            android:id="@+id/tv_mobile_banking_heading"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_12"
+            android:layout_marginTop="@dimen/margin_12"
+            android:textAppearance="@style/Semaai.TextAppearance.Subtitle2.Bold"
+            app:layout_constraintEnd_toStartOf="@+id/iv_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/m_banking" />
+
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_12"
+            android:layout_marginRight="@dimen/margin_12"
+            android:background="@drawable/ic_down_arrow_grey"
+            android:contentDescription="@string/ok"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_mobile_banking_heading" />
+
+        <include
+            android:id="@+id/divider_3"
+            layout="@layout/divider_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_2"
+            android:layout_marginTop="@dimen/margin_10"
+            app:layout_constraintTop_toBottomOf="@+id/tv_mobile_banking_heading" />
+
+        <TextView
+            android:id="@+id/tv_payment_transfer_instruction"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_10"
+            android:lineSpacingExtra="@dimen/size_12"
+            android:textAppearance="@style/Semaai.TextAppearance.Body1"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider_3"
+            tools:text="1) laoreet suspendisse interdum consectetur libero\n
+2) laoreet suspendisse interdum consectetur libero\n
+3) laoreet suspendisse interdum consectetur libero" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

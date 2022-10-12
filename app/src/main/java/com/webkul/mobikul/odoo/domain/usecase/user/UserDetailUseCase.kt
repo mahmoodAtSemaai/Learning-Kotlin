@@ -17,7 +17,7 @@ class UserDetailUseCase @Inject constructor(
 
     operator fun invoke(): Flow<Resource<UserDetailEntity>> = flow {
         emit(Resource.Loading)
-        val result = userDetailRepository.get(appPreferences.userId ?: "")
+        val result = userDetailRepository.getUser(appPreferences.userId ?: "")
         emit(result)
     }
 }

@@ -11,8 +11,7 @@ import android.widget.Toast;
 
 import com.muddzdev.styleabletoastlibrary.StyleableToast;
 import com.webkul.mobikul.odoo.R;
-import com.webkul.mobikul.odoo.features.authentication.presentation.AuthenticationActivity;
-import com.webkul.mobikul.odoo.constant.BundleConstant;
+import com.webkul.mobikul.odoo.ui.authentication.AuthenticationActivity;
 import com.webkul.mobikul.odoo.dialog_frag.FingerprintAuthenticationDialogFragment;
 import com.webkul.mobikul.odoo.fragment.SignUpFragment;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;

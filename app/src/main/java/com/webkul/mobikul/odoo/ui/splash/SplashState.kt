@@ -11,5 +11,6 @@ sealed class SplashState : IState {
     object UserUnAuthenticated : SplashState()
     object UserLoggedIn : SplashState()
     object InitiatedUserAnalytics : SplashState()
+    object ConfigurationReceived: SplashState()
     data class Error(val message: String?, val failureStatus: FailureStatus) : SplashState()
 }

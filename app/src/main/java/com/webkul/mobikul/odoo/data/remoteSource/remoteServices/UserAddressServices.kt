@@ -2,7 +2,7 @@ package com.webkul.mobikul.odoo.data.remoteSource.remoteServices
 
 import com.webkul.mobikul.odoo.connection.ApiInterface
 import com.webkul.mobikul.odoo.data.response.BaseUserOnboardingResponse
-import com.webkul.mobikul.odoo.data.entity.UserAddressEntity
+import com.webkul.mobikul.odoo.data.response.UserAddressResponse
 import retrofit2.http.Body
 import retrofit2.http.PUT
 import retrofit2.http.Path
@@ -12,5 +12,5 @@ interface UserAddressServices {
     suspend fun setUserAddress(
         @Path(ApiInterface.CUSTOMER_ID) customerId: String,
         @Body userAddressRequest: String
-    ): BaseUserOnboardingResponse<UserAddressEntity>
+    ): BaseUserOnboardingResponse<UserAddressResponse>
 }

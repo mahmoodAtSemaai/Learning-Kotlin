@@ -5,7 +5,7 @@ import com.webkul.mobikul.odoo.core.utils.Resource
 import com.webkul.mobikul.odoo.data.entity.CartEntity
 import com.webkul.mobikul.odoo.data.request.CartProductsRequest
 
-interface CartRepository : Repository {
+interface CartRepository : Repository<Any,Any,Any> {
     suspend fun get(partnerId: Int): Resource<CartEntity>
     suspend fun create(partnerId: Int): Resource<CartEntity>
     suspend fun update(cartProductsRequest: CartProductsRequest): Resource<CartEntity>

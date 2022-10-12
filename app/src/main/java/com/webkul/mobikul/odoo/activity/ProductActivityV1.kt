@@ -30,8 +30,8 @@ import com.webkul.mobikul.odoo.constant.BundleConstant.*
 import com.webkul.mobikul.odoo.core.extension.makeGone
 import com.webkul.mobikul.odoo.core.extension.makeVisible
 import com.webkul.mobikul.odoo.core.utils.HTTP_ERROR_BAD_REQUEST
-import com.webkul.mobikul.odoo.core.utils.HTTP_RESOURCE_CREATED
-import com.webkul.mobikul.odoo.core.utils.HTTP_RESOURCE_NOT_FOUND
+import com.webkul.mobikul.odoo.core.utils.HTTP_RESPONSE_RESOURCE_CREATED
+import com.webkul.mobikul.odoo.core.utils.HTTP_ERROR_RESOURCE_NOT_FOUND
 import com.webkul.mobikul.odoo.core.utils.HTTP_RESPONSE_OK
 import com.webkul.mobikul.odoo.data.request.CartProductItemRequest
 import com.webkul.mobikul.odoo.data.request.CartProductsRequest
@@ -595,14 +595,14 @@ class ProductActivityV1 : BaseActivity() {
                         getBagItemsCount()
                         if (isBuyNow) {
                             if (response.statusCode == HTTP_RESPONSE_OK ||
-                                response.statusCode == HTTP_RESOURCE_CREATED) {
+                                response.statusCode == HTTP_RESPONSE_RESOURCE_CREATED) {
                                 IntentHelper.beginCheckout(this@ProductActivityV1)
                             } else {
                                 showQuantityWarning(response.message)
                             }
                         } else {
                             if (response.statusCode == HTTP_RESPONSE_OK ||
-                                response.statusCode == HTTP_RESOURCE_CREATED) {
+                                response.statusCode == HTTP_RESPONSE_RESOURCE_CREATED) {
                                     showSuccessfullDialog()
                             } else {
                                 showWarning(false)
@@ -676,7 +676,7 @@ class ProductActivityV1 : BaseActivity() {
 
                     override fun onNext(response: CartBaseResponse<GetCartId>) {
                         super.onNext(response)
-                        if(response.statusCode == HTTP_RESOURCE_NOT_FOUND)
+                        if(response.statusCode == HTTP_ERROR_RESOURCE_NOT_FOUND)
                             createCartToAddProduct(customerId)
                         else {
                             AppSharedPref.setCartId(this@ProductActivityV1, response.result.cartId)
@@ -704,7 +704,7 @@ class ProductActivityV1 : BaseActivity() {
 
                 override fun onNext(response: CartBaseResponse<GetCartId>) {
                     super.onNext(response)
-                    if(response.statusCode == HTTP_RESOURCE_NOT_FOUND)
+                    if(response.statusCode == HTTP_ERROR_RESOURCE_NOT_FOUND)
                         createCart(customerId)
                     else {
                         AppSharedPref.setCartId(this@ProductActivityV1, response.result.cartId)

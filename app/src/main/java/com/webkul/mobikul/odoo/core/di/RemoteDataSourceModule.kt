@@ -3,9 +3,9 @@ package com.webkul.mobikul.odoo.core.di
 import android.content.Context
 import com.google.gson.Gson
 import com.webkul.mobikul.odoo.core.data.local.AppPreferences
+import com.webkul.mobikul.odoo.data.remoteSource.AuthServices
 import com.webkul.mobikul.odoo.data.remoteSource.remoteDataSource.*
 import com.webkul.mobikul.odoo.data.remoteSource.remoteServices.*
-import com.webkul.mobikul.odoo.features.authentication.data.remoteSource.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,7 +24,8 @@ object RemoteDataSourceModule {
         @ApplicationContext context: Context,
         gson: Gson,
         appPreferences: AppPreferences
-    ): AuthRemoteDataSource = AuthRemoteDataSource(authServices, context, gson, appPreferences)
+    ): AuthRemoteDataSource =
+        AuthRemoteDataSource(authServices, context, gson, appPreferences)
 
     @Provides
     @Singleton
@@ -32,7 +33,8 @@ object RemoteDataSourceModule {
         addressServices: AddressServices,
         gson: Gson,
         appPreferences: AppPreferences
-    ): AddressRemoteDataSource = AddressRemoteDataSource(addressServices, gson, appPreferences)
+    ): AddressRemoteDataSource =
+        AddressRemoteDataSource(addressServices, gson, appPreferences)
 
     @Provides
     @Singleton
@@ -45,6 +47,14 @@ object RemoteDataSourceModule {
 
     @Provides
     @Singleton
+    fun orderRemoteDataSource(
+        orderServices: OrderServices,
+        gson: Gson,
+        appPreferences: AppPreferences
+    ): OrderRemoteDataSource = OrderRemoteDataSource(orderServices, gson, appPreferences)
+
+    @Provides
+    @Singleton
     fun termsConditionRemoteDataSource(
         termsConditionServices: TermsConditionServices,
         gson: Gson,
@@ -54,33 +64,69 @@ object RemoteDataSourceModule {
 
     @Provides
     @Singleton
-    fun authenticationRemoteDataSource(
+    fun sellerTermsConditionRemoteDataSource(
+        termsConditionServices: TermsConditionServices,
+        gson: Gson,
+        appPreferences: AppPreferences
+    ): SellerTermsConditionRemoteDataSource =
+        SellerTermsConditionRemoteDataSource(termsConditionServices, gson, appPreferences)
+
+    @Provides
+    @Singleton
+    fun authenticationPasswordRemoteDataSource(
         authenticationServices: AuthenticationServices,
         gson: Gson,
         appPreferences: AppPreferences
-    ): AuthenticationRemoteDataSource =
-        AuthenticationRemoteDataSource(authenticationServices, gson, appPreferences)
+    ): AuthenticationPasswordRemoteDataSource =
+        AuthenticationPasswordRemoteDataSource(authenticationServices, appPreferences, gson)
 
     @Provides
     @Singleton
-    fun splashRemoteDataSource(
-        splashServices: SplashServices,
+    fun authenticationOtpRemoteDataSource(
+        authenticationServices: AuthenticationServices,
         gson: Gson,
         appPreferences: AppPreferences
-    ): SplashRemoteDataSource = SplashRemoteDataSource(splashServices, gson, appPreferences)
+    ): AuthenticationOtpRemoteDataSource =
+        AuthenticationOtpRemoteDataSource(authenticationServices, appPreferences, gson)
 
     @Provides
     @Singleton
-    fun homeRemoteDataSource(
-        homePageServices: HomePageServices,
+    fun otpRemoteDataSource(
+        otpServices: OTPServices,
         gson: Gson,
         appPreferences: AppPreferences
-    ): HomePageRemoteDataSource = HomePageRemoteDataSource(homePageServices, gson, appPreferences)
+    ): OtpRemoteDataSource =
+        OtpRemoteDataSource(otpServices, appPreferences, gson)
+
+    @Provides
+    @Singleton
+    fun phoneNumberRemoteDataSource(
+        authenticationServices: AuthenticationServices,
+        gson: Gson,
+        appPreferences: AppPreferences
+    ): PhoneNumberRemoteDataSource =
+        PhoneNumberRemoteDataSource(authenticationServices, appPreferences, gson)
+
+    @Provides
+    @Singleton
+    fun shippingMethodRemoteDataSource(
+        shippingMethodServices: ShippingMethodServices,
+        gson: Gson,
+        appPreferences: AppPreferences
+    ): ShippingMethodRemoteDataSource = ShippingMethodRemoteDataSource(shippingMethodServices, gson, appPreferences)
+
+    @Provides
+    @Singleton
+    fun paymentAcquireRemoteDataSource(
+        paymentAcquireServices: PaymentAcquireServices,
+        gson: Gson,
+        appPreferences: AppPreferences
+    ): PaymentAcquireRemoteDataSource = PaymentAcquireRemoteDataSource(paymentAcquireServices, gson, appPreferences)
 
     @Provides
     @Singleton
     fun userAnalyticsRemoteDataSource(
-        splashServices: SplashServicesV1,
+        splashServices: SplashServices,
         @ApplicationContext context: Context,
         gson: Gson,
         appPreferences: AppPreferences
@@ -90,7 +136,7 @@ object RemoteDataSourceModule {
     @Provides
     @Singleton
     fun userHomeRemoteDataSource(
-        homeServicesV1: HomeServicesV1,
+        homeServicesV1: HomeServices,
         gson: Gson,
         appPreferences: AppPreferences
     ): HomeRemoteDataSource = HomeRemoteDataSource(homeServicesV1, gson, appPreferences)
@@ -98,10 +144,10 @@ object RemoteDataSourceModule {
     @Provides
     @Singleton
     fun userSplashRemoteDataSourceV1(
-        splashServices: SplashServicesV1,
+        splashServices: SplashServices,
         gson: Gson,
         appPreferences: AppPreferences
-    ): SplashPageRemoteDataSource = SplashPageRemoteDataSource(splashServices, gson, appPreferences)
+    ): SplashRemoteDataSource = SplashRemoteDataSource(splashServices, gson, appPreferences)
 
 
     @Provides
@@ -111,6 +157,22 @@ object RemoteDataSourceModule {
         gson: Gson,
         appPreferences: AppPreferences
     ): ChatChannelRemoteDataSource = ChatChannelRemoteDataSource(chatServices, gson, appPreferences)
+
+    @Provides
+    @Singleton
+    fun paymentStatusRemoteDataSource(
+            paymentStatusServices: PaymentStatusServices,
+            gson: Gson,
+            appPreferences: AppPreferences
+    ): PaymentStatusRemoteDataSource = PaymentStatusRemoteDataSource(paymentStatusServices, gson, appPreferences)
+
+    @Provides
+    @Singleton
+    fun paymentProcessingRemoteDataSource(
+        paymentProcessingServices: PaymentProcessingServices,
+        gson: Gson,
+        appPreferences: AppPreferences
+    ): PaymentProcessingRemoteDataSource = PaymentProcessingRemoteDataSource(paymentProcessingServices, gson, appPreferences)
 
     @Provides
     @Singleton
@@ -132,6 +194,15 @@ object RemoteDataSourceModule {
 
     @Provides
     @Singleton
+    fun userOnboardingStageRemoteDataSource(
+        userServices: UserServices,
+        gson: Gson,
+        appPreferences: AppPreferences
+    ): UserOnboardingStageRemoteDataSource =
+        UserOnboardingStageRemoteDataSource(userServices, gson, appPreferences)
+
+    @Provides
+    @Singleton
     fun customerGroupeRemoteDataSource(
         userCategoryServices: UserCategoryServices,
         gson: Gson,
@@ -141,12 +212,21 @@ object RemoteDataSourceModule {
 
     @Provides
     @Singleton
-    fun userDetailsRemoteDataSource(
-        userDetailsServices: UserDetailsServices,
+    fun userCustomerGroupRemoteDataSource(
+        userCategoryServices: UserCategoryServices,
         gson: Gson,
         appPreferences: AppPreferences
-    ): UserDetailsRemoteDataSource =
-        UserDetailsRemoteDataSource(userDetailsServices, gson, appPreferences)
+    ): UserCustomerGroupRemoteDataSource =
+        UserCustomerGroupRemoteDataSource(userCategoryServices, gson, appPreferences)
+
+    @Provides
+    @Singleton
+    fun userRemoteDataSource(
+        userServices: UserServices,
+        gson: Gson,
+        appPreferences: AppPreferences
+    ): UserRemoteDataSource =
+        UserRemoteDataSource(userServices, gson, appPreferences)
 
     @Provides
     @Singleton
@@ -211,11 +291,19 @@ object RemoteDataSourceModule {
     @Provides
     @Singleton
     fun fcmTokenRemoteDataSource(
-            fcmTokenServices: FCMTokenServices,
-            @ApplicationContext context: Context,
+        fcmTokenServices: FCMTokenServices,
+        gson: Gson,
+        appPreferences: AppPreferences
+    ): FCMTokenRemoteDataSource =
+        FCMTokenRemoteDataSource(fcmTokenServices, gson, appPreferences)
+
+    @Provides
+    @Singleton
+    fun paymentTransferInstructionRemoteDataSource(
+            paymentTransferInstructionServices: PaymentTransferInstructionServices,
             gson: Gson,
             appPreferences: AppPreferences
-    ): FCMTokenRemoteDataSource = FCMTokenRemoteDataSource(fcmTokenServices, context, gson, appPreferences)
+    ): PaymentTransferInstructionRemoteDataSource = PaymentTransferInstructionRemoteDataSource(paymentTransferInstructionServices, gson, appPreferences)
 
     @Provides
     @Singleton

@@ -15,7 +15,7 @@ class CategoriesUseCase @Inject constructor(
 
     operator fun invoke(): Flow<Resource<ProductCategoriesEntity>> = flow {
         emit(Resource.Loading)
-        val result = categoriesRepository.get()
+        val result = categoriesRepository.getCategories()
         emit(result)
     }.flowOn(Dispatchers.IO)
 }

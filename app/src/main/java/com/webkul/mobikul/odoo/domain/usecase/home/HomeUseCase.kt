@@ -1,8 +1,9 @@
 package com.webkul.mobikul.odoo.domain.usecase.home
 
-import com.webkul.mobikul.odoo.core.utils.FailureStatus
 import com.webkul.mobikul.odoo.core.utils.Resource
+import com.webkul.mobikul.odoo.data.request.UserRequest
 import com.webkul.mobikul.odoo.domain.repository.HomeDataRepository
+import com.webkul.mobikul.odoo.domain.repository.UserRepository
 import com.webkul.mobikul.odoo.model.home.HomePageResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -11,27 +12,23 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class HomeUseCase @Inject constructor(
-        private val homeDataRepository: HomeDataRepository,
-        private val homeLocalDataUseCase: HomeLocalDataUseCase
+    private val homeDataRepository: HomeDataRepository,
+    private val userRepository: UserRepository
 ) {
     operator fun invoke(): Flow<Resource<HomePageResponse>> = flow {
-
         emit(Resource.Loading)
-        //TODO->Handle homepage Response with home revamp
-        //TODO -> handling local SQlite thing. Need to move this in repo layer.
-        when (val result = homeDataRepository.getHomePageData()) {
-            is Resource.Failure -> {
-                when (result.failureStatus) {
-                    FailureStatus.NO_INTERNET -> {
-                        homeLocalDataUseCase().collect {
-                            emit(it)
-                        }
-                    }
-                    else -> emit(result)
-                }
+        val result = homeDataRepository.get()
+        when (result) {
+            is Resource.Success -> {
+                userRepository.update(
+                    UserRequest(
+                        isUserOnboarded = result.value.isUserOnboarded,
+                        isUserApproved = result.value.isUserApproved
+                    )
+                )
             }
-            else -> emit(result)
         }
+        emit(result)
     }.flowOn(Dispatchers.IO)
 
 }

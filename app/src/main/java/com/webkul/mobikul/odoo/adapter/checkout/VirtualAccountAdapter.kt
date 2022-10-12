@@ -54,6 +54,12 @@ class VirtualAccountAdapter(
         return virtualAccountList.size
     }
 
+    fun resetAdapter() {
+        selectedPosition = -1
+        lastSelectedPosition = -1
+        notifyDataSetChanged()
+    }
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var itemVaLayoutBinding: ItemVaLayoutBinding = DataBindingUtil.bind(itemView)!!
 

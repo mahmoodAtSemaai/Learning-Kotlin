@@ -1,19 +1,19 @@
 package com.webkul.mobikul.odoo.activity;
 
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CUSTOMER_FRAG_TYPE;
+import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_ORDER_ID;
+
 import android.app.Activity;
 import android.content.Intent;
-
-import androidx.core.content.res.ResourcesCompat;
-import androidx.databinding.DataBindingUtil;
-
 import android.os.Bundle;
-
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.webkul.mobikul.odoo.R;
@@ -25,24 +25,19 @@ import com.webkul.mobikul.odoo.databinding.ActivityBagBinding;
 import com.webkul.mobikul.odoo.firebase.FirebaseAnalyticsImpl;
 import com.webkul.mobikul.odoo.fragment.EmptyFragment;
 import com.webkul.mobikul.odoo.handler.bag.BagActivityHandler;
-import com.webkul.mobikul.odoo.helper.AlertDialogHelper;
-import com.webkul.mobikul.odoo.helper.ApiRequestHelper;
 import com.webkul.mobikul.odoo.helper.AppSharedPref;
 import com.webkul.mobikul.odoo.helper.CustomerHelper;
 import com.webkul.mobikul.odoo.helper.FragmentHelper;
+import com.webkul.mobikul.odoo.helper.IntentHelper;
 import com.webkul.mobikul.odoo.helper.SnackbarHelper;
 import com.webkul.mobikul.odoo.model.ReferralResponse;
-import com.webkul.mobikul.odoo.helper.IntentHelper;
 import com.webkul.mobikul.odoo.model.cart.BagResponse;
+import com.webkul.mobikul.odoo.ui.checkout.CheckoutActivityV1;
+import com.webkul.mobikul.odoo.updates.FirebaseRemoteConfigHelper;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CALLING_ACTIVITY;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_CUSTOMER_FRAG_TYPE;
-import static com.webkul.mobikul.odoo.constant.BundleConstant.BUNDLE_KEY_ORDER_ID;
 
 
 public class BagActivity extends BaseActivity implements FragmentManager.OnBackStackChangedListener {
@@ -114,8 +109,12 @@ public class BagActivity extends BaseActivity implements FragmentManager.OnBackS
     private void setButtonClickListeners(BagResponse bagResponse) {
         binding.btnGoToCheckout.setOnClickListener(view -> {
             FirebaseAnalyticsImpl.logBeginCheckoutEvent(this);
-            startActivity(new Intent(this, CheckoutActivity.class).putExtra(BUNDLE_KEY_ORDER_ID, bagResponse.getOrderId()));
+            routeToCheckoutActivity(bagResponse);
         });
+    }
+
+    private void routeToCheckoutActivity(BagResponse bagResponse) {
+            startActivity(new Intent(this, CheckoutActivity.class).putExtra(BUNDLE_KEY_ORDER_ID, bagResponse.getOrderId()));
     }
 
     private void showEmptyFragment() {

@@ -2,7 +2,6 @@ package com.webkul.mobikul.odoo.ui.splash
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.webkul.mobikul.odoo.R
@@ -11,14 +10,15 @@ import com.webkul.mobikul.odoo.activity.SignInSignUpActivity
 import com.webkul.mobikul.odoo.activity.SplashScreenActivity
 import com.webkul.mobikul.odoo.constant.BundleConstant
 import com.webkul.mobikul.odoo.core.extension.isGone
+import com.webkul.mobikul.odoo.core.extension.makeGone
+import com.webkul.mobikul.odoo.core.extension.makeVisible
 import com.webkul.mobikul.odoo.core.mvicore.IView
 import com.webkul.mobikul.odoo.core.platform.BindingBaseActivity
 import com.webkul.mobikul.odoo.core.utils.DeeplinkManager
 import com.webkul.mobikul.odoo.databinding.ActivitySplashScreenV1Binding
-import com.webkul.mobikul.odoo.features.onboarding.presentation.OnboardingActivity
+import com.webkul.mobikul.odoo.ui.onboarding.OnboardingActivity
 import com.webkul.mobikul.odoo.ui.signUpOnboarding.UserOnboardingActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_splash_screen_v1.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,7 +36,7 @@ class SplashScreenActivityV1() :
         super.onCreate(savedInstanceState)
         setObservers()
         setLanguage()
-        checkLogin()
+        getConfigs()
     }
 
 
@@ -55,13 +55,17 @@ class SplashScreenActivityV1() :
 
     override fun render(state: SplashState) {
         when (state) {
-            is SplashState.Loading -> pb_main.visibility = View.VISIBLE
-            is SplashState.Idle -> pb_main.visibility = View.GONE
+            is SplashState.Loading -> binding.pbMain.makeVisible()
+            is SplashState.Idle -> binding.pbMain.makeGone()
+            is SplashState.ConfigurationReceived -> checkLogin()
             is SplashState.UserUnAuthenticated -> onUnauthenticatedUser()
             is SplashState.UserLoggedIn -> initUserAnalytics()
             is SplashState.InitiatedUserAnalytics -> onUserAnalytics()
             is SplashState.NotificationIntent -> handleDeepLink()
-            is SplashState.SplashIntent -> startInitSplashData()
+            is SplashState.SplashIntent -> {
+                triggerIntent(SplashIntent.CreateChatChannel)
+                startInitSplashData()
+            }
             is SplashState.Error -> {
                 binding.pbMain.isGone()
                 showErrorState(
@@ -82,6 +86,8 @@ class SplashScreenActivityV1() :
     }
 
     private fun setLanguage() = localeManager.setLocale(false, this)
+
+    private fun getConfigs() = triggerIntent(SplashIntent.GetConfigs)
 
     private fun checkLogin() = triggerIntent(SplashIntent.CheckUserLoggedIn)
 

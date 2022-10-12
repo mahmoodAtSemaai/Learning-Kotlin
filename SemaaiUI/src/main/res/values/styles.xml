@@ -135,6 +135,10 @@
         <item name="android:textColor">@color/text_color_white</item>
     </style>
 
+    <style name="Semaai.TextAppearance.Headline5.Bold" parent="Semaai.TextAppearance.Headline5">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="Semaai.TextAppearance.Headline4" parent="Base.Semaai.TextAppearance.Headline">
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/text_color_primary</item>

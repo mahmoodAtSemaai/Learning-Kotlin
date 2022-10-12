@@ -19,7 +19,7 @@
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_enter_OTP_heading"
             style="@style/medium_bold_text_no_caps"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_16"
             android:text="@string/enter_otp_code"
@@ -31,7 +31,7 @@
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_otp_description_text"
             style="@style/medium_normal_text"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_20"
             android:text="@string/check_for_otp_text"
@@ -42,7 +42,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_otp_container"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_32"
             android:background="@color/white"
@@ -133,12 +133,13 @@
         <TextView
             android:id="@+id/tv_invalid_otp"
             style="@style/medium_bold_text_accent"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/size_0"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_12"
             android:text="@string/error_wrong_otp"
             android:textColor="@color/red_alert"
             android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_resend" />
 

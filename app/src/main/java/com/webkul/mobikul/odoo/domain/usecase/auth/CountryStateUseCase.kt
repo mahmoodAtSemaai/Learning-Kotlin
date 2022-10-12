@@ -15,7 +15,7 @@ class CountryStateUseCase @Inject constructor(private val countryStateRepository
     operator fun invoke(): Flow<Resource<CountryEntity>> = flow {
 
         emit(Resource.Loading)
-        val result = countryStateRepository.getCountryState()
+        val result = countryStateRepository.get()
         emit(result)
 
     }.flowOn(Dispatchers.IO)
