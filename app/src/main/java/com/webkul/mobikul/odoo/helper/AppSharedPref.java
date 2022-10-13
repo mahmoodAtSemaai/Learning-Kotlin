@@ -184,7 +184,12 @@ public class AppSharedPref {
 
     /*User Id*/
     public static String getUserId(Context context) {
-        return getSharedPreference(context, CUSTOMER_PREF).getString(KEY_USER_ID, "");
+        Object user = getSharedPreference(context, CUSTOMER_PREF).getAll().get(KEY_USER_ID);
+        if (user == null) {
+            return "-1";
+        } else {
+            return String.valueOf(user);
+        }
     }
 
     public static void setUserId(Context context, String userId) {
