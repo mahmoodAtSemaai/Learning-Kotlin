@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.webkul.mobikul.odoo.constant.ApplicationConstant
 import com.webkul.mobikul.odoo.core.utils.PRIVACY_POLICY_URL_DEFAULT
-import java.lang.ClassCastException
 import javax.inject.Inject
 
 class AppPreferences @Inject constructor(private val context: Context) {
@@ -150,7 +149,7 @@ class AppPreferences @Inject constructor(private val context: Context) {
 
     var userId: String?
         get() {
-	        return splashPreferences.all[KEY_USER_ID]?.let { "$it" } ?: "-1"
+	        return customerPreferences.all[KEY_USER_ID]?.let { "$it" } ?: "-1"
         }
         set(value) = customerPreferences.edit {
             it.putString(KEY_USER_ID, value)
