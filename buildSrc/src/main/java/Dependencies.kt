@@ -5,7 +5,7 @@ object DepVersions {
     const val firebaseCrashlyticsGradle = "2.3.0"
     const val gradleVersion = "2.3.0"
 
-    const val compileSdkVersion = 31
+    const val compileSdkVersion = 32
     const val buildToolsVersion = "28.0.3"
     const val renderScriptTargetApi = 16
     const val targetSdkVersion = 30

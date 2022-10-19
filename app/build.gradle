@@ -127,7 +127,8 @@ dependencies {
             Dependencies.viewModelState,
             Dependencies.viewModel,
             Dependencies.fragmentKtx,
-            Dependencies.shimmerAndroid
+            Dependencies.shimmerAndroid,
+            "org.jetbrains.anko:anko-commons:$anko_version"
     )
 
     androidTestImplementation(

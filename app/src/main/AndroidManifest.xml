@@ -18,7 +18,7 @@
     <!-- <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> -->
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="false"/>
+        android:required="false" />
     <uses-feature
         android:name="android.hardware.camera.autofocus"
         android:required="false" /> <!-- Feature issue in Moto E http://stackoverflow.com/questions/25078037/my-android-application-is-showing-incompatible-for-android-4-4-4-moto-e-in-play -->
@@ -39,45 +39,42 @@
         android:usesCleartextTraffic="true"
         android:vmSafeMode="true"
         tools:replace="icon,allowBackup">
-
-
+        <activity
+            android:name=".ui.learning_anko.LearningActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.seller.SellerProfileActivityV1"
-            android:screenOrientation="portrait"
-            android:exported="false" />
-
-
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
-        android:name=".ui.checkout.CheckoutActivityV1"
-        android:screenOrientation="portrait"
-        android:exported="false" />
+            android:name=".ui.checkout.CheckoutActivityV1"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.LoyaltyTermsActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.signUpOnboarding.UserOnboardingActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.signUpAuth.SignUpAuthActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible" />
-
         <activity
             android:name=".ui.cart.NewCartActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan"
-            android:exported="false" />
-
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".ui.routing.RoutingActivity"
             android:configChanges="uiMode"
+            android:exported="true"
             android:noHistory="true"
             android:screenOrientation="portrait"
-            android:exported="true"
             android:theme="@style/TransparentTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -95,34 +92,30 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.LoyaltyHistoryActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
-
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.splash.SplashScreenActivityV1"
             android:exported="false"
-            android:theme="@style/BaseTheme.AppTheme.NoActionBar.FullScreenTheme"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme.AppTheme.NoActionBar.FullScreenTheme" />
         <activity
             android:name=".ui.auth.SignInSignUpActivityV1"
             android:exported="false"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name="com.webkul.mobikul.odoo.ui.authentication.AuthenticationActivity"
+            android:name=".ui.authentication.AuthenticationActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateVisible"/>
+            android:windowSoftInputMode="stateVisible" />
         <activity
             android:name=".ui.onboarding.OnboardingActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/BaseTheme.AppTheme.NoActionBar.FullScreenTheme"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait"/>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activity.UserApprovalActivity"
             android:exported="true"
@@ -139,11 +132,10 @@
         <activity
             android:name=".activity.SplashScreenActivity"
             android:configChanges="uiMode"
+            android:exported="false"
             android:noHistory="true"
             android:screenOrientation="portrait"
-            android:exported="false"
             android:theme="@style/BaseTheme.AppTheme.NoActionBar.FullScreenTheme">
-
 
             <!-- DEEP LINKING FILTER's -->
             <!-- <intent-filter android:label="@string/app_name"> -->
@@ -178,12 +170,12 @@
         <activity
             android:name=".activity.NewHomeActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SearchActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.NewDrawerActivity"
             android:exported="false"
@@ -219,14 +211,14 @@
             android:configChanges="orientation"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-          android:windowSoftInputMode="stateAlwaysHidden|stateHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
         <activity
             android:name=".activity.BagActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.CheckoutActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.FragmentContainerActivity"
             android:launchMode="standard"
@@ -239,7 +231,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Base.Theme.AppCompat" />
         <activity
-            android:name="com.webkul.mobikul.odoo.activity.ChatActivity"
+            android:name=".activity.ChatActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">

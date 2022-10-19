@@ -30,6 +30,7 @@ import com.webkul.mobikul.odoo.helper.CatalogHelper.CatalogProductRequestType
 import com.webkul.mobikul.odoo.helper.Helper
 import com.webkul.mobikul.odoo.helper.LoyaltyPointsListener
 import com.webkul.mobikul.odoo.model.customer.address.AddressData
+import com.webkul.mobikul.odoo.ui.learning_anko.LearningActivity
 import com.webkul.mobikul.odoo.ui.price_comparison.ProductActivityV2
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -56,6 +57,9 @@ class HomeFragmentV1 @Inject constructor() :
         super.onViewCreated(view, savedInstanceState)
         setObservers()
         startInit()
+        binding.fabLearning.setOnClickListener {
+            startActivity(Intent(activity, LearningActivity::class.java))
+        }
     }
 
     private fun startInit() {

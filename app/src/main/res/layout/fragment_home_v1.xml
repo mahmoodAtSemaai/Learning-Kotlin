@@ -45,6 +45,7 @@
             </com.facebook.shimmer.ShimmerFrameLayout>
 
             <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:id="@+id/coordinatorLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -119,6 +120,14 @@
                 </androidx.viewpager2.widget.ViewPager2>
 
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_learning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_32"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/coordinatorLayout" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
