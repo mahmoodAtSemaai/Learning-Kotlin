@@ -1,12 +1,13 @@
 package com.webkul.mobikul.odoo.ui.learning_anko
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.webkul.mobikul.odoo.R
-import org.jetbrains.anko.*
-import timber.log.Timber
+import com.webkul.mobikul.odoo.ui.learning_anko.domain.commands.RequestForecastCommand
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.find
+import org.jetbrains.anko.uiThread
 
 class LearningActivity : AppCompatActivity() {
 
@@ -24,9 +25,9 @@ class LearningActivity : AppCompatActivity() {
 		val recyclerView: RecyclerView = find(R.id.learning_anko)
 
 		doAsync {
-			val result = Request(END_POINT).run()
+			val result = RequestForecastCommand("78097").execute()
 			uiThread {
-				Timber.tag(TAG).d(result)
+
 			}
 		}
 	}
