@@ -1,4 +1,4 @@
-package com.webkul.mobikul.odoo.ui.learning_anko
+package com.webkul.mobikul.odoo.ui.learning_anko.data
 
 import timber.log.Timber
 import java.net.URL
