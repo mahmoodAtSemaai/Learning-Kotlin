@@ -1,13 +1,18 @@
 package com.webkul.mobikul.odoo.ui.learning_anko
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.ui.learning_anko.domain.commands.RequestForecastCommand
+import com.webkul.mobikul.odoo.ui.learning_anko.kotlin_learnings.ManualLazy
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
 import org.jetbrains.anko.uiThread
+import timber.log.Timber
+import kotlin.properties.Delegates
 
 class LearningActivity : AppCompatActivity() {
 
@@ -16,7 +21,15 @@ class LearningActivity : AppCompatActivity() {
 	companion object{
 		const val TAG = "LearningActivity"
 	}
+	private val recyclerView: RecyclerView by lazy { find(R.id.learning_anko) }
+	private var counter by Delegates.observable(0){
+		kd, old, new ->
+		Timber.tag(TAG).d("Old = $old, New = $new, KD = $kd")
+	}
 
+	private val counterButton : FloatingActionButton by ManualLazy {
+		find(R.id.btn_simple)
+	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -29,6 +42,10 @@ class LearningActivity : AppCompatActivity() {
 			uiThread {
 
 			}
+		}
+
+		counterButton.setOnClickListener {
+			counter++
 		}
 	}
 
