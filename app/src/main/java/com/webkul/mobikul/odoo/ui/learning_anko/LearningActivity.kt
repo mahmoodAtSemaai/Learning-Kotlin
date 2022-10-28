@@ -1,7 +1,6 @@
 package com.webkul.mobikul.odoo.ui.learning_anko
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -22,10 +21,19 @@ class LearningActivity : AppCompatActivity() {
 		const val TAG = "LearningActivity"
 	}
 	private val recyclerView: RecyclerView by lazy { find(R.id.learning_anko) }
-	private var counter by Delegates.observable(0){
+	private var counterByObservable by Delegates.observable(0){
 		kd, old, new ->
 		Timber.tag(TAG).d("Old = $old, New = $new, KD = $kd")
 	}
+
+	private var counterByVetoable by Delegates.observable(0){
+			kd, old, new ->
+		if(new >= 5)
+			Timber.tag(TAG).d("Old = $old, New = $new, KD = $kd")
+		else
+			Timber.tag(TAG).d("Throw Error")
+	}
+
 
 	private val counterButton : FloatingActionButton by ManualLazy {
 		find(R.id.btn_simple)
@@ -45,7 +53,10 @@ class LearningActivity : AppCompatActivity() {
 		}
 
 		counterButton.setOnClickListener {
-			counter++
+/*
+			counterByObservable++
+*/
+			counterByVetoable++
 		}
 	}
 
