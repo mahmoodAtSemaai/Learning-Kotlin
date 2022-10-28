@@ -7,6 +7,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.webkul.mobikul.odoo.R
 import com.webkul.mobikul.odoo.ui.learning_anko.domain.commands.RequestForecastCommand
 import com.webkul.mobikul.odoo.ui.learning_anko.kotlin_learnings.ManualLazy
+import com.webkul.mobikul.odoo.ui.learning_anko.sqlite.ManagedSqliteOpenHelper
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
 import org.jetbrains.anko.uiThread

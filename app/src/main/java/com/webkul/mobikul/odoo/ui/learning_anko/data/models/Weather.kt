@@ -1,4 +1,4 @@
-package com.webkul.mobikul.odoo.ui.learning_anko.data
+package com.webkul.mobikul.odoo.ui.learning_anko.data.models
 
 data class Weather(
     val description: String,
