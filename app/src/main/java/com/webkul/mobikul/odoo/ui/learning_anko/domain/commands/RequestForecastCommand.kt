@@ -1,6 +1,6 @@
 package com.webkul.mobikul.odoo.ui.learning_anko.domain.commands
 
-import com.webkul.mobikul.odoo.ui.learning_anko.data.ForecastRequest
+import com.webkul.mobikul.odoo.ui.learning_anko.data.request.ForecastRequest
 import com.webkul.mobikul.odoo.ui.learning_anko.data.entity.ForecastListEntity
 import com.webkul.mobikul.odoo.ui.learning_anko.domain.Command
 import com.webkul.mobikul.odoo.ui.learning_anko.domain.mapper.DataMapper

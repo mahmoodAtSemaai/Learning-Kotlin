@@ -1,7 +1,7 @@
 package com.webkul.mobikul.odoo.ui.learning_anko.domain.mapper
 
-import com.webkul.mobikul.odoo.ui.learning_anko.data.Forecast
-import com.webkul.mobikul.odoo.ui.learning_anko.data.ForecastResult
+import com.webkul.mobikul.odoo.ui.learning_anko.data.models.Forecast
+import com.webkul.mobikul.odoo.ui.learning_anko.data.models.ForecastResult
 import com.webkul.mobikul.odoo.ui.learning_anko.data.entity.ForecastEntity
 import com.webkul.mobikul.odoo.ui.learning_anko.data.entity.ForecastListEntity
 import java.text.DateFormat

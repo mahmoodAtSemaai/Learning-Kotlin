@@ -1,6 +1,7 @@
-package com.webkul.mobikul.odoo.ui.learning_anko.data
+package com.webkul.mobikul.odoo.ui.learning_anko.data.request
 
 import com.google.gson.Gson
+import com.webkul.mobikul.odoo.ui.learning_anko.data.models.ForecastResult
 import java.net.URL
 
 class ForecastRequest(val zipCode: String) {
